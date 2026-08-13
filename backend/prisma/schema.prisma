@@ -1,0 +1,166 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                 String   @id @default(uuid())
+  email              String   @unique
+  passwordHash       String
+  nivel              Int      @default(1)
+  xp                 Int      @default(0)
+  streakCurent       Int      @default(0)
+  dataUltimaActivitate DateTime?
+  createdAt          DateTime @default(now())
+
+  portfolios    Portfolio[]
+  badges        Badge[]
+  subscriptions Subscription[]
+  watchlists    Watchlist[]
+  alerts        Alert[]
+  prietenii     Friendship[] @relation("PrietenieUser")
+}
+
+model Portfolio {
+  id     String @id @default(uuid())
+  userId String
+  tip    String @default("simulat") // simulat | real
+  cashBalance Float @default(10000) // USD
+
+  user         User          @relation(fields: [userId], references: [id])
+  holdings     Holding[]
+  transactions Transaction[]
+}
+
+model Holding {
+  id                    String @id @default(uuid())
+  portfolioId           String
+  simbol                String
+  cantitate             Float
+  pretMediuAchizitie    Float
+
+  portfolio Portfolio @relation(fields: [portfolioId], references: [id])
+
+  @@unique([portfolioId, simbol])
+}
+
+model Transaction {
+  id          String   @id @default(uuid())
+  portfolioId String
+  simbol      String
+  tip         String // cumparare | vanzare
+  cantitate   Float
+  pret        Float
+  data        DateTime @default(now())
+
+  portfolio Portfolio @relation(fields: [portfolioId], references: [id])
+}
+
+model NewsItem {
+  id        String   @id @default(uuid())
+  simbol    String
+  titlu     String
+  sursa     String
+  url       String
+  sentiment String?
+  data      DateTime @default(now())
+}
+
+model Badge {
+  id           String   @id @default(uuid())
+  userId       String
+  tipBadge     String
+  dataObtinut  DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id])
+}
+
+model Subscription {
+  id               String  @id @default(uuid())
+  userId           String
+  plan             String  @default("free")
+  stripeCustomerId String?
+  status           String  @default("inactive")
+
+  user User @relation(fields: [userId], references: [id])
+}
+
+model Watchlist {
+  id             String    @id @default(uuid())
+  userId         String
+  simbol         String
+  createdAt      DateTime  @default(now())
+  lastAlertCheck DateTime  @default(now()) // doar știrile de după acest moment devin alerte
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@unique([userId, simbol])
+}
+
+model Alert {
+  id        String   @id @default(uuid())
+  userId    String
+  simbol    String
+  headline  String
+  url       String
+  sursa     String
+  createdAt DateTime @default(now())
+  citit     Boolean  @default(false)
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@unique([userId, simbol, url])
+}
+
+model RadarScore {
+  id              String   @id @default(uuid())
+  simbol          String   @unique
+  computedAt      DateTime @default(now())
+  scorAnalist     Int
+  scorMomentum    Int
+  scorFundamental Int
+  scorRisc        Int
+  scorCompozit    Int
+  verdict         String // optimist | neutru | rezervat
+  rezumat         String
+  riscuri         String // JSON.stringify(string[])
+  invalidare      String // JSON.stringify(string[])
+  incredere       String // ridicata | medie | scazuta
+  sursaDate       String // JSON.stringify al datelor numerice brute, pentru audit
+  generatAi       Boolean  @default(true) // false dacă filtrul de siguranță a înlocuit textul AI cu fallback
+}
+
+// Conexiune de prietenie, unidirecțională la nivel de rând — la adăugarea unui
+// prieten prin cod se creează două rânduri (A→B și B→A), ca fiecare să-l poată
+// interoga simplu pe celălalt fără condiții OR. friendId nu are relație Prisma
+// explicită (doar id brut) — utilizatorul-prieten se încarcă separat, în cod.
+model Friendship {
+  id        String   @id @default(uuid())
+  userId    String
+  friendId  String
+  createdAt DateTime @default(now())
+
+  user User @relation("PrietenieUser", fields: [userId], references: [id])
+
+  @@unique([userId, friendId])
+}
+
+// Jurnal append-only al scorurilor — o înregistrare la fiecare (re)calcul,
+// folosit pentru "Ce s-a schimbat" (diferența față de analiza anterioară).
+model RadarScoreHistory {
+  id              String   @id @default(uuid())
+  simbol          String
+  computedAt      DateTime @default(now())
+  scorAnalist     Int
+  scorMomentum    Int
+  scorFundamental Int
+  scorRisc        Int
+  scorCompozit    Int
+  verdict         String
+
+  @@index([simbol, computedAt])
+}
