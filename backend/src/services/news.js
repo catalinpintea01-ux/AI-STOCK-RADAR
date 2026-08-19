@@ -69,15 +69,17 @@ ${JSON.stringify(deTradus)}`;
   }
 }
 
-const MARKET_NEWS_CACHE_TTL_MS = 10 * 60 * 1000;
-let marketNewsCache = null; // { data, expiresAt }
+const MARKET_NEWS_RAW_CACHE_TTL_MS = 10 * 60 * 1000;
+let marketNewsRawCache = null; // { data, expiresAt }
 
-// Știri generale de piață (nu per companie) — folosite pe ecranul principal.
-async function getMarketNews() {
+// Top 3 știri generale de piață, brute (engleză) — punctul de plecare pentru
+// analiza AI proprie din marketNewsAnalysis.js. Nu traducem aici — traducerea
+// e parte din analiza AI, ca să nu facem două apeluri Claude separate.
+async function getMarketNewsRaw() {
   if (!isConfigured()) return [];
 
-  if (marketNewsCache && marketNewsCache.expiresAt > Date.now()) {
-    return marketNewsCache.data;
+  if (marketNewsRawCache && marketNewsRawCache.expiresAt > Date.now()) {
+    return marketNewsRawCache.data;
   }
 
   const url = `https://finnhub.io/api/v1/news?category=general&token=${process.env.FINNHUB_API_KEY}`;
@@ -96,14 +98,11 @@ async function getMarketNews() {
         rezumat: n.summary || "",
         url: n.url,
         sursa: n.source,
-        imagine: n.image || null,
         data: new Date(n.datetime * 1000).toISOString(),
       }));
 
-    const traduse = await translateNews(news);
-
-    marketNewsCache = { data: traduse, expiresAt: Date.now() + MARKET_NEWS_CACHE_TTL_MS };
-    return traduse;
+    marketNewsRawCache = { data: news, expiresAt: Date.now() + MARKET_NEWS_RAW_CACHE_TTL_MS };
+    return news;
   } catch (err) {
     console.error(`[news] fallback pentru piață generală: ${err.message}`);
     return [];
@@ -149,4 +148,4 @@ async function getCompanyNews(simbol) {
   }
 }
 
-module.exports = { getCompanyNews, getMarketNews };
+module.exports = { getCompanyNews, getMarketNewsRaw };

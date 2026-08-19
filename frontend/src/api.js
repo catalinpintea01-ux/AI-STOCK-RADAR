@@ -32,6 +32,7 @@ export const api = {
   getStocks: () => request("/stocks"),
   getTicker: () => request("/stocks/ticker"),
   getMarketNews: () => request("/stocks/market-news"),
+  getMarketNewsDetail: (id) => request(`/stocks/market-news/${encodeURIComponent(id)}`),
   searchStocks: (query) => request(`/stocks/search?q=${encodeURIComponent(query)}`),
   getStockQuote: (simbol) => request(`/stocks/${encodeURIComponent(simbol)}`),
   buyStock: (simbol, cantitate) =>

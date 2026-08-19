@@ -2,7 +2,8 @@ const express = require("express");
 const { getStock, getStockList, getTickerTape, searchStocks } = require("../services/marketData");
 const { getCompanyProfile, getInsiderTransactions } = require("../services/fundamentals");
 const { getOrComputeRadarScore, getScoreChange } = require("../services/radar");
-const { getCompanyNews, getMarketNews } = require("../services/news");
+const { getCompanyNews } = require("../services/news");
+const { getAnalyzedMarketNews, getMarketNewsById } = require("../services/marketNewsAnalysis");
 
 const router = express.Router();
 
@@ -22,8 +23,16 @@ router.get("/ticker", async (req, res) => {
 });
 
 router.get("/market-news", async (req, res) => {
-  const news = await getMarketNews();
+  const news = await getAnalyzedMarketNews();
   res.json({ news });
+});
+
+router.get("/market-news/:id", async (req, res) => {
+  const item = await getMarketNewsById(req.params.id);
+  if (!item) {
+    return res.status(404).json({ error: "Știrea nu mai este disponibilă" });
+  }
+  res.json({ news: item });
 });
 
 router.get("/:simbol", async (req, res) => {

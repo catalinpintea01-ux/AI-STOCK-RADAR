@@ -135,20 +135,18 @@ export default function Watchlist() {
 
       {marketNews.length > 0 && (
         <section className="hero-news">
-          {marketNews.map((n, i) => (
-            <a
-              key={i}
-              href={n.url}
-              target="_blank"
-              rel="noopener noreferrer"
+          {marketNews.map((n) => (
+            <Link
+              key={n.id}
+              to={`/stiri/${n.id}`}
               className="hero-news-card"
               style={n.imagine ? { backgroundImage: `url(${n.imagine})` } : undefined}
             >
               <div className="hero-news-body">
                 <span className="hero-news-source">{n.sursa} · Astăzi</span>
-                <h3 className="hero-news-headline">{n.headline}</h3>
+                <h3 className="hero-news-headline">{n.titluAI}</h3>
               </div>
-            </a>
+            </Link>
           ))}
         </section>
       )}

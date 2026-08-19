@@ -5,6 +5,7 @@ import Register from "./pages/Register.jsx";
 import Portfolio from "./pages/Portfolio.jsx";
 import Watchlist from "./pages/Watchlist.jsx";
 import StockDetail from "./pages/StockDetail.jsx";
+import NewsDetail from "./pages/NewsDetail.jsx";
 import Alerts from "./pages/Alerts.jsx";
 import Learn from "./pages/Learn.jsx";
 import Community from "./pages/Community.jsx";
@@ -46,6 +47,14 @@ export default function App() {
         element={
           <PrivateLayout>
             <StockDetail />
+          </PrivateLayout>
+        }
+      />
+      <Route
+        path="/stiri/:id"
+        element={
+          <PrivateLayout>
+            <NewsDetail />
           </PrivateLayout>
         }
       />
