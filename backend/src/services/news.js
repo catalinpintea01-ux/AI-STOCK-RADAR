@@ -72,8 +72,9 @@ ${JSON.stringify(deTradus)}`;
 const MARKET_NEWS_RAW_CACHE_TTL_MS = 10 * 60 * 1000;
 let marketNewsRawCache = null; // { data, expiresAt }
 
-// Top 3 știri generale de piață, brute (engleză) — punctul de plecare pentru
-// analiza AI proprie din marketNewsAnalysis.js. Nu traducem aici — traducerea
+// Un bazin de ~20 știri generale de piață, brute (engleză) — candidați din
+// care marketNewsAnalysis.js alege (cu Claude) cele 3 mai relevante pentru
+// bursă, nu doar cele mai recente cronologic. Nu traducem aici — traducerea
 // e parte din analiza AI, ca să nu facem două apeluri Claude separate.
 async function getMarketNewsRaw() {
   if (!isConfigured()) return [];
@@ -92,7 +93,7 @@ async function getMarketNewsRaw() {
     const news = (Array.isArray(data) ? data : [])
       .filter((n) => n.headline && n.url)
       .sort((a, b) => b.datetime - a.datetime)
-      .slice(0, 3)
+      .slice(0, 20)
       .map((n) => ({
         headline: n.headline,
         rezumat: n.summary || "",

@@ -41,35 +41,45 @@ async function fetchStockImage(cuvantCheie) {
   }
 }
 
-function fallbackAnalysis(item) {
-  return {
+const SELECTED_COUNT = 3;
+
+function fallbackSelection(candidates) {
+  // Fără AI, nu putem judeca relevanța pentru bursă — luăm primele N (deja
+  // sortate cronologic) ca să tot afișăm ceva, dar netraduse/neanalizate.
+  return candidates.slice(0, SELECTED_COUNT).map((item) => ({
+    index: candidates.indexOf(item),
     titluAI: item.headline,
     analiza: item.rezumat || item.headline,
     cuvantCheie: null,
-  };
+  }));
 }
 
-// Un singur apel Claude pentru toate cele 3 știri (nu unul per știre), ca să
-// nu multiplicăm costul — același principiu ca translateNews().
-async function analyzeWithClaude(items) {
-  if (!isAiConfigured() || items.length === 0) return items.map(fallbackAnalysis);
+// Un singur apel Claude care alege ȘI analizează (nu doar analizează primele
+// N cronologic) — din bazinul de candidați, Claude selectează cele mai
+// relevante pentru piețele bursiere/investiții (nu geopolitică sau știri
+// generale fără legătură clară cu companii, sectoare sau active financiare).
+async function selectAndAnalyzeWithClaude(candidates) {
+  if (!isAiConfigured() || candidates.length === 0) return fallbackSelection(candidates);
 
   const prompt = `Ești un analist financiar care scrie pentru un public român de începători în investiții, pe un site educativ (nu oferă consultanță de investiții).
 
-Pentru fiecare din cele ${items.length} știri de piață de mai jos, produci:
-1. "titluAI": un titlu propriu, atractiv, în limba română (nu traducere literală a celui original, ci un titlu jurnalistic nou, scris de tine)
-2. "analiza": un text de context de 3-5 propoziții (aproximativ 100-150 cuvinte) în limba română, care explică de ce această știre contează pentru piețele financiare, ce sectoare sau companii ar putea fi afectate, și ce ar merita urmărit în continuare
-3. "cuvantCheie": 1-3 cuvinte în limba engleză, potrivite pentru căutarea unei fotografii de stock sugestive pentru subiectul știrii (ex: "oil pipeline", "stock exchange trading floor", "semiconductor factory")
+Mai jos ai o listă de ${candidates.length} știri generale de pe fluxul de agenție. Alege EXACT ${SELECTED_COUNT} dintre ele — cele mai relevante pentru piețele bursiere și investitori (mișcări de piață, rezultate ale companiilor, politică monetară/bănci centrale, indicatori economici majori, sectoare industriale, prețul mărfurilor/energiei, fuziuni și achiziții). Evită știrile pur geopolitice, sportive, culturale sau fără nicio legătură clară cu piețele financiare, dacă există alternative mai relevante în listă.
+
+Pentru fiecare din cele ${SELECTED_COUNT} știri alese, produci:
+1. "index": numărul original al știrii din lista de mai jos (1-${candidates.length})
+2. "titluAI": un titlu propriu, atractiv, în limba română (nu traducere literală a celui original, ci un titlu jurnalistic nou, scris de tine)
+3. "analiza": un text de context de 3-5 propoziții (aproximativ 100-150 cuvinte) în limba română, care explică de ce această știre contează pentru piețele financiare, ce sectoare sau companii ar putea fi afectate, și ce ar merita urmărit în continuare
+4. "cuvantCheie": 1-3 cuvinte în limba engleză, potrivite pentru căutarea unei fotografii de stock sugestive pentru subiectul știrii (ex: "oil pipeline", "stock exchange trading floor", "semiconductor factory")
 
 Reguli obligatorii:
 - NU folosi niciodată cuvintele "cumpără", "vinde", "recomand", "ar trebui să", sau orice formă de sfat personal de investiții.
 - Limbaj exclusiv descriptiv și educativ — context, nu consultanță.
 
 Știri:
-${items.map((n, i) => `${i + 1}. Titlu original: ${n.headline}\nRezumat: ${n.rezumat || "(fără rezumat)"}\nSursă: ${n.sursa}`).join("\n\n")}
+${candidates.map((n, i) => `${i + 1}. Titlu original: ${n.headline}\nRezumat: ${n.rezumat || "(fără rezumat)"}\nSursă: ${n.sursa}`).join("\n\n")}
 
-Răspunde STRICT cu un array JSON de exact ${items.length} elemente, în aceeași ordine, fără text în afara lui:
-[{"titluAI": "...", "analiza": "...", "cuvantCheie": "..."}, ...]`;
+Răspunde STRICT cu un array JSON de exact ${SELECTED_COUNT} elemente, ordonate de la cea mai relevantă la cea mai puțin relevantă, fără text în afara lui:
+[{"index": 1, "titluAI": "...", "analiza": "...", "cuvantCheie": "..."}, ...]`;
 
   try {
     const res = await fetch(ANTHROPIC_URL, {
@@ -94,25 +104,34 @@ Răspunde STRICT cu un array JSON de exact ${items.length} elemente, în aceeaș
     if (!jsonMatch) throw new Error("Răspunsul Claude nu conține un array JSON");
 
     const parsed = JSON.parse(jsonMatch[0]);
-    if (!Array.isArray(parsed) || parsed.length !== items.length) {
-      throw new Error("Analiză incompletă sau cu lungime greșită");
+    if (!Array.isArray(parsed) || parsed.length !== SELECTED_COUNT) {
+      throw new Error("Selecție incompletă sau cu lungime greșită");
     }
 
-    return parsed.map((p, i) => {
-      const valid = typeof p.titluAI === "string" && typeof p.analiza === "string";
+    const rezultat = [];
+    for (const p of parsed) {
+      const idx = Number(p.index) - 1;
+      const candidat = candidates[idx];
+      const valid =
+        candidat && typeof p.titluAI === "string" && typeof p.analiza === "string";
+
       if (!valid || contineLimbajDeConsiliere(`${p.titluAI} ${p.analiza}`)) {
-        console.error(`[marketNewsAnalysis] fallback pentru știrea ${i + 1} — limbaj nepermis sau răspuns incomplet`);
-        return fallbackAnalysis(items[i]);
+        console.error(`[marketNewsAnalysis] element de selecție invalid sau limbaj nepermis — îl sar`);
+        continue;
       }
-      return {
+      rezultat.push({
+        index: idx,
         titluAI: p.titluAI,
         analiza: p.analiza,
         cuvantCheie: typeof p.cuvantCheie === "string" ? p.cuvantCheie : null,
-      };
-    });
+      });
+    }
+
+    if (rezultat.length === 0) throw new Error("Toate elementele selectate au fost respinse");
+    return rezultat;
   } catch (err) {
     console.error(`[marketNewsAnalysis] fallback complet: ${err.message}`);
-    return items.map(fallbackAnalysis);
+    return fallbackSelection(candidates);
   }
 }
 
@@ -121,21 +140,24 @@ async function getAnalyzedMarketNews() {
     return cache.items;
   }
 
-  const raw = await getMarketNewsRaw();
-  if (raw.length === 0) return [];
+  const candidates = await getMarketNewsRaw();
+  if (candidates.length === 0) return [];
 
-  const analize = await analyzeWithClaude(raw);
+  const selectate = await selectAndAnalyzeWithClaude(candidates);
 
   const items = await Promise.all(
-    raw.map(async (n, i) => ({
-      id: makeId(n.url),
-      titluAI: analize[i].titluAI,
-      analiza: analize[i].analiza,
-      sursa: n.sursa,
-      url: n.url,
-      data: n.data,
-      imagine: await fetchStockImage(analize[i].cuvantCheie || n.headline),
-    }))
+    selectate.map(async (s) => {
+      const n = candidates[s.index];
+      return {
+        id: makeId(n.url),
+        titluAI: s.titluAI,
+        analiza: s.analiza,
+        sursa: n.sursa,
+        url: n.url,
+        data: n.data,
+        imagine: await fetchStockImage(s.cuvantCheie || n.headline),
+      };
+    })
   );
 
   const byId = new Map(items.map((it) => [it.id, it]));
