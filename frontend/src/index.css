@@ -686,6 +686,66 @@ body {
   gap: 0.5rem;
 }
 
+.radar-snapshot {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 1.1rem 1.3rem;
+  box-shadow: var(--shadow-card);
+  margin: 1rem 0 1.25rem;
+}
+
+.radar-snapshot-title {
+  font-size: 0.95rem;
+  font-weight: 800;
+  margin: 0 0 0.7rem;
+}
+
+.radar-snapshot-empty {
+  color: var(--muted);
+  font-size: 0.85rem;
+  margin: 0;
+}
+
+.radar-snapshot-stats {
+  display: flex;
+  gap: 1.75rem;
+  flex-wrap: wrap;
+}
+
+.radar-snapshot-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.radar-snapshot-number {
+  font-size: 1.9rem;
+  font-weight: 800;
+  line-height: 1.1;
+  color: var(--text);
+}
+
+.radar-snapshot-number.optimist {
+  color: var(--blue);
+}
+
+.radar-snapshot-number.rezervat {
+  color: #c2410c;
+}
+
+.radar-snapshot-label {
+  font-size: 0.78rem;
+  color: var(--muted);
+  font-weight: 600;
+}
+
+.radar-snapshot-pending {
+  margin: 0.75rem 0 0;
+  font-size: 0.78rem;
+  color: var(--muted);
+}
+
 .watchlist-header-actions {
   display: flex;
   align-items: center;

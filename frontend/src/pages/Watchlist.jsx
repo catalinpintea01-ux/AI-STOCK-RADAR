@@ -28,11 +28,15 @@ const MOMENT_LABEL = {
   dmh: "în timpul ședinței",
 };
 
-function formatZileRamase(dataIso) {
+function zileRamase(dataIso) {
   const azi = new Date();
   azi.setHours(0, 0, 0, 0);
   const data = new Date(dataIso);
-  const zile = Math.round((data - azi) / (24 * 60 * 60 * 1000));
+  return Math.round((data - azi) / (24 * 60 * 60 * 1000));
+}
+
+function formatZileRamase(dataIso) {
+  const zile = zileRamase(dataIso);
   if (zile === 0) return "azi";
   if (zile === 1) return "mâine";
   return `în ${zile} zile`;
@@ -216,11 +220,47 @@ export default function Watchlist() {
     .sort((a, b) => Math.abs(b.schimbare.deltaCompozit) - Math.abs(a.schimbare.deltaCompozit))
     .slice(0, 5);
   const neanalizateCount = items.filter((i) => !i.radar).length;
+  const optimisteCount = items.filter((i) => i.radar?.verdict === "optimist").length;
+  const rezervateCount = items.filter((i) => i.radar?.verdict === "rezervat").length;
+  const neutruCount = items.filter((i) => i.radar?.verdict === "neutru").length;
+  const analizateCount = optimisteCount + rezervateCount + neutruCount;
+  const raporteazaCurandCount = earnings.filter((e) => zileRamase(e.data) <= 7).length;
 
   return (
     <div className="portfolio-page">
       <h1 className="page-title">AI Stock Radar</h1>
       <p className="cash">Urmărește acțiuni și primești context AI despre ele — nu recomandări de tranzacționare.</p>
+
+      {items.length > 0 && (
+        <section className="radar-snapshot">
+          <h2 className="radar-snapshot-title">📡 Radar Snapshot</h2>
+          {analizateCount === 0 ? (
+            <p className="radar-snapshot-empty">
+              Analiza AI pornește automat pentru cele {items.length} acțiuni urmărite — revino în câteva minute pentru primele scoruri.
+            </p>
+          ) : (
+            <>
+              <div className="radar-snapshot-stats">
+                <div className="radar-snapshot-stat">
+                  <span className="radar-snapshot-number optimist">{optimisteCount}</span>
+                  <span className="radar-snapshot-label">optimiste</span>
+                </div>
+                <div className="radar-snapshot-stat">
+                  <span className="radar-snapshot-number rezervat">{rezervateCount}</span>
+                  <span className="radar-snapshot-label">rezervate</span>
+                </div>
+                <div className="radar-snapshot-stat">
+                  <span className="radar-snapshot-number">{raporteazaCurandCount}</span>
+                  <span className="radar-snapshot-label">raportează în 7 zile</span>
+                </div>
+              </div>
+              {neanalizateCount > 0 && (
+                <p className="radar-snapshot-pending">🔄 {neanalizateCount} încă în curs de analiză automată</p>
+              )}
+            </>
+          )}
+        </section>
+      )}
 
       {marketNews.length > 0 && (
         <section className="hero-news">
