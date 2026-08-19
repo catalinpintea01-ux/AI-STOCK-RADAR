@@ -44,6 +44,21 @@ router.get("/", requireAuth, async (req, res) => {
     if (stock) quoteMap.set(simbol, { pret: stock.pret, variatieProcent: stock.variatieProcent });
   }
 
+  // Sparkline: un singur query grupat (nu unul per simbol) — istoricul zilnic
+  // deja acumulat din cotațiile live cerute mai sus.
+  const de = new Date(Date.now() - 14 * 24 * 60 * 60 * 1000);
+  const istoricRows = simboluri.length
+    ? await prisma.priceHistory.findMany({
+        where: { simbol: { in: simboluri }, ziua: { gte: de } },
+        orderBy: { ziua: "asc" },
+      })
+    : [];
+  const istoricMap = new Map();
+  for (const row of istoricRows) {
+    if (!istoricMap.has(row.simbol)) istoricMap.set(row.simbol, []);
+    istoricMap.get(row.simbol).push(row.pret);
+  }
+
   res.json({
     items: items.map((i) => ({
       simbol: i.simbol,
@@ -51,6 +66,7 @@ router.get("/", requireAuth, async (req, res) => {
       schimbare: schimbareMap.get(i.simbol) || null,
       pret: quoteMap.get(i.simbol)?.pret ?? null,
       variatieProcent: quoteMap.get(i.simbol)?.variatieProcent ?? null,
+      istoricPret: istoricMap.get(i.simbol) || [],
     })),
   });
 });

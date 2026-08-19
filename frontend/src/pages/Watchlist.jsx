@@ -4,6 +4,8 @@ import { api } from "../api";
 import Disclaimer from "../components/Disclaimer.jsx";
 import TickerTape from "../components/TickerTape.jsx";
 import StockLogo from "../components/StockLogo.jsx";
+import ScoreRing from "../components/ScoreRing.jsx";
+import Sparkline from "../components/Sparkline.jsx";
 
 const VERDICT_CHIP = {
   optimist: "🔵 Optimist",
@@ -315,10 +317,12 @@ export default function Watchlist() {
                     )}
                     <div className="muted">
                       {item.radar
-                        ? `${VERDICT_CHIP[item.radar.verdict] || item.radar.verdict} · Scor AI: ${item.radar.scorCompozit}/100`
+                        ? VERDICT_CHIP[item.radar.verdict] || item.radar.verdict
                         : "Neanalizat încă — dă click"}
                     </div>
                   </div>
+                  {item.radar && <ScoreRing score={item.radar.scorCompozit} verdict={item.radar.verdict} />}
+                  <Sparkline puncte={item.istoricPret} />
                   {item.pret !== null && (
                     <div className="stock-right">
                       <div>${item.pret.toFixed(2)}</div>

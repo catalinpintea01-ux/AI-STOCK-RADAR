@@ -151,6 +151,19 @@ model Friendship {
   @@unique([userId, friendId])
 }
 
+// Un preț de referință pe zi per simbol (upsert pe [simbol, ziua]), populat
+// oportunist ori de câte ori se cere o cotație live — Finnhub nu oferă istoric
+// OHLC pe planul gratuit, așa că îl construim noi, zi cu zi, de acum înainte.
+// Sursă pentru sparkline-urile din watchlist.
+model PriceHistory {
+  id     String   @id @default(uuid())
+  simbol String
+  ziua   DateTime // trunchiat la miezul nopții UTC
+  pret   Float
+
+  @@unique([simbol, ziua])
+}
+
 // Jurnal append-only al scorurilor — o înregistrare la fiecare (re)calcul,
 // folosit pentru "Ce s-a schimbat" (diferența față de analiza anterioară).
 model RadarScoreHistory {

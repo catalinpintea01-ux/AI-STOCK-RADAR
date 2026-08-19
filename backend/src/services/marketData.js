@@ -1,4 +1,5 @@
 const { getMockStocks, getMockStock } = require("../mockData/stocks");
+const prisma = require("../db");
 
 const FINNHUB_BASE = "https://finnhub.io/api/v1";
 const QUOTE_CACHE_TTL_MS = 30_000;
@@ -39,6 +40,22 @@ async function fetchLiveQuote(simbol) {
   return { pret: data.c, variatieProcent: data.dp ?? 0 };
 }
 
+// Un rând pe zi per simbol (upsert) — Finnhub nu oferă istoric OHLC gratuit,
+// deci construim noi sparkline-ul din cotațiile live pe care oricum le cerem.
+// Nu blocăm răspunsul dacă scrierea eșuează — e un plus vizual, nu date critice.
+async function recordPriceSnapshot(simbol, pret) {
+  const ziua = new Date(new Date().toISOString().slice(0, 10));
+  try {
+    await prisma.priceHistory.upsert({
+      where: { simbol_ziua: { simbol, ziua } },
+      update: { pret },
+      create: { simbol, ziua, pret },
+    });
+  } catch (err) {
+    console.error(`[marketData] snapshot preț ${simbol}: ${err.message}`);
+  }
+}
+
 async function getCachedLiveQuote(simbol) {
   const cached = quoteCache.get(simbol);
   if (cached && cached.expiresAt > Date.now()) {
@@ -47,7 +64,24 @@ async function getCachedLiveQuote(simbol) {
 
   const quote = await fetchLiveQuote(simbol);
   quoteCache.set(simbol, { data: quote, expiresAt: Date.now() + QUOTE_CACHE_TTL_MS });
+  recordPriceSnapshot(simbol, quote.pret);
   return quote;
+}
+
+// Ultimele câteva zile de preț pentru sparkline — puține puncte la început
+// (istoricul se acumulează de-acum înainte), tot mai bogat cu fiecare zi.
+async function getPriceHistory(simbol, zile = 14) {
+  try {
+    const de = new Date(Date.now() - zile * 24 * 60 * 60 * 1000);
+    const rows = await prisma.priceHistory.findMany({
+      where: { simbol, ziua: { gte: de } },
+      orderBy: { ziua: "asc" },
+    });
+    return rows.map((r) => r.pret);
+  } catch (err) {
+    console.error(`[marketData] istoric preț ${simbol}: ${err.message}`);
+    return [];
+  }
 }
 
 async function getCompanyName(simbol) {
@@ -158,4 +192,4 @@ async function searchStocks(query) {
   }
 }
 
-module.exports = { getStock, getStockList, getTickerTape, searchStocks, isConfigured };
+module.exports = { getStock, getStockList, getTickerTape, searchStocks, isConfigured, getPriceHistory };

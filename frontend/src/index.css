@@ -62,6 +62,20 @@ body {
   min-width: 0;
 }
 
+.score-ring {
+  flex-shrink: 0;
+}
+
+.sparkline {
+  flex-shrink: 0;
+}
+
+@media (max-width: 480px) {
+  .sparkline {
+    display: none;
+  }
+}
+
 .row-chevron {
   color: var(--blue-light);
   font-size: 1.4rem;
