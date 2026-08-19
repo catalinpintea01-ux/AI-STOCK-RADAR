@@ -71,6 +71,9 @@ export default function Watchlist() {
   const [searchError, setSearchError] = useState("");
   const [bulkAdding, setBulkAdding] = useState(false);
   const [sortBy, setSortBy] = useState("implicit");
+  const [analyzing, setAnalyzing] = useState(new Set());
+  const [bulkAnalyzing, setBulkAnalyzing] = useState(false);
+  const [bulkProgress, setBulkProgress] = useState({ done: 0, total: 0 });
   const itemCountRef = useRef(0);
 
   function load() {
@@ -155,6 +158,7 @@ export default function Watchlist() {
       setSearchResults([]);
       setSearchQuery("");
       await load();
+      analyzeOne(simbol); // pornește analiza imediat, în fundal — momentul de interes maxim al userului
     } catch (err) {
       setSearchError(err.message);
     }
@@ -165,6 +169,45 @@ export default function Watchlist() {
     await load();
   }
 
+  function markAnalyzing(simbol, activ) {
+    setAnalyzing((prev) => {
+      const next = new Set(prev);
+      if (activ) next.add(simbol);
+      else next.delete(simbol);
+      return next;
+    });
+  }
+
+  // Actualizează doar rândul analizat, local — un reload complet al listei
+  // ar re-cere cotația live pentru TOATE simbolurile, inutil de scump aici.
+  async function analyzeOne(simbol) {
+    markAnalyzing(simbol, true);
+    try {
+      const data = await api.getRadar(simbol);
+      setItems((prev) =>
+        prev.map((it) => (it.simbol === simbol ? { ...it, radar: data.radar, schimbare: data.schimbare } : it))
+      );
+    } catch (err) {
+      console.error(err);
+    } finally {
+      markAnalyzing(simbol, false);
+    }
+  }
+
+  async function handleAnalyzeAll() {
+    const deAnalizat = items.filter((i) => !i.radar).map((i) => i.simbol);
+    if (deAnalizat.length === 0) return;
+
+    setBulkAnalyzing(true);
+    setBulkProgress({ done: 0, total: deAnalizat.length });
+    for (const simbol of deAnalizat) {
+      await analyzeOne(simbol);
+      setBulkProgress((p) => ({ ...p, done: p.done + 1 }));
+      await new Promise((r) => setTimeout(r, 700)); // nu bombardăm Finnhub/Claude
+    }
+    setBulkAnalyzing(false);
+  }
+
   if (error) return <div className="page-message">Eroare: {error}</div>;
   if (!items) return <div className="page-message">Se încarcă...</div>;
 
@@ -172,6 +215,7 @@ export default function Watchlist() {
     .filter((i) => i.schimbare && i.schimbare.deltaCompozit !== 0)
     .sort((a, b) => Math.abs(b.schimbare.deltaCompozit) - Math.abs(a.schimbare.deltaCompozit))
     .slice(0, 5);
+  const neanalizateCount = items.filter((i) => !i.radar).length;
 
   return (
     <div className="portfolio-page">
@@ -284,21 +328,30 @@ export default function Watchlist() {
       <section className="holdings">
         <div className="watchlist-header-row">
           <h2>Acțiunile tale urmărite</h2>
-          {items.length > 1 && (
-            <label className="sort-control">
-              Sortează după{" "}
-              <select value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
-                {SORT_OPTIONS.map((opt) => (
-                  <option key={opt.value} value={opt.value}>
-                    {opt.label}
-                  </option>
-                ))}
-              </select>
-            </label>
-          )}
+          <div className="watchlist-header-actions">
+            {neanalizateCount > 0 && (
+              <button className="analyze-all-button" onClick={handleAnalyzeAll} disabled={bulkAnalyzing}>
+                {bulkAnalyzing
+                  ? `Analizez ${bulkProgress.done}/${bulkProgress.total}...`
+                  : `⚡ Analizează tot (${neanalizateCount})`}
+              </button>
+            )}
+            {items.length > 1 && (
+              <label className="sort-control">
+                Sortează după{" "}
+                <select value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
+                  {SORT_OPTIONS.map((opt) => (
+                    <option key={opt.value} value={opt.value}>
+                      {opt.label}
+                    </option>
+                  ))}
+                </select>
+              </label>
+            )}
+          </div>
         </div>
         {items.length > 0 && (
-          <p className="row-hint">👉 Atinge o acțiune pentru scor AI, știri, indicatori financiari și tranzacții insideri.</p>
+          <p className="row-hint">👉 Atinge o acțiune pentru detalii complete, sau apasă Analizează pentru scor AI instant.</p>
         )}
         {items.length === 0 ? (
           <p className="empty">Nu urmărești încă nicio acțiune. Caută una mai sus ca să începi.</p>
@@ -316,9 +369,7 @@ export default function Watchlist() {
                       </span>
                     )}
                     <div className="muted">
-                      {item.radar
-                        ? VERDICT_CHIP[item.radar.verdict] || item.radar.verdict
-                        : "Neanalizat încă — dă click"}
+                      {item.radar ? VERDICT_CHIP[item.radar.verdict] || item.radar.verdict : "Neanalizat încă"}
                     </div>
                   </div>
                   {item.radar && <ScoreRing score={item.radar.scorCompozit} verdict={item.radar.verdict} />}
@@ -334,6 +385,15 @@ export default function Watchlist() {
                   )}
                   <span className="row-chevron">›</span>
                 </Link>
+                {!item.radar && (
+                  <button
+                    className="analyze-button"
+                    onClick={() => analyzeOne(item.simbol)}
+                    disabled={analyzing.has(item.simbol)}
+                  >
+                    {analyzing.has(item.simbol) ? "Analizez..." : "⚡ Analizează"}
+                  </button>
+                )}
                 <button className="logout" onClick={() => handleRemove(item.simbol)}>
                   Scoate
                 </button>

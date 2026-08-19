@@ -686,6 +686,55 @@ body {
   gap: 0.5rem;
 }
 
+.watchlist-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.analyze-all-button {
+  background: var(--gradient-brand);
+  color: white;
+  border: none;
+  border-radius: 999px;
+  padding: 0.4rem 0.9rem;
+  font-size: 0.8rem;
+  font-weight: 700;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.analyze-all-button:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-card-hover);
+}
+
+.analyze-all-button:disabled {
+  background: #eef1f2;
+  color: #9ca3af;
+  cursor: default;
+}
+
+.analyze-button {
+  background: var(--gradient-brand);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 0.4rem 0.7rem;
+  font-size: 0.8rem;
+  font-weight: 700;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.analyze-button:disabled {
+  background: #eef1f2;
+  color: #9ca3af;
+  cursor: default;
+}
+
 .sort-control {
   font-size: 0.8rem;
   color: var(--muted);

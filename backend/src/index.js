@@ -10,6 +10,7 @@ const alertsRoutes = require("./routes/alerts");
 const communityRoutes = require("./routes/community");
 const billingRoutes = require("./routes/billing");
 const webhookRoutes = require("./routes/webhooks");
+const scheduler = require("./services/scheduler");
 
 const app = express();
 
@@ -33,3 +34,8 @@ app.use("/api/billing", billingRoutes);
 
 const port = process.env.PORT || 4000;
 app.listen(port, () => console.log(`Backend rulează pe portul ${port}`));
+
+// Completează în fundal scorurile AI lipsă/expirate pentru tot ce e urmărit,
+// ca un utilizator care doar deschide aplicația să găsească deja analiză
+// gata făcută, nu un buton pe care nu știe că trebuie să-l apese.
+scheduler.start();
