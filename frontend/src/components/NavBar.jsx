@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { api } from "../api";
 
@@ -7,6 +7,8 @@ export default function NavBar() {
   const [unreadCount, setUnreadCount] = useState(0);
   const [premium, setPremium] = useState(null);
   const [upgrading, setUpgrading] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const menuRef = useRef(null);
 
   useEffect(() => {
     api
@@ -23,6 +25,16 @@ export default function NavBar() {
       .getBillingStatus()
       .then((data) => setPremium(data.premium))
       .catch(() => {});
+  }, []);
+
+  useEffect(() => {
+    function handleClickOutside(e) {
+      if (menuRef.current && !menuRef.current.contains(e.target)) {
+        setMenuOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
   function logout() {
@@ -42,6 +54,7 @@ export default function NavBar() {
   }
 
   async function handleManageClick() {
+    setMenuOpen(false);
     try {
       const data = await api.openBillingPortal();
       window.location.href = data.url;
@@ -52,39 +65,68 @@ export default function NavBar() {
 
   return (
     <nav className="navbar">
-      <div className="navbar-links">
-        <NavLink to="/" end className={({ isActive }) => (isActive ? "nav-link active" : "nav-link")}>
-          AI Stock Radar
-        </NavLink>
-        <NavLink to="/portofoliu" className={({ isActive }) => (isActive ? "nav-link active" : "nav-link")}>
-          Portofoliu virtual
-        </NavLink>
-        <NavLink to="/informare" className={({ isActive }) => (isActive ? "nav-link active" : "nav-link")}>
-          Informare
-        </NavLink>
-        <NavLink to="/comunitate" className={({ isActive }) => (isActive ? "nav-link active" : "nav-link")}>
-          Comunitate
-        </NavLink>
+      <NavLink to="/" end className="navbar-brand">
+        AI Stock Radar
+      </NavLink>
+
+      <div className="navbar-actions">
         <NavLink to="/alerte" className={({ isActive }) => (isActive ? "nav-link active" : "nav-link")}>
           🔔{unreadCount > 0 ? ` ${unreadCount}` : ""}
         </NavLink>
-      </div>
-      {premium === true && (
-        <>
-          <span className="badge-chip">⭐ Premium</span>
-          <button className="logout" onClick={handleManageClick}>
-            Gestionează abonamentul
+
+        {premium === true && <span className="badge-chip">⭐ Premium</span>}
+        {premium === false && (
+          <button className="upgrade-button" onClick={handleUpgradeClick} disabled={upgrading}>
+            {upgrading ? "..." : "⭐ Premium"}
           </button>
-        </>
-      )}
-      {premium === false && (
-        <button className="why-button" onClick={handleUpgradeClick} disabled={upgrading}>
-          {upgrading ? "Se încarcă..." : "⭐ Treci la Premium"}
-        </button>
-      )}
-      <button className="logout" onClick={logout}>
-        Ieșire
-      </button>
+        )}
+
+        <div className="navbar-menu-wrapper" ref={menuRef}>
+          <button
+            className="navbar-menu-button"
+            onClick={() => setMenuOpen((v) => !v)}
+            aria-label="Meniu"
+          >
+            ☰
+          </button>
+          {menuOpen && (
+            <div className="navbar-dropdown">
+              <NavLink
+                to="/portofoliu"
+                className={({ isActive }) => (isActive ? "navbar-dropdown-link active" : "navbar-dropdown-link")}
+                onClick={() => setMenuOpen(false)}
+              >
+                Portofoliu virtual
+              </NavLink>
+              <NavLink
+                to="/informare"
+                className={({ isActive }) => (isActive ? "navbar-dropdown-link active" : "navbar-dropdown-link")}
+                onClick={() => setMenuOpen(false)}
+              >
+                Informare
+              </NavLink>
+              <NavLink
+                to="/comunitate"
+                className={({ isActive }) => (isActive ? "navbar-dropdown-link active" : "navbar-dropdown-link")}
+                onClick={() => setMenuOpen(false)}
+              >
+                Comunitate
+              </NavLink>
+              {premium === true && (
+                <button className="navbar-dropdown-link navbar-dropdown-button" onClick={handleManageClick}>
+                  Gestionează abonamentul
+                </button>
+              )}
+              <button
+                className="navbar-dropdown-link navbar-dropdown-button navbar-dropdown-separator"
+                onClick={logout}
+              >
+                Ieșire
+              </button>
+            </div>
+          )}
+        </div>
+      </div>
     </nav>
   );
 }

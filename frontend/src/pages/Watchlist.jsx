@@ -23,6 +23,7 @@ const AUTO_REFRESH_MAX_ITEMS = 15; // peste acest prag, nu mai reîmprospătăm 
 export default function Watchlist() {
   const [items, setItems] = useState(null);
   const [holdings, setHoldings] = useState({});
+  const [marketNews, setMarketNews] = useState([]);
   const [error, setError] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState([]);
@@ -52,6 +53,10 @@ export default function Watchlist() {
         });
         setHoldings(map);
       })
+      .catch(() => {});
+    api
+      .getMarketNews()
+      .then((data) => setMarketNews(data.news))
       .catch(() => {});
   }, []);
 
@@ -127,6 +132,26 @@ export default function Watchlist() {
     <div className="portfolio-page">
       <h1 className="page-title">AI Stock Radar</h1>
       <p className="cash">Urmărește acțiuni și primești context AI despre ele — nu recomandări de tranzacționare.</p>
+
+      {marketNews.length > 0 && (
+        <section className="hero-news">
+          {marketNews.map((n, i) => (
+            <a
+              key={i}
+              href={n.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hero-news-card"
+              style={n.imagine ? { backgroundImage: `url(${n.imagine})` } : undefined}
+            >
+              <div className="hero-news-body">
+                <span className="hero-news-source">{n.sursa} · Astăzi</span>
+                <h3 className="hero-news-headline">{n.headline}</h3>
+              </div>
+            </a>
+          ))}
+        </section>
+      )}
 
       <TickerTape />
 

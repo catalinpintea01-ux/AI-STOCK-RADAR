@@ -69,6 +69,47 @@ ${JSON.stringify(deTradus)}`;
   }
 }
 
+const MARKET_NEWS_CACHE_TTL_MS = 10 * 60 * 1000;
+let marketNewsCache = null; // { data, expiresAt }
+
+// Știri generale de piață (nu per companie) — folosite pe ecranul principal.
+async function getMarketNews() {
+  if (!isConfigured()) return [];
+
+  if (marketNewsCache && marketNewsCache.expiresAt > Date.now()) {
+    return marketNewsCache.data;
+  }
+
+  const url = `https://finnhub.io/api/v1/news?category=general&token=${process.env.FINNHUB_API_KEY}`;
+
+  try {
+    const res = await fetch(url);
+    if (!res.ok) return [];
+
+    const data = await res.json();
+    const news = (Array.isArray(data) ? data : [])
+      .filter((n) => n.headline && n.url)
+      .sort((a, b) => b.datetime - a.datetime)
+      .slice(0, 3)
+      .map((n) => ({
+        headline: n.headline,
+        rezumat: n.summary || "",
+        url: n.url,
+        sursa: n.source,
+        imagine: n.image || null,
+        data: new Date(n.datetime * 1000).toISOString(),
+      }));
+
+    const traduse = await translateNews(news);
+
+    marketNewsCache = { data: traduse, expiresAt: Date.now() + MARKET_NEWS_CACHE_TTL_MS };
+    return traduse;
+  } catch (err) {
+    console.error(`[news] fallback pentru piață generală: ${err.message}`);
+    return [];
+  }
+}
+
 // Finnhub oferă gratuit știri per companie (matching pe simbol e deja făcut de API).
 async function getCompanyNews(simbol) {
   if (!isConfigured()) return [];
@@ -108,4 +149,4 @@ async function getCompanyNews(simbol) {
   }
 }
 
-module.exports = { getCompanyNews };
+module.exports = { getCompanyNews, getMarketNews };

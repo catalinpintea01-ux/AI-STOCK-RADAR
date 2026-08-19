@@ -2,7 +2,7 @@ const express = require("express");
 const { getStock, getStockList, getTickerTape, searchStocks } = require("../services/marketData");
 const { getCompanyProfile, getInsiderTransactions } = require("../services/fundamentals");
 const { getOrComputeRadarScore, getScoreChange } = require("../services/radar");
-const { getCompanyNews } = require("../services/news");
+const { getCompanyNews, getMarketNews } = require("../services/news");
 
 const router = express.Router();
 
@@ -19,6 +19,11 @@ router.get("/", async (req, res) => {
 router.get("/ticker", async (req, res) => {
   const ticker = await getTickerTape();
   res.json({ ticker });
+});
+
+router.get("/market-news", async (req, res) => {
+  const news = await getMarketNews();
+  res.json({ news });
 });
 
 router.get("/:simbol", async (req, res) => {

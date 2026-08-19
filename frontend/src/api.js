@@ -31,6 +31,7 @@ export const api = {
   explainPortfolio: () => request("/portfolio/explain"),
   getStocks: () => request("/stocks"),
   getTicker: () => request("/stocks/ticker"),
+  getMarketNews: () => request("/stocks/market-news"),
   searchStocks: (query) => request(`/stocks/search?q=${encodeURIComponent(query)}`),
   getStockQuote: (simbol) => request(`/stocks/${encodeURIComponent(simbol)}`),
   buyStock: (simbol, cantitate) =>
