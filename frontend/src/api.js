@@ -55,6 +55,9 @@ export const api = {
   getFriends: () => request("/community/friends"),
   addFriend: (cod) => request("/community/friends", { method: "POST", body: JSON.stringify({ cod }) }),
   removeFriend: (friendId) => request(`/community/friends/${friendId}`, { method: "DELETE" }),
+  getBillingStatus: () => request("/billing/status"),
+  createCheckoutSession: () => request("/billing/checkout", { method: "POST" }),
+  openBillingPortal: () => request("/billing/portal", { method: "POST" }),
 };
 
 export { getToken };

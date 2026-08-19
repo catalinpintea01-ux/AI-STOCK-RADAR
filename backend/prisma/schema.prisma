@@ -80,11 +80,13 @@ model Badge {
 }
 
 model Subscription {
-  id               String  @id @default(uuid())
-  userId           String
-  plan             String  @default("free")
-  stripeCustomerId String?
-  status           String  @default("inactive")
+  id                   String    @id @default(uuid())
+  userId               String    @unique
+  plan                 String    @default("free")
+  stripeCustomerId     String?
+  stripeSubscriptionId String?
+  status               String    @default("inactive")
+  currentPeriodEnd     DateTime?
 
   user User @relation(fields: [userId], references: [id])
 }

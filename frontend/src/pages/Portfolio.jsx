@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { api } from "../api";
 import { PortfolioChart, buildValueHistory } from "../PortfolioChart.jsx";
 import StockLogo from "../components/StockLogo.jsx";
@@ -21,6 +21,8 @@ const BADGE_INFO = {
 };
 
 export default function Portfolio() {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const plataStatus = searchParams.get("plata");
   const [portfolio, setPortfolio] = useState(null);
   const [user, setUser] = useState(null);
   const [stocks, setStocks] = useState([]);
@@ -200,6 +202,23 @@ export default function Portfolio() {
     <div className="portfolio-page">
       <h1 className="page-title">Portofoliu virtual</h1>
       <p className="cash">Testează-ți strategia cu bani virtuali, înainte să riști bani reali.</p>
+
+      {plataStatus === "succes" && (
+        <div className="value-card" style={{ borderColor: "var(--green)" }}>
+          ✅ Plata a fost procesată — abonamentul Premium se activează în câteva secunde.
+          <button className="logout" style={{ marginLeft: "1rem" }} onClick={() => setSearchParams({})}>
+            Ascunde
+          </button>
+        </div>
+      )}
+      {plataStatus === "anulat" && (
+        <div className="value-card">
+          Plata a fost anulată — poți încerca din nou oricând din meniu.
+          <button className="logout" style={{ marginLeft: "1rem" }} onClick={() => setSearchParams({})}>
+            Ascunde
+          </button>
+        </div>
+      )}
 
       <header className="portfolio-header">
         <span className="streak">🔥 {user?.streakCurent ?? 0} zile streak</span>

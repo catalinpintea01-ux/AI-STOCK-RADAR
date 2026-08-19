@@ -4,8 +4,20 @@ const { requireAuth } = require("../middleware/auth");
 const { getStock } = require("../services/marketData");
 const { getScoreChange } = require("../services/radar");
 const { getMockStocks } = require("../mockData/stocks");
+const { isPremium, PREMIUM_WATCHLIST_LIMIT } = require("../services/stripe");
 
 const router = express.Router();
+
+async function checkWatchlistLimit(userId, adaugate) {
+  const subscription = await prisma.subscription.findUnique({ where: { userId } });
+  if (isPremium(subscription)) return null;
+
+  const curente = await prisma.watchlist.count({ where: { userId } });
+  if (curente + adaugate > PREMIUM_WATCHLIST_LIMIT) {
+    return `Planul gratuit permite maximum ${PREMIUM_WATCHLIST_LIMIT} acțiuni urmărite. Treci la Premium pentru nelimitat.`;
+  }
+  return null;
+}
 
 router.get("/", requireAuth, async (req, res) => {
   const items = await prisma.watchlist.findMany({
@@ -53,6 +65,17 @@ router.post("/", requireAuth, async (req, res) => {
     return res.status(404).json({ error: "Simbol inexistent" });
   }
 
+  const existent = await prisma.watchlist.findUnique({
+    where: { userId_simbol: { userId: req.userId, simbol: stock.simbol } },
+  });
+
+  if (!existent) {
+    const eroareLimita = await checkWatchlistLimit(req.userId, 1);
+    if (eroareLimita) {
+      return res.status(402).json({ error: eroareLimita, limitaAtinsa: true });
+    }
+  }
+
   await prisma.watchlist.upsert({
     where: { userId_simbol: { userId: req.userId, simbol: stock.simbol } },
     update: {},
@@ -67,6 +90,14 @@ router.post("/", requireAuth, async (req, res) => {
 // manuală, una câte una. Nu cere cotații live (doar simbolurile), deci e
 // o operație rapidă și ieftină, indiferent de rate-limit-ul Finnhub.
 router.post("/bulk-top50", requireAuth, async (req, res) => {
+  const subscription = await prisma.subscription.findUnique({ where: { userId: req.userId } });
+  if (!isPremium(subscription)) {
+    return res.status(402).json({
+      error: "Adăugarea automată a top 50 de acțiuni este disponibilă doar cu abonamentul Premium.",
+      limitaAtinsa: true,
+    });
+  }
+
   const simboluri = getMockStocks().map((s) => s.simbol);
 
   for (const simbol of simboluri) {
