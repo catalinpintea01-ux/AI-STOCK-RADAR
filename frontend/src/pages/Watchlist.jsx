@@ -20,16 +20,55 @@ function formatDelta(n) {
 const AUTO_REFRESH_MAX_ITEMS = 15; // peste acest prag, nu mai reîmprospătăm prețurile la 30s
 // (un watchlist de 50 de acțiuni ar cere prea des Finnhub și ar lovi rate-limit-ul gratuit).
 
+const MOMENT_LABEL = {
+  bmo: "înainte de deschidere",
+  amc: "după închidere",
+  dmh: "în timpul ședinței",
+};
+
+function formatZileRamase(dataIso) {
+  const azi = new Date();
+  azi.setHours(0, 0, 0, 0);
+  const data = new Date(dataIso);
+  const zile = Math.round((data - azi) / (24 * 60 * 60 * 1000));
+  if (zile === 0) return "azi";
+  if (zile === 1) return "mâine";
+  return `în ${zile} zile`;
+}
+
+const SORT_OPTIONS = [
+  { value: "implicit", label: "Implicit (adăugate recent)" },
+  { value: "scor", label: "Scor AI" },
+  { value: "variatie", label: "Variație % azi" },
+  { value: "alfabetic", label: "Alfabetic" },
+];
+
+function sortItems(items, sortBy) {
+  const copie = [...items];
+  if (sortBy === "scor") {
+    return copie.sort((a, b) => (b.radar?.scorCompozit ?? -1) - (a.radar?.scorCompozit ?? -1));
+  }
+  if (sortBy === "variatie") {
+    return copie.sort((a, b) => (b.variatieProcent ?? -Infinity) - (a.variatieProcent ?? -Infinity));
+  }
+  if (sortBy === "alfabetic") {
+    return copie.sort((a, b) => a.simbol.localeCompare(b.simbol));
+  }
+  return copie;
+}
+
 export default function Watchlist() {
   const [items, setItems] = useState(null);
   const [holdings, setHoldings] = useState({});
   const [marketNews, setMarketNews] = useState([]);
+  const [earnings, setEarnings] = useState([]);
   const [error, setError] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState([]);
   const [searchLoading, setSearchLoading] = useState(false);
   const [searchError, setSearchError] = useState("");
   const [bulkAdding, setBulkAdding] = useState(false);
+  const [sortBy, setSortBy] = useState("implicit");
   const itemCountRef = useRef(0);
 
   function load() {
@@ -57,6 +96,10 @@ export default function Watchlist() {
     api
       .getMarketNews()
       .then((data) => setMarketNews(data.news))
+      .catch(() => {});
+    api
+      .getEarningsCalendar()
+      .then((data) => setEarnings(data.earnings))
       .catch(() => {});
   }, []);
 
@@ -176,6 +219,29 @@ export default function Watchlist() {
         </section>
       )}
 
+      {earnings.length > 0 && (
+        <section className="holdings">
+          <h2>📅 Raportări apropiate</h2>
+          <ul className="stock-list">
+            {earnings.slice(0, 8).map((e) => (
+              <li key={`${e.simbol}-${e.data}`} className="stock-row">
+                <Link to={`/stock/${e.simbol}`} className="watch-row-link">
+                  <StockLogo simbol={e.simbol} />
+                  <div>
+                    <strong>{e.simbol}</strong>
+                    <div className="muted">
+                      Raportează {formatZileRamase(e.data)}
+                      {e.moment && MOMENT_LABEL[e.moment] ? ` · ${MOMENT_LABEL[e.moment]}` : ""}
+                    </div>
+                  </div>
+                  <span className="row-chevron">›</span>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
+
       <section className="search-section">
         <h2>Adaugă o acțiune</h2>
         <form className="search-form" onSubmit={handleSearch}>
@@ -214,7 +280,21 @@ export default function Watchlist() {
       </section>
 
       <section className="holdings">
-        <h2>Acțiunile tale urmărite</h2>
+        <div className="watchlist-header-row">
+          <h2>Acțiunile tale urmărite</h2>
+          {items.length > 1 && (
+            <label className="sort-control">
+              Sortează după{" "}
+              <select value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
+                {SORT_OPTIONS.map((opt) => (
+                  <option key={opt.value} value={opt.value}>
+                    {opt.label}
+                  </option>
+                ))}
+              </select>
+            </label>
+          )}
+        </div>
         {items.length > 0 && (
           <p className="row-hint">👉 Atinge o acțiune pentru scor AI, știri, indicatori financiari și tranzacții insideri.</p>
         )}
@@ -222,7 +302,7 @@ export default function Watchlist() {
           <p className="empty">Nu urmărești încă nicio acțiune. Caută una mai sus ca să începi.</p>
         ) : (
           <ul className="stock-list">
-            {items.map((item) => (
+            {sortItems(items, sortBy).map((item) => (
               <li key={item.simbol} className="stock-row">
                 <Link to={`/stock/${item.simbol}`} className="watch-row-link">
                   <StockLogo simbol={item.simbol} />

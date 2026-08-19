@@ -5,6 +5,7 @@ const { getStock } = require("../services/marketData");
 const { getScoreChange } = require("../services/radar");
 const { getMockStocks } = require("../mockData/stocks");
 const { isPremium, PREMIUM_WATCHLIST_LIMIT } = require("../services/stripe");
+const { getEarningsCalendar } = require("../services/fundamentals");
 
 const router = express.Router();
 
@@ -52,6 +53,30 @@ router.get("/", requireAuth, async (req, res) => {
       variatieProcent: quoteMap.get(i.simbol)?.variatieProcent ?? null,
     })),
   });
+});
+
+// Doar raportările viitoare pentru simbolurile urmărite de acest utilizator —
+// calendarul complet Finnhub e partajat/cache-uit global în fundamentals.js,
+// aici doar îl filtrăm, nu facem alt apel extern.
+router.get("/earnings", requireAuth, async (req, res) => {
+  const items = await prisma.watchlist.findMany({
+    where: { userId: req.userId },
+    select: { simbol: true },
+  });
+  const simboluri = new Set(items.map((i) => i.simbol));
+
+  const calendar = await getEarningsCalendar();
+  const urmatoarele = calendar
+    .filter((e) => simboluri.has(e.symbol))
+    .sort((a, b) => (a.date < b.date ? -1 : a.date > b.date ? 1 : 0))
+    .map((e) => ({
+      simbol: e.symbol,
+      data: e.date,
+      moment: e.hour || null,
+      epsEstimat: typeof e.epsEstimate === "number" ? e.epsEstimate : null,
+    }));
+
+  res.json({ earnings: urmatoarele });
 });
 
 router.post("/", requireAuth, async (req, res) => {

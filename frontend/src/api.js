@@ -43,6 +43,7 @@ export const api = {
   addToWatchlist: (simbol) =>
     request("/watchlist", { method: "POST", body: JSON.stringify({ simbol }) }),
   bulkAddTop50: () => request("/watchlist/bulk-top50", { method: "POST" }),
+  getEarningsCalendar: () => request("/watchlist/earnings"),
   removeFromWatchlist: (simbol) =>
     request(`/watchlist/${encodeURIComponent(simbol)}`, { method: "DELETE" }),
   getRadar: (simbol) => request(`/stocks/${encodeURIComponent(simbol)}/radar`),

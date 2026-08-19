@@ -3,11 +3,14 @@ const FINNHUB_BASE = "https://finnhub.io/api/v1";
 const PROFILE_TTL_MS = 24 * 60 * 60 * 1000; // profilul companiei se schimbă rar
 const DATA_TTL_MS = 60 * 60 * 1000; // 1 oră — suficient pentru date fundamentale
 
+const EARNINGS_CALENDAR_TTL_MS = 12 * 60 * 60 * 1000; // se schimbă rar în cursul unei zile
+
 const profileCache = new Map();
 const recommendationCache = new Map();
 const insiderCache = new Map();
 const earningsCache = new Map();
 const metricCache = new Map();
+let earningsCalendarCache = null; // { data, expiresAt } — un singur cache global, nu per simbol
 
 function isConfigured() {
   return Boolean(process.env.FINNHUB_API_KEY);
@@ -112,10 +115,41 @@ async function getMetrics(simbol) {
   }
 }
 
+function formatDate(d) {
+  return d.toISOString().slice(0, 10);
+}
+
+// Un singur apel Finnhub pentru TOATE companiile care raportează în
+// următoarele ~45 de zile (nu per simbol, ca restul funcțiilor de mai sus) —
+// filtrarea la watchlist-ul fiecărui utilizator se face în ruta care
+// consumă acest rezultat, ca acest apel/cache să fie partajat de toți.
+async function getEarningsCalendar() {
+  if (earningsCalendarCache && earningsCalendarCache.expiresAt > Date.now()) {
+    return earningsCalendarCache.data;
+  }
+  if (!isConfigured()) return [];
+
+  const from = new Date();
+  const to = new Date(from.getTime() + 45 * 24 * 60 * 60 * 1000);
+
+  try {
+    const data = await fetchJson(
+      `${FINNHUB_BASE}/calendar/earnings?from=${formatDate(from)}&to=${formatDate(to)}&token=${process.env.FINNHUB_API_KEY}`
+    );
+    const list = Array.isArray(data?.earningsCalendar) ? data.earningsCalendar : [];
+    earningsCalendarCache = { data: list, expiresAt: Date.now() + EARNINGS_CALENDAR_TTL_MS };
+    return list;
+  } catch (err) {
+    console.error(`[fundamentals] calendar earnings: ${err.message}`);
+    return [];
+  }
+}
+
 module.exports = {
   getCompanyProfile,
   getRecommendationTrends,
   getInsiderTransactions,
   getEarningsSurprises,
   getMetrics,
+  getEarningsCalendar,
 };

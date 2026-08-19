@@ -664,6 +664,31 @@ body {
   font-size: 0.9rem;
 }
 
+.watchlist-header-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.sort-control {
+  font-size: 0.8rem;
+  color: var(--muted);
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.sort-control select {
+  font-size: 0.8rem;
+  padding: 0.3rem 0.5rem;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--card-bg);
+  color: var(--text);
+}
+
 .cash {
   color: var(--muted);
   font-size: 0.8rem;
