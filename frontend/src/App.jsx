@@ -22,23 +22,25 @@ function PrivateLayout({ children }) {
   );
 }
 
+// Verificarea de token trebuie să stea ÎNTR-O componentă, nu inline în JSX-ul
+// lui App — App nu se re-randează la navigare (React refolosește elementul),
+// deci un ternar inline ar îngheța decizia logat/nelogat de la primul render
+// și login-ul ar părea că nu funcționează (te-ar întoarce pe Landing).
+function HomeRoute() {
+  if (!getToken()) return <Landing />;
+  return (
+    <PrivateLayout>
+      <Watchlist />
+    </PrivateLayout>
+  );
+}
+
 export default function App() {
   return (
     <Routes>
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
-      <Route
-        path="/"
-        element={
-          getToken() ? (
-            <PrivateLayout>
-              <Watchlist />
-            </PrivateLayout>
-          ) : (
-            <Landing />
-          )
-        }
-      />
+      <Route path="/" element={<HomeRoute />} />
       <Route
         path="/portofoliu"
         element={
