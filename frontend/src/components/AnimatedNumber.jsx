@@ -20,5 +20,6 @@ export default function AnimatedNumber({ value, duration = 800 }) {
     return () => cancelAnimationFrame(raf);
   }, [value, duration]);
 
-  return display;
+  // Format românesc, ca 10000 să apară "10.000" — pentru numerele mici nu schimbă nimic.
+  return display.toLocaleString("ro-RO");
 }
