@@ -101,7 +101,7 @@ body {
 }
 
 .navbar {
-  max-width: 480px;
+  max-width: 960px;
   margin: 0 auto;
   padding: 1rem 1.5rem;
   display: flex;
@@ -634,7 +634,7 @@ body {
 }
 
 .portfolio-page {
-  max-width: 480px;
+  max-width: 960px;
   margin: 0 auto;
   padding: 1.5rem;
 }
