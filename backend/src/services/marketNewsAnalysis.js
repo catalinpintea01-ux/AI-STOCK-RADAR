@@ -41,7 +41,7 @@ async function fetchStockImage(cuvantCheie) {
   }
 }
 
-const SELECTED_COUNT = 3;
+const SELECTED_COUNT = 7;
 
 function fallbackSelection(candidates) {
   // Fără AI, nu putem judeca relevanța pentru bursă — luăm primele N (deja
@@ -98,7 +98,7 @@ Răspunde STRICT cu un array JSON de exact ${SELECTED_COUNT} elemente, ordonate 
       },
       body: JSON.stringify({
         model: MODEL,
-        max_tokens: 1500,
+        max_tokens: 4000,
         messages: [{ role: "user", content: prompt }],
       }),
     });
@@ -114,12 +114,14 @@ Răspunde STRICT cu un array JSON de exact ${SELECTED_COUNT} elemente, ordonate 
     if (!jsonMatch) throw new Error("Răspunsul Claude nu conține un array JSON");
 
     const parsed = JSON.parse(jsonMatch[0]);
-    if (!Array.isArray(parsed) || parsed.length !== SELECTED_COUNT) {
-      throw new Error("Selecție incompletă sau cu lungime greșită");
+    if (!Array.isArray(parsed) || parsed.length === 0) {
+      throw new Error("Selecție goală sau invalidă");
     }
 
+    // Acceptăm și selecții parțiale (ex: 6 din 7) — mai bine câteva știri
+    // analizate decât fallback-ul complet netradus pentru un element lipsă.
     const rezultat = [];
-    for (const p of parsed) {
+    for (const p of parsed.slice(0, SELECTED_COUNT)) {
       const idx = Number(p.index) - 1;
       const candidat = candidates[idx];
       const valid =

@@ -130,6 +130,7 @@ export default function Watchlist() {
   const [items, setItems] = useState(null);
   const [holdings, setHoldings] = useState({});
   const [marketNews, setMarketNews] = useState([]);
+  const [showAllNews, setShowAllNews] = useState(false);
   const [earnings, setEarnings] = useState([]);
   const [earningsRecomandate, setEarningsRecomandate] = useState([]);
   const [error, setError] = useState("");
@@ -707,21 +708,28 @@ export default function Watchlist() {
             {marketNews.length === 0 ? (
               <p className="empty">Nicio știre relevantă momentan.</p>
             ) : (
-              <div className="hero-news">
-                {marketNews.map((n) => (
-                  <Link
-                    key={n.id}
-                    to={`/stiri/${n.id}`}
-                    className="hero-news-card"
-                    style={n.imagine ? { backgroundImage: `url(${n.imagine})` } : undefined}
-                  >
-                    <div className="hero-news-body">
-                      <span className="hero-news-source">{n.sursa} · Astăzi</span>
-                      <h3 className="hero-news-headline">{n.titluAI}</h3>
-                    </div>
-                  </Link>
-                ))}
-              </div>
+              <>
+                <div className="hero-news">
+                  {(showAllNews ? marketNews : marketNews.slice(0, 3)).map((n) => (
+                    <Link
+                      key={n.id}
+                      to={`/stiri/${n.id}`}
+                      className="hero-news-card"
+                      style={n.imagine ? { backgroundImage: `url(${n.imagine})` } : undefined}
+                    >
+                      <div className="hero-news-body">
+                        <span className="hero-news-source">{n.sursa} · Astăzi</span>
+                        <h3 className="hero-news-headline">{n.titluAI}</h3>
+                      </div>
+                    </Link>
+                  ))}
+                </div>
+                {marketNews.length > 3 && (
+                  <button className="show-more-button" onClick={() => setShowAllNews((v) => !v)}>
+                    {showAllNews ? "Restrânge ↑" : `Arată toate (${marketNews.length})`}
+                  </button>
+                )}
+              </>
             )}
           </section>
 
