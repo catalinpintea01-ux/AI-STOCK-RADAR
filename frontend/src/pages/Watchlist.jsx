@@ -538,20 +538,23 @@ export default function Watchlist() {
       </section>
 
       {marketNews.length > 0 && (
-        <section className="hero-news">
-          {marketNews.map((n) => (
-            <Link
-              key={n.id}
-              to={`/stiri/${n.id}`}
-              className="hero-news-card"
-              style={n.imagine ? { backgroundImage: `url(${n.imagine})` } : undefined}
-            >
-              <div className="hero-news-body">
-                <span className="hero-news-source">{n.sursa} · Astăzi</span>
-                <h3 className="hero-news-headline">{n.titluAI}</h3>
-              </div>
-            </Link>
-          ))}
+        <section className="hero-news-section">
+          <h2>📰 Cele mai relevante știri</h2>
+          <div className="hero-news">
+            {marketNews.map((n) => (
+              <Link
+                key={n.id}
+                to={`/stiri/${n.id}`}
+                className="hero-news-card"
+                style={n.imagine ? { backgroundImage: `url(${n.imagine})` } : undefined}
+              >
+                <div className="hero-news-body">
+                  <span className="hero-news-source">{n.sursa} · Astăzi</span>
+                  <h3 className="hero-news-headline">{n.titluAI}</h3>
+                </div>
+              </Link>
+            ))}
+          </div>
         </section>
       )}
 
