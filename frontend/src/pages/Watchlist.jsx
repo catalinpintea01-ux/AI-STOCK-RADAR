@@ -8,6 +8,7 @@ import ScoreRing from "../components/ScoreRing.jsx";
 import Sparkline from "../components/Sparkline.jsx";
 import AnimatedNumber from "../components/AnimatedNumber.jsx";
 import TypewriterText from "../components/TypewriterText.jsx";
+import ToolsPro from "../components/ToolsPro.jsx";
 
 const TAGLINE_PHRASES = [
   "scor AI pentru fiecare acțiune",
@@ -773,6 +774,8 @@ export default function Watchlist() {
           </section>
         </aside>
       </div>
+
+      <ToolsPro />
 
       <Disclaimer />
     </div>

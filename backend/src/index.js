@@ -9,6 +9,7 @@ const watchlistRoutes = require("./routes/watchlist");
 const alertsRoutes = require("./routes/alerts");
 const communityRoutes = require("./routes/community");
 const billingRoutes = require("./routes/billing");
+const toolsRoutes = require("./routes/tools");
 const webhookRoutes = require("./routes/webhooks");
 const scheduler = require("./services/scheduler");
 
@@ -31,6 +32,7 @@ app.use("/api/watchlist", watchlistRoutes);
 app.use("/api/alerts", alertsRoutes);
 app.use("/api/community", communityRoutes);
 app.use("/api/billing", billingRoutes);
+app.use("/api/tools", toolsRoutes);
 
 const port = process.env.PORT || 4000;
 app.listen(port, () => console.log(`Backend rulează pe portul ${port}`));

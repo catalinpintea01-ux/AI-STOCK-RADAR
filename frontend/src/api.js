@@ -61,6 +61,10 @@ export const api = {
   getFriends: () => request("/community/friends"),
   addFriend: (cod) => request("/community/friends", { method: "POST", body: JSON.stringify({ cod }) }),
   removeFriend: (friendId) => request(`/community/friends/${friendId}`, { method: "DELETE" }),
+  getToolTop: () => request("/tools/top"),
+  getToolScreener: (params) => request(`/tools/screener?${new URLSearchParams(params)}`),
+  getToolCompare: (a, b) =>
+    request(`/tools/compare?a=${encodeURIComponent(a)}&b=${encodeURIComponent(b)}`),
   getBillingStatus: () => request("/billing/status"),
   createCheckoutSession: () => request("/billing/checkout", { method: "POST" }),
   openBillingPortal: () => request("/billing/portal", { method: "POST" }),
