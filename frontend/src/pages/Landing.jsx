@@ -2,6 +2,18 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import AnimatedNumber from "../components/AnimatedNumber.jsx";
 import TypewriterText from "../components/TypewriterText.jsx";
+import StockLogo from "../components/StockLogo.jsx";
+import ScoreRing from "../components/ScoreRing.jsx";
+
+// Rânduri ilustrative pentru mockup-ul de produs din hero — construite din
+// componentele reale ale aplicației (logo + ring), cu valori demonstrative.
+const MOCKUP_ROWS = [
+  { simbol: "AAPL", verdict: "optimist", eticheta: "🔵 Optimist", scor: 67, pret: "$316.83", variatie: "+2.2%", pozitiv: true },
+  { simbol: "NVDA", verdict: "optimist", eticheta: "🔵 Optimist", scor: 63, pret: "$217.56", variatie: "-1.0%", pozitiv: false },
+  { simbol: "CVX", verdict: "optimist", eticheta: "🔵 Optimist", scor: 81, pret: "$205.76", variatie: "+1.5%", pozitiv: true },
+];
+
+const LOGO_WALL = ["AAPL", "MSFT", "NVDA", "TSLA", "AMZN", "GOOGL", "META", "NFLX", "JPM", "V", "KO", "DIS"];
 
 const HERO_PHRASES = [
   "scor AI pentru fiecare acțiune",
@@ -130,27 +142,81 @@ export default function Landing() {
         </div>
       </header>
 
-      <section className="landing-hero">
-        <span className="landing-badge">Platformă educațională de analiză bursieră</span>
-        <h1 className="landing-headline">
-          Radarul AI pentru <span className="landing-headline-accent">acțiunile tale</span>
-        </h1>
-        <p className="landing-typewriter">
-          <TypewriterText phrases={HERO_PHRASES} />
-        </p>
-        <p className="landing-sub">
-          Urmărește acțiuni, primești scoruri AI și context zilnic din piețe — și exersezi pe un portofoliu virtual.
-          Fără risc real, fără recomandări de tranzacționare.
-        </p>
-        <div className="landing-hero-actions">
-          <Link to="/register" className="landing-cta">
-            Începe gratuit →
-          </Link>
-          <Link to="/login" className="landing-cta-secondary">
-            Am deja cont
-          </Link>
+      <section className="landing-hero landing-hero-grid">
+        <div className="landing-hero-text">
+          <span className="landing-badge">Platformă educațională de analiză bursieră</span>
+          <h1 className="landing-headline">
+            Radarul AI pentru <span className="landing-headline-accent">acțiunile tale</span>
+          </h1>
+          <p className="landing-typewriter">
+            <TypewriterText phrases={HERO_PHRASES} />
+          </p>
+          <p className="landing-sub">
+            Urmărește acțiuni, primești scoruri AI și context zilnic din piețe — și exersezi pe un portofoliu virtual.
+            Fără risc real, fără recomandări de tranzacționare.
+          </p>
+          <div className="landing-hero-actions">
+            <Link to="/register" className="landing-cta">
+              Începe gratuit →
+            </Link>
+            <Link to="/login" className="landing-cta-secondary">
+              Am deja cont
+            </Link>
+          </div>
+          <p className="landing-hero-note">Nu îți cerem cardul. Contul gratuit include 5 acțiuni urmărite.</p>
         </div>
-        <p className="landing-hero-note">Nu îți cerem cardul. Contul gratuit include 5 acțiuni urmărite.</p>
+
+        <div className="landing-mockup-wrap" aria-hidden="true">
+          <div className="landing-mockup">
+            <div className="landing-mockup-bar">
+              <span className="landing-mockup-dot" />
+              <span className="landing-mockup-dot" />
+              <span className="landing-mockup-dot" />
+              <span className="landing-mockup-title">AI Stock Radar</span>
+            </div>
+            <div className="landing-mockup-stats">
+              <div>
+                <strong className="optimist-text">27</strong>
+                <span>optimiste</span>
+              </div>
+              <div>
+                <strong>11</strong>
+                <span>neutre</span>
+              </div>
+              <div>
+                <strong className="rezervat-text">1</strong>
+                <span>rezervate</span>
+              </div>
+            </div>
+            {MOCKUP_ROWS.map((r) => (
+              <div key={r.simbol} className="landing-mockup-row">
+                <StockLogo simbol={r.simbol} size={26} />
+                <div className="landing-mockup-row-info">
+                  <strong>{r.simbol}</strong>
+                  <span>{r.eticheta}</span>
+                </div>
+                <ScoreRing score={r.scor} verdict={r.verdict} />
+                <div className="landing-mockup-row-price">
+                  <strong>{r.pret}</strong>
+                  <span className={r.pozitiv ? "gain-positive" : "gain-negative"}>{r.variatie}</span>
+                </div>
+              </div>
+            ))}
+          </div>
+          <p className="landing-mockup-caption">Interfața reală a aplicației · scoruri ilustrative</p>
+        </div>
+      </section>
+
+      <section className="landing-logo-wall">
+        <p className="landing-logo-wall-title">Urmărește companii pe care le cunoști deja</p>
+        <div className="landing-logo-wall-grid">
+          {LOGO_WALL.map((s) => (
+            <span key={s} className="landing-logo-chip">
+              <StockLogo simbol={s} size={22} />
+              {s}
+            </span>
+          ))}
+        </div>
       </section>
 
       <section className="landing-stats">
