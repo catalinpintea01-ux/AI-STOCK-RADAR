@@ -1606,17 +1606,33 @@ body {
 }
 
 @media (max-width: 560px) {
+  /* Rândul se rupe pe două linii: link-ul cu date pe prima, butoanele
+     ("Vezi analiza"/"Analizează" + "Scoate") pe a doua — pe o singură
+     linie nu încap și butoanele s-ar picta peste scor și preț. */
   .stock-row {
     padding: 0.65rem 0.85rem;
     gap: 0.5rem;
+    flex-wrap: wrap;
   }
 
   .watch-row-link {
     gap: 0.5rem;
+    flex: 1 1 100%;
+  }
+
+  .watch-row-link > div:first-of-type {
+    min-width: 0;
+    flex: 1;
   }
 
   .stock-right {
     min-width: 56px;
+  }
+
+  .stock-row .view-analysis-button,
+  .stock-row .analyze-button {
+    flex: 1 1 auto;
+    text-align: center;
   }
 }
 
