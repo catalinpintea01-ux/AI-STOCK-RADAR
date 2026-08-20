@@ -129,6 +129,7 @@ export default function Watchlist() {
   const [holdings, setHoldings] = useState({});
   const [marketNews, setMarketNews] = useState([]);
   const [earnings, setEarnings] = useState([]);
+  const [earningsRecomandate, setEarningsRecomandate] = useState([]);
   const [error, setError] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState([]);
@@ -211,7 +212,10 @@ export default function Watchlist() {
       .catch(() => {});
     api
       .getEarningsCalendar()
-      .then((data) => setEarnings(data.earnings))
+      .then((data) => {
+        setEarnings(data.earnings);
+        setEarningsRecomandate(data.recomandate || []);
+      })
       .catch(() => {});
     api
       .getDailyPicks()
@@ -418,7 +422,11 @@ export default function Watchlist() {
           )}
           <span className="row-chevron">›</span>
         </Link>
-        {!item.radar && (
+        {item.radar ? (
+          <Link to={`/stock/${item.simbol}`} className="view-analysis-button">
+            Vezi analiza →
+          </Link>
+        ) : (
           <button className="analyze-button" onClick={() => analyzeOne(item.simbol)} disabled={analyzing.has(item.simbol)}>
             {analyzing.has(item.simbol) ? "Analizez..." : "⚡ Analizează"}
           </button>
@@ -750,7 +758,42 @@ export default function Watchlist() {
                 <h2>📅 Raportări apropiate</h2>
               </div>
             </div>
-            {earnings.length === 0 ? (
+            {earnings.length === 0 && earningsRecomandate.length > 0 ? (
+              <>
+                <p className="tab-subtitle">
+                  Nicio raportare apropiată în lista ta — dar acestea raportează curând:
+                </p>
+                <ul className="stock-list">
+                  {earningsRecomandate.map((e) => (
+                    <li key={`${e.simbol}-${e.data}`} className="stock-row">
+                      <div className="stock-row-left">
+                        <StockLogo simbol={e.simbol} />
+                        <div>
+                          <strong>{e.simbol}</strong>
+                          <div className="muted">
+                            Raportează {formatZileRamase(e.data)}
+                            {e.moment && MOMENT_LABEL[e.moment] ? ` · ${MOMENT_LABEL[e.moment]}` : ""}
+                          </div>
+                        </div>
+                      </div>
+                      <button
+                        className="add-watchlist-button"
+                        onClick={async () => {
+                          await handleAdd(e.simbol);
+                          // Acțiunea abia adăugată are raportare apropiată — recitim
+                          // calendarul ca să treacă din "recomandate" în lista reală.
+                          const data = await api.getEarningsCalendar();
+                          setEarnings(data.earnings);
+                          setEarningsRecomandate(data.recomandate || []);
+                        }}
+                      >
+                        +
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              </>
+            ) : earnings.length === 0 ? (
               <p className="empty">Nicio raportare apropiată printre acțiunile urmărite.</p>
             ) : (
               <ul className="stock-list">

@@ -2407,3 +2407,22 @@ button.stat-tile:hover {
   font-size: 0.9rem;
   padding: 0.7rem 1.4rem;
 }
+
+/* Buton explicit "Vezi analiza" pe rândurile deja analizate — click-ul pe
+   rând rămâne funcțional, dar acțiunea principală devine vizibilă. */
+.view-analysis-button {
+  background: #eaf2ff;
+  color: var(--blue);
+  border: 1px solid #bfdbfe;
+  border-radius: 8px;
+  padding: 0.4rem 0.7rem;
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-decoration: none;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.view-analysis-button:hover {
+  background: #dbeafe;
+}

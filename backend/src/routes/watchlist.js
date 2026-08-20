@@ -84,17 +84,30 @@ router.get("/earnings", requireAuth, async (req, res) => {
   const simboluri = new Set(items.map((i) => i.simbol));
 
   const calendar = await getEarningsCalendar();
-  const urmatoarele = calendar
-    .filter((e) => simboluri.has(e.symbol))
-    .sort((a, b) => (a.date < b.date ? -1 : a.date > b.date ? 1 : 0))
-    .map((e) => ({
-      simbol: e.symbol,
-      data: e.date,
-      moment: e.hour || null,
-      epsEstimat: typeof e.epsEstimate === "number" ? e.epsEstimate : null,
-    }));
+  const laForma = (e) => ({
+    simbol: e.symbol,
+    data: e.date,
+    moment: e.hour || null,
+    epsEstimat: typeof e.epsEstimate === "number" ? e.epsEstimate : null,
+  });
+  const dupaData = (a, b) => (a.date < b.date ? -1 : a.date > b.date ? 1 : 0);
 
-  res.json({ earnings: urmatoarele });
+  const urmatoarele = calendar.filter((e) => simboluri.has(e.symbol)).sort(dupaData).map(laForma);
+
+  // Când lista userului nu are nicio raportare apropiată (sau e goală),
+  // propunem raportările iminente din universul curat — un motiv concret
+  // să adauge ceva în watchlist, în loc de un panou pur și simplu gol.
+  let recomandate = [];
+  if (urmatoarele.length === 0) {
+    const univers = new Set(getMockStocks().map((s) => s.simbol));
+    recomandate = calendar
+      .filter((e) => univers.has(e.symbol) && !simboluri.has(e.symbol))
+      .sort(dupaData)
+      .slice(0, 5)
+      .map(laForma);
+  }
+
+  res.json({ earnings: urmatoarele, recomandate });
 });
 
 // 10 acțiuni "merită urmărite azi", calculate o singură dată global (cache
