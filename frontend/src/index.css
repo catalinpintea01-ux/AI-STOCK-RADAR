@@ -2715,9 +2715,26 @@ button.stat-tile:hover {
   gap: 1rem;
 }
 
+/* Pe mobil radarul rămâne vizibil, dar mai mic și centrat deasupra
+   titlului (width/height inline din RadarViz cer !important aici). */
 @media (max-width: 560px) {
-  .dash-header-left .radar-viz {
+  .dash-hero .dash-header-left {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  .dash-hero .dash-header-left .radar-viz {
+    width: 150px !important;
+    height: 150px !important;
+  }
+  .dash-hero .radar-viz-blip-label {
     display: none;
+  }
+  .dash-hero .page-title-row {
+    justify-content: center;
+  }
+  .dash-hero .dash-stats {
+    justify-content: center;
   }
 }
 
