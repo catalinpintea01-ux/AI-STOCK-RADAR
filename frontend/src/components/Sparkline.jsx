@@ -21,7 +21,16 @@ export default function Sparkline({ puncte }) {
 
   return (
     <svg className="sparkline" width={WIDTH} height={HEIGHT} viewBox={`0 0 ${WIDTH} ${HEIGHT}`}>
-      <polyline points={coords.join(" ")} fill="none" stroke={culoare} strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" />
+      <polyline
+        className="sparkline-line"
+        points={coords.join(" ")}
+        pathLength="1"
+        fill="none"
+        stroke={culoare}
+        strokeWidth="1.75"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
     </svg>
   );
 }

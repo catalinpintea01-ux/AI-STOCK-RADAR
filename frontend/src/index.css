@@ -255,11 +255,11 @@ body {
   background-size: cover;
   background-position: center;
   box-shadow: var(--shadow-card);
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  transition: transform 0.2s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.2s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .hero-news-card:hover {
-  transform: translateY(-2px);
+  transform: translateY(-3px) scale(1.01);
   box-shadow: var(--shadow-card-hover);
 }
 
@@ -912,6 +912,8 @@ body {
 }
 
 .analyze-all-button {
+  position: relative;
+  overflow: hidden;
   background: var(--gradient-brand);
   color: white;
   border: none;
@@ -933,6 +935,19 @@ body {
   background: #eef1f2;
   color: #9ca3af;
   cursor: default;
+}
+
+.analyze-all-progress {
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 255, 255, 0.3);
+  transition: width 0.3s ease;
+  z-index: 0;
+}
+
+.analyze-all-label {
+  position: relative;
+  z-index: 1;
 }
 
 .analyze-button {
@@ -997,13 +1012,29 @@ body {
   border-radius: 14px;
   padding: 0.8rem 1.1rem;
   box-shadow: var(--shadow-card);
-  transition: box-shadow 0.15s ease, transform 0.15s ease;
+  transition: box-shadow 0.2s cubic-bezier(0.22, 1, 0.36, 1), transform 0.2s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .holding-row:hover,
 .stock-row:hover {
   box-shadow: var(--shadow-card-hover);
-  transform: translateY(-1px);
+  transform: translateY(-2px) scale(1.008);
+}
+
+.stock-row.just-analyzed {
+  animation: row-pulse 2s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@keyframes row-pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(37, 99, 235, 0.35);
+  }
+  50% {
+    box-shadow: 0 0 0 8px rgba(37, 99, 235, 0);
+  }
+  100% {
+    box-shadow: var(--shadow-card);
+  }
 }
 
 .muted {
@@ -1280,4 +1311,89 @@ body {
   padding: 0 1.1rem 1.1rem;
   border-top: 1px solid var(--border);
   padding-top: 0.9rem;
+}
+
+/* --- Elemente vizuale animate: ring de scor, sparkline, skeleton, typewriter --- */
+
+.score-ring-fill {
+  transition: stroke-dashoffset 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.sparkline-line {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: sparkline-draw 1s ease-out forwards;
+}
+
+@keyframes sparkline-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+.typewriter-line {
+  color: var(--blue);
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin: 0.15rem 0 0;
+  min-height: 1.2em;
+}
+
+.typewriter-cursor {
+  display: inline-block;
+  margin-left: 1px;
+  animation: typewriter-blink 0.9s step-end infinite;
+}
+
+@keyframes typewriter-blink {
+  0%,
+  49% {
+    opacity: 1;
+  }
+  50%,
+  100% {
+    opacity: 0;
+  }
+}
+
+.skeleton {
+  background: linear-gradient(90deg, #e7eef0 25%, #f2f6f7 37%, #e7eef0 63%);
+  background-size: 400% 100%;
+  animation: skeleton-shimmer 1.4s ease infinite;
+  border-radius: 12px;
+}
+
+@keyframes skeleton-shimmer {
+  0% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.skeleton-ticker {
+  height: 44px;
+  margin-bottom: 1.25rem;
+}
+
+.skeleton-title {
+  height: 30px;
+  width: 220px;
+  margin-bottom: 1rem;
+}
+
+.skeleton-card {
+  height: 140px;
+  margin-bottom: 1.25rem;
+}
+
+.skeleton-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.skeleton-row-shape {
+  height: 64px;
 }

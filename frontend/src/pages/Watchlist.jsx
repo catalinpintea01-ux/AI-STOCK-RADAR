@@ -6,6 +6,15 @@ import TickerTape from "../components/TickerTape.jsx";
 import StockLogo from "../components/StockLogo.jsx";
 import ScoreRing from "../components/ScoreRing.jsx";
 import Sparkline from "../components/Sparkline.jsx";
+import AnimatedNumber from "../components/AnimatedNumber.jsx";
+import TypewriterText from "../components/TypewriterText.jsx";
+
+const TAGLINE_PHRASES = [
+  "scor AI pentru fiecare acțiune",
+  "context zilnic din piețe",
+  "earnings, risc, momentum",
+  "watchlist care se analizează singur",
+];
 
 const VERDICT_CHIP = {
   optimist: "🔵 Optimist",
@@ -91,7 +100,27 @@ export default function Watchlist() {
   const [interese, setInterese] = useState([]);
   const [onboarding, setOnboarding] = useState(false);
   const [onboardError, setOnboardError] = useState("");
+  const [justAnalyzed, setJustAnalyzed] = useState(new Set());
   const itemCountRef = useRef(0);
+
+  // Marchează un rând ca "tocmai analizat" pentru un puls vizual scurt —
+  // folosit atât la analiza declanșată de user, cât și când poll-ul de 30s
+  // prinde un rezultat nou venit din scheduler-ul de fundal.
+  function flashJustAnalyzed(simboluri) {
+    if (simboluri.length === 0) return;
+    setJustAnalyzed((prev) => {
+      const next = new Set(prev);
+      simboluri.forEach((s) => next.add(s));
+      return next;
+    });
+    setTimeout(() => {
+      setJustAnalyzed((prev) => {
+        const next = new Set(prev);
+        simboluri.forEach((s) => next.delete(s));
+        return next;
+      });
+    }, 2000);
+  }
 
   function load() {
     return api
@@ -138,7 +167,14 @@ export default function Watchlist() {
       api
         .getWatchlist()
         .then((data) => {
-          setItems(data.items);
+          setItems((prev) => {
+            const prevMap = new Map((prev || []).map((it) => [it.simbol, it]));
+            const noiAnalizate = data.items
+              .filter((it) => it.radar && !prevMap.get(it.simbol)?.radar)
+              .map((it) => it.simbol);
+            flashJustAnalyzed(noiAnalizate);
+            return data.items;
+          });
           itemCountRef.current = data.items.length;
         })
         .catch(() => {});
@@ -237,6 +273,7 @@ export default function Watchlist() {
       setItems((prev) =>
         prev.map((it) => (it.simbol === simbol ? { ...it, radar: data.radar, schimbare: data.schimbare } : it))
       );
+      flashJustAnalyzed([simbol]);
     } catch (err) {
       console.error(err);
     } finally {
@@ -259,7 +296,20 @@ export default function Watchlist() {
   }
 
   if (error) return <div className="page-message">Eroare: {error}</div>;
-  if (!items) return <div className="page-message">Se încarcă...</div>;
+  if (!items) {
+    return (
+      <div className="portfolio-page">
+        <div className="skeleton skeleton-ticker" />
+        <div className="skeleton skeleton-title" />
+        <div className="skeleton skeleton-card" />
+        <div className="skeleton-rows">
+          {Array.from({ length: 5 }).map((_, i) => (
+            <div key={i} className="skeleton skeleton-row-shape" />
+          ))}
+        </div>
+      </div>
+    );
+  }
 
   const briefItems = items
     .filter((i) => i.schimbare && i.schimbare.deltaCompozit !== 0)
@@ -277,6 +327,9 @@ export default function Watchlist() {
       <TickerTape />
 
       <h1 className="page-title">AI Stock Radar</h1>
+      <p className="typewriter-line">
+        <TypewriterText phrases={TAGLINE_PHRASES} />
+      </p>
       <p className="cash">Urmărește acțiuni și primești context AI despre ele — nu recomandări de tranzacționare.</p>
 
       {items.length > 0 && (
@@ -290,15 +343,21 @@ export default function Watchlist() {
             <>
               <div className="radar-snapshot-stats">
                 <div className="radar-snapshot-stat">
-                  <span className="radar-snapshot-number optimist">{optimisteCount}</span>
+                  <span className="radar-snapshot-number optimist">
+                    <AnimatedNumber value={optimisteCount} />
+                  </span>
                   <span className="radar-snapshot-label">optimiste</span>
                 </div>
                 <div className="radar-snapshot-stat">
-                  <span className="radar-snapshot-number rezervat">{rezervateCount}</span>
+                  <span className="radar-snapshot-number rezervat">
+                    <AnimatedNumber value={rezervateCount} />
+                  </span>
                   <span className="radar-snapshot-label">rezervate</span>
                 </div>
                 <div className="radar-snapshot-stat">
-                  <span className="radar-snapshot-number">{raporteazaCurandCount}</span>
+                  <span className="radar-snapshot-number">
+                    <AnimatedNumber value={raporteazaCurandCount} />
+                  </span>
                   <span className="radar-snapshot-label">raportează în 7 zile</span>
                 </div>
               </div>
@@ -380,9 +439,17 @@ export default function Watchlist() {
           <div className="watchlist-header-actions">
             {neanalizateCount > 0 && (
               <button className="analyze-all-button" onClick={handleAnalyzeAll} disabled={bulkAnalyzing}>
-                {bulkAnalyzing
-                  ? `Analizez ${bulkProgress.done}/${bulkProgress.total}...`
-                  : `⚡ Analizează tot (${neanalizateCount})`}
+                {bulkAnalyzing && (
+                  <span
+                    className="analyze-all-progress"
+                    style={{ width: `${(bulkProgress.done / bulkProgress.total) * 100}%` }}
+                  />
+                )}
+                <span className="analyze-all-label">
+                  {bulkAnalyzing
+                    ? `Analizez ${bulkProgress.done}/${bulkProgress.total}...`
+                    : `⚡ Analizează tot (${neanalizateCount})`}
+                </span>
               </button>
             )}
             {items.length > 1 && (
@@ -425,7 +492,7 @@ export default function Watchlist() {
         ) : (
           <ul className="stock-list">
             {sortItems(items, sortBy).map((item) => (
-              <li key={item.simbol} className="stock-row">
+              <li key={item.simbol} className={`stock-row ${justAnalyzed.has(item.simbol) ? "just-analyzed" : ""}`}>
                 <Link to={`/stock/${item.simbol}`} className="watch-row-link">
                   <StockLogo simbol={item.simbol} />
                   <div>
