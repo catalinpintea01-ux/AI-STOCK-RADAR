@@ -103,7 +103,10 @@ Răspunde STRICT cu un array JSON de exact ${SELECTED_COUNT} elemente, ordonate 
       }),
     });
 
-    if (!res.ok) throw new Error(`Claude API a răspuns cu status ${res.status}`);
+    if (!res.ok) {
+      const corpErorii = await res.text().catch(() => "");
+      throw new Error(`Claude API a răspuns cu status ${res.status}: ${corpErorii.slice(0, 300)}`);
+    }
 
     const data = await res.json();
     const raw = data.content?.[0]?.text?.trim() || "";
