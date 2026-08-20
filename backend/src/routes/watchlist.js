@@ -6,6 +6,7 @@ const { getScoreChange } = require("../services/radar");
 const { getMockStocks } = require("../mockData/stocks");
 const { isPremium, PREMIUM_WATCHLIST_LIMIT } = require("../services/stripe");
 const { getEarningsCalendar } = require("../services/fundamentals");
+const { getDailyPicks, getOnboardingPicks } = require("../services/discovery");
 
 const router = express.Router();
 
@@ -93,6 +94,45 @@ router.get("/earnings", requireAuth, async (req, res) => {
     }));
 
   res.json({ earnings: urmatoarele });
+});
+
+// 10 acțiuni "merită urmărite azi", calculate o singură dată global (cache
+// 30 min în discovery.js) și filtrate aici per utilizator — excludem ce
+// urmărește deja, ca secțiunea să rămână despre descoperire, nu duplicare.
+router.get("/daily-picks", requireAuth, async (req, res) => {
+  const picks = await getDailyPicks();
+
+  const existente = await prisma.watchlist.findMany({
+    where: { userId: req.userId },
+    select: { simbol: true },
+  });
+  const existenteSet = new Set(existente.map((i) => i.simbol));
+
+  res.json({ picks: picks.filter((p) => !existenteSet.has(p.simbol)) });
+});
+
+// Onboarding: userul alege interese, Claude selectează N acțiuni din
+// universul curat și le adaugă direct în watchlist (fără cotații live,
+// analiza AI pornește separat din frontend, câte una, ca la orice adăugare).
+router.post("/onboard", requireAuth, async (req, res) => {
+  const interese = Array.isArray(req.body.interese) ? req.body.interese : [];
+
+  const subscription = await prisma.subscription.findUnique({ where: { userId: req.userId } });
+  const count = isPremium(subscription) ? 10 : PREMIUM_WATCHLIST_LIMIT;
+
+  const picks = await getOnboardingPicks(interese, count);
+
+  const adaugate = [];
+  for (const p of picks) {
+    await prisma.watchlist.upsert({
+      where: { userId_simbol: { userId: req.userId, simbol: p.simbol } },
+      update: {},
+      create: { userId: req.userId, simbol: p.simbol },
+    });
+    adaugate.push(p);
+  }
+
+  res.status(201).json({ adaugate });
 });
 
 router.post("/", requireAuth, async (req, res) => {

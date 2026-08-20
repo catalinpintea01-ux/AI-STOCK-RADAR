@@ -44,6 +44,9 @@ export const api = {
     request("/watchlist", { method: "POST", body: JSON.stringify({ simbol }) }),
   bulkAddTop50: () => request("/watchlist/bulk-top50", { method: "POST" }),
   getEarningsCalendar: () => request("/watchlist/earnings"),
+  getDailyPicks: () => request("/watchlist/daily-picks"),
+  onboardWatchlist: (interese) =>
+    request("/watchlist/onboard", { method: "POST", body: JSON.stringify({ interese }) }),
   removeFromWatchlist: (simbol) =>
     request(`/watchlist/${encodeURIComponent(simbol)}`, { method: "DELETE" }),
   getRadar: (simbol) => request(`/stocks/${encodeURIComponent(simbol)}/radar`),

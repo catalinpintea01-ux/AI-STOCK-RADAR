@@ -42,6 +42,15 @@ function formatZileRamase(dataIso) {
   return `în ${zile} zile`;
 }
 
+const INTEREST_OPTIONS = [
+  { value: "tehnologie", label: "Tehnologie" },
+  { value: "energie", label: "Energie" },
+  { value: "financiar", label: "Financiar / Bănci" },
+  { value: "sanatate", label: "Sănătate" },
+  { value: "consum", label: "Consum / Retail" },
+  { value: "dividende", label: "Dividende stabile" },
+];
+
 const SORT_OPTIONS = [
   { value: "implicit", label: "Implicit (adăugate recent)" },
   { value: "scor", label: "Scor AI" },
@@ -78,6 +87,10 @@ export default function Watchlist() {
   const [analyzing, setAnalyzing] = useState(new Set());
   const [bulkAnalyzing, setBulkAnalyzing] = useState(false);
   const [bulkProgress, setBulkProgress] = useState({ done: 0, total: 0 });
+  const [dailyPicks, setDailyPicks] = useState([]);
+  const [interese, setInterese] = useState([]);
+  const [onboarding, setOnboarding] = useState(false);
+  const [onboardError, setOnboardError] = useState("");
   const itemCountRef = useRef(0);
 
   function load() {
@@ -109,6 +122,10 @@ export default function Watchlist() {
     api
       .getEarningsCalendar()
       .then((data) => setEarnings(data.earnings))
+      .catch(() => {});
+    api
+      .getDailyPicks()
+      .then((data) => setDailyPicks(data.picks))
       .catch(() => {});
   }, []);
 
@@ -165,6 +182,35 @@ export default function Watchlist() {
       analyzeOne(simbol); // pornește analiza imediat, în fundal — momentul de interes maxim al userului
     } catch (err) {
       setSearchError(err.message);
+    }
+  }
+
+  async function handleAddFromDaily(simbol) {
+    await handleAdd(simbol);
+    setDailyPicks((prev) => prev.filter((p) => p.simbol !== simbol));
+  }
+
+  function toggleInteres(value) {
+    setInterese((prev) => (prev.includes(value) ? prev.filter((v) => v !== value) : [...prev, value]));
+  }
+
+  // Construiește watchlist-ul de start: Claude alege N acțiuni pe baza
+  // intereselor, apoi analizăm fiecare secvențial (același pattern rate-limited
+  // ca "Analizează tot"), ca userul să vadă scoruri, nu doar simboluri goale.
+  async function handleOnboard() {
+    setOnboardError("");
+    setOnboarding(true);
+    try {
+      const data = await api.onboardWatchlist(interese);
+      await load();
+      for (const item of data.adaugate) {
+        await analyzeOne(item.simbol);
+        await new Promise((r) => setTimeout(r, 700));
+      }
+    } catch (err) {
+      setOnboardError(err.message);
+    } finally {
+      setOnboarding(false);
     }
   }
 
@@ -264,6 +310,33 @@ export default function Watchlist() {
         </section>
       )}
 
+      {dailyPicks.length > 0 && (
+        <section className="holdings">
+          <h2>🧭 Research zilnic — merită urmărite azi</h2>
+          <ul className="stock-list">
+            {dailyPicks.map((p) => (
+              <li key={p.simbol} className="stock-row">
+                <div className="stock-row-left">
+                  <StockLogo simbol={p.simbol} />
+                  <div>
+                    <strong>{p.simbol}</strong>
+                    <div className="muted">{p.motiv}</div>
+                  </div>
+                </div>
+                <div className="stock-right">
+                  <div>${p.pret.toFixed(2)}</div>
+                  <div className={p.variatieProcent >= 0 ? "gain-positive" : "gain-negative"}>
+                    {p.variatieProcent >= 0 ? "+" : ""}
+                    {p.variatieProcent.toFixed(1)}%
+                  </div>
+                </div>
+                <button onClick={() => handleAddFromDaily(p.simbol)}>+ Watchlist</button>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
+
       <section className="search-section">
         <h2>Adaugă o acțiune</h2>
         <form className="search-form" onSubmit={handleSearch}>
@@ -330,7 +403,25 @@ export default function Watchlist() {
           <p className="row-hint">👉 Atinge o acțiune pentru detalii complete, sau apasă Analizează pentru scor AI instant.</p>
         )}
         {items.length === 0 ? (
-          <p className="empty">Nu urmărești încă nicio acțiune. Caută una mai sus ca să începi.</p>
+          <div className="onboarding-box">
+            <p className="empty">Alege ce te interesează și îți construim un watchlist de start:</p>
+            <div className="onboarding-chips">
+              {INTEREST_OPTIONS.map((opt) => (
+                <button
+                  key={opt.value}
+                  type="button"
+                  className={`onboarding-chip ${interese.includes(opt.value) ? "active" : ""}`}
+                  onClick={() => toggleInteres(opt.value)}
+                >
+                  {opt.label}
+                </button>
+              ))}
+            </div>
+            {onboardError && <div className="error">{onboardError}</div>}
+            <button className="why-button" onClick={handleOnboard} disabled={interese.length === 0 || onboarding}>
+              {onboarding ? "Construiesc watchlist-ul..." : "⚡ Construiește-mi watchlist-ul"}
+            </button>
+          </div>
         ) : (
           <ul className="stock-list">
             {sortItems(items, sortBy).map((item) => (

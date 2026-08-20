@@ -875,6 +875,35 @@ body {
   color: var(--muted);
 }
 
+.onboarding-box {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+}
+
+.onboarding-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.onboarding-chip {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: 0.5rem 0.9rem;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.onboarding-chip.active {
+  background: var(--gradient-brand);
+  border-color: transparent;
+  color: white;
+}
+
 .watchlist-header-actions {
   display: flex;
   align-items: center;
