@@ -87,13 +87,6 @@ const FILTER_OPTIONS = [
   { value: "neanalizat", label: "Neanalizat" },
 ];
 
-const TABS = [
-  { value: "research", label: "🧭 Research zilnic" },
-  { value: "news", label: "📰 Știri" },
-  { value: "changes", label: "🔥 Ce s-a schimbat" },
-  { value: "earnings", label: "📅 Raportări" },
-];
-
 function sortItems(items, sortBy) {
   const copie = [...items];
   if (sortBy === "scor") {
@@ -155,7 +148,6 @@ export default function Watchlist() {
   const [justAnalyzed, setJustAnalyzed] = useState(new Set());
   const [lastLoadedAt, setLastLoadedAt] = useState(null);
   const [now, setNow] = useState(() => new Date());
-  const [activeTab, setActiveTab] = useState("research");
   const itemCountRef = useRef(0);
 
   // Ceas separat pentru eticheta "Actualizat acum X" — poll-ul de prețuri se
@@ -185,9 +177,8 @@ export default function Watchlist() {
     }, 2000);
   }
 
-  function goToTab(tab) {
-    setActiveTab(tab);
-    document.getElementById("secondary-tabs")?.scrollIntoView({ behavior: "smooth", block: "start" });
+  function scrollToEarnings() {
+    document.getElementById("earnings-panel")?.scrollIntoView({ behavior: "smooth", block: "start" });
   }
 
   function load() {
@@ -370,7 +361,7 @@ export default function Watchlist() {
   if (error) return <div className="page-message">Eroare: {error}</div>;
   if (!items) {
     return (
-      <div className="portfolio-page">
+      <div className="portfolio-page dash">
         <div className="skeleton skeleton-ticker" />
         <div className="skeleton skeleton-title" />
         <div className="skeleton skeleton-card" />
@@ -439,337 +430,349 @@ export default function Watchlist() {
   }
 
   return (
-    <div className="portfolio-page">
+    <div className="portfolio-page dash">
       <TickerTape />
 
-      <div className="page-title-row">
-        <h1 className="page-title">AI Stock Radar</h1>
-        <span className="typewriter-badge">
-          <TypewriterText phrases={TAGLINE_PHRASES} />
-        </span>
-      </div>
-      <p className="cash">Urmărește acțiuni și primești context AI despre ele — nu recomandări de tranzacționare.</p>
+      <header className="dash-header">
+        <div className="dash-header-left">
+          <div className="page-title-row">
+            <h1 className="page-title">AI Stock Radar</h1>
+            <span className="typewriter-badge">
+              <TypewriterText phrases={TAGLINE_PHRASES} />
+            </span>
+          </div>
+          <p className="cash">Urmărește acțiuni și primești context AI despre ele — nu recomandări de tranzacționare.</p>
+        </div>
 
-      {items.length > 0 && (
-        <section className="radar-snapshot">
-          <h2 className="radar-snapshot-title">📡 Radar Snapshot</h2>
-          {analizateCount === 0 ? (
-            <p className="radar-snapshot-empty">
-              Analiza AI pornește automat pentru cele {items.length} acțiuni urmărite — revino în câteva minute pentru primele scoruri.
-            </p>
-          ) : (
-            <>
-              <div className="radar-snapshot-stats">
-                <div className="radar-snapshot-stat">
-                  <span className="radar-snapshot-number optimist">
-                    <AnimatedNumber value={optimisteCount} />
-                  </span>
-                  <span className="radar-snapshot-label">optimiste</span>
-                </div>
-                <div className="radar-snapshot-stat">
-                  <span className="radar-snapshot-number rezervat">
-                    <AnimatedNumber value={rezervateCount} />
-                  </span>
-                  <span className="radar-snapshot-label">rezervate</span>
-                </div>
-                <button type="button" className="radar-snapshot-stat radar-snapshot-stat-link" onClick={() => goToTab("earnings")}>
-                  <span className="radar-snapshot-number">
-                    <AnimatedNumber value={raporteazaCurandCount} />
-                  </span>
-                  <span className="radar-snapshot-label">raportează în 7 zile →</span>
-                </button>
-              </div>
-              {neanalizateCount > 0 && <p className="radar-snapshot-pending">🔄 {neanalizateCount} încă în curs de analiză automată</p>}
-            </>
-          )}
-        </section>
+        {items.length > 0 && analizateCount > 0 && (
+          <div className="dash-stats">
+            <div className="stat-tile">
+              <span className="stat-value optimist">
+                <AnimatedNumber value={optimisteCount} />
+              </span>
+              <span className="stat-label">optimiste</span>
+            </div>
+            <div className="stat-tile">
+              <span className="stat-value neutru">
+                <AnimatedNumber value={neutruCount} />
+              </span>
+              <span className="stat-label">neutre</span>
+            </div>
+            <div className="stat-tile">
+              <span className="stat-value rezervat">
+                <AnimatedNumber value={rezervateCount} />
+              </span>
+              <span className="stat-label">rezervate</span>
+            </div>
+            <button type="button" className="stat-tile stat-tile-link" onClick={scrollToEarnings}>
+              <span className="stat-value">
+                <AnimatedNumber value={raporteazaCurandCount} />
+              </span>
+              <span className="stat-label">raportează în 7 zile →</span>
+            </button>
+          </div>
+        )}
+      </header>
+
+      {items.length > 0 && analizateCount === 0 && (
+        <p className="dash-pending">
+          Analiza AI pornește automat pentru cele {items.length} acțiuni urmărite — revino în câteva minute pentru primele scoruri.
+        </p>
+      )}
+      {neanalizateCount > 0 && analizateCount > 0 && (
+        <p className="dash-pending">🔄 {neanalizateCount} încă în curs de analiză automată</p>
       )}
 
-      <section className="search-section">
-        <h2>Adaugă o acțiune</h2>
-        <form className="search-form" onSubmit={handleSearch}>
-          <input
-            type="text"
-            placeholder="Nume companie sau ticker (ex: Palantir, PLTR)"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-          />
-          <button type="submit" disabled={searchLoading}>
-            {searchLoading ? "Caut..." : "Caută"}
-          </button>
-        </form>
-        {searchError && <div className="error">{searchError}</div>}
-
-        {searchResults.length > 0 && (
-          <ul className="stock-list">
-            {searchResults.map((r) => (
-              <li key={r.simbol} className="stock-row">
-                <div className="stock-row-left">
-                  <StockLogo simbol={r.simbol} />
-                  <div>
-                    <strong>{r.simbol}</strong>
-                    <div className="muted">{r.nume}</div>
-                  </div>
-                </div>
-                <button className="add-watchlist-button" onClick={() => handleAdd(r.simbol)}>
-                  + Watchlist
-                </button>
-              </li>
-            ))}
-          </ul>
-        )}
-
-        <div className="search-section-divider">
-          <span>sau</span>
-        </div>
-
-        <button className="why-button-secondary" onClick={handleBulkAdd} disabled={bulkAdding}>
-          {bulkAdding ? "Adaug..." : "⚡ Adaugă automat top 50 cele mai tranzacționate"}
-        </button>
-      </section>
-
-      <section className="holdings">
-        <div className="watchlist-header-row">
-          <div>
-            <h2>📋 Watchlist-ul tău</h2>
-            {lastLoadedAt && <p className="freshness-note">Actualizat {formatRelativeTime(lastLoadedAt, now)}</p>}
-          </div>
-          <div className="watchlist-header-actions">
-            {items.length > 0 && (
-              <button type="button" className="onboarding-toggle-button" onClick={() => setOnboardingOpen((v) => !v)}>
-                🎯 Analizează pe interese
-              </button>
-            )}
-            {neanalizateCount > 0 && (
-              <button className="analyze-all-button" onClick={handleAnalyzeAll} disabled={bulkAnalyzing}>
-                {bulkAnalyzing && (
-                  <span className="analyze-all-progress" style={{ width: `${(bulkProgress.done / bulkProgress.total) * 100}%` }} />
-                )}
-                <span className="analyze-all-label">
-                  {bulkAnalyzing ? `Analizez ${bulkProgress.done}/${bulkProgress.total}...` : `⚡ Analizează tot (${neanalizateCount})`}
-                </span>
-              </button>
-            )}
-            {items.length > 1 && (
-              <label className="sort-control">
-                Sortează după{" "}
-                <select value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
-                  {SORT_OPTIONS.map((opt) => (
-                    <option key={opt.value} value={opt.value}>
-                      {opt.label}
-                    </option>
-                  ))}
-                </select>
-              </label>
-            )}
-          </div>
-        </div>
-
-        {items.length > 0 && (
-          <p className="row-hint">👉 Atinge o acțiune pentru detalii complete, sau apasă Analizează pentru scor AI instant.</p>
-        )}
-
-        {(items.length === 0 || onboardingOpen) && (
-          <div className="onboarding-box">
-            <p className="empty">Alege ce te interesează și îți construim un watchlist {items.length === 0 ? "de start" : "nou"}:</p>
-            <div className="onboarding-chips">
-              {INTEREST_OPTIONS.map((opt) => (
-                <button
-                  key={opt.value}
-                  type="button"
-                  aria-pressed={interese.includes(opt.value)}
-                  className={`onboarding-chip ${interese.includes(opt.value) ? "active" : ""}`}
-                  onClick={() => toggleInteres(opt.value)}
-                >
-                  {opt.label}
-                </button>
-              ))}
+      <div className="dash-grid">
+        <main className="dash-main">
+          <section className="panel">
+            <div className="panel-head">
+              <div>
+                <p className="eyebrow">Caută &amp; adaugă</p>
+                <h2>Adaugă o acțiune</h2>
+              </div>
             </div>
-            {onboardError && <div className="error">{onboardError}</div>}
-            <div className="onboarding-actions">
-              <button className="why-button" onClick={handleOnboard} disabled={interese.length === 0 || onboarding}>
-                {onboarding ? "Construiesc watchlist-ul..." : "⚡ Construiește-mi watchlist-ul"}
+            <form className="search-form" onSubmit={handleSearch}>
+              <input
+                type="text"
+                placeholder="Nume companie sau ticker (ex: Palantir, PLTR)"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+              />
+              <button type="submit" disabled={searchLoading}>
+                {searchLoading ? "Caut..." : "Caută"}
               </button>
-              {items.length > 0 && (
-                <button className="logout" onClick={() => setOnboardingOpen(false)} disabled={onboarding}>
-                  Renunță
-                </button>
-              )}
-            </div>
-          </div>
-        )}
+            </form>
+            {searchError && <div className="error">{searchError}</div>}
 
-        {items.length === 0 ? null : (
-          <>
-            <div className="filter-chips">
-              {FILTER_OPTIONS.map((opt) => (
-                <button
-                  key={opt.value}
-                  type="button"
-                  aria-pressed={filterBy === opt.value}
-                  className={`filter-chip ${filterBy === opt.value ? "active" : ""}`}
-                  onClick={() => {
-                    setFilterBy(opt.value);
-                    setShowAllRows(false);
-                  }}
-                >
-                  {opt.label} ({countForFilter(items, opt.value)})
-                </button>
-              ))}
+            {searchResults.length > 0 && (
+              <ul className="stock-list">
+                {searchResults.map((r) => (
+                  <li key={r.simbol} className="stock-row">
+                    <div className="stock-row-left">
+                      <StockLogo simbol={r.simbol} />
+                      <div>
+                        <strong>{r.simbol}</strong>
+                        <div className="muted">{r.nume}</div>
+                      </div>
+                    </div>
+                    <button className="add-watchlist-button" onClick={() => handleAdd(r.simbol)}>
+                      + Watchlist
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            )}
+
+            <div className="search-section-divider">
+              <span>sau</span>
             </div>
 
-            {filteredItems.length === 0 ? (
-              <p className="empty">Nicio acțiune nu se potrivește acestui filtru.</p>
-            ) : grupatePeSector ? (
-              Object.entries(grupatePeSector).map(([sector, grup]) => (
-                <div key={sector} className="sector-group">
-                  <h3 className="sector-group-title">
-                    {sector} <span className="muted">({grup.length})</span>
-                  </h3>
-                  <ul className="stock-list">{grup.map(renderStockRow)}</ul>
-                </div>
-              ))
-            ) : (
-              <>
-                <ul className="stock-list">{vizibileItems.map(renderStockRow)}</ul>
-                {sortedItems.length > DEFAULT_VISIBLE_ROWS && !showAllRows && (
-                  <button className="show-more-button" onClick={() => setShowAllRows(true)}>
-                    Arată toate ({sortedItems.length})
+            <button className="why-button-secondary" onClick={handleBulkAdd} disabled={bulkAdding}>
+              {bulkAdding ? "Adaug..." : "⚡ Adaugă automat top 50 cele mai tranzacționate"}
+            </button>
+          </section>
+
+          <section className="panel">
+            <div className="panel-head">
+              <div>
+                <p className="eyebrow">Portofoliul de urmărire</p>
+                <h2>📋 Watchlist-ul tău</h2>
+                {lastLoadedAt && <p className="freshness-note">Actualizat {formatRelativeTime(lastLoadedAt, now)}</p>}
+              </div>
+              <div className="watchlist-header-actions">
+                {items.length > 0 && (
+                  <button type="button" className="onboarding-toggle-button" onClick={() => setOnboardingOpen((v) => !v)}>
+                    🎯 Analizează pe interese
                   </button>
+                )}
+                {neanalizateCount > 0 && (
+                  <button className="analyze-all-button" onClick={handleAnalyzeAll} disabled={bulkAnalyzing}>
+                    {bulkAnalyzing && (
+                      <span className="analyze-all-progress" style={{ width: `${(bulkProgress.done / bulkProgress.total) * 100}%` }} />
+                    )}
+                    <span className="analyze-all-label">
+                      {bulkAnalyzing ? `Analizez ${bulkProgress.done}/${bulkProgress.total}...` : `⚡ Analizează tot (${neanalizateCount})`}
+                    </span>
+                  </button>
+                )}
+                {items.length > 1 && (
+                  <label className="sort-control">
+                    Sortează după{" "}
+                    <select value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
+                      {SORT_OPTIONS.map((opt) => (
+                        <option key={opt.value} value={opt.value}>
+                          {opt.label}
+                        </option>
+                      ))}
+                    </select>
+                  </label>
+                )}
+              </div>
+            </div>
+
+            {(items.length === 0 || onboardingOpen) && (
+              <div className="onboarding-box">
+                <p className="empty">Alege ce te interesează și îți construim un watchlist {items.length === 0 ? "de start" : "nou"}:</p>
+                <div className="onboarding-chips">
+                  {INTEREST_OPTIONS.map((opt) => (
+                    <button
+                      key={opt.value}
+                      type="button"
+                      aria-pressed={interese.includes(opt.value)}
+                      className={`onboarding-chip ${interese.includes(opt.value) ? "active" : ""}`}
+                      onClick={() => toggleInteres(opt.value)}
+                    >
+                      {opt.label}
+                    </button>
+                  ))}
+                </div>
+                {onboardError && <div className="error">{onboardError}</div>}
+                <div className="onboarding-actions">
+                  <button className="why-button" onClick={handleOnboard} disabled={interese.length === 0 || onboarding}>
+                    {onboarding ? "Construiesc watchlist-ul..." : "⚡ Construiește-mi watchlist-ul"}
+                  </button>
+                  {items.length > 0 && (
+                    <button className="logout" onClick={() => setOnboardingOpen(false)} disabled={onboarding}>
+                      Renunță
+                    </button>
+                  )}
+                </div>
+              </div>
+            )}
+
+            {items.length === 0 ? null : (
+              <>
+                <div className="filter-chips">
+                  {FILTER_OPTIONS.map((opt) => (
+                    <button
+                      key={opt.value}
+                      type="button"
+                      aria-pressed={filterBy === opt.value}
+                      className={`filter-chip ${filterBy === opt.value ? "active" : ""}`}
+                      onClick={() => {
+                        setFilterBy(opt.value);
+                        setShowAllRows(false);
+                      }}
+                    >
+                      {opt.label} ({countForFilter(items, opt.value)})
+                    </button>
+                  ))}
+                </div>
+
+                {filteredItems.length === 0 ? (
+                  <p className="empty">Nicio acțiune nu se potrivește acestui filtru.</p>
+                ) : grupatePeSector ? (
+                  Object.entries(grupatePeSector).map(([sector, grup]) => (
+                    <div key={sector} className="sector-group">
+                      <h3 className="sector-group-title">
+                        {sector} <span className="muted">({grup.length})</span>
+                      </h3>
+                      <ul className="stock-list">{grup.map(renderStockRow)}</ul>
+                    </div>
+                  ))
+                ) : (
+                  <>
+                    <ul className="stock-list">{vizibileItems.map(renderStockRow)}</ul>
+                    {sortedItems.length > DEFAULT_VISIBLE_ROWS && !showAllRows && (
+                      <button className="show-more-button" onClick={() => setShowAllRows(true)}>
+                        Arată toate ({sortedItems.length})
+                      </button>
+                    )}
+                  </>
                 )}
               </>
             )}
-          </>
-        )}
-      </section>
+          </section>
+        </main>
 
-      <section id="secondary-tabs" className="secondary-tabs-section">
-        <div className="tab-bar">
-          {TABS.map((t) => (
-            <button
-              key={t.value}
-              type="button"
-              aria-pressed={activeTab === t.value}
-              className={`tab-button ${activeTab === t.value ? "active" : ""}`}
-              onClick={() => setActiveTab(t.value)}
-            >
-              {t.label}
-            </button>
-          ))}
-        </div>
-
-        <div className="tab-panel">
-          {activeTab === "research" && (
-            <div>
-              <p className="tab-subtitle">Recomandări AI din afara watchlist-ului tău, pe baza mișcărilor de azi.</p>
-              {dailyPicks.length === 0 ? (
-                <p className="empty">Nimic nou de recomandat azi — revino mai târziu.</p>
-              ) : (
-                <ul className="stock-list">
-                  {dailyPicks.map((p) => (
-                    <li key={p.simbol} className="stock-row">
-                      <div className="stock-row-left">
-                        <StockLogo simbol={p.simbol} />
-                        <div>
-                          <strong>{p.simbol}</strong>
-                          <div className="muted">{p.motiv}</div>
-                        </div>
-                      </div>
-                      <div className="stock-right">
-                        <div>${p.pret.toFixed(2)}</div>
-                        <div className={p.variatieProcent >= 0 ? "gain-positive" : "gain-negative"}>
-                          {p.variatieProcent >= 0 ? "+" : ""}
-                          {p.variatieProcent.toFixed(1)}%
-                        </div>
-                      </div>
-                      <button className="add-watchlist-button" onClick={() => handleAddFromDaily(p.simbol)}>
-                        + Watchlist
-                      </button>
-                    </li>
-                  ))}
-                </ul>
-              )}
+        <aside className="dash-side">
+          <section className="panel">
+            <div className="panel-head">
+              <div>
+                <p className="eyebrow">Descoperă</p>
+                <h2>🧭 Research zilnic</h2>
+              </div>
             </div>
-          )}
-
-          {activeTab === "news" && (
-            <div>
-              {marketNews.length === 0 ? (
-                <p className="empty">Nicio știre relevantă momentan.</p>
-              ) : (
-                <div className="hero-news">
-                  {marketNews.map((n) => (
-                    <Link
-                      key={n.id}
-                      to={`/stiri/${n.id}`}
-                      className="hero-news-card"
-                      style={n.imagine ? { backgroundImage: `url(${n.imagine})` } : undefined}
-                    >
-                      <div className="hero-news-body">
-                        <span className="hero-news-source">{n.sursa} · Astăzi</span>
-                        <h3 className="hero-news-headline">{n.titluAI}</h3>
+            <p className="tab-subtitle">Recomandări AI din afara watchlist-ului tău, pe baza mișcărilor de azi.</p>
+            {dailyPicks.length === 0 ? (
+              <p className="empty">Nimic nou de recomandat azi — revino mai târziu.</p>
+            ) : (
+              <ul className="stock-list">
+                {dailyPicks.slice(0, 4).map((p) => (
+                  <li key={p.simbol} className="stock-row">
+                    <div className="stock-row-left">
+                      <StockLogo simbol={p.simbol} />
+                      <div>
+                        <strong>{p.simbol}</strong>
+                        <div className="muted">{p.motiv}</div>
                       </div>
+                    </div>
+                    <div className="stock-right">
+                      <div className={p.variatieProcent >= 0 ? "gain-positive" : "gain-negative"}>
+                        {p.variatieProcent >= 0 ? "+" : ""}
+                        {p.variatieProcent.toFixed(1)}%
+                      </div>
+                    </div>
+                    <button className="add-watchlist-button" onClick={() => handleAddFromDaily(p.simbol)}>
+                      +
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </section>
+
+          <section className="panel">
+            <div className="panel-head">
+              <div>
+                <p className="eyebrow">Contextul zilei</p>
+                <h2>📰 Știri relevante</h2>
+              </div>
+            </div>
+            {marketNews.length === 0 ? (
+              <p className="empty">Nicio știre relevantă momentan.</p>
+            ) : (
+              <div className="hero-news">
+                {marketNews.map((n) => (
+                  <Link
+                    key={n.id}
+                    to={`/stiri/${n.id}`}
+                    className="hero-news-card"
+                    style={n.imagine ? { backgroundImage: `url(${n.imagine})` } : undefined}
+                  >
+                    <div className="hero-news-body">
+                      <span className="hero-news-source">{n.sursa} · Astăzi</span>
+                      <h3 className="hero-news-headline">{n.titluAI}</h3>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            )}
+          </section>
+
+          <section className="panel">
+            <div className="panel-head">
+              <div>
+                <p className="eyebrow">Scoruri în mișcare</p>
+                <h2>🔥 Ce s-a schimbat</h2>
+              </div>
+            </div>
+            <p className="tab-subtitle">Scorul AI (nu prețul) al acțiunilor tale, schimbat recent.</p>
+            {briefItems.length === 0 ? (
+              <p className="empty">Niciun scor AI nu s-a schimbat recent.</p>
+            ) : (
+              <ul className="stock-list">
+                {briefItems.map((item) => (
+                  <li key={item.simbol} className="stock-row">
+                    <Link to={`/stock/${item.simbol}`} className="watch-row-link">
+                      <StockLogo simbol={item.simbol} />
+                      <div>
+                        <strong>{item.simbol}</strong>
+                        <div className="muted">
+                          Scor AI: {item.schimbare.scorAnterior} → {item.radar.scorCompozit}
+                        </div>
+                      </div>
+                      {formatDelta(item.schimbare.deltaCompozit)}
+                      <span className="row-chevron">›</span>
                     </Link>
-                  ))}
-                </div>
-              )}
-            </div>
-          )}
+                  </li>
+                ))}
+              </ul>
+            )}
+          </section>
 
-          {activeTab === "changes" && (
-            <div>
-              <p className="tab-subtitle">Scorul AI (nu prețul) al acțiunilor tale, care s-a schimbat recent.</p>
-              {briefItems.length === 0 ? (
-                <p className="empty">Niciun scor AI nu s-a schimbat recent.</p>
-              ) : (
-                <ul className="stock-list">
-                  {briefItems.map((item) => (
-                    <li key={item.simbol} className="stock-row">
-                      <Link to={`/stock/${item.simbol}`} className="watch-row-link">
-                        <StockLogo simbol={item.simbol} />
-                        <div>
-                          <strong>{item.simbol}</strong>
-                          <div className="muted">
-                            Scor AI: {item.schimbare.scorAnterior} → {item.radar.scorCompozit}
-                          </div>
-                        </div>
-                        {formatDelta(item.schimbare.deltaCompozit)}
-                        <span className="row-chevron">›</span>
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              )}
+          <section className="panel" id="earnings-panel">
+            <div className="panel-head">
+              <div>
+                <p className="eyebrow">Calendar</p>
+                <h2>📅 Raportări apropiate</h2>
+              </div>
             </div>
-          )}
-
-          {activeTab === "earnings" && (
-            <div>
-              {earnings.length === 0 ? (
-                <p className="empty">Nicio raportare apropiată printre acțiunile urmărite.</p>
-              ) : (
-                <ul className="stock-list">
-                  {earnings.slice(0, 8).map((e) => (
-                    <li key={`${e.simbol}-${e.data}`} className="stock-row">
-                      <Link to={`/stock/${e.simbol}`} className="watch-row-link">
-                        <StockLogo simbol={e.simbol} />
-                        <div>
-                          <strong>{e.simbol}</strong>
-                          <div className="muted">
-                            Raportează {formatZileRamase(e.data)}
-                            {e.moment && MOMENT_LABEL[e.moment] ? ` · ${MOMENT_LABEL[e.moment]}` : ""}
-                          </div>
+            {earnings.length === 0 ? (
+              <p className="empty">Nicio raportare apropiată printre acțiunile urmărite.</p>
+            ) : (
+              <ul className="stock-list">
+                {earnings.slice(0, 5).map((e) => (
+                  <li key={`${e.simbol}-${e.data}`} className="stock-row">
+                    <Link to={`/stock/${e.simbol}`} className="watch-row-link">
+                      <StockLogo simbol={e.simbol} />
+                      <div>
+                        <strong>{e.simbol}</strong>
+                        <div className="muted">
+                          Raportează {formatZileRamase(e.data)}
+                          {e.moment && MOMENT_LABEL[e.moment] ? ` · ${MOMENT_LABEL[e.moment]}` : ""}
                         </div>
-                        <span className="row-chevron">›</span>
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              )}
-            </div>
-          )}
-        </div>
-      </section>
+                      </div>
+                      <span className="row-chevron">›</span>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </section>
+        </aside>
+      </div>
 
       <Disclaimer />
     </div>
