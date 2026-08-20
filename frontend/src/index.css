@@ -2840,3 +2840,75 @@ button.stat-tile:hover {
   background-size: cover;
   background-position: center;
 }
+
+/* --- Dashboard: header hero întunecat cu radarul mare --- */
+
+.dash-hero {
+  align-items: center;
+  background: linear-gradient(160deg, #0f172a 0%, #14304f 60%, #0f3b2c 100%);
+  border-radius: 22px;
+  padding: 1.5rem 1.75rem;
+  margin-bottom: 1.25rem;
+}
+
+.dash-hero .page-title {
+  color: white;
+}
+
+.dash-hero .cash {
+  color: rgba(226, 232, 240, 0.85);
+}
+
+.dash-hero .typewriter-badge {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.18);
+  color: #86efac;
+}
+
+.dash-hero .stat-tile {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.16);
+  box-shadow: none;
+}
+
+.dash-hero .stat-value {
+  color: white;
+}
+
+.dash-hero .stat-value.optimist {
+  color: #7dd3fc;
+}
+
+.dash-hero .stat-value.neutru {
+  color: #cbd5e1;
+}
+
+.dash-hero .stat-value.rezervat {
+  color: #fdba74;
+}
+
+.dash-hero .stat-label {
+  color: rgba(203, 213, 225, 0.8);
+}
+
+.dash-hero button.stat-tile:hover {
+  border-color: rgba(255, 255, 255, 0.4);
+}
+
+@media (max-width: 560px) {
+  .dash-hero {
+    padding: 1.25rem 1.1rem;
+  }
+}
+
+/* --- Dashboard: secțiunea de persona cards (partajată cu landing) --- */
+
+.dash-personas {
+  margin: 2rem 0 1.5rem;
+}
+
+.dash-personas-title {
+  font-size: 1.15rem;
+  font-weight: 800;
+  margin: 0 0 1rem;
+}

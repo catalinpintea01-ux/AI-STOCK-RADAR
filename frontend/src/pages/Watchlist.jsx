@@ -10,6 +10,7 @@ import AnimatedNumber from "../components/AnimatedNumber.jsx";
 import TypewriterText from "../components/TypewriterText.jsx";
 import ToolsPro from "../components/ToolsPro.jsx";
 import RadarViz from "../components/RadarViz.jsx";
+import PersonaCards from "../components/PersonaCards.jsx";
 
 const TAGLINE_PHRASES = [
   "scor AI pentru fiecare acțiune",
@@ -443,9 +444,9 @@ export default function Watchlist() {
     <div className="portfolio-page dash">
       <TickerTape />
 
-      <header className="dash-header">
+      <header className="dash-header dash-hero">
         <div className="dash-header-left">
-          <RadarViz size={72} showLabels={false} />
+          <RadarViz size={190} />
           <div>
             <div className="page-title-row">
               <h1 className="page-title">AI Stock Radar</h1>
@@ -823,6 +824,11 @@ export default function Watchlist() {
       </div>
 
       <ToolsPro />
+
+      <section className="dash-personas">
+        <h2 className="dash-personas-title">Gândit pentru oameni ca tine</h2>
+        <PersonaCards />
+      </section>
 
       <Disclaimer />
     </div>
