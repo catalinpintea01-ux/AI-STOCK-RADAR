@@ -53,8 +53,8 @@ function formatZileRamase(dataIso) {
   return `în ${zile} zile`;
 }
 
-function formatRelativeTime(date) {
-  const secunde = Math.round((Date.now() - date.getTime()) / 1000);
+function formatRelativeTime(date, now) {
+  const secunde = Math.round((now.getTime() - date.getTime()) / 1000);
   if (secunde < 45) return "chiar acum";
   const minute = Math.round(secunde / 60);
   if (minute < 60) return `acum ${minute} ${minute === 1 ? "minut" : "minute"}`;
@@ -154,8 +154,17 @@ export default function Watchlist() {
   const [onboardingOpen, setOnboardingOpen] = useState(false);
   const [justAnalyzed, setJustAnalyzed] = useState(new Set());
   const [lastLoadedAt, setLastLoadedAt] = useState(null);
+  const [now, setNow] = useState(() => new Date());
   const [activeTab, setActiveTab] = useState("research");
   const itemCountRef = useRef(0);
+
+  // Ceas separat pentru eticheta "Actualizat acum X" — poll-ul de prețuri se
+  // oprește la liste mari (> AUTO_REFRESH_MAX_ITEMS), dar eticheta trebuie să
+  // rămână onestă și atunci, nu înghețată pe "chiar acum".
+  useEffect(() => {
+    const id = setInterval(() => setNow(new Date()), 30000);
+    return () => clearInterval(id);
+  }, []);
 
   // Marchează un rând ca "tocmai analizat" pentru un puls vizual scurt —
   // folosit atât la analiza declanșată de user, cât și când poll-ul de 30s
@@ -523,7 +532,7 @@ export default function Watchlist() {
         <div className="watchlist-header-row">
           <div>
             <h2>📋 Watchlist-ul tău</h2>
-            {lastLoadedAt && <p className="freshness-note">Actualizat {formatRelativeTime(lastLoadedAt)}</p>}
+            {lastLoadedAt && <p className="freshness-note">Actualizat {formatRelativeTime(lastLoadedAt, now)}</p>}
           </div>
           <div className="watchlist-header-actions">
             {items.length > 0 && (
@@ -568,6 +577,7 @@ export default function Watchlist() {
                 <button
                   key={opt.value}
                   type="button"
+                  aria-pressed={interese.includes(opt.value)}
                   className={`onboarding-chip ${interese.includes(opt.value) ? "active" : ""}`}
                   onClick={() => toggleInteres(opt.value)}
                 >
@@ -596,6 +606,7 @@ export default function Watchlist() {
                 <button
                   key={opt.value}
                   type="button"
+                  aria-pressed={filterBy === opt.value}
                   className={`filter-chip ${filterBy === opt.value ? "active" : ""}`}
                   onClick={() => {
                     setFilterBy(opt.value);
@@ -638,6 +649,7 @@ export default function Watchlist() {
             <button
               key={t.value}
               type="button"
+              aria-pressed={activeTab === t.value}
               className={`tab-button ${activeTab === t.value ? "active" : ""}`}
               onClick={() => setActiveTab(t.value)}
             >

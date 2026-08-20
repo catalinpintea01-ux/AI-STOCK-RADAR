@@ -118,8 +118,23 @@ router.get("/daily-picks", requireAuth, async (req, res) => {
 router.post("/onboard", requireAuth, async (req, res) => {
   const interese = Array.isArray(req.body.interese) ? req.body.interese : [];
 
+  // Respectă aceeași limită free-tier ca POST /: pentru un cont gratuit cu
+  // acțiuni deja adăugate, onboarding-ul completează doar locurile rămase —
+  // altfel ar ocoli plafonul pe care adăugarea manuală îl impune corect.
   const subscription = await prisma.subscription.findUnique({ where: { userId: req.userId } });
-  const count = isPremium(subscription) ? 10 : PREMIUM_WATCHLIST_LIMIT;
+  let count;
+  if (isPremium(subscription)) {
+    count = 10;
+  } else {
+    const curente = await prisma.watchlist.count({ where: { userId: req.userId } });
+    count = PREMIUM_WATCHLIST_LIMIT - curente;
+    if (count <= 0) {
+      return res.status(402).json({
+        error: `Planul gratuit permite maximum ${PREMIUM_WATCHLIST_LIMIT} acțiuni urmărite. Treci la Premium pentru nelimitat.`,
+        limitaAtinsa: true,
+      });
+    }
+  }
 
   const picks = await getOnboardingPicks(interese, count);
 

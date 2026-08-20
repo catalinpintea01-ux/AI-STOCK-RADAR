@@ -38,12 +38,16 @@ async function callClaudeForArray(prompt, maxTokens) {
 // --- Research zilnic: 10 acțiuni "merită urmărite azi", din universul curat de 50 ---
 
 function fallbackDailyPicks(universe) {
+  // Motivul nu repetă procentul — acela e deja afișat pe rând, în dreapta.
   return [...universe]
     .sort((a, b) => Math.abs(b.variatieProcent) - Math.abs(a.variatieProcent))
     .slice(0, DAILY_PICKS_COUNT)
     .map((s) => ({
       simbol: s.simbol,
-      motiv: `Variație semnificativă azi: ${s.variatieProcent >= 0 ? "+" : ""}${s.variatieProcent.toFixed(1)}%`,
+      motiv:
+        s.variatieProcent >= 0
+          ? "Printre cele mai mari creșteri de preț de azi."
+          : "Printre cele mai mari scăderi de preț de azi.",
     }));
 }
 
