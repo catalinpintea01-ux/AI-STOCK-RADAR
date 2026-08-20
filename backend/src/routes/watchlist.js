@@ -3,7 +3,7 @@ const prisma = require("../db");
 const { requireAuth } = require("../middleware/auth");
 const { getStock } = require("../services/marketData");
 const { getScoreChange } = require("../services/radar");
-const { getMockStocks } = require("../mockData/stocks");
+const { getMockStocks, getMockStock } = require("../mockData/stocks");
 const { isPremium, PREMIUM_WATCHLIST_LIMIT } = require("../services/stripe");
 const { getEarningsCalendar } = require("../services/fundamentals");
 const { getDailyPicks, getOnboardingPicks } = require("../services/discovery");
@@ -68,6 +68,7 @@ router.get("/", requireAuth, async (req, res) => {
       pret: quoteMap.get(i.simbol)?.pret ?? null,
       variatieProcent: quoteMap.get(i.simbol)?.variatieProcent ?? null,
       istoricPret: istoricMap.get(i.simbol) || [],
+      sector: getMockStock(i.simbol)?.sector || "Altele",
     })),
   });
 });
