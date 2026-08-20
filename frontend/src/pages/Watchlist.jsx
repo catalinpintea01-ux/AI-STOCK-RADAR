@@ -228,6 +228,8 @@ export default function Watchlist() {
 
   return (
     <div className="portfolio-page">
+      <TickerTape />
+
       <h1 className="page-title">AI Stock Radar</h1>
       <p className="cash">Urmărește acțiuni și primești context AI despre ele — nu recomandări de tranzacționare.</p>
 
@@ -394,8 +396,6 @@ export default function Watchlist() {
           ))}
         </section>
       )}
-
-      <TickerTape />
 
       {briefItems.length > 0 && (
         <section className="holdings">
