@@ -2625,3 +2625,218 @@ button.stat-tile:hover {
 .landing-logo-chip .stock-logo {
   border-radius: 50%;
 }
+
+/* --- Radar animat (vizualul de brand) --- */
+
+.radar-viz {
+  position: relative;
+  border-radius: 50%;
+  background: radial-gradient(circle at center, rgba(34, 197, 94, 0.14), rgba(15, 23, 42, 0.97) 78%);
+  border: 1px solid rgba(34, 197, 94, 0.35);
+  overflow: hidden;
+  flex-shrink: 0;
+  box-shadow: 0 18px 50px rgba(15, 60, 90, 0.22), inset 0 0 40px rgba(34, 197, 94, 0.08);
+}
+
+.radar-viz-ring {
+  position: absolute;
+  border: 1px solid rgba(34, 197, 94, 0.22);
+  border-radius: 50%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.radar-viz-ring.r1 { width: 32%; height: 32%; }
+.radar-viz-ring.r2 { width: 62%; height: 62%; }
+.radar-viz-ring.r3 { width: 90%; height: 90%; }
+
+.radar-viz-cross-h {
+  position: absolute;
+  top: 50%;
+  left: 5%;
+  right: 5%;
+  height: 1px;
+  background: rgba(34, 197, 94, 0.16);
+}
+
+.radar-viz-cross-v {
+  position: absolute;
+  left: 50%;
+  top: 5%;
+  bottom: 5%;
+  width: 1px;
+  background: rgba(34, 197, 94, 0.16);
+}
+
+.radar-viz-sweep {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: conic-gradient(from 0deg, rgba(34, 197, 94, 0.45), rgba(34, 197, 94, 0.1) 55deg, transparent 80deg);
+  animation: radar-sweep 4s linear infinite;
+}
+
+@keyframes radar-sweep {
+  to { transform: rotate(360deg); }
+}
+
+.radar-viz-blip {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  background: #22c55e;
+  border-radius: 50%;
+  box-shadow: 0 0 10px #22c55e;
+  animation: blip-pulse 3.2s ease-out infinite;
+}
+
+@keyframes blip-pulse {
+  0%, 68% { opacity: 0.3; }
+  78% { opacity: 1; }
+  100% { opacity: 0.35; }
+}
+
+.radar-viz-blip-label {
+  position: absolute;
+  left: 10px;
+  top: -4px;
+  color: #86efac;
+  font-size: 0.6rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+}
+
+/* Radar mic în header-ul dashboard-ului */
+.dash-header-left {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+@media (max-width: 560px) {
+  .dash-header-left .radar-viz {
+    display: none;
+  }
+}
+
+/* --- Landing: banda cu radar mare + fapte --- */
+
+.landing-radar-band {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 2.5rem;
+  align-items: center;
+  background: linear-gradient(160deg, #0f172a 0%, #14304f 60%, #0f3b2c 100%);
+  border-radius: 22px;
+  padding: 2.25rem 2.5rem;
+}
+
+.landing-radar-title {
+  color: white;
+  text-align: left;
+  margin-bottom: 1rem;
+}
+
+.landing-radar-facts {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.landing-radar-facts li {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  color: #e2e8f0;
+  font-size: 0.92rem;
+  line-height: 1.45;
+}
+
+@media (max-width: 760px) {
+  .landing-radar-band {
+    grid-template-columns: 1fr;
+    justify-items: center;
+    text-align: center;
+    padding: 1.75rem 1.25rem;
+  }
+  .landing-radar-title {
+    text-align: center;
+  }
+}
+
+/* --- Landing: persona cards cu fotografii --- */
+
+.landing-personas {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1.25rem;
+}
+
+.landing-persona {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  overflow: hidden;
+  box-shadow: var(--shadow-card);
+  transition: transform 0.2s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.2s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.landing-persona:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-card-hover);
+}
+
+.landing-persona img {
+  width: 100%;
+  height: 190px;
+  object-fit: cover;
+  display: block;
+}
+
+.landing-persona-body {
+  padding: 1.1rem 1.25rem 1.35rem;
+}
+
+.landing-persona-body h3 {
+  font-size: 1rem;
+  font-weight: 800;
+  margin: 0 0 0.35rem;
+}
+
+.landing-persona-body p {
+  color: var(--muted);
+  font-size: 0.88rem;
+  line-height: 1.55;
+  margin: 0;
+}
+
+.landing-photo-credit {
+  text-align: center;
+  color: #94a3b8;
+  font-size: 0.7rem;
+  margin: 1rem 0 0;
+}
+
+.landing-photo-credit a {
+  color: #94a3b8;
+  text-decoration: underline;
+}
+
+.landing-photo-credit-dark {
+  margin-top: 1.25rem;
+  color: rgba(203, 213, 225, 0.65);
+}
+
+.landing-photo-credit-dark a {
+  color: rgba(203, 213, 225, 0.75);
+}
+
+.landing-final-cta-photo {
+  background-size: cover;
+  background-position: center;
+}

@@ -4,6 +4,47 @@ import AnimatedNumber from "../components/AnimatedNumber.jsx";
 import TypewriterText from "../components/TypewriterText.jsx";
 import StockLogo from "../components/StockLogo.jsx";
 import ScoreRing from "../components/ScoreRing.jsx";
+import RadarViz from "../components/RadarViz.jsx";
+
+// Fotografii Unsplash alese manual (hotlink direct, conform termenilor API),
+// cu atribuire vizibilă pe pagină. Persona-urile sunt profiluri ILUSTRATIVE
+// de utilizare, nu testimoniale — nu punem citate inventate în gura nimănui.
+const FOTO_CTA = {
+  url: "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1600",
+  autor: "Maxim Hopman",
+  autorUrl: "https://unsplash.com/@nampoh",
+};
+
+const PERSONAS = [
+  {
+    img: "https://images.unsplash.com/photo-1676989880361-091e12efc056?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=600",
+    titlu: "Profesionistul ocupat",
+    text: "Nu are timp de rapoarte de 40 de pagini. Deschide radarul dimineața, vede scorurile AI și știrile esențiale pe scurt, în română.",
+    autor: "lucas Favre",
+    autorUrl: "https://unsplash.com/@we_are_rising",
+  },
+  {
+    img: "https://images.unsplash.com/photo-1484863137850-59afcfe05386?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=600",
+    titlu: "Începătoarea prudentă",
+    text: "Vrea să învețe fără să riște bani reali. Exersează pe portofoliul virtual de 10.000 USD și urmărește cum evoluează scorurile în timp.",
+    autor: "Brooke Cagle",
+    autorUrl: "https://unsplash.com/@brookecagle",
+  },
+  {
+    img: "https://images.unsplash.com/photo-1637589308599-3478cc55510d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=600",
+    titlu: "Studentul curios",
+    text: "Descoperă cum funcționează piețele: sub-scoruri explicate pe înțelesul lui, dicționar de termeni și context AI la fiecare acțiune.",
+    autor: "Fotos",
+    autorUrl: "https://unsplash.com/@fotospk",
+  },
+];
+
+const RADAR_FACTS = [
+  { icon: "📡", text: "Scoruri AI recalculate automat la fiecare 6 ore, pentru tot ce e urmărit" },
+  { icon: "💹", text: "Prețuri live, reîmprospătate la fiecare 30 de secunde" },
+  { icon: "📰", text: "Știrile pieței, re-analizate la fiecare 30 de minute" },
+  { icon: "📅", text: "Calendarul de raportări, actualizat de două ori pe zi" },
+];
 
 // Rânduri ilustrative pentru mockup-ul de produs din hero — construite din
 // componentele reale ale aplicației (logo + ring), cu valori demonstrative.
@@ -258,6 +299,50 @@ export default function Landing() {
       </section>
 
       <section className="landing-section">
+        <div className="landing-radar-band">
+          <RadarViz size={300} />
+          <div className="landing-radar-text">
+            <h2 className="landing-section-title landing-radar-title">Radarul lucrează non-stop</h2>
+            <ul className="landing-radar-facts">
+              {RADAR_FACTS.map((f) => (
+                <li key={f.text}>
+                  <span>{f.icon}</span>
+                  {f.text}
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section className="landing-section">
+        <h2 className="landing-section-title">Gândit pentru oameni ca tine</h2>
+        <div className="landing-personas">
+          {PERSONAS.map((p) => (
+            <div key={p.titlu} className="landing-persona">
+              <img src={p.img} alt="" loading="lazy" />
+              <div className="landing-persona-body">
+                <h3>{p.titlu}</h3>
+                <p>{p.text}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+        <p className="landing-photo-credit">
+          Profiluri ilustrative de utilizare · Fotografii:{" "}
+          {PERSONAS.map((p, i) => (
+            <span key={p.autor}>
+              <a href={p.autorUrl} target="_blank" rel="noopener noreferrer">
+                {p.autor}
+              </a>
+              {i < PERSONAS.length - 1 ? " · " : ""}
+            </span>
+          ))}{" "}
+          / <a href="https://unsplash.com" target="_blank" rel="noopener noreferrer">Unsplash</a>
+        </p>
+      </section>
+
+      <section className="landing-section">
         <h2 className="landing-section-title">Prețuri simple</h2>
         <div className="landing-pricing">
           <div className="landing-plan">
@@ -312,12 +397,24 @@ export default function Landing() {
         </div>
       </section>
 
-      <section className="landing-final-cta">
+      <section
+        className="landing-final-cta landing-final-cta-photo"
+        style={{
+          backgroundImage: `linear-gradient(rgba(15, 23, 42, 0.82), rgba(15, 23, 42, 0.9)), url(${FOTO_CTA.url})`,
+        }}
+      >
         <h2>Gata să vezi piața mai clar?</h2>
         <p>Cont gratuit, watchlist construit de AI în câteva secunde.</p>
         <Link to="/register" className="landing-cta">
           Începe gratuit →
         </Link>
+        <p className="landing-photo-credit landing-photo-credit-dark">
+          Foto:{" "}
+          <a href={FOTO_CTA.autorUrl} target="_blank" rel="noopener noreferrer">
+            {FOTO_CTA.autor}
+          </a>{" "}
+          / <a href="https://unsplash.com" target="_blank" rel="noopener noreferrer">Unsplash</a>
+        </p>
       </section>
 
       <footer className="landing-footer">

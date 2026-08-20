@@ -9,6 +9,7 @@ import Sparkline from "../components/Sparkline.jsx";
 import AnimatedNumber from "../components/AnimatedNumber.jsx";
 import TypewriterText from "../components/TypewriterText.jsx";
 import ToolsPro from "../components/ToolsPro.jsx";
+import RadarViz from "../components/RadarViz.jsx";
 
 const TAGLINE_PHRASES = [
   "scor AI pentru fiecare acțiune",
@@ -444,13 +445,16 @@ export default function Watchlist() {
 
       <header className="dash-header">
         <div className="dash-header-left">
-          <div className="page-title-row">
-            <h1 className="page-title">AI Stock Radar</h1>
-            <span className="typewriter-badge">
-              <TypewriterText phrases={TAGLINE_PHRASES} />
-            </span>
+          <RadarViz size={72} showLabels={false} />
+          <div>
+            <div className="page-title-row">
+              <h1 className="page-title">AI Stock Radar</h1>
+              <span className="typewriter-badge">
+                <TypewriterText phrases={TAGLINE_PHRASES} />
+              </span>
+            </div>
+            <p className="cash">Urmărește acțiuni și primești context AI despre ele — nu recomandări de tranzacționare.</p>
           </div>
-          <p className="cash">Urmărește acțiuni și primești context AI despre ele — nu recomandări de tranzacționare.</p>
         </div>
 
         {items.length > 0 && analizateCount > 0 && (
