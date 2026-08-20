@@ -63,7 +63,14 @@ async function selectAndAnalyzeWithClaude(candidates) {
 
   const prompt = `Ești un analist financiar care scrie pentru un public român de începători în investiții, pe un site educativ (nu oferă consultanță de investiții).
 
-Mai jos ai o listă de ${candidates.length} știri generale de pe fluxul de agenție. Alege EXACT ${SELECTED_COUNT} dintre ele — cele mai relevante pentru piețele bursiere și investitori (mișcări de piață, rezultate ale companiilor, politică monetară/bănci centrale, indicatori economici majori, sectoare industriale, prețul mărfurilor/energiei, fuziuni și achiziții). Evită știrile pur geopolitice, sportive, culturale sau fără nicio legătură clară cu piețele financiare, dacă există alternative mai relevante în listă.
+Mai jos ai o listă de ${candidates.length} știri generale de pe fluxul de agenție. Alege EXACT ${SELECTED_COUNT} dintre ele — cele mai relevante pentru PIAȚA DE ACȚIUNI în mod specific, nu economia în general. Prioritizează, în această ordine:
+
+1. Mișcări semnificative de preț ale unor acțiuni/companii cotate, numite explicit (ex: "Nvidia scade cu X%", "Apple anunță...")
+2. Rezultate financiare (earnings), fuziuni/achiziții, IPO-uri, ghidaj de la companii cotate
+3. Evenimente sectoriale cu impact direct asupra unor companii/indici bursieri numiți (ex: reglementare care lovește un sector întreg, un lanț de aprovizionare pentru producători de cipuri)
+4. DOAR dacă nu există destule știri de tip 1-3 în listă: politică monetară/bănci centrale, dar numai cu impact bursier direct și imediat menționat explicit (nu doar cifre macro izolate)
+
+Evită sau tratează ca ultimă opțiune: indicatori macroeconomici generali fără nicio companie sau sector bursier nominalizat (inflație, șomaj, PIB, piața imobiliară generică, producție industrială generică), mărfuri/energie fără o legătură explicită cu o companie cotată, și orice știre pur geopolitică, sportivă, culturală sau fără legătură clară cu piețele bursiere — alege-le doar dacă lista chiar nu conține alternative mai bune.
 
 Pentru fiecare din cele ${SELECTED_COUNT} știri alese, produci:
 1. "index": numărul original al știrii din lista de mai jos (1-${candidates.length})

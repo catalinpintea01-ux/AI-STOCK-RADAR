@@ -262,72 +262,6 @@ export default function Watchlist() {
         </section>
       )}
 
-      {marketNews.length > 0 && (
-        <section className="hero-news">
-          {marketNews.map((n) => (
-            <Link
-              key={n.id}
-              to={`/stiri/${n.id}`}
-              className="hero-news-card"
-              style={n.imagine ? { backgroundImage: `url(${n.imagine})` } : undefined}
-            >
-              <div className="hero-news-body">
-                <span className="hero-news-source">{n.sursa} · Astăzi</span>
-                <h3 className="hero-news-headline">{n.titluAI}</h3>
-              </div>
-            </Link>
-          ))}
-        </section>
-      )}
-
-      <TickerTape />
-
-      {briefItems.length > 0 && (
-        <section className="holdings">
-          <h2>🔥 Ce s-a schimbat</h2>
-          <ul className="stock-list">
-            {briefItems.map((item) => (
-              <li key={item.simbol} className="stock-row">
-                <Link to={`/stock/${item.simbol}`} className="watch-row-link">
-                  <StockLogo simbol={item.simbol} />
-                  <div>
-                    <strong>{item.simbol}</strong>
-                    <div className="muted">
-                      Scor AI: {item.schimbare.scorAnterior} → {item.radar.scorCompozit}
-                    </div>
-                  </div>
-                  {formatDelta(item.schimbare.deltaCompozit)}
-                  <span className="row-chevron">›</span>
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </section>
-      )}
-
-      {earnings.length > 0 && (
-        <section className="holdings">
-          <h2>📅 Raportări apropiate</h2>
-          <ul className="stock-list">
-            {earnings.slice(0, 8).map((e) => (
-              <li key={`${e.simbol}-${e.data}`} className="stock-row">
-                <Link to={`/stock/${e.simbol}`} className="watch-row-link">
-                  <StockLogo simbol={e.simbol} />
-                  <div>
-                    <strong>{e.simbol}</strong>
-                    <div className="muted">
-                      Raportează {formatZileRamase(e.data)}
-                      {e.moment && MOMENT_LABEL[e.moment] ? ` · ${MOMENT_LABEL[e.moment]}` : ""}
-                    </div>
-                  </div>
-                  <span className="row-chevron">›</span>
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </section>
-      )}
-
       <section className="search-section">
         <h2>Adaugă o acțiune</h2>
         <form className="search-form" onSubmit={handleSearch}>
@@ -367,7 +301,7 @@ export default function Watchlist() {
 
       <section className="holdings">
         <div className="watchlist-header-row">
-          <h2>Acțiunile tale urmărite</h2>
+          <h2>🔍 Analizează o acțiune în detaliu</h2>
           <div className="watchlist-header-actions">
             {neanalizateCount > 0 && (
               <button className="analyze-all-button" onClick={handleAnalyzeAll} disabled={bulkAnalyzing}>
@@ -442,6 +376,72 @@ export default function Watchlist() {
           </ul>
         )}
       </section>
+
+      {marketNews.length > 0 && (
+        <section className="hero-news">
+          {marketNews.map((n) => (
+            <Link
+              key={n.id}
+              to={`/stiri/${n.id}`}
+              className="hero-news-card"
+              style={n.imagine ? { backgroundImage: `url(${n.imagine})` } : undefined}
+            >
+              <div className="hero-news-body">
+                <span className="hero-news-source">{n.sursa} · Astăzi</span>
+                <h3 className="hero-news-headline">{n.titluAI}</h3>
+              </div>
+            </Link>
+          ))}
+        </section>
+      )}
+
+      <TickerTape />
+
+      {briefItems.length > 0 && (
+        <section className="holdings">
+          <h2>🔥 Ce s-a schimbat</h2>
+          <ul className="stock-list">
+            {briefItems.map((item) => (
+              <li key={item.simbol} className="stock-row">
+                <Link to={`/stock/${item.simbol}`} className="watch-row-link">
+                  <StockLogo simbol={item.simbol} />
+                  <div>
+                    <strong>{item.simbol}</strong>
+                    <div className="muted">
+                      Scor AI: {item.schimbare.scorAnterior} → {item.radar.scorCompozit}
+                    </div>
+                  </div>
+                  {formatDelta(item.schimbare.deltaCompozit)}
+                  <span className="row-chevron">›</span>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
+
+      {earnings.length > 0 && (
+        <section className="holdings">
+          <h2>📅 Raportări apropiate</h2>
+          <ul className="stock-list">
+            {earnings.slice(0, 8).map((e) => (
+              <li key={`${e.simbol}-${e.data}`} className="stock-row">
+                <Link to={`/stock/${e.simbol}`} className="watch-row-link">
+                  <StockLogo simbol={e.simbol} />
+                  <div>
+                    <strong>{e.simbol}</strong>
+                    <div className="muted">
+                      Raportează {formatZileRamase(e.data)}
+                      {e.moment && MOMENT_LABEL[e.moment] ? ` · ${MOMENT_LABEL[e.moment]}` : ""}
+                    </div>
+                  </div>
+                  <span className="row-chevron">›</span>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
 
       <Disclaimer />
     </div>
