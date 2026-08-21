@@ -3685,3 +3685,126 @@ button.stat-tile:hover {
   font-size: 0.66rem;
   font-weight: 800;
 }
+
+/* --- Cifre tabulare global: prețurile nu mai "sar" la refresh --- */
+body {
+  font-variant-numeric: tabular-nums;
+}
+
+/* --- Pagina acțiunii: preț-erou + grafic de preț --- */
+
+.stock-hero-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.stock-hero-price {
+  font-size: 2.4rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  margin-top: 0.5rem;
+}
+
+.stock-hero-var {
+  font-weight: 700;
+  font-size: 1rem;
+}
+
+.chart-range-row {
+  display: flex;
+  gap: 0.35rem;
+  margin: 0.9rem 0 0.5rem;
+}
+
+.chart-range-btn {
+  border: 1px solid transparent;
+  background: none;
+  border-radius: 8px;
+  padding: 0.3rem 0.7rem;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--muted);
+  cursor: pointer;
+}
+
+.chart-range-btn:hover {
+  background: #f4f9f9;
+}
+
+.chart-range-active {
+  background: #eaf2ff;
+  color: var(--blue);
+  border-color: #bfdbfe;
+}
+
+.price-chart-wrap {
+  position: relative;
+}
+
+.price-chart {
+  display: block;
+  width: 100%;
+  height: 220px;
+  touch-action: pan-y;
+}
+
+.price-chart-line {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: chart-draw 0.9s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+@keyframes chart-draw {
+  to { stroke-dashoffset: 0; }
+}
+
+.price-chart-hover-info {
+  display: flex;
+  align-items: baseline;
+  gap: 0.6rem;
+  min-height: 1.4rem;
+  font-size: 0.85rem;
+}
+
+.chart-empty {
+  color: var(--muted);
+  font-size: 0.85rem;
+  padding: 2rem 0;
+  text-align: center;
+}
+
+.chart-skeleton {
+  height: 220px;
+  border-radius: 12px;
+  background: linear-gradient(90deg, #eef2f5 25%, #f7fafb 50%, #eef2f5 75%);
+  background-size: 200% 100%;
+  animation: skeleton-shimmer 1.2s infinite;
+}
+
+@keyframes skeleton-shimmer {
+  from { background-position: 200% 0; }
+  to { background-position: -200% 0; }
+}
+
+/* --- Preț live cu puls direcțional --- */
+
+.live-price {
+  border-radius: 6px;
+  padding: 0 0.15rem;
+  margin: 0 -0.15rem;
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+.price-flash-up {
+  background: #dcfce7;
+  color: #059669;
+}
+
+.price-flash-down {
+  background: #fee2e2;
+  color: #dc2626;
+}

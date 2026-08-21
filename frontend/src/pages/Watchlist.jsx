@@ -12,6 +12,7 @@ import ToolsPro from "../components/ToolsPro.jsx";
 import RadarViz from "../components/RadarViz.jsx";
 import PersonaCards from "../components/PersonaCards.jsx";
 import VerdictTag from "../components/VerdictTag.jsx";
+import LivePrice from "../components/LivePrice.jsx";
 import { Zap, Target, ClipboardList, Compass, Newspaper, Activity, CalendarDays, Lightbulb, Lock } from "lucide-react";
 
 const TAGLINE_PHRASES = [
@@ -442,7 +443,7 @@ export default function Watchlist() {
           <Sparkline puncte={item.istoricPret} />
           {item.pret !== null && (
             <div className="stock-right">
-              <div>${item.pret.toFixed(2)}</div>
+              <div><LivePrice value={item.pret} /></div>
               <div className={item.variatieProcent >= 0 ? "gain-positive" : "gain-negative"}>
                 {item.variatieProcent >= 0 ? "+" : ""}
                 {item.variatieProcent.toFixed(1)}%

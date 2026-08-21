@@ -42,6 +42,8 @@ export const api = {
   getWatchlist: () => request("/watchlist"),
   addToWatchlist: (simbol) =>
     request("/watchlist", { method: "POST", body: JSON.stringify({ simbol }) }),
+  getStockHistory: (simbol, zile) =>
+    request(`/stocks/${encodeURIComponent(simbol)}/history?zile=${zile}`),
   getEarningsCalendar: () => request("/watchlist/earnings"),
   getDailyPicks: () => request("/watchlist/daily-picks"),
   onboardWatchlist: (interese) =>

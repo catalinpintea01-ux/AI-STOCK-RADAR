@@ -7,6 +7,7 @@ const { getAnalyzedMarketNews, getMarketNewsById } = require("../services/market
 const { requireAuth } = require("../middleware/auth");
 const prisma = require("../db");
 const { isPremium } = require("../services/stripe");
+const { getDailyHistory } = require("../services/history");
 
 const router = express.Router();
 
@@ -45,6 +46,14 @@ router.get("/market-news/:id", async (req, res) => {
     return res.status(404).json({ error: "Știrea nu mai este disponibilă" });
   }
   res.json({ news: item });
+});
+
+// Serie zilnică pentru graficul de preț: ?zile=7|30|180|365 (implicit 30).
+router.get("/:simbol/history", async (req, res) => {
+  const zile = Math.min(365, Math.max(5, Number(req.query.zile) || 30));
+  const tot = await getDailyHistory(req.params.simbol);
+  const deLa = new Date(Date.now() - zile * 24 * 60 * 60 * 1000).toISOString().slice(0, 10);
+  res.json({ istoric: tot.filter((p) => p.t >= deLa) });
 });
 
 router.get("/:simbol", async (req, res) => {

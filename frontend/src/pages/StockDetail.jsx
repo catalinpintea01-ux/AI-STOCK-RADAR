@@ -4,6 +4,16 @@ import { api } from "../api";
 import ScoreBar from "../components/ScoreBar.jsx";
 import VerdictBadge from "../components/VerdictBadge.jsx";
 import Disclaimer from "../components/Disclaimer.jsx";
+import PriceChart from "../components/PriceChart.jsx";
+import LivePrice from "../components/LivePrice.jsx";
+
+// Intervalele graficului de preț — serii zilnice (Yahoo), fără intraday.
+const RANGES = [
+  { zile: 7, label: "1S" },
+  { zile: 30, label: "1L" },
+  { zile: 180, label: "6L" },
+  { zile: 365, label: "1A" },
+];
 
 function formatDelta(n, invert = false) {
   const bun = invert ? n < 0 : n > 0;
@@ -45,6 +55,18 @@ export default function StockDetail() {
   const [qty, setQty] = useState(1);
   const [tradeError, setTradeError] = useState("");
   const [error, setError] = useState("");
+  const [istoricChart, setIstoricChart] = useState([]);
+  const [zileChart, setZileChart] = useState(30);
+  const [chartLoading, setChartLoading] = useState(true);
+
+  useEffect(() => {
+    setChartLoading(true);
+    api
+      .getStockHistory(simbol, zileChart)
+      .then((data) => setIstoricChart(data.istoric))
+      .catch(() => setIstoricChart([]))
+      .finally(() => setChartLoading(false));
+  }, [simbol, zileChart]);
 
   function loadPortfolio() {
     return api.getPortfolio().then((data) => {
@@ -140,16 +162,23 @@ export default function StockDetail() {
         ← AI Stock Radar
       </Link>
 
-      <div className="value-card">
-        <div style={{ display: "flex", alignItems: "center", gap: "0.6rem" }}>
-          {profile?.logo && <img src={profile.logo} alt="" className="stock-logo" style={{ width: 32, height: 32 }} />}
-          <span className="label">{profile?.name || simbol.toUpperCase()}</span>
+      <div className="value-card stock-hero">
+        <div className="stock-hero-top">
+          <div style={{ display: "flex", alignItems: "center", gap: "0.6rem" }}>
+            {profile?.logo && <img src={profile.logo} alt="" className="stock-logo" style={{ width: 32, height: 32 }} />}
+            <span className="label">{profile?.name || simbol.toUpperCase()}</span>
+          </div>
+          <button className="why-button" onClick={toggleWatchlist} disabled={watchlistLoading}>
+            {inWatchlist ? "− Scoate din Watchlist" : "+ Adaugă în Watchlist"}
+          </button>
         </div>
-        <span className="value">{quote ? `$${quote.stock.pret.toFixed(2)}` : "..."}</span>
+        <span className="stock-hero-price">
+          {quote ? <LivePrice value={quote.stock.pret} /> : "..."}
+        </span>
         {quote && (
-          <span className={quote.stock.variatieProcent >= 0 ? "gain-positive" : "gain-negative"}>
+          <span className={quote.stock.variatieProcent >= 0 ? "gain-positive stock-hero-var" : "gain-negative stock-hero-var"}>
             {quote.stock.variatieProcent >= 0 ? "+" : ""}
-            {quote.stock.variatieProcent.toFixed(1)}% azi
+            {quote.stock.variatieProcent.toFixed(2)}% azi
           </span>
         )}
         {profile && (
@@ -157,9 +186,20 @@ export default function StockDetail() {
             {profile.finnhubIndustry} · IPO {profile.ipo}
           </span>
         )}
-        <button className="why-button" onClick={toggleWatchlist} disabled={watchlistLoading} style={{ marginTop: "0.75rem" }}>
-          {inWatchlist ? "− Scoate din Watchlist" : "+ Adaugă în Watchlist"}
-        </button>
+
+        <div className="chart-range-row">
+          {RANGES.map((r) => (
+            <button
+              key={r.zile}
+              type="button"
+              className={`chart-range-btn ${zileChart === r.zile ? "chart-range-active" : ""}`}
+              onClick={() => setZileChart(r.zile)}
+            >
+              {r.label}
+            </button>
+          ))}
+        </div>
+        {chartLoading ? <div className="chart-skeleton" /> : <PriceChart istoric={istoricChart} />}
       </div>
 
       <section className="holdings">
