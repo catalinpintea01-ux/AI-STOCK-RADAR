@@ -1629,10 +1629,22 @@ body {
     min-width: 56px;
   }
 
-  .stock-row .view-analysis-button,
+  /* Pe mobil rândul întreg e tappabil (chevron-ul rămâne ca indiciu), așa
+     că butonul "Vezi analiza" dispare — lista devine de două ori mai densă.
+     "Analizează" rămâne: ăla chiar declanșează o acțiune, nu doar navighează. */
+  .stock-row .view-analysis-button {
+    display: none;
+  }
+
   .stock-row .analyze-button {
     flex: 1 1 auto;
     text-align: center;
+  }
+
+  .stock-row .logout {
+    margin-left: auto;
+    padding: 0.3rem 0.6rem;
+    font-size: 0.7rem;
   }
 }
 
@@ -2946,4 +2958,65 @@ button.stat-tile:hover {
   font-size: 1.15rem;
   font-weight: 800;
   margin: 0 0 1rem;
+}
+
+/* --- Curățenie de zgomot: hint căutare, empty state Research, digest alerte --- */
+
+.search-hint {
+  font-size: 0.78rem;
+  line-height: 1.5;
+  margin: 0.9rem 0 0;
+}
+
+.daily-empty-label {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--muted);
+  margin: 0 0 0.4rem;
+}
+
+.daily-lesson {
+  background: #f4f9f9;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 0.75rem 0.9rem;
+  font-size: 0.82rem;
+  line-height: 1.55;
+  color: var(--text);
+  margin: 0.75rem 0 0;
+}
+
+.digest-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  width: 100%;
+}
+
+.digest-body {
+  flex: 1;
+  min-width: 0;
+}
+
+.digest-symbol {
+  font-weight: 800;
+  color: inherit;
+  text-decoration: none;
+}
+
+.digest-symbol:hover {
+  text-decoration: underline;
+}
+
+.digest-row .view-analysis-button {
+  align-self: center;
+}
+
+@media (max-width: 560px) {
+  .digest-row {
+    flex-wrap: wrap;
+  }
+  .digest-row .view-analysis-button {
+    display: none;
+  }
 }

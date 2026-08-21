@@ -42,7 +42,6 @@ export const api = {
   getWatchlist: () => request("/watchlist"),
   addToWatchlist: (simbol) =>
     request("/watchlist", { method: "POST", body: JSON.stringify({ simbol }) }),
-  bulkAddTop50: () => request("/watchlist/bulk-top50", { method: "POST" }),
   getEarningsCalendar: () => request("/watchlist/earnings"),
   getDailyPicks: () => request("/watchlist/daily-picks"),
   onboardWatchlist: (interese) =>

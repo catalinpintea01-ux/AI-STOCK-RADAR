@@ -42,6 +42,18 @@ const MOMENT_LABEL = {
   dmh: "în timpul ședinței",
 };
 
+// Micro-lecții pentru empty state-ul din "Research zilnic" — nu trimitem
+// niciodată userul acasă cu mâna goală. Rotite pe zile, limbaj pur educativ.
+const MICRO_LESSONS = [
+  "Diversificarea înseamnă să nu depinzi de o singură acțiune sau un singur sector — un portofoliu variat amortizează șocurile individuale.",
+  "Volatilitatea (beta) măsoară cât de mult oscilează o acțiune față de piață: beta peste 1 = mișcări mai ample, sub 1 = mai calme.",
+  "Raportările trimestriale (earnings) sunt momentele în care prețurile se mișcă cel mai des — merită să știi când raportează companiile urmărite.",
+  "Un P/E ridicat poate însemna așteptări mari de creștere, nu neapărat o acțiune scumpă — contextul sectorului contează.",
+  "Tranzacțiile insiderilor (directori care cumpără sau vând propriile acțiuni) sunt raportate public și pot oferi context despre încrederea internă.",
+  "Media analiștilor e doar o agregare de opinii — utilă ca reper, dar niciodată o garanție.",
+  "Dollar-cost averaging înseamnă investiții periodice de sume egale, indiferent de preț — reduce impactul momentului ales.",
+];
+
 function zileRamase(dataIso) {
   const azi = new Date();
   azi.setHours(0, 0, 0, 0);
@@ -138,7 +150,6 @@ export default function Watchlist() {
   const [searchResults, setSearchResults] = useState([]);
   const [searchLoading, setSearchLoading] = useState(false);
   const [searchError, setSearchError] = useState("");
-  const [bulkAdding, setBulkAdding] = useState(false);
   const [sortBy, setSortBy] = useState("implicit");
   const [filterBy, setFilterBy] = useState("toate");
   const [showAllRows, setShowAllRows] = useState(false);
@@ -146,6 +157,7 @@ export default function Watchlist() {
   const [bulkAnalyzing, setBulkAnalyzing] = useState(false);
   const [bulkProgress, setBulkProgress] = useState({ done: 0, total: 0 });
   const [dailyPicks, setDailyPicks] = useState([]);
+  const [dailyMover, setDailyMover] = useState(null);
   const [interese, setInterese] = useState([]);
   const [onboarding, setOnboarding] = useState(false);
   const [onboardError, setOnboardError] = useState("");
@@ -222,7 +234,10 @@ export default function Watchlist() {
       .catch(() => {});
     api
       .getDailyPicks()
-      .then((data) => setDailyPicks(data.picks))
+      .then((data) => {
+        setDailyPicks(data.picks);
+        setDailyMover(data.mover || null);
+      })
       .catch(() => {});
   }, []);
 
@@ -250,18 +265,6 @@ export default function Watchlist() {
     }, 30000);
     return () => clearInterval(id);
   }, []);
-
-  async function handleBulkAdd() {
-    setBulkAdding(true);
-    try {
-      await api.bulkAddTop50();
-      await load();
-    } catch (err) {
-      setSearchError(err.message);
-    } finally {
-      setBulkAdding(false);
-    }
-  }
 
   async function handleSearch(e) {
     e.preventDefault();
@@ -539,13 +542,10 @@ export default function Watchlist() {
               </ul>
             )}
 
-            <div className="search-section-divider">
-              <span>sau</span>
-            </div>
-
-            <button className="why-button-secondary" onClick={handleBulkAdd} disabled={bulkAdding}>
-              {bulkAdding ? "Adaug..." : "⚡ Adaugă automat top 50 cele mai tranzacționate"}
-            </button>
+            <p className="search-hint muted">
+              Sfat: un radar bun are 5-10 acțiuni alese de tine — mai puțin zgomot, context mai
+              relevant. Poți porni și cu „🎯 Analizează pe interese".
+            </p>
           </section>
 
           <section className="panel">
@@ -671,7 +671,36 @@ export default function Watchlist() {
             </div>
             <p className="tab-subtitle">Recomandări AI din afara watchlist-ului tău, pe baza mișcărilor de azi.</p>
             {dailyPicks.length === 0 ? (
-              <p className="empty">Nimic nou de recomandat azi — revino mai târziu.</p>
+              <div className="daily-empty">
+                {dailyMover && (
+                  <>
+                    <p className="daily-empty-label">Cel mai mare mover al zilei:</p>
+                    <ul className="stock-list">
+                      <li className="stock-row">
+                        <div className="stock-row-left">
+                          <StockLogo simbol={dailyMover.simbol} />
+                          <div>
+                            <strong>{dailyMover.simbol}</strong>
+                            <div className="muted">{dailyMover.nume}</div>
+                          </div>
+                        </div>
+                        <div className="stock-right">
+                          <div className={dailyMover.variatieProcent >= 0 ? "gain-positive" : "gain-negative"}>
+                            {dailyMover.variatieProcent >= 0 ? "+" : ""}
+                            {dailyMover.variatieProcent.toFixed(1)}%
+                          </div>
+                        </div>
+                        <button className="add-watchlist-button" onClick={() => handleAdd(dailyMover.simbol)}>
+                          +
+                        </button>
+                      </li>
+                    </ul>
+                  </>
+                )}
+                <p className="daily-lesson">
+                  💡 {MICRO_LESSONS[Math.floor(Date.now() / 86400000) % MICRO_LESSONS.length]}
+                </p>
+              </div>
             ) : (
               <ul className="stock-list">
                 {dailyPicks.slice(0, 4).map((p) => (

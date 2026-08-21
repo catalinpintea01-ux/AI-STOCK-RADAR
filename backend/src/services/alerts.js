@@ -1,7 +1,8 @@
 const prisma = require("../db");
 const { getCompanyNews } = require("./news");
 
-const MAX_ALERTS_PER_CHECK = 5; // evită un puhoi de alerte dacă simbolul are multe știri noi deodată
+const MAX_ALERTS_PER_CHECK = 2; // evită un puhoi de alerte dacă simbolul are multe știri noi deodată
+const DIGEST_SIZE = 3; // clopoțelul promite puțin și valoros, nu sute de notificări
 
 // Verifică fiecare acțiune urmărită de utilizator pentru știri apărute după
 // ultima verificare și creează alerte noi. Rulează la cerere (când utilizatorul
@@ -47,8 +48,39 @@ async function getAlerts(userId) {
   });
 }
 
-async function getUnreadCount(userId) {
-  return prisma.alert.count({ where: { userId, citit: false } });
+// Digest zilnic anti-oboseală: alertele din ultimele 24h, grupate pe simbol,
+// maximum DIGEST_SIZE simboluri (cele mai recente). Clopoțelul numără aceste
+// grupuri, nu alertele individuale — "3 schimbări azi", nu "513 notificări".
+async function getDigest(userId) {
+  const deLa = new Date(Date.now() - 24 * 60 * 60 * 1000);
+  const recente = await prisma.alert.findMany({
+    where: { userId, createdAt: { gte: deLa } },
+    orderBy: { createdAt: "desc" },
+  });
+
+  const grupuri = new Map();
+  for (const a of recente) {
+    if (!grupuri.has(a.simbol)) {
+      grupuri.set(a.simbol, { simbol: a.simbol, stiri: 0, necitite: 0, ultima: a });
+    }
+    const g = grupuri.get(a.simbol);
+    g.stiri += 1;
+    if (!a.citit) g.necitite += 1;
+  }
+
+  const digest = [...grupuri.values()].slice(0, DIGEST_SIZE).map((g) => ({
+    simbol: g.simbol,
+    stiri: g.stiri,
+    headline: g.ultima.headline,
+    url: g.ultima.url,
+    sursa: g.ultima.sursa,
+    createdAt: g.ultima.createdAt,
+  }));
+
+  // Badge-ul = câte grupuri din digest mai au ceva necitit (0-3).
+  const unreadCount = [...grupuri.values()].slice(0, DIGEST_SIZE).filter((g) => g.necitite > 0).length;
+
+  return { digest, unreadCount };
 }
 
 async function markAlertRead(userId, alertId) {
@@ -59,4 +91,4 @@ async function markAllRead(userId) {
   await prisma.alert.updateMany({ where: { userId, citit: false }, data: { citit: true } });
 }
 
-module.exports = { checkForNewAlerts, getAlerts, getUnreadCount, markAlertRead, markAllRead };
+module.exports = { checkForNewAlerts, getAlerts, getDigest, markAlertRead, markAllRead };

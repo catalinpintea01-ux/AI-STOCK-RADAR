@@ -1,6 +1,6 @@
 const express = require("express");
 const { requireAuth } = require("../middleware/auth");
-const { checkForNewAlerts, getAlerts, getUnreadCount, markAlertRead, markAllRead } = require("../services/alerts");
+const { checkForNewAlerts, getAlerts, getDigest, markAlertRead, markAllRead } = require("../services/alerts");
 
 const router = express.Router();
 
@@ -10,8 +10,8 @@ router.post("/check", requireAuth, async (req, res) => {
 });
 
 router.get("/", requireAuth, async (req, res) => {
-  const [items, unreadCount] = await Promise.all([getAlerts(req.userId), getUnreadCount(req.userId)]);
-  res.json({ items, unreadCount });
+  const [items, digestData] = await Promise.all([getAlerts(req.userId), getDigest(req.userId)]);
+  res.json({ items, digest: digestData.digest, unreadCount: digestData.unreadCount });
 });
 
 router.post("/:id/read", requireAuth, async (req, res) => {

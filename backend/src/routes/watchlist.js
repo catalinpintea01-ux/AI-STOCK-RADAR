@@ -1,7 +1,7 @@
 const express = require("express");
 const prisma = require("../db");
 const { requireAuth } = require("../middleware/auth");
-const { getStock } = require("../services/marketData");
+const { getStock, getTickerTape } = require("../services/marketData");
 const { getScoreChange } = require("../services/radar");
 const { getMockStocks, getMockStock } = require("../mockData/stocks");
 const { isPremium, PREMIUM_WATCHLIST_LIMIT } = require("../services/stripe");
@@ -122,7 +122,25 @@ router.get("/daily-picks", requireAuth, async (req, res) => {
   });
   const existenteSet = new Set(existente.map((i) => i.simbol));
 
-  res.json({ picks: picks.filter((p) => !existenteSet.has(p.simbol)) });
+  const ramase = picks.filter((p) => !existenteSet.has(p.simbol));
+
+  // Empty state fără fundătură: dacă nu rămâne nimic de recomandat, oferim
+  // măcar cel mai mare mover al zilei din banda ticker (cotații deja
+  // cache-uite acolo — zero apeluri Finnhub suplimentare).
+  let mover = null;
+  if (ramase.length === 0) {
+    const ticker = await getTickerTape();
+    const actiuni = ticker.filter(
+      (t) => !["SPY", "DIA", "QQQ"].includes(t.simbol) && !existenteSet.has(t.simbol)
+    );
+    if (actiuni.length > 0) {
+      mover = actiuni.reduce((max, t) =>
+        Math.abs(t.variatieProcent) > Math.abs(max.variatieProcent) ? t : max
+      );
+    }
+  }
+
+  res.json({ picks: ramase, mover });
 });
 
 // Onboarding: userul alege interese, Claude selectează N acțiuni din
@@ -195,31 +213,9 @@ router.post("/", requireAuth, async (req, res) => {
   res.status(201).json({ ok: true });
 });
 
-// Adaugă dintr-o dată toate cele 50 de acțiuni populare (aceeași listă
-// curată folosită și pe Piață în Portofoliu) — alternativă la adăugarea
-// manuală, una câte una. Nu cere cotații live (doar simbolurile), deci e
-// o operație rapidă și ieftină, indiferent de rate-limit-ul Finnhub.
-router.post("/bulk-top50", requireAuth, async (req, res) => {
-  const subscription = await prisma.subscription.findUnique({ where: { userId: req.userId } });
-  if (!isPremium(subscription)) {
-    return res.status(402).json({
-      error: "Adăugarea automată a top 50 de acțiuni este disponibilă doar cu abonamentul Premium.",
-      limitaAtinsa: true,
-    });
-  }
-
-  const simboluri = getMockStocks().map((s) => s.simbol);
-
-  for (const simbol of simboluri) {
-    await prisma.watchlist.upsert({
-      where: { userId_simbol: { userId: req.userId, simbol } },
-      update: {},
-      create: { userId: req.userId, simbol },
-    });
-  }
-
-  res.status(201).json({ adaugate: simboluri.length });
-});
+// Ruta "bulk-top50" a fost eliminată intenționat: un watchlist de 50+
+// acțiuni nu mai e personal și îneacă utilizatorul în alerte — produsul
+// împinge spre liste mici, alese manual sau prin onboarding-ul pe interese.
 
 router.delete("/:simbol", requireAuth, async (req, res) => {
   await prisma.watchlist.deleteMany({
