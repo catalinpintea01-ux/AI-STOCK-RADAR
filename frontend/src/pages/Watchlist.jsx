@@ -175,6 +175,7 @@ export default function Watchlist() {
   const [bulkProgress, setBulkProgress] = useState({ done: 0, total: 0 });
   const [dailyPicks, setDailyPicks] = useState([]);
   const [dailyMover, setDailyMover] = useState(null);
+  const [selectedDaily, setSelectedDaily] = useState(null); // simbolul coloanei selectate din grafic
   const [interese, setInterese] = useState([]);
   const [onboarding, setOnboarding] = useState(false);
   const [onboardError, setOnboardError] = useState("");
@@ -464,6 +465,52 @@ export default function Watchlist() {
     );
   }
 
+  // Graficul din Research zilnic: câștigurile descrescător în stânga,
+  // pierderile descrescător (după amploare) în dreapta; click pe o coloană
+  // aduce acțiunea alături, cu motivul și butoanele de acțiune.
+  const dailyCastiguri = dailyPicks
+    .filter((p) => p.variatieProcent >= 0)
+    .sort((a, b) => b.variatieProcent - a.variatieProcent)
+    .slice(0, 4);
+  const dailyPierderi = dailyPicks
+    .filter((p) => p.variatieProcent < 0)
+    .sort((a, b) => a.variatieProcent - b.variatieProcent)
+    .slice(0, 4);
+  const dailyMaxAbs = Math.max(
+    1,
+    ...dailyCastiguri.map((p) => Math.abs(p.variatieProcent)),
+    ...dailyPierderi.map((p) => Math.abs(p.variatieProcent))
+  );
+  const dailySelectat =
+    (selectedDaily && dailyPicks.find((p) => p.simbol === selectedDaily)) ||
+    dailyCastiguri[0] ||
+    dailyPierderi[0] ||
+    null;
+
+  function renderDailyCol(p) {
+    const inaltime = 14 + (Math.abs(p.variatieProcent) / dailyMaxAbs) * 58;
+    const selectat = dailySelectat && dailySelectat.simbol === p.simbol;
+    return (
+      <button
+        key={p.simbol}
+        type="button"
+        className={`daily-col ${selectat ? "daily-col-selected" : ""}`}
+        onClick={() => setSelectedDaily(p.simbol)}
+        aria-label={`${p.simbol}: ${p.variatieProcent.toFixed(1)}%`}
+      >
+        <span className={`daily-col-val ${p.variatieProcent >= 0 ? "gain-positive" : "gain-negative"}`}>
+          {p.variatieProcent >= 0 ? "+" : ""}
+          {p.variatieProcent.toFixed(1)}
+        </span>
+        <span
+          className={`daily-col-bar ${p.variatieProcent >= 0 ? "daily-col-bar-pos" : "daily-col-bar-neg"}`}
+          style={{ height: `${inaltime}px` }}
+        />
+        <span className="daily-col-tick">{p.simbol}</span>
+      </button>
+    );
+  }
+
   return (
     <div className="portfolio-page dash">
       <TickerTape />
@@ -725,28 +772,58 @@ export default function Watchlist() {
                 </p>
               </div>
             ) : (
-              <ul className="stock-list">
-                {dailyPicks.slice(0, 6).map((p) => (
-                  <li key={p.simbol} className="stock-row">
+              <>
+                <div className="daily-chart">
+                  <div className="daily-chart-group">
+                    <span className="daily-chart-group-label gain-positive">Creșteri</span>
+                    <div className="daily-chart-cols">
+                      {dailyCastiguri.map((p) => renderDailyCol(p))}
+                      {dailyCastiguri.length === 0 && <span className="daily-chart-none">—</span>}
+                    </div>
+                  </div>
+                  <div className="daily-chart-divider" />
+                  <div className="daily-chart-group">
+                    <span className="daily-chart-group-label gain-negative">Scăderi</span>
+                    <div className="daily-chart-cols">
+                      {dailyPierderi.map((p) => renderDailyCol(p))}
+                      {dailyPierderi.length === 0 && <span className="daily-chart-none">—</span>}
+                    </div>
+                  </div>
+                </div>
+                {dailySelectat && (
+                  <div className="daily-selected">
                     <div className="stock-row-left">
-                      <StockLogo simbol={p.simbol} />
+                      <StockLogo simbol={dailySelectat.simbol} />
                       <div>
-                        <strong>{p.simbol}</strong>
-                        <div className="muted">{p.motiv}</div>
+                        <strong>{dailySelectat.simbol}</strong>
+                        <div className="muted">{dailySelectat.nume}</div>
+                      </div>
+                      <div
+                        className={
+                          dailySelectat.variatieProcent >= 0
+                            ? "gain-positive daily-selected-var"
+                            : "gain-negative daily-selected-var"
+                        }
+                      >
+                        {dailySelectat.variatieProcent >= 0 ? "+" : ""}
+                        {dailySelectat.variatieProcent.toFixed(1)}%
                       </div>
                     </div>
-                    <div className="stock-right">
-                      <div className={p.variatieProcent >= 0 ? "gain-positive" : "gain-negative"}>
-                        {p.variatieProcent >= 0 ? "+" : ""}
-                        {p.variatieProcent.toFixed(1)}%
-                      </div>
+                    <p className="daily-selected-motiv">{dailySelectat.motiv}</p>
+                    <div className="daily-selected-actions">
+                      <button
+                        className="add-watchlist-button"
+                        onClick={() => handleAddFromDaily(dailySelectat.simbol)}
+                      >
+                        + Urmărește
+                      </button>
+                      <Link to={`/stock/${dailySelectat.simbol}`} className="view-analysis-button daily-selected-analysis">
+                        Vezi analiza →
+                      </Link>
                     </div>
-                    <button className="add-watchlist-button" onClick={() => handleAddFromDaily(p.simbol)}>
-                      +
-                    </button>
-                  </li>
-                ))}
-              </ul>
+                  </div>
+                )}
+              </>
             )}
           </section>
 

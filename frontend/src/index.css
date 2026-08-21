@@ -3116,3 +3116,139 @@ button.stat-tile:hover {
   line-height: 1.55;
   margin: 0 0 1rem;
 }
+
+/* --- Research zilnic: grafic cu coloane (creșteri | scăderi) + card selectat --- */
+
+.daily-chart {
+  display: flex;
+  align-items: flex-end;
+  gap: 0.75rem;
+}
+
+.daily-chart-group {
+  flex: 1;
+  min-width: 0;
+}
+
+.daily-chart-group-label {
+  display: block;
+  font-size: 0.66rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 0.4rem;
+}
+
+.daily-chart-cols {
+  display: flex;
+  align-items: flex-end;
+  gap: 0.35rem;
+}
+
+.daily-chart-divider {
+  width: 1px;
+  align-self: stretch;
+  background: var(--border);
+}
+
+.daily-chart-none {
+  color: var(--muted);
+  font-size: 0.8rem;
+  padding-bottom: 0.4rem;
+}
+
+.daily-col {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.25rem;
+  background: none;
+  border: none;
+  border-radius: 8px;
+  padding: 0.3rem 0.15rem 0.25rem;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.daily-col:hover {
+  background: #f4f9f9;
+}
+
+.daily-col-selected {
+  background: #eaf2ff;
+}
+
+.daily-col-selected:hover {
+  background: #eaf2ff;
+}
+
+.daily-col-val {
+  font-size: 0.62rem;
+  font-weight: 800;
+}
+
+.daily-col-bar {
+  width: 100%;
+  max-width: 26px;
+  border-radius: 6px 6px 2px 2px;
+  transition: height 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.daily-col-bar-pos {
+  background: linear-gradient(180deg, #34d399, #059669);
+}
+
+.daily-col-bar-neg {
+  background: linear-gradient(180deg, #f87171, #dc2626);
+}
+
+.daily-col-tick {
+  font-size: 0.6rem;
+  font-weight: 800;
+  color: var(--text);
+  letter-spacing: 0.02em;
+}
+
+.daily-selected {
+  margin-top: 0.85rem;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 0.8rem 0.9rem;
+  background: var(--card-bg);
+}
+
+.daily-selected .stock-row-left {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.daily-selected-var {
+  margin-left: auto;
+  font-weight: 800;
+  font-size: 0.9rem;
+}
+
+.daily-selected-motiv {
+  color: var(--muted);
+  font-size: 0.8rem;
+  line-height: 1.5;
+  margin: 0.5rem 0 0.65rem;
+}
+
+.daily-selected-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+/* În acest card butonul e acțiunea principală — rămâne vizibil și pe mobil,
+   spre deosebire de rândurile din watchlist unde tot rândul e tappabil. */
+@media (max-width: 560px) {
+  .daily-selected .daily-selected-analysis {
+    display: inline-block;
+  }
+}
