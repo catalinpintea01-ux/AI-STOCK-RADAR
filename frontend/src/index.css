@@ -3421,3 +3421,89 @@ button.stat-tile:hover {
   backdrop-filter: blur(2.5px);
   border-radius: 18px;
 }
+
+/* --- Persona cards interactive: click deschide traseul recomandat --- */
+
+.landing-persona-clickable {
+  cursor: pointer;
+}
+
+.landing-persona-open {
+  box-shadow: var(--shadow-card-hover);
+  border-color: var(--blue-light);
+}
+
+.persona-toggle {
+  display: inline-block;
+  margin-top: 0.6rem;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--blue);
+}
+
+.persona-path {
+  margin-top: 0.75rem;
+  border-top: 1px solid var(--border);
+  padding-top: 0.75rem;
+  cursor: default;
+  animation: persona-path-in 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@keyframes persona-path-in {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.persona-path-title {
+  font-size: 0.8rem;
+  font-weight: 800;
+  margin: 0 0 0.5rem;
+}
+
+.persona-path-steps {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.persona-path-steps li {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  font-size: 0.82rem;
+  line-height: 1.45;
+}
+
+.persona-path-icon {
+  flex-shrink: 0;
+}
+
+.persona-path-steps a {
+  color: var(--blue);
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.persona-path-steps a:hover {
+  text-decoration: underline;
+}
+
+.persona-path-steps span + span {
+  color: var(--muted);
+}
+
+.persona-path-cta {
+  display: inline-block;
+  margin-top: 0.85rem;
+  font-size: 0.85rem;
+  padding: 0.55rem 1.1rem;
+}

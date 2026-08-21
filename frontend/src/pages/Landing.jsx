@@ -294,7 +294,7 @@ export default function Landing() {
 
       <section className="landing-section">
         <h2 className="landing-section-title">Gândit pentru oameni ca tine</h2>
-        <PersonaCards />
+        <PersonaCards variant="public" />
       </section>
 
       <section className="landing-section">

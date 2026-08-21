@@ -124,27 +124,38 @@ router.get("/daily-picks", requireAuth, async (req, res) => {
 
   const ramase = picks.filter((p) => !existenteSet.has(p.simbol));
 
-  // Utilizatorii cu watchlist mare filtrează aproape tot ce a ales Claude —
-  // completăm până la minim 6 cu următoarele mișcări notabile ne-urmărite
-  // din univers (cotațiile sunt deja în cache-ul listei, fără apeluri noi).
-  const MIN_PICKS = 6;
-  if (ramase.length < MIN_PICKS) {
-    const univers = await getStockList();
+  // Graficul din frontend are două grupuri (creșteri | scăderi). Pe o zi în
+  // care piața e într-o singură direcție, "cele mai mari mișcări" cad toate
+  // pe aceeași parte — așa că garantăm minim 3 pe fiecare parte (dacă există
+  // în univers), din cotațiile deja cache-uite, fără apeluri externe noi.
+  const MIN_PE_PARTE = 3;
+  const univers = await getStockList();
+  const laForma = (s) => ({
+    simbol: s.simbol,
+    nume: s.nume,
+    pret: s.pret,
+    variatieProcent: s.variatieProcent,
+    motiv:
+      s.variatieProcent >= 0
+        ? "Printre cele mai mari creșteri de preț de azi."
+        : "Printre cele mai mari scăderi de preț de azi.",
+  });
+
+  for (const semn of [1, -1]) {
+    const peParte = ramase.filter((p) => (semn > 0 ? p.variatieProcent >= 0 : p.variatieProcent < 0));
+    if (peParte.length >= MIN_PE_PARTE) continue;
+
     const dejaAfisate = new Set(ramase.map((p) => p.simbol));
     const completare = univers
-      .filter((s) => !existenteSet.has(s.simbol) && !dejaAfisate.has(s.simbol))
+      .filter(
+        (s) =>
+          !existenteSet.has(s.simbol) &&
+          !dejaAfisate.has(s.simbol) &&
+          (semn > 0 ? s.variatieProcent > 0 : s.variatieProcent < 0)
+      )
       .sort((a, b) => Math.abs(b.variatieProcent) - Math.abs(a.variatieProcent))
-      .slice(0, MIN_PICKS - ramase.length)
-      .map((s) => ({
-        simbol: s.simbol,
-        nume: s.nume,
-        pret: s.pret,
-        variatieProcent: s.variatieProcent,
-        motiv:
-          s.variatieProcent >= 0
-            ? "Printre cele mai mari creșteri de preț de azi."
-            : "Printre cele mai mari scăderi de preț de azi.",
-      }));
+      .slice(0, MIN_PE_PARTE - peParte.length)
+      .map(laForma);
     ramase.push(...completare);
   }
 
