@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { api } from "../api";
 import StockLogo from "./StockLogo.jsx";
@@ -50,6 +50,21 @@ export default function ToolsPro() {
   const [comparatie, setComparatie] = useState(null);
   const [compareLoading, setCompareLoading] = useState(false);
   const [compareError, setCompareError] = useState("");
+  const autoCompareRulat = useRef(false);
+
+  async function runCompare(a, b) {
+    setCompareError("");
+    setCompareLoading(true);
+    setComparatie(null);
+    try {
+      const data = await api.getToolCompare(a, b);
+      setComparatie(data);
+    } catch (err) {
+      setCompareError(err.message);
+    } finally {
+      setCompareLoading(false);
+    }
+  }
 
   async function runScreener(filtre) {
     setScreenerLoading(true);
@@ -59,6 +74,15 @@ export default function ToolsPro() {
       setScreenerTotal(data.totalAnalizate ?? data.rezultate.length);
       setScreenerShowAll(false);
       setDeblocat(true);
+
+      // La prima confirmare de Premium, comparatorul pornește singur cu o
+      // pereche demonstrativă — fără panou gol până tastezi două simboluri.
+      if (!autoCompareRulat.current) {
+        autoCompareRulat.current = true;
+        setSimbolA("AAPL");
+        setSimbolB("MSFT");
+        runCompare("AAPL", "MSFT");
+      }
     } catch (err) {
       // 402 = cont gratuit: panourile rămân vizibile, dar sub overlay-ul
       // de upgrade — utilizatorul vede exact ce ar primi cu Premium.
@@ -97,19 +121,9 @@ export default function ToolsPro() {
     runScreener(params);
   }
 
-  async function handleCompare(e) {
+  function handleCompare(e) {
     e.preventDefault();
-    setCompareError("");
-    setCompareLoading(true);
-    setComparatie(null);
-    try {
-      const data = await api.getToolCompare(simbolA, simbolB);
-      setComparatie(data);
-    } catch (err) {
-      setCompareError(err.message);
-    } finally {
-      setCompareLoading(false);
-    }
+    runCompare(simbolA, simbolB);
   }
 
   const blocat = deblocat === false;

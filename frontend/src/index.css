@@ -3387,9 +3387,17 @@ button.stat-tile:hover {
   }
 }
 
+/* Pe mobil sub-scorurile nu dispar — trec pe o a doua linie a rândului,
+   ca toate informațiile screener-ului să fie vizibile și pe telefon. */
 @media (max-width: 560px) {
+  .screener-list .watch-row-link {
+    flex-wrap: wrap;
+  }
   .screener-subs {
-    display: none; /* pe mobil rămân simbol + sector + scor — sub-scorurile n-au loc */
+    order: 10;
+    flex-basis: 100%;
+    margin-left: 0;
+    margin-top: 0.25rem;
   }
 }
 
