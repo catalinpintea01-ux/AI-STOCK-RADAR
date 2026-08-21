@@ -119,7 +119,7 @@ const FAQ = [
   {
     intrebare: "Ce primesc în plus la Premium?",
     raspuns:
-      "Watchlist nelimitat (planul gratuit e limitat la 5 acțiuni urmărite) și tool-urile Pro: topul scorurilor AI, screener cu filtre pe verdict/sector/scor și comparatorul de acțiuni față în față.",
+      "Watchlist nelimitat (planul gratuit e limitat la 3 acțiuni urmărite), toate cele 7 știri analizate AI pe zi, research zilnic complet și tool-urile Pro: screener cu filtre și comparatorul de acțiuni față în față. Primele 3 zile sunt gratuite — introduci cardul la activare și poți anula oricând înainte de prima plată.",
   },
   {
     intrebare: "Pot renunța oricând?",
@@ -129,17 +129,18 @@ const FAQ = [
 ];
 
 const FREE_FEATURES = [
-  "5 acțiuni urmărite",
+  "3 acțiuni urmărite",
   "Scoruri AI complete (4 sub-scoruri + verdict)",
-  "Research zilnic și știri analizate AI",
-  "Calendar de raportări și alerte",
+  "3 știri analizate AI pe zi",
+  "Digest zilnic și calendar de raportări",
   "Portofoliu virtual de 10.000 USD",
 ];
 
 const PREMIUM_FEATURES = [
-  "Tot ce e inclus în Gratuit",
+  "Primele 3 zile gratuite, anulezi oricând",
   "Watchlist nelimitat",
-  "Tool-uri Pro: top scoruri, screener, comparator",
+  "Toate cele 7 știri analizate AI + research complet",
+  "Tool-uri Pro: screener și comparator A vs B",
   "Gestionare abonament direct din aplicație",
 ];
 

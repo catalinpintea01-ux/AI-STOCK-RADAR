@@ -4,8 +4,13 @@ const { getCompanyProfile, getInsiderTransactions } = require("../services/funda
 const { getOrComputeRadarScore, getScoreChange } = require("../services/radar");
 const { getCompanyNews } = require("../services/news");
 const { getAnalyzedMarketNews, getMarketNewsById } = require("../services/marketNewsAnalysis");
+const { requireAuth } = require("../middleware/auth");
+const prisma = require("../db");
+const { isPremium } = require("../services/stripe");
 
 const router = express.Router();
+
+const FREE_NEWS_LIMIT = 3; // planul gratuit vede primele 3 (cele mai relevante); Premium — toate 7
 
 router.get("/search", async (req, res) => {
   const results = await searchStocks(req.query.q || "");
@@ -22,9 +27,16 @@ router.get("/ticker", async (req, res) => {
   res.json({ ticker });
 });
 
-router.get("/market-news", async (req, res) => {
+router.get("/market-news", requireAuth, async (req, res) => {
   const news = await getAnalyzedMarketNews();
-  res.json({ news });
+
+  const subscription = await prisma.subscription.findUnique({ where: { userId: req.userId } });
+  if (isPremium(subscription)) {
+    return res.json({ news, total: news.length });
+  }
+  // total > lungimea listei îi spune frontend-ului câte știri există în plus
+  // pentru Premium — diferența e vizibilă, nu ascunsă.
+  res.json({ news: news.slice(0, FREE_NEWS_LIMIT), total: news.length });
 });
 
 router.get("/market-news/:id", async (req, res) => {

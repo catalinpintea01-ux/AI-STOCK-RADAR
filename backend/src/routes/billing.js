@@ -1,7 +1,7 @@
 const express = require("express");
 const prisma = require("../db");
 const { requireAuth } = require("../middleware/auth");
-const { stripe, getOrCreateCustomer, isPremium } = require("../services/stripe");
+const { stripe, getOrCreateCustomer, isPremium, TRIAL_DAYS } = require("../services/stripe");
 
 const router = express.Router();
 
@@ -41,6 +41,9 @@ router.post("/checkout", requireAuth, async (req, res) => {
     customer: customerId,
     mode: "subscription",
     line_items: [{ price: process.env.STRIPE_PRICE_ID, quantity: 1 }],
+    // Trial de 3 zile cu cardul introdus la checkout: Stripe colectează cardul
+    // acum și pornește facturarea automat la finalul trialului, dacă nu anulează.
+    subscription_data: { trial_period_days: TRIAL_DAYS },
     success_url: `${FRONTEND_URL}/portofoliu?plata=succes`,
     cancel_url: `${FRONTEND_URL}/portofoliu?plata=anulat`,
     metadata: { userId: req.userId },

@@ -6,16 +6,17 @@ import Disclaimer from "../components/Disclaimer.jsx";
 // primește în plus înainte să plătească — nu doar un buton "Premium".
 // Toate diferențele listate sunt reale, aplicate server-side (402).
 const RANDURI = [
-  { functie: "Acțiuni urmărite în radar", gratuit: "5", premium: "Nelimitat" },
+  { functie: "Acțiuni urmărite în radar", gratuit: "3", premium: "Nelimitat" },
   { functie: "Scoruri AI complete (4 sub-scoruri + verdict + factori)", gratuit: true, premium: true },
   { functie: "Digest zilnic cu schimbările importante", gratuit: true, premium: true },
-  { functie: "Research zilnic + știri analizate AI", gratuit: true, premium: true },
+  { functie: "📰 Știri analizate AI pe zi", gratuit: "3", premium: "7" },
+  { functie: "🧭 Research zilnic (creșteri + scăderi)", gratuit: "2 + 2", premium: "4 + 4" },
   { functie: "Portofoliu virtual de 10.000 USD", gratuit: true, premium: true },
   { functie: "Calendar de raportări", gratuit: true, premium: true },
   { functie: "🏆 Top scoruri AI din tot universul", gratuit: true, premium: true },
   { functie: "🔎 Screener AI (verdict / sector / scor / sortare)", gratuit: false, premium: true },
   { functie: "⚖️ Comparator A vs B (scoruri + preț, față în față)", gratuit: false, premium: true },
-  { functie: "🎯 Onboarding pe interese cu 10 acțiuni dintr-o dată", gratuit: "până la limita de 5", premium: true },
+  { functie: "🎯 Onboarding pe interese cu 10 acțiuni dintr-o dată", gratuit: "până la limita de 3", premium: true },
 ];
 
 function Celula({ valoare }) {
@@ -88,7 +89,7 @@ export default function Premium() {
               </th>
               <th className="premium-col">
                 ⭐ Premium
-                <span className="premium-price">29,99 RON/lună</span>
+                <span className="premium-price">3 zile gratuit, apoi 29,99 RON/lună</span>
               </th>
             </tr>
           </thead>
@@ -110,11 +111,12 @@ export default function Premium() {
         {premium === false && (
           <div className="premium-cta-row">
             <button className="landing-cta" onClick={handleUpgrade} disabled={loading}>
-              {loading ? "Se deschide plata..." : "⭐ Treci la Premium →"}
+              {loading ? "Se deschide activarea..." : "⭐ Începe cu 3 zile gratuit →"}
             </button>
             <p className="muted premium-note">
-              Plată securizată prin Stripe · Anulezi oricând, direct din aplicație · Rămâi cu acces
-              până la finalul perioadei plătite
+              Cardul se introduce la activare, prin Stripe · Primele 3 zile sunt gratuite, apoi
+              abonamentul continuă automat cu 29,99 RON/lună · Anulezi oricând în perioada de
+              probă și nu plătești nimic
             </p>
           </div>
         )}

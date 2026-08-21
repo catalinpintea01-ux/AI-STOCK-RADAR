@@ -175,6 +175,21 @@ router.get("/daily-picks", requireAuth, async (req, res) => {
     }
   }
 
+  // Diferență de plan vizibilă în grafic: gratuit vede 2 acțiuni pe parte,
+  // Premium 4 — restul diferențelor de plan sunt aplicate tot server-side.
+  const subscription = await prisma.subscription.findUnique({ where: { userId: req.userId } });
+  if (!isPremium(subscription)) {
+    const castiguri = ramase
+      .filter((p) => p.variatieProcent >= 0)
+      .sort((a, b) => b.variatieProcent - a.variatieProcent)
+      .slice(0, 2);
+    const pierderi = ramase
+      .filter((p) => p.variatieProcent < 0)
+      .sort((a, b) => a.variatieProcent - b.variatieProcent)
+      .slice(0, 2);
+    return res.json({ picks: [...castiguri, ...pierderi], mover });
+  }
+
   res.json({ picks: ramase, mover });
 });
 

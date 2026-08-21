@@ -3601,3 +3601,11 @@ button.stat-tile:hover {
   font-size: 0.75rem;
   margin-top: 0.7rem;
 }
+
+/* Teaser Premium sub știrile din sidebar (plan gratuit) */
+.news-premium-teaser {
+  display: block;
+  text-align: center;
+  text-decoration: none;
+  color: var(--blue);
+}

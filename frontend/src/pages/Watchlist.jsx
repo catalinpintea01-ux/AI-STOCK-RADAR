@@ -159,6 +159,7 @@ export default function Watchlist() {
   const [items, setItems] = useState(null);
   const [holdings, setHoldings] = useState({});
   const [marketNews, setMarketNews] = useState([]);
+  const [marketNewsTotal, setMarketNewsTotal] = useState(0);
   const [showAllNews, setShowAllNews] = useState(false);
   const [earnings, setEarnings] = useState([]);
   const [earningsRecomandate, setEarningsRecomandate] = useState([]);
@@ -241,7 +242,10 @@ export default function Watchlist() {
       .catch(() => {});
     api
       .getMarketNews()
-      .then((data) => setMarketNews(data.news))
+      .then((data) => {
+        setMarketNews(data.news);
+        setMarketNewsTotal(data.total ?? data.news.length);
+      })
       .catch(() => {});
     api
       .getEarningsCalendar()
@@ -869,6 +873,11 @@ export default function Watchlist() {
                   <button className="show-more-button" onClick={() => setShowAllNews((v) => !v)}>
                     {showAllNews ? "Restrânge ↑" : `Arată toate (${marketNews.length})`}
                   </button>
+                )}
+                {marketNewsTotal > marketNews.length && (
+                  <Link to="/premium" className="show-more-button news-premium-teaser">
+                    🔒 +{marketNewsTotal - marketNews.length} știri analizate azi, cu Premium →
+                  </Link>
                 )}
               </>
             )}
