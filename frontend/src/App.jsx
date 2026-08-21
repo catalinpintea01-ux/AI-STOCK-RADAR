@@ -10,6 +10,7 @@ import NewsDetail from "./pages/NewsDetail.jsx";
 import Alerts from "./pages/Alerts.jsx";
 import Learn from "./pages/Learn.jsx";
 import Community from "./pages/Community.jsx";
+import Methodology from "./pages/Methodology.jsx";
 import NavBar from "./components/NavBar.jsx";
 
 function PrivateLayout({ children }) {
@@ -78,6 +79,14 @@ export default function App() {
         element={
           <PrivateLayout>
             <Learn />
+          </PrivateLayout>
+        }
+      />
+      <Route
+        path="/metodologie"
+        element={
+          <PrivateLayout>
+            <Methodology />
           </PrivateLayout>
         }
       />

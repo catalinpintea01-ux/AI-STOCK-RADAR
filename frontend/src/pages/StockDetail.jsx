@@ -183,7 +183,12 @@ export default function StockDetail() {
       </section>
 
       <section className="holdings">
-        <h2>AI Radar</h2>
+        <h2>
+          AI Radar{" "}
+          <Link to="/metodologie" className="methodology-link">
+            Cum calculăm scorul →
+          </Link>
+        </h2>
         {radarLoading ? (
           <p className="data-source">Se analizează acțiunea (poate dura câteva secunde)...</p>
         ) : radar ? (

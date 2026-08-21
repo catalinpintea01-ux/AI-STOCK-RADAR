@@ -25,6 +25,23 @@ const VERDICT_CHIP = {
   rezervat: "🟠 Rezervat",
 };
 
+// Cei mai marcanți 2 factori din spatele scorului, derivați determinist din
+// sub-scoruri — un "88" fără explicație nu inspiră încredere. Pragurile
+// oglindesc verdictul din radar.js: ≥60 punct forte, ≤40 punct slab.
+function factoriPrincipali(radar) {
+  const factori = [
+    { val: radar.scorAnalist, pozitiv: "analiști încrezători", negativ: "analiști rezervați" },
+    { val: radar.scorMomentum, pozitiv: "momentum puternic", negativ: "momentum slab" },
+    { val: radar.scorFundamental, pozitiv: "fundamentale solide", negativ: "fundamentale fragile" },
+    { val: 100 - radar.scorRisc, pozitiv: "risc scăzut", negativ: "risc ridicat" },
+  ];
+  return factori
+    .filter((f) => f.val >= 60 || f.val <= 40)
+    .sort((a, b) => Math.abs(b.val - 50) - Math.abs(a.val - 50))
+    .slice(0, 2)
+    .map((f) => (f.val >= 60 ? f.pozitiv : f.negativ));
+}
+
 function formatDelta(n) {
   const clasa = n > 0 ? "gain-positive" : n < 0 ? "gain-negative" : "muted";
   const semn = n > 0 ? `▲ +${n}` : n < 0 ? `▼ ${n}` : "→ 0";
@@ -414,6 +431,9 @@ export default function Watchlist() {
               </span>
             )}
             <div className="muted">{item.radar ? VERDICT_CHIP[item.radar.verdict] || item.radar.verdict : "Neanalizat încă"}</div>
+            {item.radar && factoriPrincipali(item.radar).length > 0 && (
+              <div className="row-factors">{factoriPrincipali(item.radar).join(" · ")}</div>
+            )}
           </div>
           {item.radar && <ScoreRing score={item.radar.scorCompozit} verdict={item.radar.verdict} />}
           <Sparkline puncte={item.istoricPret} />
@@ -458,7 +478,10 @@ export default function Watchlist() {
                 <TypewriterText phrases={TAGLINE_PHRASES} />
               </span>
             </div>
-            <p className="cash">Urmărește acțiuni și primești context AI despre ele — nu recomandări de tranzacționare.</p>
+            <p className="cash">
+              Urmărește acțiuni și primești context AI despre ele — nu recomandări de
+              tranzacționare. <Link to="/metodologie" className="methodology-link">Cum calculăm scorul →</Link>
+            </p>
           </div>
         </div>
 
@@ -703,7 +726,7 @@ export default function Watchlist() {
               </div>
             ) : (
               <ul className="stock-list">
-                {dailyPicks.slice(0, 4).map((p) => (
+                {dailyPicks.slice(0, 6).map((p) => (
                   <li key={p.simbol} className="stock-row">
                     <div className="stock-row-left">
                       <StockLogo simbol={p.simbol} />
