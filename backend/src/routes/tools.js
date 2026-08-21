@@ -4,6 +4,7 @@ const { requireAuth } = require("../middleware/auth");
 const { isPremium } = require("../services/stripe");
 const { getMockStock } = require("../mockData/stocks");
 const { getOrComputeRadarScore } = require("../services/radar");
+const { getStock } = require("../services/marketData");
 
 const router = express.Router();
 
@@ -30,6 +31,11 @@ function imbogateste(s) {
     sector: mock?.sector || "Altele",
     scorCompozit: s.scorCompozit,
     verdict: s.verdict,
+    incredere: s.incredere,
+    scorAnalist: s.scorAnalist,
+    scorMomentum: s.scorMomentum,
+    scorFundamental: s.scorFundamental,
+    scorRisc: s.scorRisc,
   };
 }
 
@@ -43,13 +49,22 @@ router.get("/top", async (req, res) => {
   res.json({ top: scoruri.map(imbogateste) });
 });
 
-// Screener pe scorurile deja calculate: verdict + sector + scor minim.
-// Filtrarea pe sector se face în memorie (sectorul vine din universul curat,
-// nu din DB) — la <100 de scoruri e neglijabil.
-router.get("/screener", async (req, res) => {
-  const { verdict, sector, minScor } = req.query;
-  const scoruri = await prisma.radarScore.findMany({ orderBy: { scorCompozit: "desc" } });
+// Screener pe scorurile deja calculate: verdict + sector + scor minim +
+// criteriu de sortare. Filtrarea/sortarea se fac în memorie (sectorul vine
+// din universul curat, nu din DB) — la <100 de scoruri e neglijabil.
+const SORT_KEYS = {
+  compozit: (s) => -s.scorCompozit,
+  analist: (s) => -s.scorAnalist,
+  momentum: (s) => -s.scorMomentum,
+  fundamental: (s) => -s.scorFundamental,
+  risc: (s) => s.scorRisc, // crescător: risc mic primul
+};
 
+router.get("/screener", async (req, res) => {
+  const { verdict, sector, minScor, sort } = req.query;
+  const scoruri = await prisma.radarScore.findMany();
+
+  const cheie = SORT_KEYS[sort] || SORT_KEYS.compozit;
   const rezultate = scoruri
     .map(imbogateste)
     .filter((s) => {
@@ -58,9 +73,10 @@ router.get("/screener", async (req, res) => {
       if (minScor && s.scorCompozit < Number(minScor)) return false;
       return true;
     })
+    .sort((a, b) => cheie(a) - cheie(b))
     .slice(0, 20);
 
-  res.json({ rezultate });
+  res.json({ rezultate, totalAnalizate: scoruri.length });
 });
 
 function comparaScor(eticheta, a, b, simbolA, simbolB) {
@@ -80,9 +96,16 @@ router.get("/compare", async (req, res) => {
 
   try {
     const [ra, rb] = await Promise.all([getOrComputeRadarScore(a), getOrComputeRadarScore(b)]);
+    // Cotații live doar pentru cele 2 simboluri — ieftin și face comparația
+    // completă (scor + preț + variație + sector), nu doar scoruri.
+    const [qa, qb] = await Promise.all([getStock(a), getStock(b)]);
 
-    const strip = (r) => ({
+    const strip = (r, q) => ({
       simbol: r.simbol,
+      nume: getMockStock(r.simbol)?.nume || r.simbol,
+      sector: getMockStock(r.simbol)?.sector || "—",
+      pret: q?.pret ?? null,
+      variatieProcent: q?.variatieProcent ?? null,
       scorCompozit: r.scorCompozit,
       verdict: r.verdict,
       incredere: r.incredere,
@@ -102,7 +125,7 @@ router.get("/compare", async (req, res) => {
         : `Risc: ${ra.scorRisc < rb.scorRisc ? a : b} are scorul de risc mai scăzut (${Math.min(ra.scorRisc, rb.scorRisc)} vs ${Math.max(ra.scorRisc, rb.scorRisc)}).`,
     ];
 
-    res.json({ a: strip(ra), b: strip(rb), diferente });
+    res.json({ a: strip(ra, qa), b: strip(rb, qb), diferente });
   } catch (err) {
     console.error(`[tools] comparare ${a} vs ${b}: ${err.message}`);
     res.status(404).json({ error: "Nu am putut calcula scorurile — verifică simbolurile." });

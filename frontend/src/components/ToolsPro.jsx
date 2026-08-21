@@ -12,11 +12,22 @@ const VERDICT_CHIP = {
 
 const SECTOARE = ["Tehnologie", "Financiar", "Sănătate", "Consum", "Energie", "Industrial", "Telecom"];
 
-const SUB_SCORURI = [
-  { key: "scorAnalist", label: "Analiști" },
-  { key: "scorMomentum", label: "Momentum" },
-  { key: "scorFundamental", label: "Fundamental" },
-  { key: "scorRisc", label: "Risc" },
+const SORT_OPTIONS = [
+  { value: "compozit", label: "Scor AI (desc.)" },
+  { value: "analist", label: "Analiști (desc.)" },
+  { value: "momentum", label: "Momentum (desc.)" },
+  { value: "fundamental", label: "Fundamentale (desc.)" },
+  { value: "risc", label: "Risc scăzut întâi" },
+];
+
+// Rândurile tabelului comparator: cheia din răspuns + cum se decide valoarea
+// "mai bună" (evidențiată doar factual — scor mai mare, respectiv risc mai mic).
+const CMP_ROWS = [
+  { key: "scorCompozit", label: "Scor AI", higherWins: true },
+  { key: "scorAnalist", label: "Tendința analiștilor", higherWins: true },
+  { key: "scorMomentum", label: "Momentum", higherWins: true },
+  { key: "scorFundamental", label: "Fundamentale", higherWins: true },
+  { key: "scorRisc", label: "Risc (mai mic = mai calm)", higherWins: false },
 ];
 
 export default function ToolsPro() {
@@ -27,8 +38,11 @@ export default function ToolsPro() {
   const [verdict, setVerdict] = useState("");
   const [sector, setSector] = useState("");
   const [minScor, setMinScor] = useState("");
+  const [sortBy, setSortBy] = useState("compozit");
   const [screenerRezultate, setScreenerRezultate] = useState(null);
+  const [screenerTotal, setScreenerTotal] = useState(0);
   const [screenerLoading, setScreenerLoading] = useState(false);
+  const [screenerShowAll, setScreenerShowAll] = useState(false);
 
   const [simbolA, setSimbolA] = useState("");
   const [simbolB, setSimbolB] = useState("");
@@ -36,14 +50,30 @@ export default function ToolsPro() {
   const [compareLoading, setCompareLoading] = useState(false);
   const [compareError, setCompareError] = useState("");
 
+  async function runScreener(filtre) {
+    setScreenerLoading(true);
+    try {
+      const data = await api.getToolScreener(filtre);
+      setScreenerRezultate(data.rezultate);
+      setScreenerTotal(data.totalAnalizate ?? data.rezultate.length);
+      setScreenerShowAll(false);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setScreenerLoading(false);
+    }
+  }
+
   // O singură verificare de acces pentru toate cele 3 tool-uri: dacă /top
   // răspunde 402, arătăm cardul de deblocare în locul întregii secțiuni.
+  // La deblocare, screener-ul pornește singur — fără panouri goale.
   useEffect(() => {
     api
       .getToolTop()
       .then((data) => {
         setTop(data.top);
         setDeblocat(true);
+        runScreener({ sort: "compozit" });
       })
       .catch((err) => {
         if (String(err.message).includes("Premium")) setDeblocat(false);
@@ -60,21 +90,13 @@ export default function ToolsPro() {
     }
   }
 
-  async function handleScreener(e) {
+  function handleScreener(e) {
     e.preventDefault();
-    setScreenerLoading(true);
-    try {
-      const params = {};
-      if (verdict) params.verdict = verdict;
-      if (sector) params.sector = sector;
-      if (minScor) params.minScor = minScor;
-      const data = await api.getToolScreener(params);
-      setScreenerRezultate(data.rezultate);
-    } catch (err) {
-      console.error(err);
-    } finally {
-      setScreenerLoading(false);
-    }
+    const params = { sort: sortBy };
+    if (verdict) params.verdict = verdict;
+    if (sector) params.sector = sector;
+    if (minScor) params.minScor = minScor;
+    runScreener(params);
   }
 
   async function handleCompare(e) {
@@ -115,6 +137,9 @@ export default function ToolsPro() {
     );
   }
 
+  const rezultateVizibile =
+    screenerRezultate === null ? null : screenerShowAll ? screenerRezultate : screenerRezultate.slice(0, 8);
+
   return (
     <section className="tools-section">
       <div className="tools-section-head">
@@ -126,7 +151,7 @@ export default function ToolsPro() {
       </div>
 
       <div className="tools-grid">
-        <div className="panel">
+        <div className="panel tools-panel-top">
           <div className="panel-head">
             <div>
               <p className="eyebrow">Ranking</p>
@@ -158,61 +183,7 @@ export default function ToolsPro() {
           )}
         </div>
 
-        <div className="panel">
-          <div className="panel-head">
-            <div>
-              <p className="eyebrow">Filtrare</p>
-              <h2>🔎 Screener AI</h2>
-            </div>
-          </div>
-          <form className="tools-screener-form" onSubmit={handleScreener}>
-            <select value={verdict} onChange={(e) => setVerdict(e.target.value)}>
-              <option value="">Orice verdict</option>
-              <option value="optimist">🔵 Optimist</option>
-              <option value="neutru">⚪ Neutru</option>
-              <option value="rezervat">🟠 Rezervat</option>
-            </select>
-            <select value={sector} onChange={(e) => setSector(e.target.value)}>
-              <option value="">Orice sector</option>
-              {SECTOARE.map((s) => (
-                <option key={s} value={s}>
-                  {s}
-                </option>
-              ))}
-            </select>
-            <select value={minScor} onChange={(e) => setMinScor(e.target.value)}>
-              <option value="">Orice scor</option>
-              <option value="50">Scor ≥ 50</option>
-              <option value="60">Scor ≥ 60</option>
-              <option value="70">Scor ≥ 70</option>
-            </select>
-            <button type="submit" className="add-watchlist-button" disabled={screenerLoading}>
-              {screenerLoading ? "Filtrez..." : "Filtrează"}
-            </button>
-          </form>
-          {screenerRezultate !== null &&
-            (screenerRezultate.length === 0 ? (
-              <p className="empty">Nicio acțiune analizată nu se potrivește filtrelor.</p>
-            ) : (
-              <ul className="stock-list">
-                {screenerRezultate.slice(0, 8).map((s) => (
-                  <li key={s.simbol} className="stock-row">
-                    <Link to={`/stock/${s.simbol}`} className="watch-row-link">
-                      <StockLogo simbol={s.simbol} />
-                      <div>
-                        <strong>{s.simbol}</strong>
-                        <div className="muted">{s.sector}</div>
-                      </div>
-                      <span className="tool-score">{s.scorCompozit}</span>
-                      <span className="row-chevron">›</span>
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            ))}
-        </div>
-
-        <div className="panel">
+        <div className="panel tools-panel-compare">
           <div className="panel-head">
             <div>
               <p className="eyebrow">Față în față</p>
@@ -238,34 +209,151 @@ export default function ToolsPro() {
             </button>
           </form>
           {compareError && <div className="error">{compareError}</div>}
+          {!comparatie && !compareLoading && !compareError && (
+            <p className="tools-compare-hint muted">
+              Introdu două simboluri și primești scorurile complete față în față: sub-scoruri, verdict, preț și
+              variația zilei — cu valoarea mai ridicată evidențiată la fiecare criteriu.
+            </p>
+          )}
           {comparatie && (
             <div className="tools-compare-result">
               <div className="tools-compare-cols">
                 {[comparatie.a, comparatie.b].map((r) => (
                   <div key={r.simbol} className="tools-compare-col">
-                    <Link to={`/stock/${r.simbol}`} className="tools-compare-symbol">
-                      {r.simbol}
-                    </Link>
+                    <div className="tools-compare-id">
+                      <StockLogo simbol={r.simbol} />
+                      <div>
+                        <Link to={`/stock/${r.simbol}`} className="tools-compare-symbol">
+                          {r.simbol}
+                        </Link>
+                        <div className="muted tools-compare-name">{r.nume}</div>
+                      </div>
+                    </div>
                     <ScoreRing score={r.scorCompozit} verdict={r.verdict} />
                     <span className="muted">{VERDICT_CHIP[r.verdict] || r.verdict}</span>
-                    <ul className="tools-compare-subs">
-                      {SUB_SCORURI.map((s) => (
-                        <li key={s.key}>
-                          <span>{s.label}</span>
-                          <strong>{r[s.key]}</strong>
-                        </li>
-                      ))}
-                    </ul>
+                    {r.pret !== null && (
+                      <div className="tools-compare-price">
+                        ${r.pret.toFixed(2)}{" "}
+                        <span className={r.variatieProcent >= 0 ? "gain-positive" : "gain-negative"}>
+                          {r.variatieProcent >= 0 ? "+" : ""}
+                          {r.variatieProcent.toFixed(1)}%
+                        </span>
+                      </div>
+                    )}
+                    <span className="muted tools-compare-sector">{r.sector}</span>
                   </div>
                 ))}
               </div>
-              <ul className="tools-compare-diffs">
-                {comparatie.diferente.map((d) => (
-                  <li key={d}>{d}</li>
-                ))}
-              </ul>
+
+              <table className="cmp-table">
+                <tbody>
+                  {CMP_ROWS.map((row) => {
+                    const va = comparatie.a[row.key];
+                    const vb = comparatie.b[row.key];
+                    const aWins = row.higherWins ? va > vb : va < vb;
+                    const bWins = row.higherWins ? vb > va : vb < va;
+                    return (
+                      <tr key={row.key}>
+                        <td className={aWins ? "cmp-win" : ""}>{va}</td>
+                        <th>{row.label}</th>
+                        <td className={bWins ? "cmp-win" : ""}>{vb}</td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+
+              <div className="tools-compare-links">
+                <Link to={`/stock/${comparatie.a.simbol}`} className="view-analysis-button">
+                  Analiza {comparatie.a.simbol} →
+                </Link>
+                <Link to={`/stock/${comparatie.b.simbol}`} className="view-analysis-button">
+                  Analiza {comparatie.b.simbol} →
+                </Link>
+              </div>
             </div>
           )}
+        </div>
+
+        <div className="panel tools-panel-screener">
+          <div className="panel-head">
+            <div>
+              <p className="eyebrow">Filtrare</p>
+              <h2>🔎 Screener AI</h2>
+            </div>
+            {screenerRezultate !== null && (
+              <span className="muted tools-note">
+                {screenerRezultate.length} rezultate · {screenerTotal} acțiuni analizate
+              </span>
+            )}
+          </div>
+          <form className="tools-screener-form" onSubmit={handleScreener}>
+            <select value={verdict} onChange={(e) => setVerdict(e.target.value)}>
+              <option value="">Orice verdict</option>
+              <option value="optimist">🔵 Optimist</option>
+              <option value="neutru">⚪ Neutru</option>
+              <option value="rezervat">🟠 Rezervat</option>
+            </select>
+            <select value={sector} onChange={(e) => setSector(e.target.value)}>
+              <option value="">Orice sector</option>
+              {SECTOARE.map((s) => (
+                <option key={s} value={s}>
+                  {s}
+                </option>
+              ))}
+            </select>
+            <select value={minScor} onChange={(e) => setMinScor(e.target.value)}>
+              <option value="">Orice scor</option>
+              <option value="50">Scor ≥ 50</option>
+              <option value="60">Scor ≥ 60</option>
+              <option value="70">Scor ≥ 70</option>
+            </select>
+            <select value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
+              {SORT_OPTIONS.map((o) => (
+                <option key={o.value} value={o.value}>
+                  {o.label}
+                </option>
+              ))}
+            </select>
+            <button type="submit" className="add-watchlist-button" disabled={screenerLoading}>
+              {screenerLoading ? "Filtrez..." : "Filtrează"}
+            </button>
+          </form>
+          {rezultateVizibile !== null &&
+            (rezultateVizibile.length === 0 ? (
+              <p className="empty">Nicio acțiune analizată nu se potrivește filtrelor.</p>
+            ) : (
+              <>
+                <ul className="stock-list screener-list">
+                  {rezultateVizibile.map((s) => (
+                    <li key={s.simbol} className="stock-row">
+                      <Link to={`/stock/${s.simbol}`} className="watch-row-link">
+                        <StockLogo simbol={s.simbol} />
+                        <div className="screener-id">
+                          <strong>{s.simbol}</strong>
+                          <div className="muted">
+                            {s.sector} · {VERDICT_CHIP[s.verdict] || s.verdict}
+                          </div>
+                        </div>
+                        <div className="screener-subs">
+                          <span title="Analiști">A {s.scorAnalist}</span>
+                          <span title="Momentum">M {s.scorMomentum}</span>
+                          <span title="Fundamentale">F {s.scorFundamental}</span>
+                          <span title="Risc">R {s.scorRisc}</span>
+                        </div>
+                        <span className="tool-score">{s.scorCompozit}</span>
+                        <span className="row-chevron">›</span>
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+                {screenerRezultate.length > 8 && !screenerShowAll && (
+                  <button className="show-more-button" onClick={() => setScreenerShowAll(true)}>
+                    Arată toate ({screenerRezultate.length})
+                  </button>
+                )}
+              </>
+            ))}
         </div>
       </div>
     </section>

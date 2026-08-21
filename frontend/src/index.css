@@ -101,7 +101,7 @@ body {
 }
 
 .navbar {
-  max-width: 960px;
+  max-width: 1180px; /* aliniat cu .dash — altfel meniul pare decalat pe desktop */
   margin: 0 auto;
   padding: 1rem 1.5rem;
   display: flex;
@@ -2267,11 +2267,38 @@ button.stat-tile:hover {
   font-size: 0.75rem;
 }
 
+/* Layout fără goluri: Top (îngust) + Comparator (lat) pe primul rând,
+   Screener-ul pe toată lățimea dedesubt — rezultatele lui merită spațiul. */
 .tools-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-template-columns: 360px minmax(0, 1fr);
+  grid-template-areas:
+    "top compare"
+    "screener screener";
   gap: 1.1rem;
-  align-items: start;
+  align-items: stretch;
+}
+
+.tools-panel-top {
+  grid-area: top;
+}
+
+.tools-panel-compare {
+  grid-area: compare;
+}
+
+.tools-panel-screener {
+  grid-area: screener;
+}
+
+@media (max-width: 900px) {
+  .tools-grid {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas:
+      "top"
+      "compare"
+      "screener";
+  }
 }
 
 .tools-grid .panel {
@@ -3250,5 +3277,118 @@ button.stat-tile:hover {
 @media (max-width: 560px) {
   .daily-selected .daily-selected-analysis {
     display: inline-block;
+  }
+}
+
+/* --- Comparator dezvoltat: identitate + tabel față-în-față --- */
+
+.tools-compare-hint {
+  font-size: 0.82rem;
+  line-height: 1.55;
+  margin: 0;
+}
+
+.tools-compare-id {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.35rem;
+}
+
+.tools-compare-name {
+  font-size: 0.72rem;
+  max-width: 140px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.tools-compare-price {
+  font-weight: 800;
+  font-size: 0.9rem;
+}
+
+.tools-compare-sector {
+  font-size: 0.7rem;
+}
+
+.cmp-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 0.75rem 0;
+}
+
+.cmp-table tr {
+  border-top: 1px solid var(--border);
+}
+
+.cmp-table th {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--muted);
+  text-align: center;
+  padding: 0.45rem 0.5rem;
+  width: 50%;
+}
+
+.cmp-table td {
+  font-size: 0.95rem;
+  font-weight: 700;
+  text-align: center;
+  padding: 0.45rem 0.5rem;
+  color: var(--muted);
+}
+
+.cmp-table td.cmp-win {
+  color: var(--text);
+  font-weight: 800;
+  background: #f0fdf4;
+  border-radius: 8px;
+}
+
+.tools-compare-links {
+  display: flex;
+  gap: 0.6rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+/* --- Screener dezvoltat: sub-scoruri pe rând, listă pe 2 coloane pe desktop --- */
+
+.screener-id {
+  min-width: 0;
+}
+
+.screener-subs {
+  display: flex;
+  gap: 0.45rem;
+  margin-left: auto;
+  flex-shrink: 0;
+}
+
+.screener-subs span {
+  font-size: 0.66rem;
+  font-weight: 800;
+  color: var(--muted);
+  background: #f4f9f9;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 0.15rem 0.35rem;
+}
+
+@media (min-width: 900px) {
+  .screener-list {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 1.5rem;
+  }
+  .dash .panel .screener-list .stock-row:nth-child(2) {
+    border-top: none; /* primul rând din coloana a doua, la fel ca primul din prima */
+  }
+}
+
+@media (max-width: 560px) {
+  .screener-subs {
+    display: none; /* pe mobil rămân simbol + sector + scor — sub-scorurile n-au loc */
   }
 }
