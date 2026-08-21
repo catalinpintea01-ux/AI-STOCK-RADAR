@@ -11,6 +11,7 @@ import Alerts from "./pages/Alerts.jsx";
 import Learn from "./pages/Learn.jsx";
 import Community from "./pages/Community.jsx";
 import Methodology from "./pages/Methodology.jsx";
+import Premium from "./pages/Premium.jsx";
 import NavBar from "./components/NavBar.jsx";
 
 function PrivateLayout({ children }) {
@@ -79,6 +80,14 @@ export default function App() {
         element={
           <PrivateLayout>
             <Learn />
+          </PrivateLayout>
+        }
+      />
+      <Route
+        path="/premium"
+        element={
+          <PrivateLayout>
+            <Premium />
           </PrivateLayout>
         }
       />

@@ -103,15 +103,6 @@ export default function ToolsPro() {
     runScreener({ sort: "compozit" });
   }, []);
 
-  async function handleUpgrade() {
-    try {
-      const data = await api.createCheckoutSession();
-      window.location.href = data.url;
-    } catch (err) {
-      console.error(err);
-    }
-  }
-
   function handleScreener(e) {
     e.preventDefault();
     const params = { sort: sortBy };
@@ -131,9 +122,9 @@ export default function ToolsPro() {
   const lockOverlay = (
     <div className="tools-lock-overlay">
       <span className="badge-chip">⭐ Premium</span>
-      <button className="landing-cta tools-locked-cta" onClick={handleUpgrade}>
-        Deblochează cu Premium →
-      </button>
+      <Link to="/premium" className="landing-cta tools-locked-cta">
+        Vezi ce include Premium →
+      </Link>
     </div>
   );
 

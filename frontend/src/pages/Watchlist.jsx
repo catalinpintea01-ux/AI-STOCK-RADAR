@@ -591,7 +591,19 @@ export default function Watchlist() {
                 {searchLoading ? "Caut..." : "Caută"}
               </button>
             </form>
-            {searchError && <div className="error">{searchError}</div>}
+            {searchError && (
+              <div className="error">
+                {searchError}
+                {searchError.includes("Premium") && (
+                  <>
+                    {" "}
+                    <Link to="/premium" className="methodology-link">
+                      Vezi ce include Premium →
+                    </Link>
+                  </>
+                )}
+              </div>
+            )}
 
             {searchResults.length > 0 && (
               <ul className="stock-list">

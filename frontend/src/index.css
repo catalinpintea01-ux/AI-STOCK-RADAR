@@ -3507,3 +3507,97 @@ button.stat-tile:hover {
   font-size: 0.85rem;
   padding: 0.55rem 1.1rem;
 }
+
+/* --- Pagina /premium: comparație Gratuit vs Premium --- */
+
+.premium-page {
+  max-width: 760px;
+}
+
+.premium-active-banner {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  flex-wrap: wrap;
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  border-radius: 14px;
+  padding: 0.85rem 1.1rem;
+  margin-bottom: 1.1rem;
+  font-size: 0.9rem;
+}
+
+.premium-table-wrap {
+  overflow-x: auto;
+}
+
+.premium-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.premium-table thead th {
+  text-align: center;
+  font-size: 0.95rem;
+  font-weight: 800;
+  padding: 0.7rem 0.6rem;
+  border-bottom: 2px solid var(--border);
+}
+
+.premium-table thead th:first-child {
+  text-align: left;
+}
+
+.premium-price {
+  display: block;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--muted);
+  margin-top: 0.2rem;
+}
+
+.premium-table tbody th {
+  text-align: left;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text);
+  padding: 0.6rem 0.6rem;
+  border-top: 1px solid var(--border);
+  line-height: 1.45;
+}
+
+.premium-table tbody td {
+  text-align: center;
+  padding: 0.6rem 0.6rem;
+  border-top: 1px solid var(--border);
+}
+
+.premium-col {
+  background: #f0f9ff;
+}
+
+.premium-check {
+  color: #059669;
+  font-weight: 800;
+  font-size: 1rem;
+}
+
+.premium-lock {
+  color: #cbd5e1;
+  font-weight: 800;
+}
+
+.premium-text {
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.premium-cta-row {
+  text-align: center;
+  margin-top: 1.25rem;
+}
+
+.premium-note {
+  font-size: 0.75rem;
+  margin-top: 0.7rem;
+}

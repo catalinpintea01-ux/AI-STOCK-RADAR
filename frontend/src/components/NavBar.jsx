@@ -6,7 +6,6 @@ export default function NavBar() {
   const navigate = useNavigate();
   const [unreadCount, setUnreadCount] = useState(0);
   const [premium, setPremium] = useState(null);
-  const [upgrading, setUpgrading] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const menuRef = useRef(null);
 
@@ -42,15 +41,10 @@ export default function NavBar() {
     navigate("/login");
   }
 
-  async function handleUpgradeClick() {
-    setUpgrading(true);
-    try {
-      const data = await api.createCheckoutSession();
-      window.location.href = data.url;
-    } catch (err) {
-      alert(err.message);
-      setUpgrading(false);
-    }
+  // Butonul din meniu duce la pagina de comparație Gratuit vs Premium —
+  // utilizatorul vede ce primește ÎNAINTE de pagina de plată Stripe.
+  function handleUpgradeClick() {
+    navigate("/premium");
   }
 
   async function handleManageClick() {
@@ -76,8 +70,8 @@ export default function NavBar() {
 
         {premium === true && <span className="badge-chip">⭐ Premium</span>}
         {premium === false && (
-          <button className="upgrade-button" onClick={handleUpgradeClick} disabled={upgrading}>
-            {upgrading ? "..." : "⭐ Premium"}
+          <button className="upgrade-button" onClick={handleUpgradeClick}>
+            ⭐ Premium
           </button>
         )}
 
