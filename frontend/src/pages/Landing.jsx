@@ -119,7 +119,7 @@ const FAQ = [
   {
     intrebare: "Ce primesc în plus la Premium?",
     raspuns:
-      "Watchlist nelimitat (planul gratuit e limitat la 5 acțiuni urmărite) și adăugarea automată a top 50 cele mai tranzacționate acțiuni, cu un singur click.",
+      "Watchlist nelimitat (planul gratuit e limitat la 5 acțiuni urmărite) și tool-urile Pro: topul scorurilor AI, screener cu filtre pe verdict/sector/scor și comparatorul de acțiuni față în față.",
   },
   {
     intrebare: "Pot renunța oricând?",
@@ -139,7 +139,7 @@ const FREE_FEATURES = [
 const PREMIUM_FEATURES = [
   "Tot ce e inclus în Gratuit",
   "Watchlist nelimitat",
-  "Adaugă automat top 50 cele mai tranzacționate",
+  "Tool-uri Pro: top scoruri, screener, comparator",
   "Gestionare abonament direct din aplicație",
 ];
 
