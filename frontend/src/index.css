@@ -3808,3 +3808,11 @@ body {
   background: #fee2e2;
   color: #dc2626;
 }
+
+/* În hero-ul acțiunii, butonul de watchlist e compact, nu full-width */
+.stock-hero-top .why-button {
+  width: auto;
+  margin-top: 0;
+  padding: 0.5rem 0.9rem;
+  font-size: 0.8rem;
+}
