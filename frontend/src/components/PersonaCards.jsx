@@ -15,9 +15,9 @@ const PERSONAS = [
     autorUrl: "https://unsplash.com/@we_are_rising",
     traseuTitlu: "Rutina de 5 minute pe zi",
     traseu: [
-      { icon: "🎯", text: "Adaugă 5-10 acțiuni care te interesează — analiza AI pornește singură", to: "/" },
-      { icon: "🔔", text: "Dimineața, deschide digestul zilnic: doar schimbările importante", to: "/alerte" },
-      { icon: "🏆", text: "O privire pe topul scorurilor AI, direct pe prima pagină", to: "/" },
+      { text: "Adaugă 5-10 acțiuni care te interesează — analiza AI pornește singură", to: "/" },
+      { text: "Dimineața, deschide digestul zilnic: doar schimbările importante", to: "/alerte" },
+      { text: "O privire pe topul scorurilor AI, direct pe prima pagină", to: "/" },
     ],
   },
   {
@@ -28,9 +28,9 @@ const PERSONAS = [
     autorUrl: "https://unsplash.com/@brookecagle",
     traseuTitlu: "Învață fără niciun risc",
     traseu: [
-      { icon: "💰", text: "Pornește cu 10.000 USD virtuali în portofoliul de exersare", to: "/portofoliu" },
-      { icon: "🧮", text: "Citește pe scurt cum se calculează scorul AI — fără jargon", to: "/metodologie" },
-      { icon: "📋", text: "Urmărește gratuit până la 5 acțiuni și compară-le în timp", to: "/" },
+      { text: "Pornește cu 10.000 USD virtuali în portofoliul de exersare", to: "/portofoliu" },
+      { text: "Citește pe scurt cum se calculează scorul AI — fără jargon", to: "/metodologie" },
+      { text: "Urmărește gratuit până la 3 acțiuni și compară-le în timp", to: "/" },
     ],
   },
   {
@@ -41,9 +41,9 @@ const PERSONAS = [
     autorUrl: "https://unsplash.com/@fotospk",
     traseuTitlu: "De la zero la fluent în piețe",
     traseu: [
-      { icon: "📚", text: "20 de lecții scurte + dicționarul de termeni, în română", to: "/informare" },
-      { icon: "🔬", text: "Vezi exact formula din spatele scorului AI", to: "/metodologie" },
-      { icon: "⚖️", text: "Pune două companii față în față cu comparatorul", to: "/" },
+      { text: "20 de lecții scurte + dicționarul de termeni, în română", to: "/informare" },
+      { text: "Vezi exact formula din spatele scorului AI", to: "/metodologie" },
+      { text: "Pune două companii față în față cu comparatorul", to: "/" },
     ],
   },
 ];
@@ -84,7 +84,6 @@ export default function PersonaCards({ variant = "app" }) {
                   <ol className="persona-path-steps">
                     {p.traseu.map((pas, j) => (
                       <li key={j}>
-                        <span className="persona-path-icon">{pas.icon}</span>
                         {variant === "app" ? <Link to={pas.to}>{pas.text}</Link> : <span>{pas.text}</span>}
                       </li>
                     ))}

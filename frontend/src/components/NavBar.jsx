@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { api } from "../api";
+import { Bell, Star } from "lucide-react";
 
 export default function NavBar() {
   const navigate = useNavigate();
@@ -65,13 +66,13 @@ export default function NavBar() {
 
       <div className="navbar-actions">
         <NavLink to="/alerte" className={({ isActive }) => (isActive ? "nav-link active" : "nav-link")}>
-          🔔{unreadCount > 0 ? ` ${unreadCount}` : ""}
+          <Bell size={17} className="ic" />{unreadCount > 0 ? ` ${unreadCount}` : ""}
         </NavLink>
 
-        {premium === true && <span className="badge-chip">⭐ Premium</span>}
+        {premium === true && <span className="badge-chip"><Star size={12} className="ic" /> Premium</span>}
         {premium === false && (
           <button className="upgrade-button" onClick={handleUpgradeClick}>
-            ⭐ Premium
+            <Star size={13} className="ic" /> Premium
           </button>
         )}
 

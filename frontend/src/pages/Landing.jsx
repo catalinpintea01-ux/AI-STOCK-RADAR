@@ -6,6 +6,8 @@ import StockLogo from "../components/StockLogo.jsx";
 import ScoreRing from "../components/ScoreRing.jsx";
 import RadarViz from "../components/RadarViz.jsx";
 import PersonaCards from "../components/PersonaCards.jsx";
+import VerdictTag from "../components/VerdictTag.jsx";
+import { Radar, TrendingUp, Newspaper, CalendarDays, Compass, Bell, Briefcase } from "lucide-react";
 
 // Fotografie Unsplash aleasă manual (hotlink direct, conform termenilor API),
 // cu atribuire vizibilă pe pagină. Persona-urile cu poze stau în PersonaCards,
@@ -17,18 +19,18 @@ const FOTO_CTA = {
 };
 
 const RADAR_FACTS = [
-  { icon: "📡", text: "Scoruri AI recalculate automat la fiecare 6 ore, pentru tot ce e urmărit" },
-  { icon: "💹", text: "Prețuri live, reîmprospătate la fiecare 30 de secunde" },
-  { icon: "📰", text: "Știrile pieței, re-analizate la fiecare 30 de minute" },
-  { icon: "📅", text: "Calendarul de raportări, actualizat de două ori pe zi" },
+  { icon: Radar, text: "Scoruri AI recalculate automat la fiecare 6 ore, pentru tot ce e urmărit" },
+  { icon: TrendingUp, text: "Prețuri live, reîmprospătate la fiecare 30 de secunde" },
+  { icon: Newspaper, text: "Știrile pieței, re-analizate la fiecare 30 de minute" },
+  { icon: CalendarDays, text: "Calendarul de raportări, actualizat de două ori pe zi" },
 ];
 
 // Rânduri ilustrative pentru mockup-ul de produs din hero — construite din
 // componentele reale ale aplicației (logo + ring), cu valori demonstrative.
 const MOCKUP_ROWS = [
-  { simbol: "AAPL", verdict: "optimist", eticheta: "🔵 Optimist", scor: 67, pret: "$316.83", variatie: "+2.2%", pozitiv: true },
-  { simbol: "NVDA", verdict: "optimist", eticheta: "🔵 Optimist", scor: 63, pret: "$217.56", variatie: "-1.0%", pozitiv: false },
-  { simbol: "CVX", verdict: "optimist", eticheta: "🔵 Optimist", scor: 81, pret: "$205.76", variatie: "+1.5%", pozitiv: true },
+  { simbol: "AAPL", verdict: "optimist", scor: 67, pret: "$316.83", variatie: "+2.2%", pozitiv: true },
+  { simbol: "NVDA", verdict: "optimist", scor: 63, pret: "$217.56", variatie: "-1.0%", pozitiv: false },
+  { simbol: "CVX", verdict: "optimist", scor: 81, pret: "$205.76", variatie: "+1.5%", pozitiv: true },
 ];
 
 const LOGO_WALL = ["AAPL", "MSFT", "NVDA", "TSLA", "AMZN", "GOOGL", "META", "NFLX", "JPM", "V", "KO", "DIS"];
@@ -69,32 +71,32 @@ const STEPS = [
 
 const FEATURES = [
   {
-    icon: "📡",
+    icon: Radar,
     titlu: "Scor AI 0-100",
     text: "Analiști, momentum, fundamental și risc — combinate într-un verdict descriptiv per acțiune.",
   },
   {
-    icon: "🧭",
+    icon: Compass,
     titlu: "Research zilnic",
     text: "Acțiunile care merită urmărite azi, cu motivul fiecăreia, alese de AI din mișcările pieței.",
   },
   {
-    icon: "📰",
+    icon: Newspaper,
     titlu: "Știri analizate AI",
     text: "Cele mai relevante știri de piață ale zilei, traduse și explicate în română.",
   },
   {
-    icon: "📅",
+    icon: CalendarDays,
     titlu: "Calendar de raportări",
     text: "Vezi din timp când raportează companiile pe care le urmărești.",
   },
   {
-    icon: "🔔",
+    icon: Bell,
     titlu: "Alerte de știri",
     text: "Când apare ceva nou despre acțiunile tale, afli direct în aplicație.",
   },
   {
-    icon: "💼",
+    icon: Briefcase,
     titlu: "Portofoliu virtual",
     text: "Exersezi strategii cu 10.000 USD virtuali — înveți fără să riști bani reali.",
   },
@@ -212,7 +214,7 @@ export default function Landing() {
                 <StockLogo simbol={r.simbol} size={26} />
                 <div className="landing-mockup-row-info">
                   <strong>{r.simbol}</strong>
-                  <span>{r.eticheta}</span>
+                  <span><VerdictTag verdict={r.verdict} /></span>
                 </div>
                 <ScoreRing score={r.scor} verdict={r.verdict} />
                 <div className="landing-mockup-row-price">
@@ -268,7 +270,7 @@ export default function Landing() {
         <div className="landing-features">
           {FEATURES.map((f) => (
             <div key={f.titlu} className="landing-feature">
-              <span className="landing-feature-icon">{f.icon}</span>
+              <span className="landing-feature-icon"><f.icon size={20} /></span>
               <h3>{f.titlu}</h3>
               <p>{f.text}</p>
             </div>
@@ -284,7 +286,7 @@ export default function Landing() {
             <ul className="landing-radar-facts">
               {RADAR_FACTS.map((f) => (
                 <li key={f.text}>
-                  <span>{f.icon}</span>
+                  <span className="landing-fact-icon"><f.icon size={16} /></span>
                   {f.text}
                 </li>
               ))}

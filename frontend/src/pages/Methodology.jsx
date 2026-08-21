@@ -1,29 +1,30 @@
 import { Link } from "react-router-dom";
 import Disclaimer from "../components/Disclaimer.jsx";
+import { Users, TrendingUp, Layers, Shield } from "lucide-react";
 
 // Transparența metodologiei: un scor fără explicație nu inspiră încredere.
 // Conținut static, pur descriptiv — oglindește exact ce face radar.js.
 const SUB_SCORES = [
   {
-    icon: "🧑‍💼",
+    icon: Users,
     nume: "Tendința analiștilor",
     pondere: "30%",
     text: "Agregăm evaluările lunare publicate de analiștii de pe Wall Street (strong buy / buy / hold / sell / strong sell, raportate public prin Finnhub). Cu cât raportul dintre evaluările pozitive și cele negative e mai favorabil, cu atât sub-scorul e mai mare. Nu preluăm recomandările în sine — doar măsurăm în ce direcție înclină consensul.",
   },
   {
-    icon: "📈",
+    icon: TrendingUp,
     nume: "Momentum",
     pondere: "30%",
     text: "Măsurăm evoluția prețului pe trei orizonturi (5 zile, 13 săptămâni, 26 de săptămâni) și poziția față de maximul/minimul din ultimele 52 de săptămâni. Tendințele pozitive susținute ridică sub-scorul; scăderile prelungite îl coboară.",
   },
   {
-    icon: "🏗️",
+    icon: Layers,
     nume: "Semnale fundamentale",
     pondere: "20%",
     text: "Combinăm surprizele din ultimele raportări trimestriale (profit peste sau sub estimări) cu tranzacțiile insiderilor (cumpărările și vânzările raportate la SEC de directorii companiei). Raportări peste așteptări și cumpărări interne ridică sub-scorul.",
   },
   {
-    icon: "🛡️",
+    icon: Shield,
     nume: "Nivelul de risc",
     pondere: "20% (invers)",
     text: "Pornim de la volatilitatea acțiunii față de piață (beta) și de la amplitudinea intervalului din ultimele 52 de săptămâni. Un risc mai mare trage scorul compozit în jos — de aceea intră invers în formulă: contribuie 100 minus scorul de risc.",
@@ -46,7 +47,7 @@ export default function Methodology() {
           {SUB_SCORES.map((s) => (
             <div key={s.nume} className="methodology-card">
               <div className="methodology-card-head">
-                <span className="methodology-icon">{s.icon}</span>
+                <span className="methodology-icon"><s.icon size={22} /></span>
                 <div>
                   <h3>{s.nume}</h3>
                   <span className="badge-chip">pondere {s.pondere}</span>

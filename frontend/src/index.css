@@ -3609,3 +3609,79 @@ button.stat-tile:hover {
   text-decoration: none;
   color: var(--blue);
 }
+
+/* --- Iconografie unitară (lucide): aliniere + puncte de verdict + pași numerotați --- */
+
+.ic {
+  display: inline-block;
+  vertical-align: -2px;
+  flex-shrink: 0;
+}
+
+.h2-ic {
+  display: inline-block;
+  vertical-align: -2.5px;
+  margin-right: 0.15rem;
+  color: var(--blue);
+}
+
+.verdict-tag {
+  white-space: nowrap;
+}
+
+.vdot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  margin-right: 0.35rem;
+  vertical-align: 1px;
+}
+
+.vdot-optimist { background: #3b82f6; }
+.vdot-neutru { background: #9ca3af; }
+.vdot-rezervat { background: #f59e0b; }
+
+.landing-fact-icon {
+  color: #86efac;
+  display: inline-flex;
+}
+
+.landing-feature-icon {
+  color: var(--blue);
+  display: inline-flex;
+}
+
+.methodology-icon {
+  color: var(--blue);
+  display: inline-flex;
+}
+
+.auth-brand-icon {
+  display: inline-flex;
+  color: #86efac;
+}
+
+/* Pașii din traseul persona: numerotați discret, fără emoji */
+.persona-path-steps {
+  counter-reset: pas;
+}
+
+.persona-path-steps li {
+  counter-increment: pas;
+}
+
+.persona-path-steps li::before {
+  content: counter(pas);
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #eaf2ff;
+  color: var(--blue);
+  font-size: 0.66rem;
+  font-weight: 800;
+}

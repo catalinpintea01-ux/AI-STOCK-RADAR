@@ -3,12 +3,10 @@ import { Link } from "react-router-dom";
 import { api } from "../api";
 import StockLogo from "./StockLogo.jsx";
 import ScoreRing from "./ScoreRing.jsx";
+import VerdictTag from "./VerdictTag.jsx";
+import { Wrench, Trophy, Search, Scale, Star } from "lucide-react";
 
-const VERDICT_CHIP = {
-  optimist: "🔵 Optimist",
-  neutru: "⚪ Neutru",
-  rezervat: "🟠 Rezervat",
-};
+
 
 const SECTOARE = ["Tehnologie", "Financiar", "Sănătate", "Consum", "Energie", "Industrial", "Telecom"];
 
@@ -121,7 +119,7 @@ export default function ToolsPro() {
 
   const lockOverlay = (
     <div className="tools-lock-overlay">
-      <span className="badge-chip">⭐ Premium</span>
+      <span className="badge-chip"><Star size={12} className="ic" /> Premium</span>
       <Link to="/premium" className="landing-cta tools-locked-cta">
         Vezi ce include Premium →
       </Link>
@@ -136,7 +134,7 @@ export default function ToolsPro() {
       <div className="tools-section-head">
         <div>
           <p className="eyebrow">Instrumente avansate</p>
-          <h2>🧰 Tool-uri Pro</h2>
+          <h2><Wrench size={16} className="h2-ic" /> Tool-uri Pro</h2>
         </div>
         <span className="muted tools-note">Context educațional — nu recomandări de tranzacționare.</span>
       </div>
@@ -146,7 +144,7 @@ export default function ToolsPro() {
           <div className="panel-head">
             <div>
               <p className="eyebrow">Ranking</p>
-              <h2>🏆 Top scoruri AI</h2>
+              <h2><Trophy size={16} className="h2-ic" /> Top scoruri AI</h2>
             </div>
           </div>
           <p className="tab-subtitle">Cele mai ridicate scoruri compozite din tot ce a analizat AI-ul până acum.</p>
@@ -162,7 +160,7 @@ export default function ToolsPro() {
                     <div>
                       <strong>{s.simbol}</strong>
                       <div className="muted">
-                        {s.sector} · {VERDICT_CHIP[s.verdict] || s.verdict}
+                        {s.sector} · <VerdictTag verdict={s.verdict} />
                       </div>
                     </div>
                     <span className="tool-score">{s.scorCompozit}</span>
@@ -179,7 +177,7 @@ export default function ToolsPro() {
           <div className="panel-head">
             <div>
               <p className="eyebrow">Față în față</p>
-              <h2>⚖️ Comparator A vs B</h2>
+              <h2><Scale size={16} className="h2-ic" /> Comparator A vs B</h2>
             </div>
           </div>
           <form className="tools-compare-form" onSubmit={handleCompare}>
@@ -222,7 +220,7 @@ export default function ToolsPro() {
                       </div>
                     </div>
                     <ScoreRing score={r.scorCompozit} verdict={r.verdict} />
-                    <span className="muted">{VERDICT_CHIP[r.verdict] || r.verdict}</span>
+                    <span className="muted"><VerdictTag verdict={r.verdict} /></span>
                     {r.pret !== null && (
                       <div className="tools-compare-price">
                         ${r.pret.toFixed(2)}{" "}
@@ -272,7 +270,7 @@ export default function ToolsPro() {
           <div className="panel-head">
             <div>
               <p className="eyebrow">Filtrare</p>
-              <h2>🔎 Screener AI</h2>
+              <h2><Search size={16} className="h2-ic" /> Screener AI</h2>
             </div>
             {screenerRezultate !== null && (
               <span className="muted tools-note">
@@ -283,9 +281,9 @@ export default function ToolsPro() {
           <form className="tools-screener-form" onSubmit={handleScreener}>
             <select value={verdict} onChange={(e) => setVerdict(e.target.value)}>
               <option value="">Orice verdict</option>
-              <option value="optimist">🔵 Optimist</option>
-              <option value="neutru">⚪ Neutru</option>
-              <option value="rezervat">🟠 Rezervat</option>
+              <option value="optimist">Optimist</option>
+              <option value="neutru">Neutru</option>
+              <option value="rezervat">Rezervat</option>
             </select>
             <select value={sector} onChange={(e) => setSector(e.target.value)}>
               <option value="">Orice sector</option>
@@ -325,7 +323,7 @@ export default function ToolsPro() {
                         <div className="screener-id">
                           <strong>{s.simbol}</strong>
                           <div className="muted">
-                            {s.sector} · {VERDICT_CHIP[s.verdict] || s.verdict}
+                            {s.sector} · <VerdictTag verdict={s.verdict} />
                           </div>
                         </div>
                         <div className="screener-subs">

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Eye, EyeOff } from "lucide-react";
 import { useNavigate, Link } from "react-router-dom";
 import { api } from "../api";
 import AuthLayout from "../components/AuthLayout.jsx";
@@ -54,7 +55,7 @@ export default function Login() {
             onClick={() => setShowPassword((v) => !v)}
             aria-label={showPassword ? "Ascunde parola" : "Arată parola"}
           >
-            {showPassword ? "🙈" : "👁"}
+            {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
           </button>
         </div>
         <button type="submit" disabled={loading}>

@@ -1,7 +1,9 @@
+import { Radar, Newspaper, Shield } from "lucide-react";
+
 const TRUST_POINTS = [
-  { icon: "📡", text: "Scor AI recalculat automat pentru fiecare acțiune urmărită" },
-  { icon: "📰", text: "Context zilnic din piețele bursiere, tradus și explicat" },
-  { icon: "🛡️", text: "Conținut educațional — niciodată recomandări de cumpărare sau vânzare" },
+  { icon: Radar, text: "Scor AI recalculat automat pentru fiecare acțiune urmărită" },
+  { icon: Newspaper, text: "Context zilnic din piețele bursiere, tradus și explicat" },
+  { icon: Shield, text: "Conținut educațional — niciodată recomandări de cumpărare sau vânzare" },
 ];
 
 export default function AuthLayout({ children }) {
@@ -16,7 +18,7 @@ export default function AuthLayout({ children }) {
           <ul className="auth-brand-points">
             {TRUST_POINTS.map((p) => (
               <li key={p.text}>
-                <span className="auth-brand-icon">{p.icon}</span>
+                <span className="auth-brand-icon"><p.icon size={16} /></span>
                 {p.text}
               </li>
             ))}

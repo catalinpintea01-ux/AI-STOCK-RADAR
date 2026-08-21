@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { api } from "../api";
 import Disclaimer from "../components/Disclaimer.jsx";
+import { Star } from "lucide-react";
 
 // Paywall cu propunere de valoare explicită: utilizatorul vede EXACT ce
 // primește în plus înainte să plătească — nu doar un buton "Premium".
@@ -9,14 +10,14 @@ const RANDURI = [
   { functie: "Acțiuni urmărite în radar", gratuit: "3", premium: "Nelimitat" },
   { functie: "Scoruri AI complete (4 sub-scoruri + verdict + factori)", gratuit: true, premium: true },
   { functie: "Digest zilnic cu schimbările importante", gratuit: true, premium: true },
-  { functie: "📰 Știri analizate AI pe zi", gratuit: "3", premium: "7" },
-  { functie: "🧭 Research zilnic (creșteri + scăderi)", gratuit: "2 + 2", premium: "4 + 4" },
+  { functie: "Știri analizate AI pe zi", gratuit: "3", premium: "7" },
+  { functie: "Research zilnic (creșteri + scăderi)", gratuit: "2 + 2", premium: "4 + 4" },
   { functie: "Portofoliu virtual de 10.000 USD", gratuit: true, premium: true },
   { functie: "Calendar de raportări", gratuit: true, premium: true },
-  { functie: "🏆 Top scoruri AI din tot universul", gratuit: true, premium: true },
-  { functie: "🔎 Screener AI (verdict / sector / scor / sortare)", gratuit: false, premium: true },
-  { functie: "⚖️ Comparator A vs B (scoruri + preț, față în față)", gratuit: false, premium: true },
-  { functie: "🎯 Onboarding pe interese cu 10 acțiuni dintr-o dată", gratuit: "până la limita de 3", premium: true },
+  { functie: "Top scoruri AI din tot universul", gratuit: true, premium: true },
+  { functie: "Screener AI (verdict / sector / scor / sortare)", gratuit: false, premium: true },
+  { functie: "Comparator A vs B (scoruri + preț, față în față)", gratuit: false, premium: true },
+  { functie: "Onboarding pe interese cu 10 acțiuni dintr-o dată", gratuit: "până la limita de 3", premium: true },
 ];
 
 function Celula({ valoare }) {
@@ -71,7 +72,7 @@ export default function Premium() {
 
       {premium === true && (
         <div className="premium-active-banner">
-          ⭐ Ai abonamentul <strong>Premium activ</strong> — toate instrumentele sunt deblocate.
+          <Star size={14} className="ic" /> Ai abonamentul <strong>Premium activ</strong> — toate instrumentele sunt deblocate.
           <button className="logout" onClick={handleManage} disabled={loading}>
             {loading ? "..." : "Gestionează abonamentul"}
           </button>
@@ -88,7 +89,7 @@ export default function Premium() {
                 <span className="premium-price">0 RON</span>
               </th>
               <th className="premium-col">
-                ⭐ Premium
+                <Star size={13} className="ic" /> Premium
                 <span className="premium-price">3 zile gratuit, apoi 29,99 RON/lună</span>
               </th>
             </tr>
@@ -111,7 +112,7 @@ export default function Premium() {
         {premium === false && (
           <div className="premium-cta-row">
             <button className="landing-cta" onClick={handleUpgrade} disabled={loading}>
-              {loading ? "Se deschide activarea..." : "⭐ Începe cu 3 zile gratuit →"}
+              {loading ? "Se deschide activarea..." : <><Star size={14} className="ic" /> Începe cu 3 zile gratuit →</>}
             </button>
             <p className="muted premium-note">
               Cardul se introduce la activare, prin Stripe · Primele 3 zile sunt gratuite, apoi

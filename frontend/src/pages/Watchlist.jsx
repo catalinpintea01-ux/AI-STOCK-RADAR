@@ -11,6 +11,8 @@ import TypewriterText from "../components/TypewriterText.jsx";
 import ToolsPro from "../components/ToolsPro.jsx";
 import RadarViz from "../components/RadarViz.jsx";
 import PersonaCards from "../components/PersonaCards.jsx";
+import VerdictTag from "../components/VerdictTag.jsx";
+import { Zap, Target, ClipboardList, Compass, Newspaper, Activity, CalendarDays, Lightbulb, Lock } from "lucide-react";
 
 const TAGLINE_PHRASES = [
   "scor AI pentru fiecare acțiune",
@@ -19,11 +21,7 @@ const TAGLINE_PHRASES = [
   "watchlist care se analizează singur",
 ];
 
-const VERDICT_CHIP = {
-  optimist: "🔵 Optimist",
-  neutru: "⚪ Neutru",
-  rezervat: "🟠 Rezervat",
-};
+
 
 // Cei mai marcanți 2 factori din spatele scorului, derivați determinist din
 // sub-scoruri — un "88" fără explicație nu inspiră încredere. Pragurile
@@ -113,9 +111,9 @@ const SORT_OPTIONS = [
 
 const FILTER_OPTIONS = [
   { value: "toate", label: "Toate" },
-  { value: "optimist", label: "🔵 Optimist" },
-  { value: "neutru", label: "⚪ Neutru" },
-  { value: "rezervat", label: "🟠 Rezervat" },
+  { value: "optimist", label: "Optimist" },
+  { value: "neutru", label: "Neutru" },
+  { value: "rezervat", label: "Rezervat" },
   { value: "neanalizat", label: "Neanalizat" },
 ];
 
@@ -432,10 +430,10 @@ export default function Watchlist() {
             <strong>{item.simbol}</strong>
             {holdings[item.simbol] && (
               <span className="badge-chip" style={{ marginLeft: "0.5rem" }}>
-                📊 {holdings[item.simbol]} deținute
+                {holdings[item.simbol]} deținute
               </span>
             )}
-            <div className="muted">{item.radar ? VERDICT_CHIP[item.radar.verdict] || item.radar.verdict : "Neanalizat încă"}</div>
+            <div className="muted">{item.radar ? <VerdictTag verdict={item.radar.verdict} /> : "Neanalizat încă"}</div>
             {item.radar && factoriPrincipali(item.radar).length > 0 && (
               <div className="row-factors">{factoriPrincipali(item.radar).join(" · ")}</div>
             )}
@@ -459,7 +457,7 @@ export default function Watchlist() {
           </Link>
         ) : (
           <button className="analyze-button" onClick={() => analyzeOne(item.simbol)} disabled={analyzing.has(item.simbol)}>
-            {analyzing.has(item.simbol) ? "Analizez..." : "⚡ Analizează"}
+            {analyzing.has(item.simbol) ? "Analizez..." : <><Zap size={13} className="ic" /> Analizează</>}
           </button>
         )}
         <button className="logout" onClick={() => handleRemove(item.simbol)}>
@@ -572,7 +570,7 @@ export default function Watchlist() {
         </p>
       )}
       {neanalizateCount > 0 && analizateCount > 0 && (
-        <p className="dash-pending">🔄 {neanalizateCount} încă în curs de analiză automată</p>
+        <p className="dash-pending">{neanalizateCount} încă în curs de analiză automată</p>
       )}
 
       <div className="dash-grid">
@@ -630,7 +628,7 @@ export default function Watchlist() {
 
             <p className="search-hint muted">
               Sfat: un radar bun are 5-10 acțiuni alese de tine — mai puțin zgomot, context mai
-              relevant. Poți porni și cu „🎯 Analizează pe interese".
+              relevant. Poți porni și cu „Analizează pe interese".
             </p>
           </section>
 
@@ -638,13 +636,13 @@ export default function Watchlist() {
             <div className="panel-head">
               <div>
                 <p className="eyebrow">Portofoliul de urmărire</p>
-                <h2>📋 Watchlist-ul tău</h2>
+                <h2><ClipboardList size={16} className="h2-ic" /> Watchlist-ul tău</h2>
                 {lastLoadedAt && <p className="freshness-note">Actualizat {formatRelativeTime(lastLoadedAt, now)}</p>}
               </div>
               <div className="watchlist-header-actions">
                 {items.length > 0 && (
                   <button type="button" className="onboarding-toggle-button" onClick={() => setOnboardingOpen((v) => !v)}>
-                    🎯 Analizează pe interese
+                    <Target size={13} className="ic" /> Analizează pe interese
                   </button>
                 )}
                 {neanalizateCount > 0 && (
@@ -653,7 +651,7 @@ export default function Watchlist() {
                       <span className="analyze-all-progress" style={{ width: `${(bulkProgress.done / bulkProgress.total) * 100}%` }} />
                     )}
                     <span className="analyze-all-label">
-                      {bulkAnalyzing ? `Analizez ${bulkProgress.done}/${bulkProgress.total}...` : `⚡ Analizează tot (${neanalizateCount})`}
+                      {bulkAnalyzing ? `Analizez ${bulkProgress.done}/${bulkProgress.total}...` : <><Zap size={13} className="ic" /> Analizează tot ({neanalizateCount})</>}
                     </span>
                   </button>
                 )}
@@ -691,7 +689,7 @@ export default function Watchlist() {
                 {onboardError && <div className="error">{onboardError}</div>}
                 <div className="onboarding-actions">
                   <button className="why-button" onClick={handleOnboard} disabled={interese.length === 0 || onboarding}>
-                    {onboarding ? "Construiesc watchlist-ul..." : "⚡ Construiește-mi watchlist-ul"}
+                    {onboarding ? "Construiesc watchlist-ul..." : "Construiește-mi watchlist-ul"}
                   </button>
                   {items.length > 0 && (
                     <button className="logout" onClick={() => setOnboardingOpen(false)} disabled={onboarding}>
@@ -752,7 +750,7 @@ export default function Watchlist() {
             <div className="panel-head">
               <div>
                 <p className="eyebrow">Descoperă</p>
-                <h2>🧭 Research zilnic</h2>
+                <h2><Compass size={16} className="h2-ic" /> Research zilnic</h2>
               </div>
             </div>
             <p className="tab-subtitle">Recomandări AI din afara watchlist-ului tău, pe baza mișcărilor de azi.</p>
@@ -784,7 +782,7 @@ export default function Watchlist() {
                   </>
                 )}
                 <p className="daily-lesson">
-                  💡 {MICRO_LESSONS[Math.floor(Date.now() / 86400000) % MICRO_LESSONS.length]}
+                  <Lightbulb size={14} className="ic" /> {MICRO_LESSONS[Math.floor(Date.now() / 86400000) % MICRO_LESSONS.length]}
                 </p>
               </div>
             ) : (
@@ -847,7 +845,7 @@ export default function Watchlist() {
             <div className="panel-head">
               <div>
                 <p className="eyebrow">Contextul zilei</p>
-                <h2>📰 Știri relevante</h2>
+                <h2><Newspaper size={16} className="h2-ic" /> Știri relevante</h2>
               </div>
             </div>
             {marketNews.length === 0 ? (
@@ -876,7 +874,7 @@ export default function Watchlist() {
                 )}
                 {marketNewsTotal > marketNews.length && (
                   <Link to="/premium" className="show-more-button news-premium-teaser">
-                    🔒 +{marketNewsTotal - marketNews.length} știri analizate azi, cu Premium →
+                    <Lock size={12} className="ic" /> +{marketNewsTotal - marketNews.length} știri analizate azi, cu Premium →
                   </Link>
                 )}
               </>
@@ -887,7 +885,7 @@ export default function Watchlist() {
             <div className="panel-head">
               <div>
                 <p className="eyebrow">Scoruri în mișcare</p>
-                <h2>🔥 Ce s-a schimbat</h2>
+                <h2><Activity size={16} className="h2-ic" /> Ce s-a schimbat</h2>
               </div>
             </div>
             <p className="tab-subtitle">Scorul AI (nu prețul) al acțiunilor tale, schimbat recent.</p>
@@ -918,7 +916,7 @@ export default function Watchlist() {
             <div className="panel-head">
               <div>
                 <p className="eyebrow">Calendar</p>
-                <h2>📅 Raportări apropiate</h2>
+                <h2><CalendarDays size={16} className="h2-ic" /> Raportări apropiate</h2>
               </div>
             </div>
             {earnings.length === 0 && earningsRecomandate.length > 0 ? (

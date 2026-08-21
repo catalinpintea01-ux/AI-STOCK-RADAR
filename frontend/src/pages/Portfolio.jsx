@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import { api } from "../api";
+import { Target, Globe, Flame, Medal, AlertTriangle } from "lucide-react";
 import { PortfolioChart, buildValueHistory } from "../PortfolioChart.jsx";
 import StockLogo from "../components/StockLogo.jsx";
 
@@ -15,9 +16,9 @@ function priceOf(stocks, extraQuotes, simbol) {
 const XP_PER_LEVEL = 100;
 
 const BADGE_INFO = {
-  "primul-pas": { emoji: "🎯", label: "Primul pas", descriere: "Prima ta tranzacție" },
-  diversificare: { emoji: "🌐", label: "Diversificare", descriere: "3+ acțiuni diferite în portofoliu" },
-  consecventa: { emoji: "🔥", label: "Consecvență", descriere: "7 zile streak" },
+  "primul-pas": { icon: Target, label: "Primul pas", descriere: "Prima ta tranzacție" },
+  diversificare: { icon: Globe, label: "Diversificare", descriere: "3+ acțiuni diferite în portofoliu" },
+  consecventa: { icon: Flame, label: "Consecvență", descriere: "7 zile streak" },
 };
 
 export default function Portfolio() {
@@ -205,7 +206,7 @@ export default function Portfolio() {
 
       {plataStatus === "succes" && (
         <div className="value-card" style={{ borderColor: "var(--green)" }}>
-          ✅ Plata a fost procesată — abonamentul Premium se activează în câteva secunde.
+          Plata a fost procesată — abonamentul Premium se activează în câteva secunde.
           <button className="logout" style={{ marginLeft: "1rem" }} onClick={() => setSearchParams({})}>
             Ascunde
           </button>
@@ -221,7 +222,7 @@ export default function Portfolio() {
       )}
 
       <header className="portfolio-header">
-        <span className="streak">🔥 {user?.streakCurent ?? 0} zile streak</span>
+        <span className="streak"><Flame size={13} className="ic" /> {user?.streakCurent ?? 0} zile streak</span>
       </header>
 
       {!healthLoading && health?.health && (
@@ -230,7 +231,7 @@ export default function Portfolio() {
           <span className="value">{health.health.scorSanatate}/100</span>
           {health.health.avertismente.map((a, i) => (
             <p key={i} className="muted" style={{ marginTop: "0.25rem" }}>
-              ⚠️ {a}
+              <AlertTriangle size={13} className="ic" /> {a}
             </p>
           ))}
         </div>
@@ -255,10 +256,10 @@ export default function Portfolio() {
       {user?.badges?.length > 0 && (
         <div className="badge-row">
           {user.badges.map((b) => {
-            const info = BADGE_INFO[b.tipBadge] || { emoji: "🏅", label: b.tipBadge, descriere: "" };
+            const info = BADGE_INFO[b.tipBadge] || { icon: Medal, label: b.tipBadge, descriere: "" };
             return (
               <span key={b.id} className="badge-chip" title={info.descriere}>
-                {info.emoji} {info.label}
+                {info.icon && <info.icon size={13} className="ic" />} {info.label}
               </span>
             );
           })}
@@ -275,7 +276,7 @@ export default function Portfolio() {
       <section className="holdings">
         <h2>Acțiunile tale</h2>
         {portfolio.holdings.length > 0 && (
-          <p className="row-hint">👉 Atinge o acțiune pentru scor AI, știri și indicatori financiari.</p>
+          <p className="row-hint">Atinge o acțiune pentru scor AI, știri și indicatori financiari.</p>
         )}
         {portfolio.holdings.length === 0 ? (
           <p className="empty">Nu ai încă acțiuni. Cumpără mai jos din piața disponibilă.</p>
