@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { SkeletonPage } from "../components/Skeleton.jsx";
 import { api } from "../api";
 import StockLogo from "../components/StockLogo.jsx";
 
@@ -45,7 +46,7 @@ export default function Community() {
     await load();
   }
 
-  if (!friends) return <div className="page-message">Se încarcă...</div>;
+  if (!friends) return <SkeletonPage />;
 
   return (
     <div className="portfolio-page">

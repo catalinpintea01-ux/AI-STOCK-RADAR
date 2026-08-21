@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { SkeletonPage, SkeletonRows } from "../components/Skeleton.jsx";
 import { Link, useSearchParams } from "react-router-dom";
 import { api } from "../api";
 import { Target, Globe, Flame, Medal, AlertTriangle } from "lucide-react";
@@ -190,7 +191,7 @@ export default function Portfolio() {
   }
 
   if (error) return <div className="page-message">Eroare: {error}</div>;
-  if (!portfolio) return <div className="page-message">Se încarcă...</div>;
+  if (!portfolio) return <SkeletonPage />;
 
   const holdingsValue = portfolio.holdings.reduce(
     (sum, h) => sum + h.cantitate * priceOf(stocks, extraQuotes, h.simbol),
@@ -368,7 +369,7 @@ export default function Portfolio() {
       <section className="market">
         <h2>Piață — acțiuni SUA</h2>
         {stocksLoading ? (
-          <p className="data-source">Se încarcă prețurile pieței...</p>
+          <SkeletonRows count={6} />
         ) : (
           stocks.length > 0 && (
             <p className="data-source">

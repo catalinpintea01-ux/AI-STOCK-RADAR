@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { SkeletonPage } from "../components/Skeleton.jsx";
 import { useParams, Link } from "react-router-dom";
 import { api } from "../api";
 import Disclaimer from "../components/Disclaimer.jsx";
@@ -23,7 +24,7 @@ export default function NewsDetail() {
   }, [id]);
 
   if (error) return <div className="page-message">Eroare: {error}</div>;
-  if (!news) return <div className="page-message">Se încarcă...</div>;
+  if (!news) return <SkeletonPage />;
 
   return (
     <div className="portfolio-page">

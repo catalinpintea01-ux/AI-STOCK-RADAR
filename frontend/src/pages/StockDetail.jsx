@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { SkeletonRows } from "../components/Skeleton.jsx";
 import { useParams, Link } from "react-router-dom";
 import { api } from "../api";
 import ScoreBar from "../components/ScoreBar.jsx";
@@ -230,7 +231,7 @@ export default function StockDetail() {
           </Link>
         </h2>
         {radarLoading ? (
-          <p className="data-source">Se analizează acțiunea (poate dura câteva secunde)...</p>
+          <><SkeletonRows count={3} /><p className="data-source">Analizăm acțiunea — poate dura câteva secunde...</p></>
         ) : radar ? (
           <>
             <VerdictBadge verdict={radar.verdict} incredere={radar.incredere} />
@@ -437,7 +438,7 @@ export default function StockDetail() {
           sau CNN, care ar necesita integrări separate.
         </p>
         {newsLoading ? (
-          <p className="empty">Se încarcă știrile...</p>
+          <SkeletonRows count={3} />
         ) : news.length === 0 ? (
           <p className="empty">Nu am găsit știri recente pentru această acțiune.</p>
         ) : (

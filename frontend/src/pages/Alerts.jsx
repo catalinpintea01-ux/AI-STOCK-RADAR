@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { SkeletonPage } from "../components/Skeleton.jsx";
 import { Link } from "react-router-dom";
 import { api } from "../api";
 import StockLogo from "../components/StockLogo.jsx";
@@ -26,7 +27,7 @@ export default function Alerts() {
   }, []);
 
   if (error) return <div className="page-message">Eroare: {error}</div>;
-  if (!items) return <div className="page-message">Se încarcă...</div>;
+  if (!items) return <SkeletonPage />;
 
   return (
     <div className="portfolio-page">
