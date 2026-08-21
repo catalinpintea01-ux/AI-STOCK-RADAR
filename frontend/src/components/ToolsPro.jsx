@@ -31,7 +31,8 @@ const CMP_ROWS = [
 ];
 
 export default function ToolsPro() {
-  // null = necunoscut (se verifică), true = Premium activ, false = blocat
+  // Top-ul e vizibil pentru toți (teaser real); screener + comparator sunt
+  // Premium — null = se verifică, true = deblocate, false = overlay de upgrade.
   const [deblocat, setDeblocat] = useState(null);
   const [top, setTop] = useState([]);
 
@@ -57,28 +58,25 @@ export default function ToolsPro() {
       setScreenerRezultate(data.rezultate);
       setScreenerTotal(data.totalAnalizate ?? data.rezultate.length);
       setScreenerShowAll(false);
+      setDeblocat(true);
     } catch (err) {
-      console.error(err);
+      // 402 = cont gratuit: panourile rămân vizibile, dar sub overlay-ul
+      // de upgrade — utilizatorul vede exact ce ar primi cu Premium.
+      if (String(err.message).includes("Premium")) setDeblocat(false);
+      else console.error(err);
     } finally {
       setScreenerLoading(false);
     }
   }
 
-  // O singură verificare de acces pentru toate cele 3 tool-uri: dacă /top
-  // răspunde 402, arătăm cardul de deblocare în locul întregii secțiuni.
-  // La deblocare, screener-ul pornește singur — fără panouri goale.
+  // Top-ul se încarcă pentru toată lumea; primul apel de screener servește
+  // și ca verificare de acces (402 → overlay), fără panouri goale la Premium.
   useEffect(() => {
     api
       .getToolTop()
-      .then((data) => {
-        setTop(data.top);
-        setDeblocat(true);
-        runScreener({ sort: "compozit" });
-      })
-      .catch((err) => {
-        if (String(err.message).includes("Premium")) setDeblocat(false);
-        else setDeblocat(true); // eroare pasageră, nu blocăm secțiunea
-      });
+      .then((data) => setTop(data.top))
+      .catch(() => {});
+    runScreener({ sort: "compozit" });
   }, []);
 
   async function handleUpgrade() {
@@ -114,28 +112,16 @@ export default function ToolsPro() {
     }
   }
 
-  if (deblocat === null) return null;
+  const blocat = deblocat === false;
 
-  if (deblocat === false) {
-    return (
-      <section className="panel tools-locked">
-        <div className="panel-head">
-          <div>
-            <p className="eyebrow">Instrumente avansate</p>
-            <h2>🧰 Tool-uri Pro</h2>
-          </div>
-          <span className="badge-chip">⭐ Premium</span>
-        </div>
-        <p className="tools-locked-text">
-          Top scoruri AI din tot universul analizat, screener după verdict/sector/scor și comparator A vs B — incluse în
-          abonamentul Premium.
-        </p>
-        <button className="landing-cta tools-locked-cta" onClick={handleUpgrade}>
-          ⭐ Deblochează cu Premium →
-        </button>
-      </section>
-    );
-  }
+  const lockOverlay = (
+    <div className="tools-lock-overlay">
+      <span className="badge-chip">⭐ Premium</span>
+      <button className="landing-cta tools-locked-cta" onClick={handleUpgrade}>
+        Deblochează cu Premium →
+      </button>
+    </div>
+  );
 
   const rezultateVizibile =
     screenerRezultate === null ? null : screenerShowAll ? screenerRezultate : screenerRezultate.slice(0, 8);
@@ -183,7 +169,8 @@ export default function ToolsPro() {
           )}
         </div>
 
-        <div className="panel tools-panel-compare">
+        <div className={`panel tools-panel-compare ${blocat ? "tools-panel-locked" : ""}`}>
+          {blocat && lockOverlay}
           <div className="panel-head">
             <div>
               <p className="eyebrow">Față în față</p>
@@ -275,7 +262,8 @@ export default function ToolsPro() {
           )}
         </div>
 
-        <div className="panel tools-panel-screener">
+        <div className={`panel tools-panel-screener ${blocat ? "tools-panel-locked" : ""}`}>
+          {blocat && lockOverlay}
           <div className="panel-head">
             <div>
               <p className="eyebrow">Filtrare</p>

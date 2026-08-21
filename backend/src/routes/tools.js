@@ -21,7 +21,9 @@ async function requirePremium(req, res, next) {
   next();
 }
 
-router.use(requireAuth, requirePremium);
+// Top-ul e vizibil și pe planul gratuit — teaser real (citire pură din cache,
+// cost zero); screener-ul și comparatorul rămân exclusiv Premium, per-rută.
+router.use(requireAuth);
 
 function imbogateste(s) {
   const mock = getMockStock(s.simbol);
@@ -60,7 +62,7 @@ const SORT_KEYS = {
   risc: (s) => s.scorRisc, // crescător: risc mic primul
 };
 
-router.get("/screener", async (req, res) => {
+router.get("/screener", requirePremium, async (req, res) => {
   const { verdict, sector, minScor, sort } = req.query;
   const scoruri = await prisma.radarScore.findMany();
 
@@ -88,7 +90,7 @@ function comparaScor(eticheta, a, b, simbolA, simbolB) {
 // Comparator A vs B: calculează (sau ia din cache) scorurile ambelor și
 // descrie diferențele determinist — fără Claude, deci funcționează identic
 // și când creditul AI lipsește. Limbaj strict descriptiv.
-router.get("/compare", async (req, res) => {
+router.get("/compare", requirePremium, async (req, res) => {
   const a = String(req.query.a || "").toUpperCase().trim();
   const b = String(req.query.b || "").toUpperCase().trim();
   if (!a || !b) return res.status(400).json({ error: "Introdu ambele simboluri." });

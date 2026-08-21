@@ -3392,3 +3392,24 @@ button.stat-tile:hover {
     display: none; /* pe mobil rămân simbol + sector + scor — sub-scorurile n-au loc */
   }
 }
+
+/* --- Tool-uri Pro pe planul gratuit: panouri vizibile sub overlay de upgrade --- */
+
+.tools-panel-locked {
+  position: relative;
+  overflow: hidden;
+}
+
+.tools-lock-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.7rem;
+  background: rgba(255, 255, 255, 0.72);
+  backdrop-filter: blur(2.5px);
+  border-radius: 18px;
+}
