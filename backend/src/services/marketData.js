@@ -116,7 +116,14 @@ async function getStock(simbol) {
   try {
     const quote = await getCachedLiveQuote(upper);
     const nume = await getCompanyName(upper);
-    return { simbol: upper, nume, pret: quote.pret, variatieProcent: quote.variatieProcent, sursa: "finnhub" };
+    return {
+      simbol: upper,
+      nume,
+      pret: quote.pret,
+      variatieProcent: quote.variatieProcent,
+      sector: mock?.sector || "Altele",
+      sursa: "finnhub",
+    };
   } catch (err) {
     console.error(`[marketData] fallback pentru ${upper}: ${err.message}`);
     return mock ? { ...mock, sursa: "mock" } : null;

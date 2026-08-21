@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { SkeletonPage } from "../components/Skeleton.jsx";
+import EmptyState from "../components/EmptyState.jsx";
 import { api } from "../api";
 import StockLogo from "../components/StockLogo.jsx";
 
@@ -86,7 +87,7 @@ export default function Community() {
       <section className="holdings">
         <h2>Prietenii tăi</h2>
         {friends.length === 0 ? (
-          <p className="empty">Nu ai încă niciun prieten adăugat. Trimite-i codul tău sau cere-i pe al lui.</p>
+          <EmptyState titlu="Investițiile sunt mai clare împreună" text="Trimite-i unui prieten codul tău de invitație sau cere-i pe al lui — vă vedeți reciproc watchlist-urile." />
         ) : (
           <ul className="stock-list">
             {friends.map((f) => (

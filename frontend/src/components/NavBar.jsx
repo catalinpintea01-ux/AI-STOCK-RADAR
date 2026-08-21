@@ -1,10 +1,19 @@
 import { useEffect, useRef, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { api } from "../api";
-import { Bell, Star } from "lucide-react";
+import { Bell, Star, Moon, Sun } from "lucide-react";
 
 export default function NavBar() {
   const navigate = useNavigate();
+  const [tema, setTema] = useState(document.documentElement.dataset.theme || "light");
+
+  function toggleTema() {
+    const noua = tema === "dark" ? "light" : "dark";
+    setTema(noua);
+    if (noua === "dark") document.documentElement.dataset.theme = "dark";
+    else delete document.documentElement.dataset.theme;
+    localStorage.setItem("tema", noua);
+  }
   const [unreadCount, setUnreadCount] = useState(0);
   const [premium, setPremium] = useState(null);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -68,6 +77,10 @@ export default function NavBar() {
         <NavLink to="/alerte" className={({ isActive }) => (isActive ? "nav-link active" : "nav-link")}>
           <Bell size={17} className="ic" />{unreadCount > 0 ? ` ${unreadCount}` : ""}
         </NavLink>
+
+        <button className="theme-toggle" onClick={toggleTema} aria-label="Comută tema">
+          {tema === "dark" ? <Sun size={16} /> : <Moon size={16} />}
+        </button>
 
         {premium === true && <span className="badge-chip"><Star size={12} className="ic" /> Premium</span>}
         {premium === false && (

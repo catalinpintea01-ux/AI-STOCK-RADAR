@@ -13,6 +13,7 @@ import Community from "./pages/Community.jsx";
 import Methodology from "./pages/Methodology.jsx";
 import Premium from "./pages/Premium.jsx";
 import NavBar from "./components/NavBar.jsx";
+import BottomNav from "./components/BottomNav.jsx";
 
 function PrivateLayout({ children }) {
   if (!getToken()) return <Navigate to="/login" replace />;
@@ -20,6 +21,7 @@ function PrivateLayout({ children }) {
     <>
       <NavBar />
       {children}
+      <BottomNav />
     </>
   );
 }

@@ -19,6 +19,28 @@
   --radius-md: 12px;  /* inputuri, butoane */
   --radius-lg: 16px;  /* carduri interioare */
   --radius-xl: 20px;  /* panouri, carduri mari */
+  --surface-2: var(--surface-2);    /* hover, fundal secundar */
+  --accent-soft: var(--accent-soft);  /* selecții, evidențieri albastre */
+  --success-soft: var(--success-soft); /* evidențieri pozitive */
+  --sk-1: var(--sk-1);         /* skeleton shimmer */
+  --sk-2: var(--sk-2);
+}
+
+/* Tema dark: navy profund, în spiritul dashboard-urilor fintech moderne.
+   Se activează cu data-theme="dark" pe <html> (toggle în meniu). */
+html[data-theme="dark"] {
+  --bg-page: #0e141d;
+  --card-bg: #151d29;
+  --border: #26303f;
+  --text: #e8eef5;
+  --muted: #93a3b8;
+  --surface-2: #1b2534;
+  --accent-soft: #17263e;
+  --success-soft: #11241b;
+  --sk-1: #1a2432;
+  --sk-2: #212d3d;
+  --shadow-card: 0 2px 10px rgba(0, 0, 0, 0.35);
+  --shadow-card-hover: 0 6px 20px rgba(0, 0, 0, 0.5);
 }
 
 body {
@@ -407,7 +429,7 @@ body {
 }
 
 .verdict-optimist {
-  background: linear-gradient(135deg, #eaf2ff 0%, #eafcf1 100%);
+  background: linear-gradient(135deg, var(--accent-soft) 0%, #eafcf1 100%);
   border: 1px solid #bfdbfe;
   color: var(--blue);
 }
@@ -799,7 +821,7 @@ body {
 }
 
 .explanation {
-  background: linear-gradient(135deg, #eaf2ff 0%, #eafcf1 100%);
+  background: linear-gradient(135deg, var(--accent-soft) 0%, #eafcf1 100%);
   border: 1px solid #d5e8fb;
   border-radius: var(--radius-lg);
   padding: 0.9rem 1rem;
@@ -1352,7 +1374,7 @@ body {
 }
 
 .typewriter-badge {
-  background: #eaf2ff;
+  background: var(--accent-soft);
   color: var(--blue);
   font-size: 0.75rem;
   font-weight: 700;
@@ -1701,7 +1723,7 @@ body {
 
 .landing-badge {
   display: inline-block;
-  background: #eaf2ff;
+  background: var(--accent-soft);
   color: var(--blue);
   font-size: 0.78rem;
   font-weight: 700;
@@ -2208,7 +2230,7 @@ button.stat-tile:hover {
 }
 
 .dash .panel .stock-row:hover {
-  background: #f4f9f9;
+  background: var(--surface-2);
   box-shadow: none;
   transform: none;
 }
@@ -2389,7 +2411,7 @@ button.stat-tile:hover {
   flex-direction: column;
   align-items: center;
   gap: 0.3rem;
-  background: #f6fafb;
+  background: var(--surface-2);
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
   padding: 0.85rem 0.6rem;
@@ -2472,7 +2494,7 @@ button.stat-tile:hover {
 /* Buton explicit "Vezi analiza" pe rândurile deja analizate — click-ul pe
    rând rămâne funcțional, dar acțiunea principală devine vizibilă. */
 .view-analysis-button {
-  background: #eaf2ff;
+  background: var(--accent-soft);
   color: var(--blue);
   border: 1px solid #bfdbfe;
   border-radius: var(--radius-sm);
@@ -2577,7 +2599,7 @@ button.stat-tile:hover {
 
 .landing-mockup-stats > div {
   flex: 1;
-  background: #f4f9f9;
+  background: var(--surface-2);
   border: 1px solid var(--border);
   border-radius: var(--radius-md);
   padding: 0.45rem 0.5rem;
@@ -3007,7 +3029,7 @@ button.stat-tile:hover {
 }
 
 .daily-lesson {
-  background: #f4f9f9;
+  background: var(--surface-2);
   border: 1px solid var(--border);
   border-radius: var(--radius-md);
   padding: 0.75rem 0.9rem;
@@ -3121,7 +3143,7 @@ button.stat-tile:hover {
 }
 
 .methodology-formula {
-  background: #f4f9f9;
+  background: var(--surface-2);
   border: 1px solid var(--border);
   border-radius: var(--radius-md);
   padding: 0.85rem 1rem;
@@ -3205,15 +3227,15 @@ button.stat-tile:hover {
 }
 
 .daily-col:hover {
-  background: #f4f9f9;
+  background: var(--surface-2);
 }
 
 .daily-col-selected {
-  background: #eaf2ff;
+  background: var(--accent-soft);
 }
 
 .daily-col-selected:hover {
-  background: #eaf2ff;
+  background: var(--accent-soft);
 }
 
 .daily-col-val {
@@ -3346,7 +3368,7 @@ button.stat-tile:hover {
 .cmp-table td.cmp-win {
   color: var(--text);
   font-weight: 800;
-  background: #f0fdf4;
+  background: var(--success-soft);
   border-radius: var(--radius-sm);
 }
 
@@ -3374,7 +3396,7 @@ button.stat-tile:hover {
   font-size: 0.66rem;
   font-weight: 800;
   color: var(--muted);
-  background: #f4f9f9;
+  background: var(--surface-2);
   border: 1px solid var(--border);
   border-radius: var(--radius-sm);
   padding: 0.15rem 0.35rem;
@@ -3523,7 +3545,7 @@ button.stat-tile:hover {
   align-items: center;
   gap: 0.9rem;
   flex-wrap: wrap;
-  background: #f0fdf4;
+  background: var(--success-soft);
   border: 1px solid #bbf7d0;
   border-radius: var(--radius-lg);
   padding: 0.85rem 1.1rem;
@@ -3577,7 +3599,7 @@ button.stat-tile:hover {
 }
 
 .premium-col {
-  background: #f0f9ff;
+  background: var(--accent-soft);
 }
 
 .premium-check {
@@ -3684,7 +3706,7 @@ button.stat-tile:hover {
   width: 18px;
   height: 18px;
   border-radius: 50%;
-  background: #eaf2ff;
+  background: var(--accent-soft);
   color: var(--blue);
   font-size: 0.66rem;
   font-weight: 800;
@@ -3736,11 +3758,11 @@ body {
 }
 
 .chart-range-btn:hover {
-  background: #f4f9f9;
+  background: var(--surface-2);
 }
 
 .chart-range-active {
-  background: #eaf2ff;
+  background: var(--accent-soft);
   color: var(--blue);
   border-color: #bfdbfe;
 }
@@ -3784,7 +3806,7 @@ body {
 .chart-skeleton {
   height: 220px;
   border-radius: var(--radius-md);
-  background: linear-gradient(90deg, #eef2f5 25%, #f7fafb 50%, #eef2f5 75%);
+  background: linear-gradient(90deg, var(--sk-1) 25%, var(--sk-2) 50%, var(--sk-1) 75%);
   background-size: 200% 100%;
   animation: skeleton-shimmer 1.2s infinite;
 }
@@ -3824,7 +3846,7 @@ body {
 /* --- Skeleton loaders partajate --- */
 
 .sk {
-  background: linear-gradient(90deg, #eef2f5 25%, #f7fafb 50%, #eef2f5 75%);
+  background: linear-gradient(90deg, var(--sk-1) 25%, var(--sk-2) 50%, var(--sk-1) 75%);
   background-size: 200% 100%;
   animation: skeleton-shimmer 1.2s infinite;
 }
@@ -3854,4 +3876,175 @@ body {
   display: flex;
   flex-direction: column;
   gap: 0.4rem;
+}
+
+/* --- Toggle temă --- */
+
+.theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border);
+  background: var(--card-bg);
+  color: var(--muted);
+  cursor: pointer;
+}
+
+.theme-toggle:hover {
+  color: var(--text);
+  border-color: var(--blue-light);
+}
+
+/* --- Donut de alocare pe sectoare --- */
+
+.alloc-wrap {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+  margin-top: 0.75rem;
+}
+
+.alloc-donut {
+  width: 148px;
+  height: 148px;
+  flex-shrink: 0;
+}
+
+.alloc-center-nr {
+  font-size: 20px;
+  font-weight: 800;
+  fill: var(--text);
+}
+
+.alloc-center-label {
+  font-size: 9px;
+  font-weight: 700;
+  fill: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.alloc-legend {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  min-width: 180px;
+  flex: 1;
+}
+
+.alloc-legend li {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.85rem;
+}
+
+.alloc-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 3px;
+  flex-shrink: 0;
+}
+
+.alloc-sector {
+  flex: 1;
+}
+
+.alloc-pct {
+  font-weight: 800;
+}
+
+/* --- Empty states ilustrate cu radarul --- */
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 1.75rem 1rem 1.5rem;
+  gap: 0.3rem;
+}
+
+.empty-state-viz {
+  margin-bottom: 0.7rem;
+  opacity: 0.9;
+}
+
+.empty-state-title {
+  font-size: 1rem;
+  font-weight: 800;
+  margin: 0;
+}
+
+.empty-state-text {
+  color: var(--muted);
+  font-size: 0.85rem;
+  line-height: 1.55;
+  max-width: 340px;
+  margin: 0 0 0.75rem;
+}
+
+/* --- Bottom navigation (doar mobil) --- */
+
+.bottom-nav {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 40;
+    display: flex;
+    background: var(--card-bg);
+    border-top: 1px solid var(--border);
+    padding: 0.35rem 0.5rem calc(0.35rem + env(safe-area-inset-bottom));
+  }
+
+  .bottom-nav-item {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.15rem;
+    padding: 0.35rem 0;
+    border-radius: var(--radius-md);
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 0.62rem;
+    font-weight: 700;
+  }
+
+  .bottom-nav-active {
+    color: var(--blue);
+  }
+
+  /* loc pentru bară sub conținut */
+  .portfolio-page,
+  .landing {
+    padding-bottom: 84px;
+  }
+}
+
+/* În dark, câmpurile de formular preiau suprafețele întunecate */
+html[data-theme="dark"] input,
+html[data-theme="dark"] select,
+html[data-theme="dark"] textarea {
+  background: var(--surface-2);
+  color: var(--text);
+  border-color: var(--border);
+}
+
+html[data-theme="dark"] input::placeholder,
+html[data-theme="dark"] textarea::placeholder {
+  color: var(--muted);
 }

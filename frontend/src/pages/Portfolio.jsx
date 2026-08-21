@@ -3,6 +3,8 @@ import { SkeletonPage, SkeletonRows } from "../components/Skeleton.jsx";
 import { Link, useSearchParams } from "react-router-dom";
 import { api } from "../api";
 import { Target, Globe, Flame, Medal, AlertTriangle } from "lucide-react";
+import AllocationDonut from "../components/AllocationDonut.jsx";
+import EmptyState from "../components/EmptyState.jsx";
 import { PortfolioChart, buildValueHistory } from "../PortfolioChart.jsx";
 import StockLogo from "../components/StockLogo.jsx";
 
@@ -245,6 +247,21 @@ export default function Portfolio() {
         <PortfolioChart points={history} />
       </div>
 
+      {portfolio.holdings.length > 0 && (
+        <div className="value-card">
+          <span className="label">Alocarea pe sectoare</span>
+          <AllocationDonut
+            alocari={Object.entries(
+              portfolio.holdings.reduce((acc, h) => {
+                const sector = stocks.find((s) => s.simbol === h.simbol)?.sector || "Altele";
+                acc[sector] = (acc[sector] || 0) + h.cantitate * priceOf(stocks, extraQuotes, h.simbol);
+                return acc;
+              }, {})
+            ).map(([sector, valoare]) => ({ sector, valoare }))}
+          />
+        </div>
+      )}
+
       <div className="xp-bar">
         <div className="xp-label">
           Nivel {user?.nivel ?? 1} — {(user?.xp ?? 0) % XP_PER_LEVEL}/{XP_PER_LEVEL} XP
@@ -280,7 +297,7 @@ export default function Portfolio() {
           <p className="row-hint">Atinge o acțiune pentru scor AI, știri și indicatori financiari.</p>
         )}
         {portfolio.holdings.length === 0 ? (
-          <p className="empty">Nu ai încă acțiuni. Cumpără mai jos din piața disponibilă.</p>
+          <EmptyState titlu="Portofoliul tău e gol" text="Cumpără prima acțiune din piața de mai jos — cu bani virtuali, fără niciun risc real." />
         ) : (
           <ul className="holding-list">
             {portfolio.holdings.map((h) => {

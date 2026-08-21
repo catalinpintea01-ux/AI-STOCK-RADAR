@@ -3,6 +3,7 @@ import { SkeletonPage } from "../components/Skeleton.jsx";
 import { Link } from "react-router-dom";
 import { api } from "../api";
 import StockLogo from "../components/StockLogo.jsx";
+import EmptyState from "../components/EmptyState.jsx";
 
 // Anti alert-fatigue: pagina e un digest zilnic ("3 schimbări importante azi"),
 // nu un puț fără fund de notificări. Istoricul complet rămâne disponibil, dar
@@ -101,10 +102,12 @@ export default function Alerts() {
 
       {items.length === 0 && (
         <section className="holdings">
-          <p className="empty">
-            Nicio alertă încă. Adaugă acțiuni în watchlist și aici vei vedea, o dată pe zi, doar ce
-            contează.
-          </p>
+          <EmptyState
+            titlu="Radarul ascultă piața pentru tine"
+            text="Adaugă acțiuni în watchlist și aici vei găsi, o dată pe zi, doar schimbările care contează."
+            ctaText="Mergi la radar →"
+            ctaTo="/"
+          />
         </section>
       )}
     </div>
