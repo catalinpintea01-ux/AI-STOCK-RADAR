@@ -177,6 +177,7 @@ export default function Watchlist() {
   const [dailyMover, setDailyMover] = useState(null);
   const [selectedDaily, setSelectedDaily] = useState(null); // simbolul coloanei selectate din grafic
   const [vix, setVix] = useState(null);
+  const [universSugestii, setUniversSugestii] = useState([]);
   const [interese, setInterese] = useState([]);
   const [onboarding, setOnboarding] = useState(false);
   const [onboardError, setOnboardError] = useState("");
@@ -257,6 +258,10 @@ export default function Watchlist() {
     api
       .getVix()
       .then(setVix)
+      .catch(() => {});
+    api
+      .getStocks()
+      .then((data) => setUniversSugestii(data.stocks || []))
       .catch(() => {});
     api
       .getDailyPicks()
@@ -494,6 +499,18 @@ export default function Watchlist() {
     dailyCastiguri[0] ||
     dailyPierderi[0] ||
     null;
+
+  // Când watchlist-ul are puține rânduri (plan gratuit), spațiul de sub listă
+  // se umple cu sugestii de adăugare — desktop-ul nu mai arată gol, iar
+  // utilizatorul are mereu un pas următor (limita de 3 → puntea spre Premium).
+  const simboluriUrmarite = new Set((items || []).map((i) => i.simbol));
+  const sugestiiRadar =
+    items && items.length > 0 && items.length < 6
+      ? universSugestii
+          .filter((s) => !simboluriUrmarite.has(s.simbol))
+          .sort((a, b) => Math.abs(b.variatieProcent ?? 0) - Math.abs(a.variatieProcent ?? 0))
+          .slice(0, 6)
+      : [];
 
   function renderDailyCol(p) {
     const inaltime = 14 + (Math.abs(p.variatieProcent) / dailyMaxAbs) * 58;
@@ -759,6 +776,29 @@ export default function Watchlist() {
                       <button className="show-more-button" onClick={() => setShowAllRows(true)}>
                         Arată toate ({sortedItems.length})
                       </button>
+                    )}
+                    {sugestiiRadar.length > 0 && (
+                      <div className="fill-suggestions">
+                        <p className="eyebrow workspace-eyebrow">Idei pentru radarul tău</p>
+                        <div className="suggestion-grid">
+                          {sugestiiRadar.map((sug) => (
+                            <div key={sug.simbol} className="suggestion-card">
+                              <StockLogo simbol={sug.simbol} />
+                              <div className="suggestion-info">
+                                <strong>{sug.simbol}</strong>
+                                <span className="muted">{sug.nume}</span>
+                              </div>
+                              <span className={sug.variatieProcent >= 0 ? "gain-positive" : "gain-negative"}>
+                                {sug.variatieProcent >= 0 ? "+" : ""}
+                                {(sug.variatieProcent ?? 0).toFixed(1)}%
+                              </span>
+                              <button className="add-watchlist-button" onClick={() => handleAdd(sug.simbol)}>
+                                +
+                              </button>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
                     )}
                   </>
                 )}
