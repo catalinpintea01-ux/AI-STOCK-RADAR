@@ -260,14 +260,27 @@ export default function Watchlist() {
       .then(setVix)
       .catch(() => {});
     api
-      .getStocks()
-      .then((data) => setUniversSugestii(data.stocks || []))
+      .getTicker()
+      .then((data) => {
+        const actiuni = (data.ticker || []).filter((t) => !["SPY", "DIA", "QQQ"].includes(t.simbol));
+        setUniversSugestii((prev) => {
+          const existente = new Set(prev.map((p) => p.simbol));
+          return [...prev, ...actiuni.filter((a) => !existente.has(a.simbol))];
+        });
+      })
       .catch(() => {});
     api
       .getDailyPicks()
       .then((data) => {
         setDailyPicks(data.picks);
         setDailyMover(data.mover || null);
+        setUniversSugestii((prev) => {
+          const existente = new Set(prev.map((p) => p.simbol));
+          const noi = [...data.picks, ...(data.mover ? [data.mover] : [])].filter(
+            (p) => !existente.has(p.simbol)
+          );
+          return [...prev, ...noi];
+        });
       })
       .catch(() => {});
   }, []);
@@ -776,6 +789,22 @@ export default function Watchlist() {
                       <button className="show-more-button" onClick={() => setShowAllRows(true)}>
                         Arată toate ({sortedItems.length})
                       </button>
+                    )}
+                    {items.length > 0 && items.length < 6 && sugestiiRadar.length === 0 && (
+                      <div className="fill-suggestions">
+                        <p className="eyebrow workspace-eyebrow">Idei pentru radarul tău</p>
+                        <div className="suggestion-grid">
+                          {Array.from({ length: 6 }).map((_, i) => (
+                            <div key={i} className="suggestion-card">
+                              <div className="sk sk-avatar" />
+                              <div className="suggestion-info">
+                                <div className="sk" style={{ width: "40%", height: 11, borderRadius: 6 }} />
+                                <div className="sk" style={{ width: "70%", height: 8, borderRadius: 6, marginTop: 5 }} />
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
                     )}
                     {sugestiiRadar.length > 0 && (
                       <div className="fill-suggestions">
