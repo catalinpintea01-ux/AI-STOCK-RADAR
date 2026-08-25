@@ -32,7 +32,7 @@ export default function PriceChart({ istoric }) {
     return <p className="chart-empty">Istoricul de preț se acumulează — revino curând.</p>;
   }
 
-  const culoare = crestere ? "#059669" : "#dc2626";
+  const culoare = crestere ? "#2e7d5b" : "#bf4438";
   const gradId = crestere ? "chart-grad-up" : "chart-grad-down";
   const hover = hoverIdx !== null ? puncte[hoverIdx] : null;
 
@@ -72,19 +72,19 @@ export default function PriceChart({ istoric }) {
       >
         <defs>
           <linearGradient id="chart-grad-up" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stopColor="#059669" stopOpacity="0.22" />
-            <stop offset="100%" stopColor="#059669" stopOpacity="0" />
+            <stop offset="0%" stopColor="#2e7d5b" stopOpacity="0.22" />
+            <stop offset="100%" stopColor="#2e7d5b" stopOpacity="0" />
           </linearGradient>
           <linearGradient id="chart-grad-down" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stopColor="#dc2626" stopOpacity="0.22" />
-            <stop offset="100%" stopColor="#dc2626" stopOpacity="0" />
+            <stop offset="0%" stopColor="#bf4438" stopOpacity="0.22" />
+            <stop offset="100%" stopColor="#bf4438" stopOpacity="0" />
           </linearGradient>
         </defs>
         <path d={areaPath} fill={`url(#${gradId})`} />
         <path d={path} fill="none" stroke={culoare} strokeWidth="2.5" strokeLinejoin="round" strokeLinecap="round" pathLength="1" className="price-chart-line" />
         {hover && (
           <>
-            <line x1={hover.x} y1={PAD_TOP} x2={hover.x} y2={H} stroke="#94a3b8" strokeWidth="1" strokeDasharray="3,3" vectorEffect="non-scaling-stroke" />
+            <line x1={hover.x} y1={PAD_TOP} x2={hover.x} y2={H} stroke="#9d968a" strokeWidth="1" strokeDasharray="3,3" vectorEffect="non-scaling-stroke" />
             <circle cx={hover.x} cy={hover.y} r="4.5" fill={culoare} stroke="#fff" strokeWidth="2" />
           </>
         )}

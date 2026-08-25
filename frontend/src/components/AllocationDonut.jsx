@@ -1,14 +1,14 @@
 // Donut de alocare pe sectoare — analytics-ul vizual în stil Revolut/SWS:
 // segmente SVG pastelate + legendă cu procente. Pur decorativ-descriptiv.
 const CULORI_SECTOR = {
-  Tehnologie: "#6366f1",
-  Financiar: "#0ea5e9",
-  Sănătate: "#10b981",
-  Consum: "#f59e0b",
-  Energie: "#ef4444",
-  Industrial: "#8b5cf6",
-  Telecom: "#14b8a6",
-  Altele: "#94a3b8",
+  Tehnologie: "#8a6d4e",
+  Financiar: "#5f5b52",
+  Sănătate: "#c9ab77",
+  Consum: "#b0563a",
+  Energie: "#7a4a3a",
+  Industrial: "#9b8f7d",
+  Telecom: "#42403a",
+  Altele: "#beb6a6",
 };
 
 const R = 44;

@@ -358,7 +358,7 @@ export default function Landing() {
       <section
         className="landing-final-cta landing-final-cta-photo"
         style={{
-          backgroundImage: `linear-gradient(rgba(15, 23, 42, 0.82), rgba(15, 23, 42, 0.9)), url(${FOTO_CTA.url})`,
+          backgroundImage: `linear-gradient(rgba(18, 17, 15, 0.84), rgba(18, 17, 15, 0.92)), url(${FOTO_CTA.url})`,
         }}
       >
         <h2>Gata să vezi piața mai clar?</h2>

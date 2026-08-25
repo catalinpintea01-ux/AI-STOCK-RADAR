@@ -3,18 +3,21 @@
 }
 
 :root {
-  --blue: #2563eb;
-  --blue-light: #3b82f6;
-  --green: #16a34a;
-  --green-light: #22c55e;
-  --gradient-brand: linear-gradient(135deg, var(--blue) 0%, var(--green) 100%);
-  --bg-page: #f2f8f7;
-  --card-bg: #ffffff;
-  --border: #e1e9ec;
-  --text: #0f172a;
-  --muted: #64748b;
-  --shadow-card: 0 2px 10px rgba(15, 60, 90, 0.06);
-  --shadow-card-hover: 0 6px 20px rgba(15, 60, 90, 0.1);
+  /* Identitate: bej cald + negru mat, accent bronz — fără albastru/verde de brand */
+  --blue: #8a6d4e;        /* accent bronz (numele var rămâne pentru compat.) */
+  --blue-light: #a08059;
+  --green: #2e2b25;       /* fost verde de brand — acum cărbune (doar gradient) */
+  --green-light: #3b362d;
+  --gradient-brand: linear-gradient(135deg, #23201b 0%, #3b362d 100%);
+  --bg-page: #f1ece2;
+  --card-bg: #fbf8f1;
+  --border: #e2d9c8;
+  --text: #1d1a15;
+  --muted: #82796a;
+  --price-up: #2e7d5b;    /* verde/roșu DOAR pentru mișcări de preț (convenție) */
+  --price-down: #bf4438;
+  --shadow-card: 0 2px 10px rgba(60, 50, 30, 0.07);
+  --shadow-card-hover: 0 6px 20px rgba(60, 50, 30, 0.11);
   --radius-sm: 8px;   /* controale mici, chip-uri */
   --radius-md: 12px;  /* inputuri, butoane */
   --radius-lg: 16px;  /* carduri interioare */
@@ -29,19 +32,33 @@
 /* Tema dark: navy profund, în spiritul dashboard-urilor fintech moderne.
    Se activează cu data-theme="dark" pe <html> (toggle în meniu). */
 html[data-theme="dark"] {
-  --bg-page: #0e141d;
-  --card-bg: #151d29;
-  --border: #26303f;
-  --text: #e8eef5;
-  --muted: #93a3b8;
-  --surface-2: #1b2534;
-  --accent-soft: #17263e;
-  --success-soft: #11241b;
-  --sk-1: #1a2432;
-  --sk-2: #212d3d;
-  --shadow-card: 0 2px 10px rgba(0, 0, 0, 0.35);
-  --shadow-card-hover: 0 6px 20px rgba(0, 0, 0, 0.5);
+  --bg-page: #0d0c0a;
+  --card-bg: #171614;
+  --border: #2a2823;
+  --text: #efe9dd;
+  --muted: #9d968a;
+  --blue: #d3bf9c;        /* accent auriu pe negru mat */
+  --blue-light: #e0cfae;
+  --gradient-brand: linear-gradient(135deg, #454035 0%, #5c5344 100%);
+  --surface-2: #201e1a;
+  --accent-soft: #2a251b;
+  --success-soft: #262218;
+  --price-up: #59b28e;
+  --price-down: #e07a68;
+  --sk-1: #1e1c18;
+  --sk-2: #282520;
+  --shadow-card: 0 2px 10px rgba(0, 0, 0, 0.4);
+  --shadow-card-hover: 0 6px 20px rgba(0, 0, 0, 0.55);
 }
+
+html[data-theme="dark"] .navbar-brand {
+  background: linear-gradient(135deg, #efe9dd 0%, #d3bf9c 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+html[data-theme="dark"] .price-flash-up { background: #1d2b24; }
+html[data-theme="dark"] .price-flash-down { background: #33201c; }
 
 body {
   margin: 0;
@@ -377,7 +394,7 @@ body {
 }
 
 .disclaimer {
-  color: #94a3b8;
+  color: #9d968a;
   font-size: 0.75rem;
   line-height: 1.4;
   margin: 1.5rem 0 0;
@@ -429,21 +446,21 @@ body {
 }
 
 .verdict-optimist {
-  background: linear-gradient(135deg, var(--accent-soft) 0%, #eafcf1 100%);
-  border: 1px solid #bfdbfe;
+  background: var(--accent-soft);
+  border: 1px solid #d5c8ab;
   color: var(--blue);
 }
 
 .verdict-neutru {
-  background: #f3f4f6;
+  background: var(--surface-2);
   border: 1px solid #e5e7eb;
-  color: #4b5563;
+  color: var(--muted);
 }
 
 .verdict-rezervat {
-  background: #fff7ed;
+  background: #f3e4dc;
   border: 1px solid #fed7aa;
-  color: #c2410c;
+  color: #b0563a;
 }
 
 .auth-page {
@@ -457,7 +474,7 @@ body {
   align-items: center;
   justify-content: center;
   padding: 3rem;
-  background: linear-gradient(160deg, #0f172a 0%, #14304f 55%, #0f3b2c 100%);
+  background: linear-gradient(160deg, #121110 0%, #1b1915 55%, #232019 100%);
   color: white;
 }
 
@@ -472,7 +489,7 @@ body {
 }
 
 .auth-brand-tagline {
-  color: #cbd5e1;
+  color: #b8b0a0;
   font-size: 0.95rem;
   line-height: 1.5;
   margin: 0 0 2rem;
@@ -492,7 +509,7 @@ body {
   align-items: flex-start;
   gap: 0.7rem;
   font-size: 0.88rem;
-  color: #e2e8f0;
+  color: #e6dfd2;
   line-height: 1.4;
 }
 
@@ -821,7 +838,7 @@ body {
 }
 
 .explanation {
-  background: linear-gradient(135deg, var(--accent-soft) 0%, #eafcf1 100%);
+  background: var(--accent-soft);
   border: 1px solid #d5e8fb;
   border-radius: var(--radius-lg);
   padding: 0.9rem 1rem;
@@ -895,7 +912,7 @@ body {
 }
 
 .radar-snapshot-number.rezervat {
-  color: #c2410c;
+  color: #b0563a;
 }
 
 .radar-snapshot-label {
@@ -1084,13 +1101,13 @@ body {
 }
 
 .gain-positive {
-  color: var(--green);
+  color: var(--price-up);
   font-size: 0.85rem;
   font-weight: 700;
 }
 
 .gain-negative {
-  color: #dc2626;
+  color: var(--price-down);
   font-size: 0.85rem;
   font-weight: 700;
 }
@@ -1226,7 +1243,7 @@ body {
 .ticker-tape {
   width: 100%;
   overflow: hidden;
-  background: #0f172a;
+  background: #131210;
   padding: 0.6rem 0;
   margin-bottom: 1.25rem;
   border-radius: var(--radius-md);
@@ -1245,7 +1262,7 @@ body {
   padding: 0 1.25rem;
   border-right: 1px solid rgba(255, 255, 255, 0.15);
   font-size: 0.8rem;
-  color: #cbd5e1;
+  color: #b8b0a0;
 }
 
 .ticker-item strong {
@@ -1324,12 +1341,12 @@ body {
 
 .analyst-buy {
   background: rgba(22, 163, 74, 0.08);
-  color: #16a34a;
+  color: var(--price-up);
 }
 
 .analyst-hold {
   background: #f3f4f6;
-  color: #4b5563;
+  color: var(--muted);
 }
 
 .analyst-sell {
@@ -2039,7 +2056,7 @@ body {
 
 .landing-final-cta {
   text-align: center;
-  background: linear-gradient(160deg, #0f172a 0%, #14304f 55%, #0f3b2c 100%);
+  background: linear-gradient(160deg, #121110 0%, #1b1915 55%, #232019 100%);
   color: white;
   border-radius: var(--radius-xl);
   padding: 3rem 1.5rem;
@@ -2053,7 +2070,7 @@ body {
 }
 
 .landing-final-cta p {
-  color: #cbd5e1;
+  color: #b8b0a0;
   margin: 0 0 1.5rem;
 }
 
@@ -2082,7 +2099,7 @@ body {
 }
 
 .landing-footer-disclaimer {
-  color: #94a3b8;
+  color: #9d968a;
   font-size: 0.75rem;
   line-height: 1.5;
   max-width: 560px;
@@ -2133,11 +2150,11 @@ body {
 }
 
 .stat-value.neutru {
-  color: #6b7280;
+  color: var(--muted);
 }
 
 .stat-value.rezervat {
-  color: #c2410c;
+  color: #b0563a;
 }
 
 .stat-label {
@@ -2496,7 +2513,7 @@ button.stat-tile:hover {
 .view-analysis-button {
   background: var(--accent-soft);
   color: var(--blue);
-  border: 1px solid #bfdbfe;
+  border: 1px solid #d5c8ab;
   border-radius: var(--radius-sm);
   padding: 0.4rem 0.7rem;
   font-size: 0.8rem;
@@ -2507,7 +2524,7 @@ button.stat-tile:hover {
 }
 
 .view-analysis-button:hover {
-  background: #dbeafe;
+  background: #e6dcc6;
 }
 
 /* --- Landing: hero pe 2 coloane cu mockup de produs + perete de logo-uri --- */
@@ -2578,7 +2595,7 @@ button.stat-tile:hover {
 }
 
 .landing-mockup-dot:nth-child(3) {
-  background: #86efac;
+  background: #d3bf9c;
 }
 
 .landing-mockup-title {
@@ -2623,7 +2640,7 @@ button.stat-tile:hover {
 }
 
 .rezervat-text {
-  color: #c2410c;
+  color: #b0563a;
 }
 
 .landing-mockup-row {
@@ -2714,16 +2731,16 @@ button.stat-tile:hover {
 .radar-viz {
   position: relative;
   border-radius: 50%;
-  background: radial-gradient(circle at center, rgba(34, 197, 94, 0.14), rgba(15, 23, 42, 0.97) 78%);
-  border: 1px solid rgba(34, 197, 94, 0.35);
+  background: radial-gradient(circle at center, rgba(211, 191, 156, 0.13), rgba(14, 13, 11, 0.97) 78%);
+  border: 1px solid rgba(211, 191, 156, 0.35);
   overflow: hidden;
   flex-shrink: 0;
-  box-shadow: 0 18px 50px rgba(15, 60, 90, 0.22), inset 0 0 40px rgba(34, 197, 94, 0.08);
+  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.3), inset 0 0 40px rgba(211, 191, 156, 0.08);
 }
 
 .radar-viz-ring {
   position: absolute;
-  border: 1px solid rgba(34, 197, 94, 0.22);
+  border: 1px solid rgba(211, 191, 156, 0.22);
   border-radius: 50%;
   top: 50%;
   left: 50%;
@@ -2740,7 +2757,7 @@ button.stat-tile:hover {
   left: 5%;
   right: 5%;
   height: 1px;
-  background: rgba(34, 197, 94, 0.16);
+  background: rgba(211, 191, 156, 0.16);
 }
 
 .radar-viz-cross-v {
@@ -2749,14 +2766,14 @@ button.stat-tile:hover {
   top: 5%;
   bottom: 5%;
   width: 1px;
-  background: rgba(34, 197, 94, 0.16);
+  background: rgba(211, 191, 156, 0.16);
 }
 
 .radar-viz-sweep {
   position: absolute;
   inset: 0;
   border-radius: 50%;
-  background: conic-gradient(from 0deg, rgba(34, 197, 94, 0.45), rgba(34, 197, 94, 0.1) 55deg, transparent 80deg);
+  background: conic-gradient(from 0deg, rgba(211, 191, 156, 0.5), rgba(211, 191, 156, 0.12) 55deg, transparent 80deg);
   animation: radar-sweep 4s linear infinite;
 }
 
@@ -2768,9 +2785,9 @@ button.stat-tile:hover {
   position: absolute;
   width: 8px;
   height: 8px;
-  background: #22c55e;
+  background: #d3bf9c;
   border-radius: 50%;
-  box-shadow: 0 0 10px #22c55e;
+  box-shadow: 0 0 10px #d3bf9c;
   animation: blip-pulse 3.2s ease-out infinite;
 }
 
@@ -2784,7 +2801,7 @@ button.stat-tile:hover {
   position: absolute;
   left: 10px;
   top: -4px;
-  color: #86efac;
+  color: #d3bf9c;
   font-size: 0.6rem;
   font-weight: 800;
   letter-spacing: 0.04em;
@@ -2828,7 +2845,7 @@ button.stat-tile:hover {
   grid-template-columns: auto 1fr;
   gap: 2.5rem;
   align-items: center;
-  background: linear-gradient(160deg, #0f172a 0%, #14304f 60%, #0f3b2c 100%);
+  background: linear-gradient(160deg, #121110 0%, #1b1915 60%, #232019 100%);
   border-radius: var(--radius-xl);
   padding: 2.25rem 2.5rem;
 }
@@ -2852,7 +2869,7 @@ button.stat-tile:hover {
   display: flex;
   align-items: flex-start;
   gap: 0.6rem;
-  color: #e2e8f0;
+  color: #e6dfd2;
   font-size: 0.92rem;
   line-height: 1.45;
 }
@@ -2917,23 +2934,23 @@ button.stat-tile:hover {
 
 .landing-photo-credit {
   text-align: center;
-  color: #94a3b8;
+  color: #9d968a;
   font-size: 0.7rem;
   margin: 1rem 0 0;
 }
 
 .landing-photo-credit a {
-  color: #94a3b8;
+  color: #9d968a;
   text-decoration: underline;
 }
 
 .landing-photo-credit-dark {
   margin-top: 1.25rem;
-  color: rgba(203, 213, 225, 0.65);
+  color: rgba(211, 199, 175, 0.65);
 }
 
 .landing-photo-credit-dark a {
-  color: rgba(203, 213, 225, 0.75);
+  color: rgba(211, 199, 175, 0.75);
 }
 
 .landing-final-cta-photo {
@@ -2945,7 +2962,7 @@ button.stat-tile:hover {
 
 .dash-hero {
   align-items: center;
-  background: linear-gradient(160deg, #0f172a 0%, #14304f 60%, #0f3b2c 100%);
+  background: linear-gradient(160deg, #121110 0%, #1b1915 60%, #232019 100%);
   border-radius: var(--radius-xl);
   padding: 1.5rem 1.75rem;
   margin-bottom: 1.25rem;
@@ -2962,7 +2979,7 @@ button.stat-tile:hover {
 .dash-hero .typewriter-badge {
   background: rgba(255, 255, 255, 0.12);
   border-color: rgba(255, 255, 255, 0.18);
-  color: #86efac;
+  color: #d3bf9c;
 }
 
 .dash-hero .stat-tile {
@@ -2976,15 +2993,15 @@ button.stat-tile:hover {
 }
 
 .dash-hero .stat-value.optimist {
-  color: #7dd3fc;
+  color: #d3bf9c;
 }
 
 .dash-hero .stat-value.neutru {
-  color: #cbd5e1;
+  color: #b8b0a0;
 }
 
 .dash-hero .stat-value.rezervat {
-  color: #fdba74;
+  color: #d99b73;
 }
 
 .dash-hero .stat-label {
@@ -3095,7 +3112,7 @@ button.stat-tile:hover {
 }
 
 .dash-hero .methodology-link {
-  color: #7dd3fc;
+  color: #d3bf9c;
 }
 
 .methodology .section-title {
@@ -3251,11 +3268,11 @@ button.stat-tile:hover {
 }
 
 .daily-col-bar-pos {
-  background: linear-gradient(180deg, #34d399, #059669);
+  background: linear-gradient(180deg, #4ca382, #2e7d5b);
 }
 
 .daily-col-bar-neg {
-  background: linear-gradient(180deg, #f87171, #dc2626);
+  background: linear-gradient(180deg, #d76b5c, #bf4438);
 }
 
 .daily-col-tick {
@@ -3603,13 +3620,13 @@ button.stat-tile:hover {
 }
 
 .premium-check {
-  color: #059669;
+  color: var(--price-up);
   font-weight: 800;
   font-size: 1rem;
 }
 
 .premium-lock {
-  color: #cbd5e1;
+  color: #b8b0a0;
   font-weight: 800;
 }
 
@@ -3664,12 +3681,12 @@ button.stat-tile:hover {
   vertical-align: 1px;
 }
 
-.vdot-optimist { background: #3b82f6; }
-.vdot-neutru { background: #9ca3af; }
-.vdot-rezervat { background: #f59e0b; }
+.vdot-optimist { background: #8a6d4e; }
+.vdot-neutru { background: #98928a; }
+.vdot-rezervat { background: #b0563a; }
 
 .landing-fact-icon {
-  color: #86efac;
+  color: #d3bf9c;
   display: inline-flex;
 }
 
@@ -3685,7 +3702,7 @@ button.stat-tile:hover {
 
 .auth-brand-icon {
   display: inline-flex;
-  color: #86efac;
+  color: #d3bf9c;
 }
 
 /* Pașii din traseul persona: numerotați discret, fără emoji */
@@ -3764,7 +3781,7 @@ body {
 .chart-range-active {
   background: var(--accent-soft);
   color: var(--blue);
-  border-color: #bfdbfe;
+  border-color: #d5c8ab;
 }
 
 .price-chart-wrap {
@@ -3826,13 +3843,13 @@ body {
 }
 
 .price-flash-up {
-  background: #dcfce7;
-  color: #059669;
+  background: #e2ede2;
+  color: var(--price-up);
 }
 
 .price-flash-down {
-  background: #fee2e2;
-  color: #dc2626;
+  background: #f3e1dc;
+  color: var(--price-down);
 }
 
 /* În hero-ul acțiunii, butonul de watchlist e compact, nu full-width */

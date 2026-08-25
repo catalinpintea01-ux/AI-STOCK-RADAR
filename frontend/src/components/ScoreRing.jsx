@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 
 const VERDICT_COLOR = {
-  optimist: "#2563eb",
-  neutru: "#6b7280",
-  rezervat: "#c2410c",
+  optimist: "#8a6d4e",
+  neutru: "#98928a",
+  rezervat: "#b0563a",
 };
 
 const RADIUS = 15;
@@ -26,7 +26,7 @@ export default function ScoreRing({ score, verdict }) {
 
   return (
     <svg className="score-ring" width="36" height="36" viewBox="0 0 36 36">
-      <circle cx="18" cy="18" r={RADIUS} fill="none" stroke="#e7eef0" strokeWidth="4" />
+      <circle cx="18" cy="18" r={RADIUS} fill="none" stroke="var(--border)" strokeWidth="4" />
       <circle
         className="score-ring-fill"
         cx="18"
