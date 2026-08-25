@@ -9,7 +9,7 @@ import Sparkline from "../components/Sparkline.jsx";
 import AnimatedNumber from "../components/AnimatedNumber.jsx";
 import TypewriterText from "../components/TypewriterText.jsx";
 import ToolsPro from "../components/ToolsPro.jsx";
-import RadarViz from "../components/RadarViz.jsx";
+import RadarSweep from "../components/RadarSweep.jsx";
 import ThemeCards from "../components/ThemeCards.jsx";
 import VerdictTag from "../components/VerdictTag.jsx";
 import LivePrice from "../components/LivePrice.jsx";
@@ -518,22 +518,19 @@ export default function Watchlist() {
     <div className="portfolio-page dash">
       <TickerTape />
 
-      <header className="dash-header dash-hero">
-        <div className="dash-header-left">
-          <RadarViz size={190} />
-          <div>
-            <div className="page-title-row">
-              <h1 className="page-title">AI Stock Radar</h1>
-              <span className="typewriter-badge">
-                <TypewriterText phrases={TAGLINE_PHRASES} />
-              </span>
-            </div>
-            <p className="cash">
-              Urmărește acțiuni și primești context AI despre ele — nu recomandări de
-              tranzacționare. <Link to="/metodologie" className="methodology-link">Cum calculăm scorul →</Link>
-            </p>
-          </div>
-        </div>
+      <header className="mega-hero dash-hero dash-mega">
+        <RadarSweep />
+        <div className="mega-hero-content dash-mega-content">
+          <h1 className="mega-headline dash-mega-headline">
+            AI Stock <span className="mega-headline-accent">Radar</span>
+          </h1>
+          <span className="typewriter-badge">
+            <TypewriterText phrases={TAGLINE_PHRASES} />
+          </span>
+          <p className="mega-sub dash-mega-sub">
+            Urmărește acțiuni și primești context AI despre ele — nu recomandări de
+            tranzacționare. <Link to="/metodologie" className="methodology-link">Cum calculăm scorul →</Link>
+          </p>
 
         {items.length > 0 && analizateCount > 0 && (
           <div className="dash-stats">
@@ -563,6 +560,7 @@ export default function Watchlist() {
             </button>
           </div>
         )}
+        </div>
       </header>
 
       {items.length > 0 && analizateCount === 0 && (

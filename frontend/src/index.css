@@ -4577,3 +4577,88 @@ a.theme-ticker:hover {
   .mega-hero { min-height: 480px; }
   .mega-hero-radar { width: 560px; height: 560px; }
 }
+
+/* --- Dashboard: hero mega (radar + text uriaș) + statistici în interior --- */
+
+.dash-mega {
+  min-height: 420px;
+  flex-direction: column;
+  margin-bottom: 1.5rem;
+}
+
+.dash-mega .mega-hero-radar {
+  width: 640px;
+  height: 640px;
+}
+
+.dash-mega-content {
+  padding: 3rem 1.5rem 2.2rem;
+}
+
+.dash-mega-headline {
+  font-size: clamp(2.1rem, 5vw, 3.4rem);
+  margin: 0.6rem 0 0.8rem;
+}
+
+.dash-mega-sub {
+  margin: 0.6rem 0 1.4rem;
+  font-size: 0.95rem;
+}
+
+.dash-mega .dash-stats {
+  justify-content: center;
+}
+
+/* --- Subtitluri mari în toată aplicația (stil statement) --- */
+
+.panel-head h2 {
+  font-size: 1.5rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.dash-side .panel-head h2 {
+  font-size: 1.25rem;
+}
+
+.tools-section-head h2 {
+  font-size: 1.6rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.dash-personas-title {
+  font-size: 1.6rem;
+  letter-spacing: -0.02em;
+}
+
+.holdings > h2,
+.holdings .panel-head h2 {
+  font-size: 1.4rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.h2-ic {
+  width: 20px;
+  height: 20px;
+  vertical-align: -3.5px;
+}
+
+@media (max-width: 560px) {
+  .panel-head h2,
+  .holdings > h2 {
+    font-size: 1.25rem;
+  }
+  .tools-section-head h2,
+  .dash-personas-title {
+    font-size: 1.35rem;
+  }
+  .dash-mega .mega-hero-radar {
+    width: 480px;
+    height: 480px;
+  }
+  .dash-mega {
+    min-height: 380px;
+  }
+}
