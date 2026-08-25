@@ -45,10 +45,10 @@ const HERO_PHRASES = [
 // Doar fapte reale despre produs — fără cifre de utilizatori sau venituri
 // inventate: pagina publică nu are voie să fabrice dovezi sociale.
 const STATS = [
-  { value: 50, suffix: "+", label: "acțiuni în universul analizat" },
+  { value: 50, suffix: "", label: "de acțiuni în universul analizat" },
   { value: 4, suffix: "", label: "sub-scoruri în fiecare analiză AI" },
   { value: 10000, suffix: "", label: "USD virtuali la înscriere" },
-  { value: 3, suffix: "", label: "știri de piață analizate AI zilnic" },
+  { value: 7, suffix: "", label: "știri de piață analizate AI zilnic" },
 ];
 
 const STEPS = [
