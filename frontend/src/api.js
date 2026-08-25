@@ -42,6 +42,7 @@ export const api = {
   getWatchlist: () => request("/watchlist"),
   addToWatchlist: (simbol) =>
     request("/watchlist", { method: "POST", body: JSON.stringify({ simbol }) }),
+  getThemeData: (tickere) => request(`/stocks/tema?simboluri=${tickere.join(",")}`),
   getStockHistory: (simbol, zile) =>
     request(`/stocks/${encodeURIComponent(simbol)}/history?zile=${zile}`),
   getEarningsCalendar: () => request("/watchlist/earnings"),

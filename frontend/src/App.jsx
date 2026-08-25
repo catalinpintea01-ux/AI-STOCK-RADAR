@@ -12,6 +12,7 @@ import Learn from "./pages/Learn.jsx";
 import Community from "./pages/Community.jsx";
 import Methodology from "./pages/Methodology.jsx";
 import Premium from "./pages/Premium.jsx";
+import ThemePage from "./pages/ThemePage.jsx";
 import NavBar from "./components/NavBar.jsx";
 import BottomNav from "./components/BottomNav.jsx";
 
@@ -82,6 +83,14 @@ export default function App() {
         element={
           <PrivateLayout>
             <Learn />
+          </PrivateLayout>
+        }
+      />
+      <Route
+        path="/tema/:slug"
+        element={
+          <PrivateLayout>
+            <ThemePage />
           </PrivateLayout>
         }
       />

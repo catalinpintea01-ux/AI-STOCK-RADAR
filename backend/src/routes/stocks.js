@@ -8,6 +8,7 @@ const { requireAuth } = require("../middleware/auth");
 const prisma = require("../db");
 const { isPremium } = require("../services/stripe");
 const { getDailyHistory } = require("../services/history");
+const { getEarningsCalendar } = require("../services/fundamentals");
 
 const router = express.Router();
 
@@ -46,6 +47,65 @@ router.get("/market-news/:id", async (req, res) => {
     return res.status(404).json({ error: "Știrea nu mai este disponibilă" });
   }
   res.json({ news: item });
+});
+
+// Agregatul unei teme de investiții: cotații + scoruri AI din cache + indice
+// tematic normalizat (media coșului, bază 100) + raportările viitoare.
+// IMPORTANT: definit înainte de /:simbol, altfel "tema" ar fi tratat ca simbol.
+router.get("/tema", requireAuth, async (req, res) => {
+  const simboluri = String(req.query.simboluri || "")
+    .split(",")
+    .map((s) => s.trim().toUpperCase())
+    .filter(Boolean)
+    .slice(0, 10);
+  if (simboluri.length === 0) return res.status(400).json({ error: "Lipsesc simbolurile temei" });
+
+  // Cotații — secvențial, pe cache-ul existent, ca să nu lovim rate-limitul.
+  const companii = [];
+  for (const simbol of simboluri) {
+    const stock = await getStock(simbol);
+    if (stock) companii.push(stock);
+  }
+
+  const scoruri = await prisma.radarScore.findMany({ where: { simbol: { in: simboluri } } });
+  const scorMap = new Map(scoruri.map((s) => [s.simbol, { scorCompozit: s.scorCompozit, verdict: s.verdict }]));
+  for (const c of companii) c.radar = scorMap.get(c.simbol) || null;
+
+  // Indicele tematic: fiecare serie normalizată la 100 în prima zi, apoi media
+  // pe zilele comune — o singură linie care arată "cum a mers tema" pe 30 zile.
+  const deLa = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString().slice(0, 10);
+  const serii = [];
+  for (const simbol of simboluri) {
+    try {
+      const istoric = (await getDailyHistory(simbol)).filter((p) => p.t >= deLa);
+      if (istoric.length >= 2) {
+        const baza = istoric[0].pret;
+        serii.push(new Map(istoric.map((p) => [p.t, (p.pret / baza) * 100])));
+      }
+    } catch {
+      // simbol fără istoric — nu blocăm indicele
+    }
+  }
+  let indice = [];
+  if (serii.length > 0) {
+    const zile = [...serii[0].keys()];
+    indice = zile
+      .map((t) => {
+        const valori = serii.map((m) => m.get(t)).filter((v) => v !== undefined);
+        return valori.length ? { t, pret: valori.reduce((a, b) => a + b, 0) / valori.length } : null;
+      })
+      .filter(Boolean);
+  }
+
+  const calendar = await getEarningsCalendar();
+  const setSimboluri = new Set(simboluri);
+  const raportari = calendar
+    .filter((e) => setSimboluri.has(e.symbol))
+    .sort((a, b) => (a.date < b.date ? -1 : 1))
+    .slice(0, 5)
+    .map((e) => ({ simbol: e.symbol, data: e.date, moment: e.hour || null }));
+
+  res.json({ companii, indice, raportari });
 });
 
 // Serie zilnică pentru graficul de preț: ?zile=7|30|180|365 (implicit 30).
