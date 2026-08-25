@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { api } from "../api";
 import Disclaimer from "../components/Disclaimer.jsx";
 import { Star } from "lucide-react";
+import { track } from "@vercel/analytics";
 
 // Paywall cu propunere de valoare explicită: utilizatorul vede EXACT ce
 // primește în plus înainte să plătească — nu doar un buton "Premium".
@@ -42,6 +43,7 @@ export default function Premium() {
     setLoading(true);
     setError("");
     try {
+      track("start_trial");
       const data = await api.createCheckoutSession();
       window.location.href = data.url;
     } catch (err) {

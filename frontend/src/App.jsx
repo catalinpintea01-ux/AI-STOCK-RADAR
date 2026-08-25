@@ -14,6 +14,7 @@ import Methodology from "./pages/Methodology.jsx";
 import Premium from "./pages/Premium.jsx";
 import ThemePage from "./pages/ThemePage.jsx";
 import VixPage from "./pages/VixPage.jsx";
+import { Termeni, Confidentialitate } from "./pages/Legal.jsx";
 import NavBar from "./components/NavBar.jsx";
 import BottomNav from "./components/BottomNav.jsx";
 
@@ -47,6 +48,8 @@ export default function App() {
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
       <Route path="/" element={<HomeRoute />} />
+      <Route path="/termeni" element={<Termeni />} />
+      <Route path="/confidentialitate" element={<Confidentialitate />} />
       <Route
         path="/portofoliu"
         element={

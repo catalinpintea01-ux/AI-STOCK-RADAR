@@ -383,6 +383,8 @@ export default function Landing() {
         <div className="landing-footer-links">
           <Link to="/login">Autentificare</Link>
           <Link to="/register">Creează cont</Link>
+          <Link to="/termeni">Termeni și condiții</Link>
+          <Link to="/confidentialitate">Confidențialitate</Link>
         </div>
         <p className="landing-footer-disclaimer">
           Conținut educativ generat automat, nu este consultanță de investiții. Scorurile și textele din aplicație

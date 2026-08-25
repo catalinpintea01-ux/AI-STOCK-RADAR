@@ -4854,3 +4854,43 @@ html[data-theme="dark"] .workspace-panel {
 .dash-personas-main .theme-grid {
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
 }
+
+/* --- Pagini legale --- */
+
+.legal-page {
+  max-width: 760px;
+}
+
+.legal-body h2 {
+  font-size: 1.1rem;
+  font-weight: 800;
+  margin: 1.4rem 0 0.5rem;
+}
+
+.legal-body h2:first-child {
+  margin-top: 0;
+}
+
+.legal-body p,
+.legal-body li {
+  font-size: 0.9rem;
+  line-height: 1.65;
+  color: var(--text);
+}
+
+.legal-body ul {
+  padding-left: 1.2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.legal-body a {
+  color: var(--blue);
+}
+
+.legal-nota {
+  margin-top: 1.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border);
+}

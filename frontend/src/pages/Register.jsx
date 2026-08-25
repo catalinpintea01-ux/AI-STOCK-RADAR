@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { track } from "@vercel/analytics";
 import { Eye, EyeOff } from "lucide-react";
 import { useNavigate, Link } from "react-router-dom";
 import { api } from "../api";
@@ -18,6 +19,7 @@ export default function Register() {
     setLoading(true);
     try {
       const data = await api.register(email, password);
+      track("inregistrare");
       localStorage.setItem("token", data.token);
       navigate("/");
     } catch (err) {
