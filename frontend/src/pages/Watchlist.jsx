@@ -673,6 +673,9 @@ export default function Watchlist() {
 
             {(items.length === 0 || onboardingOpen) && (
               <div className="onboarding-box">
+                {items.length === 0 && (
+                  <img src="/mascota/radar.png" alt="" className="mascota mascota-empty" loading="lazy" />
+                )}
                 <p className="empty">Alege ce te interesează și îți construim un watchlist {items.length === 0 ? "de start" : "nou"}:</p>
                 <div className="onboarding-chips">
                   {INTEREST_OPTIONS.map((opt) => (
@@ -976,6 +979,20 @@ export default function Watchlist() {
                 ))}
               </ul>
             )}
+          </section>
+
+          <section className="panel mascota-panel">
+            <img src="/mascota/radar.png" alt="" className="mascota mascota-sidebar" loading="lazy" />
+            <div>
+              <p className="mascota-panel-title">Radarul lucrează pentru tine</p>
+              <p className="muted mascota-panel-text">
+                Scoruri recalculate automat la 6 ore, prețuri live și digestul zilnic — tu doar
+                alegi ce urmărești.
+              </p>
+              <Link to="/metodologie" className="methodology-link">
+                Cum calculăm scorul →
+              </Link>
+            </div>
           </section>
         </aside>
       </div>

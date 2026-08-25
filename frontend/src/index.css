@@ -4269,3 +4269,28 @@ html[data-theme="dark"] textarea::placeholder {
     width: 210px;
   }
 }
+
+/* Card de brand cu mascota, la finalul barei laterale din dashboard */
+.mascota-panel {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+}
+
+.mascota-sidebar {
+  width: 104px;
+  flex-shrink: 0;
+  box-shadow: var(--shadow-card);
+}
+
+.mascota-panel-title {
+  font-weight: 800;
+  font-size: 0.92rem;
+  margin: 0 0 0.3rem;
+}
+
+.mascota-panel-text {
+  font-size: 0.8rem;
+  line-height: 1.5;
+  margin: 0 0 0.4rem;
+}
