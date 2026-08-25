@@ -4294,3 +4294,87 @@ html[data-theme="dark"] textarea::placeholder {
   line-height: 1.5;
   margin: 0 0 0.4rem;
 }
+
+/* --- Teme de investiții: carduri foto profesioniste (înlocuiesc persona) --- */
+
+.theme-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1.1rem;
+}
+
+.theme-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  box-shadow: var(--shadow-card);
+  transition: transform 0.2s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.2s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.theme-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-card-hover);
+}
+
+.theme-card-img {
+  position: relative;
+}
+
+.theme-card-img img {
+  width: 100%;
+  height: 160px;
+  object-fit: cover;
+  display: block;
+}
+
+.theme-card-img::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 35%, rgba(10, 9, 8, 0.85) 100%);
+}
+
+.theme-card-title {
+  position: absolute;
+  left: 0.9rem;
+  bottom: 0.65rem;
+  z-index: 1;
+  color: #f4efe6;
+  font-weight: 800;
+  font-size: 1rem;
+  letter-spacing: -0.01em;
+}
+
+.theme-card-body {
+  padding: 0.9rem 1rem 1.05rem;
+}
+
+.theme-card-body p {
+  color: var(--muted);
+  font-size: 0.85rem;
+  line-height: 1.55;
+  margin: 0 0 0.7rem;
+}
+
+.theme-tickers {
+  display: flex;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+}
+
+.theme-ticker {
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.03em;
+  color: var(--blue);
+  background: var(--accent-soft);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 0.2rem 0.6rem;
+  text-decoration: none;
+}
+
+a.theme-ticker:hover {
+  border-color: var(--blue);
+}

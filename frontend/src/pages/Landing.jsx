@@ -5,7 +5,7 @@ import TypewriterText from "../components/TypewriterText.jsx";
 import StockLogo from "../components/StockLogo.jsx";
 import ScoreRing from "../components/ScoreRing.jsx";
 import RadarViz from "../components/RadarViz.jsx";
-import PersonaCards from "../components/PersonaCards.jsx";
+import ThemeCards from "../components/ThemeCards.jsx";
 import VerdictTag from "../components/VerdictTag.jsx";
 import { Radar, TrendingUp, Newspaper, CalendarDays, Compass, Bell, Briefcase } from "lucide-react";
 
@@ -295,8 +295,8 @@ export default function Landing() {
       </section>
 
       <section className="landing-section">
-        <h2 className="landing-section-title">Gândit pentru oameni ca tine</h2>
-        <PersonaCards variant="public" />
+        <h2 className="landing-section-title">Temele care definesc următorul deceniu</h2>
+        <ThemeCards variant="public" />
       </section>
 
       <section className="landing-section">

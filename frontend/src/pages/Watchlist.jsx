@@ -10,7 +10,7 @@ import AnimatedNumber from "../components/AnimatedNumber.jsx";
 import TypewriterText from "../components/TypewriterText.jsx";
 import ToolsPro from "../components/ToolsPro.jsx";
 import RadarViz from "../components/RadarViz.jsx";
-import PersonaCards from "../components/PersonaCards.jsx";
+import ThemeCards from "../components/ThemeCards.jsx";
 import VerdictTag from "../components/VerdictTag.jsx";
 import LivePrice from "../components/LivePrice.jsx";
 import { Zap, Target, ClipboardList, Compass, Newspaper, Activity, CalendarDays, Lightbulb, Lock } from "lucide-react";
@@ -1000,8 +1000,8 @@ export default function Watchlist() {
       <ToolsPro />
 
       <section className="dash-personas">
-        <h2 className="dash-personas-title">Gândit pentru oameni ca tine</h2>
-        <PersonaCards />
+        <h2 className="dash-personas-title">Temele care definesc următorul deceniu</h2>
+        <ThemeCards />
       </section>
 
       <Disclaimer />
