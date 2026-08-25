@@ -516,6 +516,7 @@ export default function Watchlist() {
   // Când watchlist-ul are puține rânduri (plan gratuit), spațiul de sub listă
   // se umple cu sugestii de adăugare — desktop-ul nu mai arată gol, iar
   // utilizatorul are mereu un pas următor (limita de 3 → puntea spre Premium).
+  const listaMica = items !== null && items.length < 6;
   const simboluriUrmarite = new Set((items || []).map((i) => i.simbol));
   const sugestiiRadar =
     items && items.length > 0 && items.length < 6
@@ -834,6 +835,13 @@ export default function Watchlist() {
               </>
             )}
           </section>
+
+          {listaMica && (
+            <section className="dash-personas dash-personas-main">
+              <h2 className="dash-personas-title">Temele care definesc următorul deceniu</h2>
+              <ThemeCards />
+            </section>
+          )}
         </main>
 
         <aside className="dash-side">
@@ -1086,10 +1094,12 @@ export default function Watchlist() {
 
       <ToolsPro />
 
-      <section className="dash-personas">
-        <h2 className="dash-personas-title">Temele care definesc următorul deceniu</h2>
-        <ThemeCards />
-      </section>
+      {!listaMica && (
+        <section className="dash-personas">
+          <h2 className="dash-personas-title">Temele care definesc următorul deceniu</h2>
+          <ThemeCards />
+        </section>
+      )}
 
       <Disclaimer />
     </div>

@@ -4845,3 +4845,12 @@ html[data-theme="dark"] .workspace-panel {
 .suggestion-card .add-watchlist-button {
   padding: 0.3rem 0.6rem;
 }
+
+/* Temele în coloana principală (când watchlist-ul e mic) — 2 coloane */
+.dash-personas-main {
+  margin: 0.4rem 0 0;
+}
+
+.dash-personas-main .theme-grid {
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+}
