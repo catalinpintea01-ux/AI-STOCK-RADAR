@@ -35,6 +35,17 @@ const MOCKUP_ROWS = [
 
 const LOGO_WALL = ["AAPL", "MSFT", "NVDA", "TSLA", "AMZN", "GOOGL", "META", "NFLX", "JPM", "V", "KO", "DIS"];
 
+// Poziții pe cadranul radarului (unghi în grade, măsurat ca rotația fasciculului)
+// — delay = unghi/360 * 16s, ca aprinderea să fie sincronă cu trecerea lui.
+const HERO_BLIPS = [
+  { sym: "NVDA", top: "22%", left: "58%", delay: "1.1s" },
+  { sym: "AAPL", top: "34%", left: "30%", delay: "13.4s" },
+  { sym: "TSLA", top: "58%", left: "24%", delay: "10.8s" },
+  { sym: "MSFT", top: "70%", left: "56%", delay: "7.4s" },
+  { sym: "AMZN", top: "48%", left: "72%", delay: "3.8s" },
+  { sym: "META", top: "26%", left: "76%", delay: "2.4s" },
+];
+
 const HERO_PHRASES = [
   "scor AI pentru fiecare acțiune",
   "context zilnic din piețe",
@@ -163,20 +174,34 @@ export default function Landing() {
         </div>
       </header>
 
-      <section className="landing-hero landing-hero-grid">
-        <div className="landing-hero-text">
+      <section className="mega-hero">
+        <div className="mega-hero-radar" aria-hidden="true">
+          <div className="mh-ring mh-r1" />
+          <div className="mh-ring mh-r2" />
+          <div className="mh-ring mh-r3" />
+          <div className="mh-cross-h" />
+          <div className="mh-cross-v" />
+          <div className="mh-sweep" />
+          {HERO_BLIPS.map((b) => (
+            <span key={b.sym} className="mh-blip" style={{ top: b.top, left: b.left, animationDelay: b.delay }}>
+              <i />
+              {b.sym}
+            </span>
+          ))}
+        </div>
+        <div className="mega-hero-content">
           <span className="landing-badge">Platformă educațională de analiză bursieră</span>
-          <h1 className="landing-headline">
-            Radarul AI pentru <span className="landing-headline-accent">acțiunile tale</span>
+          <h1 className="mega-headline">
+            Radarul AI care <span className="mega-headline-accent">scanează piața</span> pentru tine.
           </h1>
           <p className="landing-typewriter">
             <TypewriterText phrases={HERO_PHRASES} />
           </p>
-          <p className="landing-sub">
-            Urmărește acțiuni, primești scoruri AI și context zilnic din piețe — și exersezi pe un portofoliu virtual.
-            Fără risc real, fără recomandări de tranzacționare.
+          <p className="mega-sub">
+            Scoruri AI pentru orice acțiune americană, știri explicate în română și un portofoliu
+            virtual pe care exersezi fără risc — totul actualizat automat, zi de zi.
           </p>
-          <div className="landing-hero-actions">
+          <div className="landing-hero-actions mega-actions">
             <Link to="/register" className="landing-cta">
               Începe gratuit →
             </Link>
@@ -184,9 +209,11 @@ export default function Landing() {
               Am deja cont
             </Link>
           </div>
-          <p className="landing-hero-note">Nu îți cerem cardul. Contul gratuit include 5 acțiuni urmărite.</p>
+          <p className="mega-note">Nu îți cerem cardul. Contul gratuit include 3 acțiuni urmărite.</p>
         </div>
+      </section>
 
+      <section className="landing-section landing-mockup-section">
         <div className="landing-mockup-wrap" aria-hidden="true">
           <div className="landing-mockup">
             <div className="landing-mockup-bar">

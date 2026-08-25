@@ -4437,3 +4437,143 @@ a.theme-ticker:hover {
   font-size: 1.1rem;
   font-weight: 800;
 }
+
+/* --- Mega hero: text uriaș + radar lent care detectează acțiuni în fundal --- */
+
+.mega-hero {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius-xl);
+  background: radial-gradient(circle at 50% 42%, #1c1a15 0%, #121110 55%, #0c0b0a 100%);
+  min-height: 560px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  margin-bottom: 2.5rem;
+}
+
+.mega-hero-radar {
+  position: absolute;
+  width: 780px;
+  height: 780px;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  opacity: 0.55;
+}
+
+.mh-ring {
+  position: absolute;
+  border: 1px solid rgba(211, 191, 156, 0.22);
+  border-radius: 50%;
+}
+
+.mh-r1 { inset: 0; }
+.mh-r2 { inset: 16%; }
+.mh-r3 { inset: 33%; border-color: rgba(211, 191, 156, 0.3); }
+
+.mh-cross-h,
+.mh-cross-v {
+  position: absolute;
+  background: rgba(211, 191, 156, 0.12);
+}
+
+.mh-cross-h { left: 0; right: 0; top: 50%; height: 1px; }
+.mh-cross-v { top: 0; bottom: 0; left: 50%; width: 1px; }
+
+.mh-sweep {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: conic-gradient(from 0deg, rgba(211, 191, 156, 0.35), rgba(211, 191, 156, 0.08) 55deg, transparent 85deg);
+  animation: mh-rotire 16s linear infinite;
+}
+
+@keyframes mh-rotire {
+  to { transform: rotate(360deg); }
+}
+
+.mh-blip {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  color: #d3bf9c;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  opacity: 0;
+  animation: mh-detectare 16s linear infinite;
+}
+
+.mh-blip i {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #d3bf9c;
+  box-shadow: 0 0 12px #d3bf9c;
+}
+
+/* aprindere scurtă când trece fasciculul, apoi stingere lentă */
+@keyframes mh-detectare {
+  0% { opacity: 0; }
+  2% { opacity: 1; }
+  16% { opacity: 0.85; }
+  34% { opacity: 0; }
+  100% { opacity: 0; }
+}
+
+.mega-hero-content {
+  position: relative;
+  z-index: 1;
+  padding: 4.5rem 1.5rem;
+  max-width: 760px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.mega-headline {
+  font-size: clamp(2.3rem, 6vw, 4.2rem);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.05;
+  color: #f4efe6;
+  margin: 1.1rem 0 1rem;
+}
+
+.mega-headline-accent {
+  background: linear-gradient(135deg, #e6d5ae 0%, #b39264 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.mega-hero .landing-typewriter {
+  color: #d3bf9c;
+}
+
+.mega-sub {
+  color: rgba(244, 239, 230, 0.78);
+  font-size: 1.02rem;
+  line-height: 1.6;
+  max-width: 560px;
+  margin: 0.75rem 0 1.5rem;
+}
+
+.mega-note {
+  color: rgba(244, 239, 230, 0.5);
+  font-size: 0.78rem;
+  margin-top: 0.9rem;
+}
+
+.landing-mockup-section {
+  display: flex;
+  justify-content: center;
+}
+
+@media (max-width: 640px) {
+  .mega-hero { min-height: 480px; }
+  .mega-hero-radar { width: 560px; height: 560px; }
+}
