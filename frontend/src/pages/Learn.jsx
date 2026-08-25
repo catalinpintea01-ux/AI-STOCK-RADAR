@@ -1,6 +1,11 @@
 import { useState } from "react";
 import Disclaimer from "../components/Disclaimer.jsx";
 import { TOPICS, DICTIONAR } from "../data/learnTopics.js";
+import { TOPICS_EXTRA } from "../data/learnTopics2.js";
+import { QUIZZES } from "../data/learnQuizzes.js";
+import { TopicQuiz, CALCULATOARE } from "../components/LearnInteractive.jsx";
+
+const TOATE_TOPICELE = [...TOPICS, ...TOPICS_EXTRA];
 
 export default function Learn() {
   const [expanded, setExpanded] = useState(null);
@@ -10,13 +15,13 @@ export default function Learn() {
     setExpanded((prev) => (prev === id ? null : id));
   }
 
-  const topiceFiltrate = TOPICS.filter((t) => t.titlu.toLowerCase().includes(filtru.toLowerCase()));
+  const topiceFiltrate = TOATE_TOPICELE.filter((t) => t.titlu.toLowerCase().includes(filtru.toLowerCase()));
 
   return (
     <div className="portfolio-page">
       <h1 className="page-title">Informare</h1>
       <p className="cash">
-        Educație financiară pentru începători, în {TOPICS.length} subiecte plus dicționar — nu este consultanță de
+        Educație financiară pentru începători, în {TOATE_TOPICELE.length} subiecte plus dicționar — nu este consultanță de
         investiții.
       </p>
 
@@ -57,6 +62,12 @@ export default function Learn() {
                     )}
                   </p>
                 ))}
+                {CALCULATOARE[topic.id] &&
+                  (() => {
+                    const Calc = CALCULATOARE[topic.id];
+                    return <Calc />;
+                  })()}
+                <TopicQuiz quiz={QUIZZES[topic.id]} />
               </div>
             )}
           </div>

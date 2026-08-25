@@ -4065,3 +4065,141 @@ html[data-theme="dark"] input::placeholder,
 html[data-theme="dark"] textarea::placeholder {
   color: var(--muted);
 }
+
+/* --- Informare: quiz-uri și calculatoare interactive --- */
+
+.quiz-box,
+.calc-box {
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 1rem 1.1rem;
+  margin: 0.9rem 0 0.4rem;
+}
+
+.quiz-eyebrow {
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 0.62rem;
+  font-weight: 800;
+  color: var(--blue);
+  margin: 0 0 0.4rem;
+}
+
+.quiz-question {
+  font-weight: 700;
+  font-size: 0.9rem;
+  margin: 0 0 0.7rem;
+}
+
+.quiz-options {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+
+.quiz-option {
+  text-align: left;
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 0.55rem 0.8rem;
+  font-size: 0.85rem;
+  color: var(--text);
+  cursor: pointer;
+  transition: border-color 0.15s ease, transform 0.15s ease;
+}
+
+.quiz-option:hover:not(:disabled) {
+  border-color: var(--blue);
+  transform: translateX(2px);
+}
+
+.quiz-correct {
+  border-color: var(--price-up);
+  background: var(--success-soft);
+  font-weight: 700;
+}
+
+.quiz-wrong {
+  border-color: var(--price-down);
+  opacity: 0.9;
+}
+
+.quiz-dim {
+  opacity: 0.5;
+}
+
+.quiz-feedback {
+  margin-top: 0.7rem;
+  font-size: 0.82rem;
+  line-height: 1.55;
+  color: var(--text);
+}
+
+.quiz-feedback-ok strong { color: var(--price-up); }
+.quiz-feedback-nu strong { color: var(--price-down); }
+
+.quiz-retry {
+  display: block;
+  margin-top: 0.5rem;
+  background: none;
+  border: none;
+  color: var(--blue);
+  font-size: 0.78rem;
+  font-weight: 700;
+  cursor: pointer;
+  padding: 0;
+}
+
+.calc-sliders {
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+}
+
+.calc-sliders label {
+  font-size: 0.82rem;
+  color: var(--muted);
+}
+
+.calc-sliders strong {
+  color: var(--text);
+}
+
+.calc-sliders input[type="range"] {
+  width: 100%;
+  margin-top: 0.3rem;
+  accent-color: var(--blue);
+}
+
+.calc-result {
+  display: flex;
+  gap: 2rem;
+  flex-wrap: wrap;
+  margin-top: 0.9rem;
+}
+
+.calc-result-label {
+  display: block;
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.calc-result-value {
+  font-size: 1.35rem;
+  font-weight: 800;
+}
+
+.calc-result-gain {
+  color: var(--price-up);
+}
+
+.calc-note {
+  font-size: 0.7rem;
+  color: var(--muted);
+  margin: 0.7rem 0 0;
+}
