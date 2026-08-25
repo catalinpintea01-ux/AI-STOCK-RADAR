@@ -4779,3 +4779,21 @@ a.theme-ticker:hover {
     display: none;
   }
 }
+
+/* --- Watchlist = spațiul de lucru: chenar dublu accentuat + elevație --- */
+
+.workspace-panel {
+  border: 2px solid var(--blue);
+  outline: 1px solid var(--border);
+  outline-offset: 4px;
+  background: linear-gradient(180deg, var(--card-bg) 0%, var(--surface-2) 140%);
+  box-shadow: 0 10px 32px rgba(60, 50, 30, 0.14);
+}
+
+html[data-theme="dark"] .workspace-panel {
+  box-shadow: 0 10px 32px rgba(0, 0, 0, 0.5);
+}
+
+.workspace-eyebrow {
+  color: var(--blue);
+}

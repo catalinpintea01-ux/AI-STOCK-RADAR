@@ -651,10 +651,10 @@ export default function Watchlist() {
             </p>
           </section>
 
-          <section className="panel">
+          <section className="panel workspace-panel">
             <div className="panel-head">
               <div>
-                <p className="eyebrow">Portofoliul de urmărire</p>
+                <p className="eyebrow workspace-eyebrow">✦ Spațiul tău de lucru</p>
                 <h2><ClipboardList size={16} className="h2-ic" /> Watchlist-ul tău</h2>
                 {lastLoadedAt && <p className="freshness-note">Actualizat {formatRelativeTime(lastLoadedAt, now)}</p>}
               </div>
