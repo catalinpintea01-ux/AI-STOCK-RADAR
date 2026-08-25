@@ -111,6 +111,7 @@ export default function Premium() {
 
         {premium === false && (
           <div className="premium-cta-row">
+            <img src="/mascota/sarbatoreste.png" alt="" className="mascota mascota-premium" loading="lazy" />
             <button className="landing-cta" onClick={handleUpgrade} disabled={loading}>
               {loading ? "Se deschide activarea..." : <><Star size={14} className="ic" /> Începe cu 3 zile gratuit →</>}
             </button>

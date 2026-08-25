@@ -32,12 +32,17 @@ export default function Alerts() {
 
   return (
     <div className="portfolio-page">
-      <h1 className="page-title">Digest zilnic</h1>
+      <div className="learn-header">
+        <div>
+          <h1 className="page-title">Digest zilnic</h1>
       <p className="cash">
         {digest.length > 0
           ? `${digest.length} ${digest.length === 1 ? "schimbare importantă" : "schimbări importante"} azi în watchlist-ul tău.`
           : "Nicio schimbare importantă azi în watchlist-ul tău."}
       </p>
+        </div>
+        <img src="/mascota/oportunitate.png" alt="" className="mascota mascota-learn" loading="lazy" />
+      </div>
 
       {digest.length > 0 && (
         <section className="holdings">

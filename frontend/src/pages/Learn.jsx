@@ -19,11 +19,16 @@ export default function Learn() {
 
   return (
     <div className="portfolio-page">
-      <h1 className="page-title">Informare</h1>
+      <div className="learn-header">
+        <div>
+          <h1 className="page-title">Informare</h1>
       <p className="cash">
         Educație financiară pentru începători, în {TOATE_TOPICELE.length} subiecte plus dicționar — nu este consultanță de
         investiții.
       </p>
+        </div>
+        <img src="/mascota/prezinta.png" alt="" className="mascota mascota-learn" loading="lazy" />
+      </div>
 
       <div className="search-section">
         <input

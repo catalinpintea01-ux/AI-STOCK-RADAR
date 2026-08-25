@@ -280,7 +280,7 @@ export default function Landing() {
 
       <section className="landing-section">
         <div className="landing-radar-band">
-          <RadarViz size={300} />
+          <img src="/mascota/mascota-hero.png" alt="Mascota StockRadar AI" className="mascota mascota-band" loading="lazy" />
           <div className="landing-radar-text">
             <h2 className="landing-section-title landing-radar-title">Radarul lucrează non-stop</h2>
             <ul className="landing-radar-facts">

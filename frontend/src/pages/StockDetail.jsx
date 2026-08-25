@@ -231,7 +231,7 @@ export default function StockDetail() {
           </Link>
         </h2>
         {radarLoading ? (
-          <><SkeletonRows count={3} /><p className="data-source">Analizăm acțiunea — poate dura câteva secunde...</p></>
+          <div className="mascota-loading"><img src="/mascota/laptop.png" alt="" className="mascota mascota-mica" /><p className="data-source">Analizăm acțiunea — poate dura câteva secunde...</p></div>
         ) : radar ? (
           <>
             <VerdictBadge verdict={radar.verdict} incredere={radar.incredere} />

@@ -4203,3 +4203,69 @@ html[data-theme="dark"] textarea::placeholder {
   color: var(--muted);
   margin: 0.7rem 0 0;
 }
+
+/* --- Mascota StockRadar AI (taurul-robot) în diverse situații --- */
+
+.mascota {
+  display: block;
+  border-radius: var(--radius-lg);
+}
+
+.mascota-empty {
+  width: 140px;
+  margin: 0 auto 0.8rem;
+  box-shadow: var(--shadow-card);
+}
+
+.mascota-band {
+  width: 280px;
+  max-width: 100%;
+  border-radius: 0; /* PNG transparent — fără chenar */
+  filter: drop-shadow(0 12px 30px rgba(0, 0, 0, 0.45));
+}
+
+.mascota-auth {
+  width: 150px;
+  margin-bottom: 1.1rem;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+}
+
+.mascota-loading {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+}
+
+.mascota-mica {
+  width: 88px;
+  flex-shrink: 0;
+  box-shadow: var(--shadow-card);
+}
+
+.mascota-premium {
+  width: 130px;
+  margin: 0 auto 0.9rem;
+  box-shadow: var(--shadow-card);
+}
+
+.learn-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.25rem;
+}
+
+.mascota-learn {
+  width: 130px;
+  flex-shrink: 0;
+  box-shadow: var(--shadow-card);
+}
+
+@media (max-width: 560px) {
+  .mascota-learn {
+    width: 96px;
+  }
+  .mascota-band {
+    width: 210px;
+  }
+}

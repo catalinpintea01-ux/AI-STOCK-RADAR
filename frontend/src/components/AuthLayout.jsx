@@ -11,6 +11,7 @@ export default function AuthLayout({ children }) {
     <div className="auth-page">
       <div className="auth-brand-panel">
         <div className="auth-brand-content">
+          <img src="/mascota/laptop.png" alt="" className="mascota mascota-auth" />
           <h1 className="auth-brand-title">AI Stock Radar</h1>
           <p className="auth-brand-tagline">
             Urmărește acțiuni, primești context AI zilnic despre ele și exersează pe un portofoliu virtual — fără risc real.
