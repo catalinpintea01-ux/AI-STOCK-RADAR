@@ -13,6 +13,7 @@ import Community from "./pages/Community.jsx";
 import Methodology from "./pages/Methodology.jsx";
 import Premium from "./pages/Premium.jsx";
 import ThemePage from "./pages/ThemePage.jsx";
+import VixPage from "./pages/VixPage.jsx";
 import NavBar from "./components/NavBar.jsx";
 import BottomNav from "./components/BottomNav.jsx";
 
@@ -83,6 +84,14 @@ export default function App() {
         element={
           <PrivateLayout>
             <Learn />
+          </PrivateLayout>
+        }
+      />
+      <Route
+        path="/vix"
+        element={
+          <PrivateLayout>
+            <VixPage />
           </PrivateLayout>
         }
       />

@@ -49,6 +49,36 @@ router.get("/market-news/:id", async (req, res) => {
   res.json({ news: item });
 });
 
+// Indicele VIX ("indicele fricii") — volatilitatea implicită la 30 de zile a
+// S&P 500, de la Yahoo (^VIX; Finnhub free nu servește indici). Cache 15 min.
+let vixCache = { data: null, expiresAt: 0 };
+
+router.get("/vix", requireAuth, async (req, res) => {
+  if (vixCache.data && vixCache.expiresAt > Date.now()) return res.json(vixCache.data);
+
+  try {
+    const r = await fetch("https://query1.finance.yahoo.com/v8/finance/chart/%5EVIX?range=5d&interval=1d", {
+      headers: { "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)" },
+    });
+    if (!r.ok) throw new Error(`Yahoo VIX status ${r.status}`);
+    const json = await r.json();
+    const meta = json?.chart?.result?.[0]?.meta;
+    const valoare = meta?.regularMarketPrice;
+    const anterior = meta?.chartPreviousClose;
+    if (typeof valoare !== "number") throw new Error("VIX fără valoare");
+
+    const data = {
+      valoare,
+      variatie: typeof anterior === "number" && anterior > 0 ? ((valoare - anterior) / anterior) * 100 : null,
+    };
+    vixCache = { data, expiresAt: Date.now() + 15 * 60 * 1000 };
+    res.json(data);
+  } catch (err) {
+    console.error(`[stocks] VIX indisponibil: ${err.message}`);
+    res.status(503).json({ error: "VIX indisponibil momentan" });
+  }
+});
+
 // Agregatul unei teme de investiții: cotații + scoruri AI din cache + indice
 // tematic normalizat (media coșului, bază 100) + raportările viitoare.
 // IMPORTANT: definit înainte de /:simbol, altfel "tema" ar fi tratat ca simbol.

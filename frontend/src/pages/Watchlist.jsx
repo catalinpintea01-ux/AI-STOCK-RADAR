@@ -176,6 +176,7 @@ export default function Watchlist() {
   const [dailyPicks, setDailyPicks] = useState([]);
   const [dailyMover, setDailyMover] = useState(null);
   const [selectedDaily, setSelectedDaily] = useState(null); // simbolul coloanei selectate din grafic
+  const [vix, setVix] = useState(null);
   const [interese, setInterese] = useState([]);
   const [onboarding, setOnboarding] = useState(false);
   const [onboardError, setOnboardError] = useState("");
@@ -252,6 +253,10 @@ export default function Watchlist() {
         setEarnings(data.earnings);
         setEarningsRecomandate(data.recomandate || []);
       })
+      .catch(() => {});
+    api
+      .getVix()
+      .then(setVix)
       .catch(() => {});
     api
       .getDailyPicks()
@@ -520,6 +525,21 @@ export default function Watchlist() {
 
       <header className="mega-hero dash-hero dash-mega">
         <RadarSweep />
+        <div className="hero-topright">
+          <span className="hero-data">
+            {new Date().toLocaleDateString("ro-RO", { weekday: "short", day: "numeric", month: "short" })}
+          </span>
+          {vix && (
+            <Link to="/vix" className="vix-chip" title="Ce este indicele VIX?">
+              VIX {vix.valoare.toFixed(1)}
+              {vix.variatie !== null && (
+                <span className={vix.variatie >= 0 ? "vix-chip-up" : "vix-chip-down"}>
+                  {vix.variatie >= 0 ? "▲" : "▼"}{Math.abs(vix.variatie).toFixed(1)}%
+                </span>
+              )}
+            </Link>
+          )}
+        </div>
         <div className="mega-hero-content dash-mega-content">
           <h1 className="mega-headline dash-mega-headline">
             AI Stock <span className="mega-headline-accent">Radar</span>
