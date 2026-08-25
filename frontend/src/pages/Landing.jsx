@@ -45,7 +45,7 @@ const HERO_PHRASES = [
 // Doar fapte reale despre produs — fără cifre de utilizatori sau venituri
 // inventate: pagina publică nu are voie să fabrice dovezi sociale.
 const STATS = [
-  { value: 50, suffix: "", label: "de acțiuni în universul analizat" },
+  { text: "Orice", label: "acțiune listată în SUA — căutare și analiză AI la cerere" },
   { value: 4, suffix: "", label: "sub-scoruri în fiecare analiză AI" },
   { value: 10000, suffix: "", label: "USD virtuali la înscriere" },
   { value: 7, suffix: "", label: "știri de piață analizate AI zilnic" },
@@ -244,8 +244,7 @@ export default function Landing() {
         {STATS.map((s) => (
           <div key={s.label} className="landing-stat">
             <span className="landing-stat-number">
-              <AnimatedNumber value={s.value} />
-              {s.suffix}
+              {s.text ? s.text : <><AnimatedNumber value={s.value} />{s.suffix}</>}
             </span>
             <span className="landing-stat-label">{s.label}</span>
           </div>
