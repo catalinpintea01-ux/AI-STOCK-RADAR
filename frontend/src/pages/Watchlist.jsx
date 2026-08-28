@@ -14,25 +14,19 @@ import ThemeCards from "../components/ThemeCards.jsx";
 import VerdictTag from "../components/VerdictTag.jsx";
 import LivePrice from "../components/LivePrice.jsx";
 import { Zap, Target, ClipboardList, Compass, Newspaper, Activity, CalendarDays, Lightbulb, Lock } from "lucide-react";
-
-const TAGLINE_PHRASES = [
-  "scor AI pentru fiecare acțiune",
-  "context zilnic din piețe",
-  "earnings, risc, momentum",
-  "watchlist care se analizează singur",
-];
+import { useLang } from "../i18n/index.jsx";
 
 
 
 // Cei mai marcanți 2 factori din spatele scorului, derivați determinist din
 // sub-scoruri — un "88" fără explicație nu inspiră încredere. Pragurile
 // oglindesc verdictul din radar.js: ≥60 punct forte, ≤40 punct slab.
-function factoriPrincipali(radar) {
+function factoriPrincipali(radar, t) {
   const factori = [
-    { val: radar.scorAnalist, pozitiv: "analiști încrezători", negativ: "analiști rezervați" },
-    { val: radar.scorMomentum, pozitiv: "momentum puternic", negativ: "momentum slab" },
-    { val: radar.scorFundamental, pozitiv: "fundamentale solide", negativ: "fundamentale fragile" },
-    { val: 100 - radar.scorRisc, pozitiv: "risc scăzut", negativ: "risc ridicat" },
+    { val: radar.scorAnalist, pozitiv: t("dash.factori.analistiPoz"), negativ: t("dash.factori.analistiNeg") },
+    { val: radar.scorMomentum, pozitiv: t("dash.factori.momentumPoz"), negativ: t("dash.factori.momentumNeg") },
+    { val: radar.scorFundamental, pozitiv: t("dash.factori.fundPoz"), negativ: t("dash.factori.fundNeg") },
+    { val: 100 - radar.scorRisc, pozitiv: t("dash.factori.riscPoz"), negativ: t("dash.factori.riscNeg") },
   ];
   return factori
     .filter((f) => f.val >= 60 || f.val <= 40)
@@ -52,24 +46,6 @@ const AUTO_REFRESH_MAX_ITEMS = 15; // peste acest prag, nu mai reîmprospătăm 
 
 const DEFAULT_VISIBLE_ROWS = 15; // restul se ascund după "Arată toate", ca lista să nu domine pagina
 
-const MOMENT_LABEL = {
-  bmo: "înainte de deschidere",
-  amc: "după închidere",
-  dmh: "în timpul ședinței",
-};
-
-// Micro-lecții pentru empty state-ul din "Research zilnic" — nu trimitem
-// niciodată userul acasă cu mâna goală. Rotite pe zile, limbaj pur educativ.
-const MICRO_LESSONS = [
-  "Diversificarea înseamnă să nu depinzi de o singură acțiune sau un singur sector — un portofoliu variat amortizează șocurile individuale.",
-  "Volatilitatea (beta) măsoară cât de mult oscilează o acțiune față de piață: beta peste 1 = mișcări mai ample, sub 1 = mai calme.",
-  "Raportările trimestriale (earnings) sunt momentele în care prețurile se mișcă cel mai des — merită să știi când raportează companiile urmărite.",
-  "Un P/E ridicat poate însemna așteptări mari de creștere, nu neapărat o acțiune scumpă — contextul sectorului contează.",
-  "Tranzacțiile insiderilor (directori care cumpără sau vând propriile acțiuni) sunt raportate public și pot oferi context despre încrederea internă.",
-  "Media analiștilor e doar o agregare de opinii — utilă ca reper, dar niciodată o garanție.",
-  "Dollar-cost averaging înseamnă investiții periodice de sume egale, indiferent de preț — reduce impactul momentului ales.",
-];
-
 function zileRamase(dataIso) {
   const azi = new Date();
   azi.setHours(0, 0, 0, 0);
@@ -77,46 +53,27 @@ function zileRamase(dataIso) {
   return Math.round((data - azi) / (24 * 60 * 60 * 1000));
 }
 
-function formatZileRamase(dataIso) {
+function formatZileRamase(dataIso, t) {
   const zile = zileRamase(dataIso);
-  if (zile === 0) return "azi";
-  if (zile === 1) return "mâine";
-  return `în ${zile} zile`;
+  if (zile === 0) return t("dash.zAzi");
+  if (zile === 1) return t("dash.zMaine");
+  return t("dash.zInZile", { n: zile });
 }
 
-function formatRelativeTime(date, now) {
+function formatRelativeTime(date, now, t) {
   const secunde = Math.round((now.getTime() - date.getTime()) / 1000);
-  if (secunde < 45) return "chiar acum";
+  if (secunde < 45) return t("dash.chiarAcum");
   const minute = Math.round(secunde / 60);
-  if (minute < 60) return `acum ${minute} ${minute === 1 ? "minut" : "minute"}`;
+  if (minute < 60) return t("dash.acumMin", { n: minute });
   const ore = Math.round(minute / 60);
-  return `acum ${ore} ${ore === 1 ? "oră" : "ore"}`;
+  return t("dash.acumOre", { n: ore });
 }
 
-const INTEREST_OPTIONS = [
-  { value: "tehnologie", label: "Tehnologie" },
-  { value: "energie", label: "Energie" },
-  { value: "financiar", label: "Financiar / Bănci" },
-  { value: "sanatate", label: "Sănătate" },
-  { value: "consum", label: "Consum / Retail" },
-  { value: "dividende", label: "Dividende stabile" },
-];
+const INTEREST_OPTIONS = ["tehnologie", "energie", "financiar", "sanatate", "consum", "dividende"];
 
-const SORT_OPTIONS = [
-  { value: "implicit", label: "Implicit (adăugate recent)" },
-  { value: "scor", label: "Scor AI" },
-  { value: "variatie", label: "Variație % azi" },
-  { value: "alfabetic", label: "Alfabetic" },
-  { value: "sector", label: "Grupează pe sector" },
-];
+const SORT_OPTIONS = ["implicit", "scor", "variatie", "alfabetic", "sector"];
 
-const FILTER_OPTIONS = [
-  { value: "toate", label: "Toate" },
-  { value: "optimist", label: "Optimist" },
-  { value: "neutru", label: "Neutru" },
-  { value: "rezervat", label: "Rezervat" },
-  { value: "neanalizat", label: "Neanalizat" },
-];
+const FILTER_OPTIONS = ["toate", "optimist", "neutru", "rezervat", "neanalizat"];
 
 function sortItems(items, sortBy) {
   const copie = [...items];
@@ -155,6 +112,13 @@ function groupBySector(items) {
 }
 
 export default function Watchlist() {
+  const { t, locale } = useLang();
+  const momentLabel = {
+    bmo: t("dash.moment.bmo"),
+    amc: t("dash.moment.amc"),
+    dmh: t("dash.moment.dmh"),
+  };
+  const lectii = t("dash.lectii");
   const [items, setItems] = useState(null);
   const [holdings, setHoldings] = useState({});
   const [marketNews, setMarketNews] = useState([]);
@@ -413,7 +377,7 @@ export default function Watchlist() {
     setBulkAnalyzing(false);
   }
 
-  if (error) return <div className="page-message">Eroare: {error}</div>;
+  if (error) return <div className="page-message">{t("dash.eroare")} {error}</div>;
   if (!items) {
     return (
       <div className="portfolio-page dash">
@@ -454,12 +418,12 @@ export default function Watchlist() {
             <strong>{item.simbol}</strong>
             {holdings[item.simbol] && (
               <span className="badge-chip" style={{ marginLeft: "0.5rem" }}>
-                {holdings[item.simbol]} deținute
+                {holdings[item.simbol]} {t("dash.detinute")}
               </span>
             )}
-            <div className="muted">{item.radar ? <VerdictTag verdict={item.radar.verdict} /> : "Neanalizat încă"}</div>
-            {item.radar && factoriPrincipali(item.radar).length > 0 && (
-              <div className="row-factors">{factoriPrincipali(item.radar).join(" · ")}</div>
+            <div className="muted">{item.radar ? <VerdictTag verdict={item.radar.verdict} /> : t("dash.neanalizat")}</div>
+            {item.radar && factoriPrincipali(item.radar, t).length > 0 && (
+              <div className="row-factors">{factoriPrincipali(item.radar, t).join(" · ")}</div>
             )}
           </div>
           {item.radar && <ScoreRing score={item.radar.scorCompozit} verdict={item.radar.verdict} />}
@@ -477,15 +441,15 @@ export default function Watchlist() {
         </Link>
         {item.radar ? (
           <Link to={`/stock/${item.simbol}`} className="view-analysis-button">
-            Vezi analiza →
+            {t("dash.veziAnaliza")}
           </Link>
         ) : (
           <button className="analyze-button" onClick={() => analyzeOne(item.simbol)} disabled={analyzing.has(item.simbol)}>
-            {analyzing.has(item.simbol) ? "Analizez..." : <><Zap size={13} className="ic" /> Analizează</>}
+            {analyzing.has(item.simbol) ? t("dash.analizez") : <><Zap size={13} className="ic" /> {t("dash.analizeaza")}</>}
           </button>
         )}
         <button className="logout" onClick={() => handleRemove(item.simbol)}>
-          Scoate
+          {t("dash.scoate")}
         </button>
       </li>
     );
@@ -558,7 +522,7 @@ export default function Watchlist() {
         <RadarSweep />
         <div className="hero-topright">
           <span className="hero-data">
-            {new Date().toLocaleDateString("ro-RO", { weekday: "short", day: "numeric", month: "short" })}
+            {new Date().toLocaleDateString(locale, { weekday: "short", day: "numeric", month: "short" })}
           </span>
           {vix && (
             <Link to="/vix" className="vix-chip" title="Ce este indicele VIX?">
@@ -576,11 +540,10 @@ export default function Watchlist() {
             AI Stock <span className="mega-headline-accent">Radar</span>
           </h1>
           <span className="typewriter-badge">
-            <TypewriterText phrases={TAGLINE_PHRASES} />
+            <TypewriterText phrases={t("dash.taglines")} />
           </span>
           <p className="mega-sub dash-mega-sub">
-            Urmărește acțiuni și primești context AI despre ele — nu recomandări de
-            tranzacționare. <Link to="/metodologie" className="methodology-link">Cum calculăm scorul →</Link>
+            {t("dash.sub")} <Link to="/metodologie" className="methodology-link">{t("dash.cumCalculam")}</Link>
           </p>
 
         {items.length > 0 && analizateCount > 0 && (
@@ -589,25 +552,25 @@ export default function Watchlist() {
               <span className="stat-value optimist">
                 <AnimatedNumber value={optimisteCount} />
               </span>
-              <span className="stat-label">optimiste</span>
+              <span className="stat-label">{t("landing.optimiste")}</span>
             </div>
             <div className="stat-tile">
               <span className="stat-value neutru">
                 <AnimatedNumber value={neutruCount} />
               </span>
-              <span className="stat-label">neutre</span>
+              <span className="stat-label">{t("landing.neutre")}</span>
             </div>
             <div className="stat-tile">
               <span className="stat-value rezervat">
                 <AnimatedNumber value={rezervateCount} />
               </span>
-              <span className="stat-label">rezervate</span>
+              <span className="stat-label">{t("landing.rezervate")}</span>
             </div>
             <button type="button" className="stat-tile stat-tile-link" onClick={scrollToEarnings}>
               <span className="stat-value">
                 <AnimatedNumber value={raporteazaCurandCount} />
               </span>
-              <span className="stat-label">raportează în 7 zile →</span>
+              <span className="stat-label">{t("dash.raporteaza7")}</span>
             </button>
           </div>
         )}
@@ -615,12 +578,10 @@ export default function Watchlist() {
       </header>
 
       {items.length > 0 && analizateCount === 0 && (
-        <p className="dash-pending">
-          Analiza AI pornește automat pentru cele {items.length} acțiuni urmărite — revino în câteva minute pentru primele scoruri.
-        </p>
+        <p className="dash-pending">{t("dash.pendingToate", { n: items.length })}</p>
       )}
       {neanalizateCount > 0 && analizateCount > 0 && (
-        <p className="dash-pending">{neanalizateCount} încă în curs de analiză automată</p>
+        <p className="dash-pending">{t("dash.pendingPartial", { n: neanalizateCount })}</p>
       )}
 
       <div className="dash-grid">
@@ -628,19 +589,19 @@ export default function Watchlist() {
           <section className="panel">
             <div className="panel-head">
               <div>
-                <p className="eyebrow">Caută &amp; adaugă</p>
-                <h2>Adaugă o acțiune</h2>
+                <p className="eyebrow">{t("dash.cautaAdauga")}</p>
+                <h2>{t("dash.adaugaActiune")}</h2>
               </div>
             </div>
             <form className="search-form" onSubmit={handleSearch}>
               <input
                 type="text"
-                placeholder="Nume companie sau ticker (ex: Palantir, PLTR)"
+                placeholder={t("dash.searchPlaceholder")}
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
               />
               <button type="submit" disabled={searchLoading}>
-                {searchLoading ? "Caut..." : "Caută"}
+                {searchLoading ? t("dash.caut") : t("dash.cauta")}
               </button>
             </form>
             {searchError && (
@@ -650,7 +611,7 @@ export default function Watchlist() {
                   <>
                     {" "}
                     <Link to="/premium" className="methodology-link">
-                      Vezi ce include Premium →
+                      {t("dash.veziPremium")}
                     </Link>
                   </>
                 )}
@@ -669,30 +630,27 @@ export default function Watchlist() {
                       </div>
                     </div>
                     <button className="add-watchlist-button" onClick={() => handleAdd(r.simbol)}>
-                      + Watchlist
+                      {t("dash.plusWatchlist")}
                     </button>
                   </li>
                 ))}
               </ul>
             )}
 
-            <p className="search-hint muted">
-              Sfat: un radar bun are 5-10 acțiuni alese de tine — mai puțin zgomot, context mai
-              relevant. Poți porni și cu „Analizează pe interese".
-            </p>
+            <p className="search-hint muted">{t("dash.sfat")}</p>
           </section>
 
           <section className="panel workspace-panel">
             <div className="panel-head">
               <div>
-                <p className="eyebrow workspace-eyebrow">✦ Spațiul tău de lucru</p>
-                <h2><ClipboardList size={16} className="h2-ic" /> Watchlist-ul tău</h2>
-                {lastLoadedAt && <p className="freshness-note">Actualizat {formatRelativeTime(lastLoadedAt, now)}</p>}
+                <p className="eyebrow workspace-eyebrow">{t("dash.spatiulTau")}</p>
+                <h2><ClipboardList size={16} className="h2-ic" /> {t("dash.watchlistulTau")}</h2>
+                {lastLoadedAt && <p className="freshness-note">{t("dash.actualizat", { timp: formatRelativeTime(lastLoadedAt, now, t) })}</p>}
               </div>
               <div className="watchlist-header-actions">
                 {items.length > 0 && (
                   <button type="button" className="onboarding-toggle-button" onClick={() => setOnboardingOpen((v) => !v)}>
-                    <Target size={13} className="ic" /> Analizează pe interese
+                    <Target size={13} className="ic" /> {t("dash.analizeazaInterese")}
                   </button>
                 )}
                 {neanalizateCount > 0 && (
@@ -701,17 +659,17 @@ export default function Watchlist() {
                       <span className="analyze-all-progress" style={{ width: `${(bulkProgress.done / bulkProgress.total) * 100}%` }} />
                     )}
                     <span className="analyze-all-label">
-                      {bulkAnalyzing ? `Analizez ${bulkProgress.done}/${bulkProgress.total}...` : <><Zap size={13} className="ic" /> Analizează tot ({neanalizateCount})</>}
+                      {bulkAnalyzing ? t("dash.analizezProgres", { done: bulkProgress.done, total: bulkProgress.total }) : <><Zap size={13} className="ic" /> {t("dash.analizeazaTot", { n: neanalizateCount })}</>}
                     </span>
                   </button>
                 )}
                 {items.length > 1 && (
                   <label className="sort-control">
-                    Sortează după{" "}
+                    {t("dash.sorteaza")}{" "}
                     <select value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
                       {SORT_OPTIONS.map((opt) => (
-                        <option key={opt.value} value={opt.value}>
-                          {opt.label}
+                        <option key={opt} value={opt}>
+                          {t(`dash.sortare.${opt}`)}
                         </option>
                       ))}
                     </select>
@@ -725,28 +683,28 @@ export default function Watchlist() {
                 {items.length === 0 && (
                   <img src="/mascota/radar.png" alt="" className="mascota mascota-empty" loading="lazy" />
                 )}
-                <p className="empty">Alege ce te interesează și îți construim un watchlist {items.length === 0 ? "de start" : "nou"}:</p>
+                <p className="empty">{items.length === 0 ? t("dash.onboardingStart") : t("dash.onboardingNou")}</p>
                 <div className="onboarding-chips">
                   {INTEREST_OPTIONS.map((opt) => (
                     <button
-                      key={opt.value}
+                      key={opt}
                       type="button"
-                      aria-pressed={interese.includes(opt.value)}
-                      className={`onboarding-chip ${interese.includes(opt.value) ? "active" : ""}`}
-                      onClick={() => toggleInteres(opt.value)}
+                      aria-pressed={interese.includes(opt)}
+                      className={`onboarding-chip ${interese.includes(opt) ? "active" : ""}`}
+                      onClick={() => toggleInteres(opt)}
                     >
-                      {opt.label}
+                      {t(`dash.interese.${opt}`)}
                     </button>
                   ))}
                 </div>
                 {onboardError && <div className="error">{onboardError}</div>}
                 <div className="onboarding-actions">
                   <button className="why-button" onClick={handleOnboard} disabled={interese.length === 0 || onboarding}>
-                    {onboarding ? "Construiesc watchlist-ul..." : "Construiește-mi watchlist-ul"}
+                    {onboarding ? t("dash.construiesc") : t("dash.construieste")}
                   </button>
                   {items.length > 0 && (
                     <button className="logout" onClick={() => setOnboardingOpen(false)} disabled={onboarding}>
-                      Renunță
+                      {t("dash.renunta")}
                     </button>
                   )}
                 </div>
@@ -758,22 +716,22 @@ export default function Watchlist() {
                 <div className="filter-chips">
                   {FILTER_OPTIONS.map((opt) => (
                     <button
-                      key={opt.value}
+                      key={opt}
                       type="button"
-                      aria-pressed={filterBy === opt.value}
-                      className={`filter-chip ${filterBy === opt.value ? "active" : ""}`}
+                      aria-pressed={filterBy === opt}
+                      className={`filter-chip ${filterBy === opt ? "active" : ""}`}
                       onClick={() => {
-                        setFilterBy(opt.value);
+                        setFilterBy(opt);
                         setShowAllRows(false);
                       }}
                     >
-                      {opt.label} ({countForFilter(items, opt.value)})
+                      {t(`dash.filtru.${opt}`)} ({countForFilter(items, opt)})
                     </button>
                   ))}
                 </div>
 
                 {filteredItems.length === 0 ? (
-                  <p className="empty">Nicio acțiune nu se potrivește acestui filtru.</p>
+                  <p className="empty">{t("dash.nicioPotrivire")}</p>
                 ) : grupatePeSector ? (
                   Object.entries(grupatePeSector).map(([sector, grup]) => (
                     <div key={sector} className="sector-group">
@@ -788,12 +746,12 @@ export default function Watchlist() {
                     <ul className="stock-list">{vizibileItems.map(renderStockRow)}</ul>
                     {sortedItems.length > DEFAULT_VISIBLE_ROWS && !showAllRows && (
                       <button className="show-more-button" onClick={() => setShowAllRows(true)}>
-                        Arată toate ({sortedItems.length})
+                        {t("dash.arataToate", { n: sortedItems.length })}
                       </button>
                     )}
                     {items.length > 0 && items.length < 6 && sugestiiRadar.length === 0 && (
                       <div className="fill-suggestions">
-                        <p className="eyebrow workspace-eyebrow">Idei pentru radarul tău</p>
+                        <p className="eyebrow workspace-eyebrow">{t("dash.idei")}</p>
                         <div className="suggestion-grid">
                           {Array.from({ length: 6 }).map((_, i) => (
                             <div key={i} className="suggestion-card">
@@ -809,7 +767,7 @@ export default function Watchlist() {
                     )}
                     {sugestiiRadar.length > 0 && (
                       <div className="fill-suggestions">
-                        <p className="eyebrow workspace-eyebrow">Idei pentru radarul tău</p>
+                        <p className="eyebrow workspace-eyebrow">{t("dash.idei")}</p>
                         <div className="suggestion-grid">
                           {sugestiiRadar.map((sug) => (
                             <div key={sug.simbol} className="suggestion-card">
@@ -838,7 +796,7 @@ export default function Watchlist() {
 
           {listaMica && (
             <section className="dash-personas dash-personas-main">
-              <h2 className="dash-personas-title">Temele care definesc următorul deceniu</h2>
+              <h2 className="dash-personas-title">{t("landing.temeTitlu")}</h2>
               <ThemeCards />
             </section>
           )}
@@ -848,16 +806,16 @@ export default function Watchlist() {
           <section className="panel">
             <div className="panel-head">
               <div>
-                <p className="eyebrow">Descoperă</p>
-                <h2><Compass size={16} className="h2-ic" /> Research zilnic</h2>
+                <p className="eyebrow">{t("dash.descopera")}</p>
+                <h2><Compass size={16} className="h2-ic" /> {t("dash.researchZilnic")}</h2>
               </div>
             </div>
-            <p className="tab-subtitle">Recomandări AI din afara watchlist-ului tău, pe baza mișcărilor de azi.</p>
+            <p className="tab-subtitle">{t("dash.researchSub")}</p>
             {dailyPicks.length === 0 ? (
               <div className="daily-empty">
                 {dailyMover && (
                   <>
-                    <p className="daily-empty-label">Cel mai mare mover al zilei:</p>
+                    <p className="daily-empty-label">{t("dash.mover")}</p>
                     <ul className="stock-list">
                       <li className="stock-row">
                         <div className="stock-row-left">
@@ -881,14 +839,14 @@ export default function Watchlist() {
                   </>
                 )}
                 <p className="daily-lesson">
-                  <Lightbulb size={14} className="ic" /> {MICRO_LESSONS[Math.floor(Date.now() / 86400000) % MICRO_LESSONS.length]}
+                  <Lightbulb size={14} className="ic" /> {lectii[Math.floor(Date.now() / 86400000) % lectii.length]}
                 </p>
               </div>
             ) : (
               <>
                 <div className="daily-chart">
                   <div className="daily-chart-group">
-                    <span className="daily-chart-group-label gain-positive">Creșteri</span>
+                    <span className="daily-chart-group-label gain-positive">{t("dash.cresteri")}</span>
                     <div className="daily-chart-cols">
                       {dailyCastiguri.map((p) => renderDailyCol(p))}
                       {dailyCastiguri.length === 0 && <span className="daily-chart-none">—</span>}
@@ -896,7 +854,7 @@ export default function Watchlist() {
                   </div>
                   <div className="daily-chart-divider" />
                   <div className="daily-chart-group">
-                    <span className="daily-chart-group-label gain-negative">Scăderi</span>
+                    <span className="daily-chart-group-label gain-negative">{t("dash.scaderi")}</span>
                     <div className="daily-chart-cols">
                       {dailyPierderi.map((p) => renderDailyCol(p))}
                       {dailyPierderi.length === 0 && <span className="daily-chart-none">—</span>}
@@ -928,10 +886,10 @@ export default function Watchlist() {
                         className="add-watchlist-button"
                         onClick={() => handleAddFromDaily(dailySelectat.simbol)}
                       >
-                        + Urmărește
+                        {t("dash.urmareste")}
                       </button>
                       <Link to={`/stock/${dailySelectat.simbol}`} className="view-analysis-button daily-selected-analysis">
-                        Vezi analiza →
+                        {t("dash.veziAnaliza")}
                       </Link>
                     </div>
                   </div>
@@ -943,12 +901,12 @@ export default function Watchlist() {
           <section className="panel">
             <div className="panel-head">
               <div>
-                <p className="eyebrow">Contextul zilei</p>
-                <h2><Newspaper size={16} className="h2-ic" /> Știri relevante</h2>
+                <p className="eyebrow">{t("dash.contextulZilei")}</p>
+                <h2><Newspaper size={16} className="h2-ic" /> {t("dash.stiriRelevante")}</h2>
               </div>
             </div>
             {marketNews.length === 0 ? (
-              <p className="empty">Nicio știre relevantă momentan.</p>
+              <p className="empty">{t("dash.nicioStire")}</p>
             ) : (
               <>
                 <div className="hero-news">
@@ -960,7 +918,7 @@ export default function Watchlist() {
                       style={n.imagine ? { backgroundImage: `url(${n.imagine})` } : undefined}
                     >
                       <div className="hero-news-body">
-                        <span className="hero-news-source">{n.sursa} · Astăzi</span>
+                        <span className="hero-news-source">{n.sursa} · {t("dash.azi")}</span>
                         <h3 className="hero-news-headline">{n.titluAI}</h3>
                       </div>
                     </Link>
@@ -968,12 +926,12 @@ export default function Watchlist() {
                 </div>
                 {marketNews.length > 3 && (
                   <button className="show-more-button" onClick={() => setShowAllNews((v) => !v)}>
-                    {showAllNews ? "Restrânge ↑" : `Arată toate (${marketNews.length})`}
+                    {showAllNews ? t("dash.restrange") : t("dash.arataToate", { n: marketNews.length })}
                   </button>
                 )}
                 {marketNewsTotal > marketNews.length && (
                   <Link to="/premium" className="show-more-button news-premium-teaser">
-                    <Lock size={12} className="ic" /> +{marketNewsTotal - marketNews.length} știri analizate azi, cu Premium →
+                    <Lock size={12} className="ic" /> {t("dash.teaser", { n: marketNewsTotal - marketNews.length })}
                   </Link>
                 )}
               </>
@@ -983,13 +941,13 @@ export default function Watchlist() {
           <section className="panel">
             <div className="panel-head">
               <div>
-                <p className="eyebrow">Scoruri în mișcare</p>
-                <h2><Activity size={16} className="h2-ic" /> Ce s-a schimbat</h2>
+                <p className="eyebrow">{t("dash.scoruriMiscare")}</p>
+                <h2><Activity size={16} className="h2-ic" /> {t("dash.ceSaSchimbat")}</h2>
               </div>
             </div>
-            <p className="tab-subtitle">Scorul AI (nu prețul) al acțiunilor tale, schimbat recent.</p>
+            <p className="tab-subtitle">{t("dash.schimbSub")}</p>
             {briefItems.length === 0 ? (
-              <p className="empty">Niciun scor AI nu s-a schimbat recent.</p>
+              <p className="empty">{t("dash.nicioSchimbare")}</p>
             ) : (
               <ul className="stock-list">
                 {briefItems.map((item) => (
@@ -999,7 +957,7 @@ export default function Watchlist() {
                       <div>
                         <strong>{item.simbol}</strong>
                         <div className="muted">
-                          Scor AI: {item.schimbare.scorAnterior} → {item.radar.scorCompozit}
+                          {t("dash.scorAi")} {item.schimbare.scorAnterior} → {item.radar.scorCompozit}
                         </div>
                       </div>
                       {formatDelta(item.schimbare.deltaCompozit)}
@@ -1014,15 +972,13 @@ export default function Watchlist() {
           <section className="panel" id="earnings-panel">
             <div className="panel-head">
               <div>
-                <p className="eyebrow">Calendar</p>
-                <h2><CalendarDays size={16} className="h2-ic" /> Raportări apropiate</h2>
+                <p className="eyebrow">{t("dash.calendar")}</p>
+                <h2><CalendarDays size={16} className="h2-ic" /> {t("dash.raportari")}</h2>
               </div>
             </div>
             {earnings.length === 0 && earningsRecomandate.length > 0 ? (
               <>
-                <p className="tab-subtitle">
-                  Nicio raportare apropiată în lista ta — dar acestea raportează curând:
-                </p>
+                <p className="tab-subtitle">{t("dash.raportareRecomandate")}</p>
                 <ul className="stock-list">
                   {earningsRecomandate.map((e) => (
                     <li key={`${e.simbol}-${e.data}`} className="stock-row">
@@ -1031,8 +987,8 @@ export default function Watchlist() {
                         <div>
                           <strong>{e.simbol}</strong>
                           <div className="muted">
-                            Raportează {formatZileRamase(e.data)}
-                            {e.moment && MOMENT_LABEL[e.moment] ? ` · ${MOMENT_LABEL[e.moment]}` : ""}
+                            {t("dash.raporteaza")} {formatZileRamase(e.data, t)}
+                            {e.moment && momentLabel[e.moment] ? ` · ${momentLabel[e.moment]}` : ""}
                           </div>
                         </div>
                       </div>
@@ -1054,7 +1010,7 @@ export default function Watchlist() {
                 </ul>
               </>
             ) : earnings.length === 0 ? (
-              <p className="empty">Nicio raportare apropiată printre acțiunile urmărite.</p>
+              <p className="empty">{t("dash.nicioRaportare")}</p>
             ) : (
               <ul className="stock-list">
                 {earnings.slice(0, 5).map((e) => (
@@ -1064,8 +1020,8 @@ export default function Watchlist() {
                       <div>
                         <strong>{e.simbol}</strong>
                         <div className="muted">
-                          Raportează {formatZileRamase(e.data)}
-                          {e.moment && MOMENT_LABEL[e.moment] ? ` · ${MOMENT_LABEL[e.moment]}` : ""}
+                          {t("dash.raporteaza")} {formatZileRamase(e.data, t)}
+                          {e.moment && momentLabel[e.moment] ? ` · ${momentLabel[e.moment]}` : ""}
                         </div>
                       </div>
                       <span className="row-chevron">›</span>
@@ -1079,13 +1035,10 @@ export default function Watchlist() {
           <section className="panel mascota-panel">
             <img src="/mascota/radar.png" alt="" className="mascota mascota-sidebar" loading="lazy" />
             <div>
-              <p className="mascota-panel-title">Radarul lucrează pentru tine</p>
-              <p className="muted mascota-panel-text">
-                Scoruri recalculate automat la 6 ore, prețuri live și digestul zilnic — tu doar
-                alegi ce urmărești.
-              </p>
+              <p className="mascota-panel-title">{t("dash.mascotaTitlu")}</p>
+              <p className="muted mascota-panel-text">{t("dash.mascotaText")}</p>
               <Link to="/metodologie" className="methodology-link">
-                Cum calculăm scorul →
+                {t("dash.cumCalculam")}
               </Link>
             </div>
           </section>
@@ -1096,7 +1049,7 @@ export default function Watchlist() {
 
       {!listaMica && (
         <section className="dash-personas">
-          <h2 className="dash-personas-title">Temele care definesc următorul deceniu</h2>
+          <h2 className="dash-personas-title">{t("landing.temeTitlu")}</h2>
           <ThemeCards />
         </section>
       )}

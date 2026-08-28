@@ -4,8 +4,10 @@ import { Eye, EyeOff } from "lucide-react";
 import { useNavigate, Link } from "react-router-dom";
 import { api } from "../api";
 import AuthLayout from "../components/AuthLayout.jsx";
+import { useLang } from "../i18n/index.jsx";
 
 export default function Register() {
+  const { t } = useLang();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -33,10 +35,8 @@ export default function Register() {
     <AuthLayout>
       <form className="auth-card" onSubmit={handleSubmit}>
         <p className="auth-mobile-brand">AI Stock Radar</p>
-        <h1>Creează cont</h1>
-        <p className="subtitle">
-          Primești 10.000 USD virtuali — testează-ți strategia înainte să investești bani reali.
-        </p>
+        <h1>{t("auth.registerTitlu")}</h1>
+        <p className="subtitle">{t("auth.registerSub")}</p>
         {error && <div className="error">{error}</div>}
         <input
           type="email"
@@ -48,7 +48,7 @@ export default function Register() {
         <div className="password-field">
           <input
             type={showPassword ? "text" : "password"}
-            placeholder="Parolă (min. 8 caractere)"
+            placeholder={t("auth.parolaMin")}
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
@@ -57,23 +57,25 @@ export default function Register() {
             type="button"
             className="password-toggle"
             onClick={() => setShowPassword((v) => !v)}
-            aria-label={showPassword ? "Ascunde parola" : "Arată parola"}
+            aria-label={showPassword ? t("auth.ascundeParola") : t("auth.arataParola")}
           >
             {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
           </button>
         </div>
         {password.length > 0 && (
           <p className={`password-hint ${password.length >= 8 ? "ok" : ""}`}>
-            {password.length >= 8 ? "✓ Lungime suficientă" : `Minim 8 caractere (${password.length}/8)`}
+            {password.length >= 8
+              ? t("auth.lungimeOk")
+              : t("auth.minCaractere", { n: password.length })}
           </p>
         )}
         <button type="submit" disabled={loading}>
-          {loading ? "Se creează contul..." : "Creează cont"}
+          {loading ? t("auth.seCreeaza") : t("auth.registerTitlu")}
         </button>
         <p className="switch">
-          Ai deja cont? <Link to="/login">Autentifică-te</Link>
+          {t("auth.aiDejaCont")} <Link to="/login">{t("auth.autentificaTe")}</Link>
         </p>
-        <p className="auth-form-footer">Conținut educațional, nu recomandare de investiții.</p>
+        <p className="auth-form-footer">{t("auth.footer")}</p>
       </form>
     </AuthLayout>
   );

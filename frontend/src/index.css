@@ -4894,3 +4894,98 @@ html[data-theme="dark"] .workspace-panel {
   padding-top: 1rem;
   border-top: 1px solid var(--border);
 }
+
+/* --- Selector de limbă (steaguri) --- */
+
+.lang-switcher {
+  position: relative;
+}
+
+.lang-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.35rem 0.55rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background: var(--card-bg);
+  color: var(--text);
+  cursor: pointer;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+.lang-button img {
+  display: block;
+  border-radius: 2px;
+}
+
+.lang-panel {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 8px);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.25rem;
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 0.5rem;
+  box-shadow: 0 14px 36px rgba(0, 0, 0, 0.22);
+  z-index: 300;
+  min-width: 270px;
+}
+
+.lang-option {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.45rem 0.55rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid transparent;
+  background: none;
+  color: var(--text);
+  cursor: pointer;
+  font-size: 0.8rem;
+  text-align: left;
+  white-space: nowrap;
+}
+
+.lang-option img {
+  display: block;
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+
+.lang-option:hover {
+  background: var(--bg-page);
+}
+
+.lang-option.active {
+  border-color: var(--blue);
+  font-weight: 700;
+}
+
+/* Selectorul pe paginile de autentificare: colț dreapta-sus, peste panouri */
+.auth-page {
+  position: relative;
+}
+
+.auth-lang {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  z-index: 20;
+}
+
+@media (max-width: 640px) {
+  .lang-panel {
+    position: fixed;
+    left: 50%;
+    right: auto;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    min-width: 280px;
+  }
+}

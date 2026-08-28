@@ -2,8 +2,11 @@ import { useEffect, useRef, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { api } from "../api";
 import { Bell, Star, Moon, Sun } from "lucide-react";
+import { useLang } from "../i18n/index.jsx";
+import LanguageSwitcher from "./LanguageSwitcher.jsx";
 
 export default function NavBar() {
+  const { t } = useLang();
   const navigate = useNavigate();
   const [tema, setTema] = useState(document.documentElement.dataset.theme || "light");
 
@@ -78,9 +81,11 @@ export default function NavBar() {
           <Bell size={17} className="ic" />{unreadCount > 0 ? ` ${unreadCount}` : ""}
         </NavLink>
 
-        <button className="theme-toggle" onClick={toggleTema} aria-label="Comută tema">
+        <button className="theme-toggle" onClick={toggleTema} aria-label={t("nav.comutaTema")}>
           {tema === "dark" ? <Sun size={16} /> : <Moon size={16} />}
         </button>
+
+        <LanguageSwitcher />
 
         {premium === true && <span className="badge-chip"><Star size={12} className="ic" /> Premium</span>}
         {premium === false && (
@@ -93,7 +98,7 @@ export default function NavBar() {
           <button
             className="navbar-menu-button"
             onClick={() => setMenuOpen((v) => !v)}
-            aria-label="Meniu"
+            aria-label={t("nav.meniu")}
           >
             ☰
           </button>
@@ -104,32 +109,32 @@ export default function NavBar() {
                 className={({ isActive }) => (isActive ? "navbar-dropdown-link active" : "navbar-dropdown-link")}
                 onClick={() => setMenuOpen(false)}
               >
-                Portofoliu virtual
+                {t("nav.portofoliuVirtual")}
               </NavLink>
               <NavLink
                 to="/informare"
                 className={({ isActive }) => (isActive ? "navbar-dropdown-link active" : "navbar-dropdown-link")}
                 onClick={() => setMenuOpen(false)}
               >
-                Informare
+                {t("nav.informare")}
               </NavLink>
               <NavLink
                 to="/comunitate"
                 className={({ isActive }) => (isActive ? "navbar-dropdown-link active" : "navbar-dropdown-link")}
                 onClick={() => setMenuOpen(false)}
               >
-                Comunitate
+                {t("nav.comunitate")}
               </NavLink>
               {premium === true && (
                 <button className="navbar-dropdown-link navbar-dropdown-button" onClick={handleManageClick}>
-                  Gestionează abonamentul
+                  {t("nav.gestioneaza")}
                 </button>
               )}
               <button
                 className="navbar-dropdown-link navbar-dropdown-button navbar-dropdown-separator"
                 onClick={logout}
               >
-                Ieșire
+                {t("nav.iesire")}
               </button>
             </div>
           )}

@@ -3,8 +3,10 @@ import { Eye, EyeOff } from "lucide-react";
 import { useNavigate, Link } from "react-router-dom";
 import { api } from "../api";
 import AuthLayout from "../components/AuthLayout.jsx";
+import { useLang } from "../i18n/index.jsx";
 
 export default function Login() {
+  const { t } = useLang();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -31,8 +33,8 @@ export default function Login() {
     <AuthLayout>
       <form className="auth-card" onSubmit={handleSubmit}>
         <p className="auth-mobile-brand">AI Stock Radar</p>
-        <h1>Autentificare</h1>
-        <p className="subtitle">Intră în contul tău</p>
+        <h1>{t("auth.loginTitlu")}</h1>
+        <p className="subtitle">{t("auth.loginSub")}</p>
         {error && <div className="error">{error}</div>}
         <input
           type="email"
@@ -44,7 +46,7 @@ export default function Login() {
         <div className="password-field">
           <input
             type={showPassword ? "text" : "password"}
-            placeholder="Parolă"
+            placeholder={t("auth.parola")}
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
@@ -53,18 +55,18 @@ export default function Login() {
             type="button"
             className="password-toggle"
             onClick={() => setShowPassword((v) => !v)}
-            aria-label={showPassword ? "Ascunde parola" : "Arată parola"}
+            aria-label={showPassword ? t("auth.ascundeParola") : t("auth.arataParola")}
           >
             {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
           </button>
         </div>
         <button type="submit" disabled={loading}>
-          {loading ? "Se autentifică..." : "Autentificare"}
+          {loading ? t("auth.seAutentifica") : t("auth.loginTitlu")}
         </button>
         <p className="switch">
-          Nu ai cont? <Link to="/register">Creează unul</Link>
+          {t("auth.nuAiCont")} <Link to="/register">{t("auth.creeazaUnul")}</Link>
         </p>
-        <p className="auth-form-footer">Conținut educațional, nu recomandare de investiții.</p>
+        <p className="auth-form-footer">{t("auth.footer")}</p>
       </form>
     </AuthLayout>
   );

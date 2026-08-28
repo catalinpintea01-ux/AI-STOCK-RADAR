@@ -1,20 +1,21 @@
 import { NavLink } from "react-router-dom";
 import { Radar, Briefcase, Bell, BookOpen } from "lucide-react";
+import { useLang } from "../i18n/index.jsx";
 
 // Bară de navigare jos, doar pe mobil — destinațiile principale la un deget
 // distanță (pattern-ul standard al aplicațiilor de trading), în locul
 // meniului hamburger din colțul greu accesibil.
-const ITEMS = [
-  { to: "/", label: "Radar", icon: Radar, end: true },
-  { to: "/portofoliu", label: "Portofoliu", icon: Briefcase },
-  { to: "/alerte", label: "Digest", icon: Bell },
-  { to: "/informare", label: "Învață", icon: BookOpen },
-];
-
 export default function BottomNav() {
+  const { t } = useLang();
+  const items = [
+    { to: "/", label: t("bottom.radar"), icon: Radar, end: true },
+    { to: "/portofoliu", label: t("bottom.portofoliu"), icon: Briefcase },
+    { to: "/alerte", label: t("bottom.digest"), icon: Bell },
+    { to: "/informare", label: t("bottom.invata"), icon: BookOpen },
+  ];
   return (
-    <nav className="bottom-nav" aria-label="Navigare principală">
-      {ITEMS.map((item) => (
+    <nav className="bottom-nav" aria-label="Meniu">
+      {items.map((item) => (
         <NavLink
           key={item.to}
           to={item.to}

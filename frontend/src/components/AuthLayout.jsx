@@ -1,28 +1,32 @@
 import { Radar, Newspaper, Shield } from "lucide-react";
+import { useLang } from "../i18n/index.jsx";
+import LanguageSwitcher from "./LanguageSwitcher.jsx";
 
-const TRUST_POINTS = [
-  { icon: Radar, text: "Scor AI recalculat automat pentru fiecare acțiune urmărită" },
-  { icon: Newspaper, text: "Context zilnic din piețele bursiere, tradus și explicat" },
-  { icon: Shield, text: "Conținut educațional — niciodată recomandări de cumpărare sau vânzare" },
-];
+const ICONS = [Radar, Newspaper, Shield];
 
 export default function AuthLayout({ children }) {
+  const { t } = useLang();
+  const puncte = t("auth.puncte");
   return (
     <div className="auth-page">
+      <div className="auth-lang">
+        <LanguageSwitcher />
+      </div>
       <div className="auth-brand-panel">
         <div className="auth-brand-content">
           <img src="/mascota/laptop.png" alt="" className="mascota mascota-auth" />
           <h1 className="auth-brand-title">AI Stock Radar</h1>
-          <p className="auth-brand-tagline">
-            Urmărește acțiuni, primești context AI zilnic despre ele și exersează pe un portofoliu virtual — fără risc real.
-          </p>
+          <p className="auth-brand-tagline">{t("auth.tagline")}</p>
           <ul className="auth-brand-points">
-            {TRUST_POINTS.map((p) => (
-              <li key={p.text}>
-                <span className="auth-brand-icon"><p.icon size={16} /></span>
-                {p.text}
-              </li>
-            ))}
+            {puncte.map((text, i) => {
+              const Icon = ICONS[i] || Radar;
+              return (
+                <li key={text}>
+                  <span className="auth-brand-icon"><Icon size={16} /></span>
+                  {text}
+                </li>
+              );
+            })}
           </ul>
         </div>
       </div>
