@@ -5709,3 +5709,20 @@ html[data-theme="dark"] .workspace-panel {
     white-space: nowrap;
   }
 }
+
+/* --- Mascota v2: toate ipostazele sunt PNG transparent — umbra urmează
+   silueta robotului, nu un dreptunghi de card. --- */
+
+.mascota {
+  border-radius: 0;
+}
+
+.mascota-empty,
+.mascota-auth,
+.mascota-mica,
+.mascota-premium,
+.mascota-learn,
+.mascota-sidebar {
+  box-shadow: none;
+  filter: drop-shadow(0 10px 22px rgba(0, 0, 0, 0.35));
+}
