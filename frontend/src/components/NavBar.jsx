@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { api } from "../api";
-import { Bell, Star } from "lucide-react";
+import { Bell, Star, Radar } from "lucide-react";
 import { useLang } from "../i18n/index.jsx";
 import LanguageSwitcher from "./LanguageSwitcher.jsx";
 import ThemeToggle from "./ThemeToggle.jsx";
@@ -94,6 +94,14 @@ export default function NavBar() {
           </button>
           {menuOpen && (
             <div className="navbar-dropdown">
+              <NavLink
+                to="/"
+                end
+                className={({ isActive }) => (isActive ? "navbar-dropdown-link active" : "navbar-dropdown-link")}
+                onClick={() => setMenuOpen(false)}
+              >
+                <Radar size={14} className="ic" /> {t("bottom.radar")}
+              </NavLink>
               <NavLink
                 to="/portofoliu"
                 className={({ isActive }) => (isActive ? "navbar-dropdown-link active" : "navbar-dropdown-link")}
