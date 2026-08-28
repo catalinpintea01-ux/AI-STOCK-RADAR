@@ -1,4 +1,13 @@
 export default {
+  screens: {
+    "titlu": "Wat je in de app ziet",
+    "analiza": "Aandeelanalyse",
+    "comparator": "Vergelijker A vs B",
+    "analisti": "Analisten",
+    "momentum": "Momentum",
+    "fundamental": "Fundamentals",
+    "risc": "Risico"
+  },
   temeNota: "De symbolen zijn beschrijvende voorbeelden van bedrijven per thema, geen aanbevelingen · Foto's:",
   verdictB: {
     "sentiment": "AI-sentiment:",

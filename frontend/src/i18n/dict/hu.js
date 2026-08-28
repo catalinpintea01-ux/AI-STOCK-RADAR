@@ -1,4 +1,13 @@
 export default {
+  screens: {
+    "titlu": "Ezt látod az alkalmazásban",
+    "analiza": "Részvényelemzés",
+    "comparator": "A vs B összehasonlító",
+    "analisti": "Elemzők",
+    "momentum": "Momentum",
+    "fundamental": "Fundamentumok",
+    "risc": "Kockázat"
+  },
   temeNota: "A szimbólumok az egyes témák cégeinek leíró példái, nem ajánlások · Fotók:",
   verdictB: {
     "sentiment": "MI-hangulat:",

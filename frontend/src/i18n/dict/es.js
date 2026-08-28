@@ -1,4 +1,13 @@
 export default {
+  screens: {
+    "titlu": "Lo que ves dentro de la aplicación",
+    "analiza": "Análisis de la acción",
+    "comparator": "Comparador A vs B",
+    "analisti": "Analistas",
+    "momentum": "Momentum",
+    "fundamental": "Fundamentales",
+    "risc": "Riesgo"
+  },
   temeNota: "Los símbolos son ejemplos descriptivos de compañías de cada tema, no recomendaciones · Fotos:",
   verdictB: {
     "sentiment": "Sentimiento IA:",

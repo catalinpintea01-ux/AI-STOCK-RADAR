@@ -22,15 +22,41 @@ const FOTO_CTA = {
 const FACT_ICONS = [Radar, TrendingUp, Newspaper, CalendarDays];
 const FEATURE_ICONS = [Radar, Compass, Newspaper, CalendarDays, Bell, Briefcase];
 
-// Rânduri ilustrative pentru mockup-ul de produs din hero — construite din
-// componentele reale ale aplicației (logo + ring), cu valori demonstrative.
-const MOCKUP_ROWS = [
-  { simbol: "AAPL", verdict: "optimist", scor: 67, pret: "$316.83", variatie: "+2.2%", pozitiv: true },
-  { simbol: "NVDA", verdict: "optimist", scor: 63, pret: "$217.56", variatie: "-1.0%", pozitiv: false },
-  { simbol: "CVX", verdict: "optimist", scor: 81, pret: "$205.76", variatie: "+1.5%", pozitiv: true },
+const LOGO_WALL = ["AAPL", "MSFT", "NVDA", "TSLA", "AMZN", "GOOGL", "META", "NFLX", "JPM", "V", "KO", "DIS"];
+
+// Fundalul secțiunii de ecrane: sigle mari, estompate, ale unor companii
+// cunoscute (SpaceX nu e listată — logo-ul vine direct de pe domeniul ei).
+const finnhubLogo = (s) => `https://static2.finnhub.io/file/publicdatany/finnhubimage/stock_logo/${s}.png`;
+const SCREENS_BG = [
+  { src: finnhubLogo("NVDA"), top: "6%", left: "4%", size: 110 },
+  { src: "https://logo.clearbit.com/spacex.com", top: "12%", left: "44%", size: 150 },
+  { src: finnhubLogo("TSLA"), top: "8%", left: "82%", size: 100 },
+  { src: finnhubLogo("AAPL"), top: "58%", left: "10%", size: 90 },
+  { src: finnhubLogo("MSFT"), top: "70%", left: "38%", size: 100 },
+  { src: finnhubLogo("AMZN"), top: "62%", left: "66%", size: 95 },
+  { src: finnhubLogo("META"), top: "30%", left: "20%", size: 85 },
+  { src: finnhubLogo("GOOGL"), top: "34%", left: "72%", size: 90 },
 ];
 
-const LOGO_WALL = ["AAPL", "MSFT", "NVDA", "TSLA", "AMZN", "GOOGL", "META", "NFLX", "JPM", "V", "KO", "DIS"];
+// Bare de sub-scoruri din "captura" de analiză — valori demonstrative.
+const SCREEN_BARS = [
+  { cheie: "analisti", val: 78 },
+  { cheie: "momentum", val: 84 },
+  { cheie: "fundamental", val: 71 },
+  { cheie: "risc", val: 32 },
+];
+
+// Coloanele din "captura" de research zilnic — valori demonstrative.
+const SCREEN_DAILY = {
+  cresteri: [
+    { simbol: "AVGO", val: 3.2 },
+    { simbol: "META", val: 2.4 },
+  ],
+  scaderi: [
+    { simbol: "TSLA", val: -1.8 },
+    { simbol: "NKE", val: -0.9 },
+  ],
+};
 
 export default function Landing() {
   const { t } = useLang();
@@ -85,46 +111,152 @@ export default function Landing() {
         </div>
       </section>
 
-      <section className="landing-section landing-mockup-section">
-        <div className="landing-mockup-wrap" aria-hidden="true">
-          <div className="landing-mockup">
-            <div className="landing-mockup-bar">
-              <span className="landing-mockup-dot" />
-              <span className="landing-mockup-dot" />
-              <span className="landing-mockup-dot" />
-              <span className="landing-mockup-title">AI Stock Radar</span>
-            </div>
-            <div className="landing-mockup-stats">
-              <div>
-                <strong className="optimist-text">27</strong>
-                <span>{t("landing.optimiste")}</span>
-              </div>
-              <div>
-                <strong>11</strong>
-                <span>{t("landing.neutre")}</span>
-              </div>
-              <div>
-                <strong className="rezervat-text">1</strong>
-                <span>{t("landing.rezervate")}</span>
-              </div>
-            </div>
-            {MOCKUP_ROWS.map((r) => (
-              <div key={r.simbol} className="landing-mockup-row">
-                <StockLogo simbol={r.simbol} size={26} />
-                <div className="landing-mockup-row-info">
-                  <strong>{r.simbol}</strong>
-                  <span><VerdictTag verdict={r.verdict} /></span>
-                </div>
-                <ScoreRing score={r.scor} verdict={r.verdict} />
-                <div className="landing-mockup-row-price">
-                  <strong>{r.pret}</strong>
-                  <span className={r.pozitiv ? "gain-positive" : "gain-negative"}>{r.variatie}</span>
-                </div>
-              </div>
-            ))}
-          </div>
-          <p className="landing-mockup-caption">{t("landing.mockupCaption")}</p>
+      <section className="landing-screens">
+        <div className="screens-bg" aria-hidden="true">
+          {SCREENS_BG.map((l) => (
+            <img
+              key={l.src}
+              src={l.src}
+              alt=""
+              loading="lazy"
+              style={{ top: l.top, left: l.left, width: l.size, height: l.size }}
+              onError={(e) => {
+                e.currentTarget.style.display = "none";
+              }}
+            />
+          ))}
         </div>
+
+        <h2 className="landing-section-title screens-title">{t("screens.titlu")}</h2>
+
+        <div className="screens-row">
+          <div className="screen-card">
+            <div className="screen-topbar">
+              <span className="screen-dot" />
+              <span className="screen-dot" />
+              <span className="screen-dot" />
+              <span className="screen-topbar-title">{t("screens.analiza")}</span>
+            </div>
+            <div className="screen-body">
+              <div className="screen-stock-head">
+                <StockLogo simbol="NVDA" size={30} />
+                <div className="screen-stock-id">
+                  <strong>NVDA</strong>
+                  <span>NVIDIA</span>
+                </div>
+                <div className="screen-price">
+                  $217.56 <span className="gain-positive">+2.1%</span>
+                </div>
+              </div>
+              <div className="screen-verdict-row">
+                <VerdictTag verdict="optimist" />
+                <ScoreRing score={78} verdict="optimist" />
+              </div>
+              {SCREEN_BARS.map((b) => (
+                <div key={b.cheie} className="screen-score">
+                  <div className="screen-score-label">
+                    <span>{t(`screens.${b.cheie}`)}</span>
+                    <span>{b.val}/100</span>
+                  </div>
+                  <div className="screen-score-track">
+                    <div className="screen-score-fill" style={{ width: `${b.val}%` }} />
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="screen-card screen-card-mid">
+            <div className="screen-topbar">
+              <span className="screen-dot" />
+              <span className="screen-dot" />
+              <span className="screen-dot" />
+              <span className="screen-topbar-title">{t("screens.comparator")}</span>
+            </div>
+            <div className="screen-body">
+              <div className="screen-cmp-cols">
+                <div className="screen-cmp-col">
+                  <StockLogo simbol="NVDA" size={34} />
+                  <strong>NVDA</strong>
+                  <ScoreRing score={78} verdict="optimist" />
+                </div>
+                <span className="screen-vs">vs</span>
+                <div className="screen-cmp-col">
+                  <StockLogo simbol="TSLA" size={34} />
+                  <strong>TSLA</strong>
+                  <ScoreRing score={55} verdict="neutru" />
+                </div>
+              </div>
+              <table className="screen-cmp-table">
+                <tbody>
+                  <tr>
+                    <td className="screen-win">78</td>
+                    <th>{t("dash.sortare.scor")}</th>
+                    <td>55</td>
+                  </tr>
+                  <tr>
+                    <td className="screen-win">84</td>
+                    <th>{t("screens.momentum")}</th>
+                    <td>62</td>
+                  </tr>
+                  <tr>
+                    <td>67</td>
+                    <th>{t("screens.analisti")}</th>
+                    <td className="screen-win">71</td>
+                  </tr>
+                  <tr>
+                    <td className="screen-win">32</td>
+                    <th>{t("screens.risc")}</th>
+                    <td>48</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div className="screen-card">
+            <div className="screen-topbar">
+              <span className="screen-dot" />
+              <span className="screen-dot" />
+              <span className="screen-dot" />
+              <span className="screen-topbar-title">{t("dash.researchZilnic")}</span>
+            </div>
+            <div className="screen-body">
+              <div className="screen-daily">
+                <div className="screen-daily-group">
+                  <span className="screen-daily-label gain-positive">{t("dash.cresteri")}</span>
+                  {SCREEN_DAILY.cresteri.map((p) => (
+                    <div key={p.simbol} className="screen-daily-row">
+                      <StockLogo simbol={p.simbol} size={22} />
+                      <strong>{p.simbol}</strong>
+                      <span className="gain-positive">+{p.val.toFixed(1)}%</span>
+                    </div>
+                  ))}
+                </div>
+                <div className="screen-daily-group">
+                  <span className="screen-daily-label gain-negative">{t("dash.scaderi")}</span>
+                  {SCREEN_DAILY.scaderi.map((p) => (
+                    <div key={p.simbol} className="screen-daily-row">
+                      <StockLogo simbol={p.simbol} size={22} />
+                      <strong>{p.simbol}</strong>
+                      <span className="gain-negative">{p.val.toFixed(1)}%</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              <div className="screen-daily-selected">
+                <StockLogo simbol="AVGO" size={26} />
+                <div className="screen-stock-id">
+                  <strong>AVGO</strong>
+                  <span>Broadcom</span>
+                </div>
+                <span className="screen-follow">{t("dash.urmareste")}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <p className="landing-mockup-caption screens-caption">{t("landing.mockupCaption")}</p>
       </section>
 
       <section className="landing-logo-wall">

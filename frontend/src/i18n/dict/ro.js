@@ -1,4 +1,13 @@
 export default {
+  screens: {
+    "titlu": "Ce vezi în aplicație",
+    "analiza": "Analiza acțiunii",
+    "comparator": "Comparator A vs B",
+    "analisti": "Analiști",
+    "momentum": "Momentum",
+    "fundamental": "Fundamental",
+    "risc": "Risc"
+  },
   temeNota: "Simbolurile sunt exemple descriptive de companii din fiecare temă, nu recomandări · Fotografii:",
   verdictB: {
     "sentiment": "Sentiment AI:",

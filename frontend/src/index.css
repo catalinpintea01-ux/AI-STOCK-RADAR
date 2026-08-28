@@ -4989,3 +4989,287 @@ html[data-theme="dark"] .workspace-panel {
     min-width: 280px;
   }
 }
+
+/* --- Secțiunea de ecrane de sub hero (landing) --- */
+
+.landing-screens {
+  position: relative;
+  padding: 3.5rem 0 4rem;
+  overflow: hidden;
+}
+
+.screens-bg {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.screens-bg img {
+  position: absolute;
+  object-fit: contain;
+  border-radius: 22%;
+  opacity: 0.1;
+  filter: grayscale(0.35);
+}
+
+/* Estompare spre margini — siglele rămân un fundal discret, nu concurează
+   cu ecranele din față. */
+.screens-bg::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 50% 45%, transparent 30%, var(--bg-page) 88%);
+}
+
+.screens-title {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.screens-row {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin: 0 auto;
+}
+
+.screen-card {
+  width: min(316px, 100%);
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xl);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.22);
+  overflow: hidden;
+}
+
+/* Ecranul din mijloc, ușor ridicat — adâncime fără nicio rotire. */
+.screen-card-mid {
+  transform: translateY(-18px);
+  border-color: var(--blue);
+  box-shadow: 0 30px 70px rgba(0, 0, 0, 0.3);
+}
+
+.screen-topbar {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.6rem 0.9rem;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg-page);
+}
+
+.screen-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--border);
+}
+
+.screen-topbar-title {
+  margin-left: 0.5rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--blue);
+}
+
+.screen-body {
+  padding: 1rem 1.1rem 1.2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.screen-stock-head {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.screen-stock-id {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.15;
+  flex: 1;
+}
+
+.screen-stock-id span {
+  font-size: 0.72rem;
+  color: var(--muted, #8b8579);
+  opacity: 0.85;
+}
+
+.screen-price {
+  font-weight: 800;
+  font-size: 0.95rem;
+}
+
+.screen-price .gain-positive {
+  font-size: 0.78rem;
+  margin-left: 0.25rem;
+}
+
+.screen-verdict-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.screen-score-label {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.74rem;
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+}
+
+.screen-score-track {
+  height: 7px;
+  border-radius: 6px;
+  background: var(--bg-page);
+  overflow: hidden;
+}
+
+.screen-score-fill {
+  height: 100%;
+  border-radius: 6px;
+  background: linear-gradient(90deg, var(--blue), #d3bf9c);
+}
+
+.screen-cmp-cols {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  gap: 0.5rem;
+}
+
+.screen-cmp-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.9rem;
+}
+
+.screen-vs {
+  font-size: 0.75rem;
+  font-weight: 800;
+  color: var(--blue);
+  text-transform: uppercase;
+}
+
+.screen-cmp-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.8rem;
+}
+
+.screen-cmp-table th {
+  font-weight: 600;
+  color: var(--muted, #8b8579);
+  text-align: center;
+  padding: 0.4rem 0.3rem;
+  font-size: 0.72rem;
+}
+
+.screen-cmp-table td {
+  text-align: center;
+  padding: 0.4rem 0.3rem;
+  font-weight: 700;
+  width: 26%;
+}
+
+.screen-cmp-table tr + tr {
+  border-top: 1px solid var(--border);
+}
+
+.screen-win {
+  color: var(--blue);
+  position: relative;
+}
+
+.screen-win::after {
+  content: "●";
+  font-size: 0.5rem;
+  margin-left: 0.3rem;
+  vertical-align: middle;
+}
+
+.screen-daily {
+  display: flex;
+  gap: 1rem;
+}
+
+.screen-daily-group {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+
+.screen-daily-label {
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.screen-daily-row {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: 0.82rem;
+}
+
+.screen-daily-row span {
+  margin-left: auto;
+  font-weight: 700;
+  font-size: 0.78rem;
+}
+
+.screen-daily-selected {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.6rem 0.7rem;
+  border: 1px dashed var(--border);
+  border-radius: var(--radius-md);
+  background: var(--bg-page);
+}
+
+.screen-follow {
+  margin-left: auto;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--blue);
+  border: 1px solid var(--blue);
+  border-radius: 999px;
+  padding: 0.25rem 0.6rem;
+  white-space: nowrap;
+}
+
+.screens-caption {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  margin-top: 1.6rem;
+}
+
+@media (max-width: 900px) {
+  .screen-card-mid {
+    transform: none;
+  }
+  .screens-row {
+    gap: 1.1rem;
+  }
+  .screens-bg img {
+    opacity: 0.07;
+  }
+}
