@@ -2,9 +2,10 @@ import { useEffect, useState } from "react";
 import { useLang } from "../i18n/index.jsx";
 
 // "Amprenta Radar" — graficul-păianjen al celor 4 sub-scoruri, semnătura
-// vizuală a analizei (echivalentul nostru pentru Snowflake-ul de la SWS).
-// Axa de risc e inversată ("Siguranță" = 100 − risc), ca forma să citească
-// mereu la fel: mai mare = tablou mai solid. Pur descriptiv.
+// vizuală a analizei. Axa de risc e inversată ("Siguranță" = 100 − risc),
+// ca forma să citească mereu la fel: mai mare = tablou mai solid.
+// Canvas-ul e mai lat decât pânza: etichetele laterale au coloană proprie
+// și nu mai sunt tăiate de marginea SVG-ului.
 const AXE = [
   { cheie: "analisti", scor: (s) => s.analisti },
   { cheie: "momentum", scor: (s) => s.momentum },
@@ -12,17 +13,21 @@ const AXE = [
   { cheie: "siguranta", scor: (s) => 100 - s.risc },
 ];
 
-export default function RadarPrint({ analisti, momentum, fundamental, risc, size = 210 }) {
+export default function RadarPrint({ analisti, momentum, fundamental, risc, size = 220 }) {
   const { t } = useLang();
   const scoruri = { analisti, momentum, fundamental, risc };
 
-  const c = size / 2;
-  const R = size * 0.33;
+  const MARGINE = 104; // loc pentru etichetele din stânga/dreapta
+  const W = size + MARGINE * 2;
+  const H = size + 40;
+  const cx = W / 2;
+  const cy = H / 2;
+  const R = size * 0.42;
 
   function punct(valoare, idx, raza = R) {
     const unghi = (Math.PI / 2) * idx - Math.PI / 2; // sus, dreapta, jos, stânga
     const r = (valoare / 100) * raza;
-    return [c + r * Math.cos(unghi), c + r * Math.sin(unghi)];
+    return [cx + r * Math.cos(unghi), cy + r * Math.sin(unghi)];
   }
 
   // Animăm forma de la centru spre valorile reale la montare.
@@ -38,18 +43,23 @@ export default function RadarPrint({ analisti, momentum, fundamental, risc, size
       .join(",")
   ).join(" ");
 
-  const etichete = AXE.map((axa, i) => {
-    const [x, y] = punct(128, i);
-    const ancora = i === 1 ? "start" : i === 3 ? "end" : "middle";
-    return { x, y: i === 0 ? y + 2 : i === 2 ? y + 6 : y + 3, ancora, text: t(`screens.${axa.cheie}`), valoare: axa.scor(scoruri) };
-  });
+  // Etichete: sus/jos centrate, stânga/dreapta în coloanele laterale.
+  const etichete = [
+    { x: cx, y: cy - R - 12, ancora: "middle" },
+    { x: cx + R + 12, y: cy + 4, ancora: "start" },
+    { x: cx, y: cy + R + 20, ancora: "middle" },
+    { x: cx - R - 12, y: cy + 4, ancora: "end" },
+  ].map((pozitie, i) => ({
+    ...pozitie,
+    text: t(`screens.${AXE[i].cheie}`),
+    valoare: AXE[i].scor(scoruri),
+  }));
 
   return (
     <svg
       className="radar-print"
-      width={size}
-      height={size}
-      viewBox={`0 0 ${size} ${size}`}
+      viewBox={`0 0 ${W} ${H}`}
+      style={{ maxWidth: W }}
       role="img"
       aria-label={AXE.map((a) => `${t(`screens.${a.cheie}`)} ${a.scor(scoruri)}/100`).join(", ")}
     >
@@ -62,16 +72,16 @@ export default function RadarPrint({ analisti, momentum, fundamental, risc, size
       ))}
       {AXE.map((_, i) => {
         const [x, y] = punct(100, i);
-        return <line key={i} x1={c} y1={c} x2={x} y2={y} className="radar-print-axa" />;
+        return <line key={i} x1={cx} y1={cy} x2={x} y2={y} className="radar-print-axa" />;
       })}
       <polygon points={poligon} className="radar-print-forma" />
       {AXE.map((axa, i) => {
         const [x, y] = punct(Math.max(4, axa.scor(scoruri) * factor), i);
-        return <circle key={i} cx={x} cy={y} r="3.2" className="radar-print-punct" />;
+        return <circle key={i} cx={x} cy={y} r="3.5" className="radar-print-punct" />;
       })}
       {etichete.map((e) => (
         <text key={e.text} x={e.x} y={e.y} textAnchor={e.ancora} className="radar-print-eticheta">
-          {e.text} · {e.valoare}
+          {e.text} <tspan className="radar-print-valoare">{e.valoare}</tspan>
         </text>
       ))}
     </svg>

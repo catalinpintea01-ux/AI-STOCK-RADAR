@@ -6321,3 +6321,19 @@ html[data-theme="dark"] .workspace-panel {
   font-size: 0.8rem;
   margin-left: auto;
 }
+
+/* Amprenta Radar v2: canvas lat cu coloane pentru etichete, scalare fluidă */
+.radar-print {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.radar-print-eticheta {
+  font-size: 11px;
+}
+
+.radar-print-valoare {
+  fill: var(--text);
+  font-weight: 800;
+}
