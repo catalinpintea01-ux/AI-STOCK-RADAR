@@ -23,6 +23,14 @@ app.use("/api/webhooks", webhookRoutes);
 
 app.use(express.json());
 
+// Limba interfeței, trimisă de frontend (X-Limba) — folosită pentru a livra
+// conținutul generat (narative radar, știri, motive) în limba utilizatorului.
+const { normalizeazaLimba } = require("./services/i18nContent");
+app.use((req, res, next) => {
+  req.limba = normalizeazaLimba(req.headers["x-limba"]);
+  next();
+});
+
 app.get("/health", (req, res) => res.json({ ok: true }));
 
 app.use("/api/auth", authRoutes);

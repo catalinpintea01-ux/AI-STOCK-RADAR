@@ -48,6 +48,10 @@ export default function LanguageSwitcher() {
               onClick={() => {
                 setLimba(l.cod);
                 setOpen(false);
+                // Reîncărcăm pagina: datele deja aduse (știri, analize AI,
+                // motive research) vin de la server în limba veche — un
+                // reload le recere pe toate în limba nouă, peste tot.
+                if (l.cod !== limba) setTimeout(() => window.location.reload(), 60);
               }}
             >
               <img

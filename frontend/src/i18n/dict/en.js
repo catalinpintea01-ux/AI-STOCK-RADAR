@@ -1,4 +1,9 @@
 export default {
+  verdict: {
+    optimist: "Optimistic",
+    neutru: "Neutral",
+    rezervat: "Cautious",
+  },
   nav: {
     portofoliuVirtual: "Virtual portfolio",
     informare: "Learn",

@@ -55,6 +55,14 @@ export function LanguageProvider({ children }) {
 
   useEffect(() => {
     document.documentElement.lang = limba;
+    // Persistăm și limba detectată automat (nu doar alegerea explicită) —
+    // api.js citește "limba" din localStorage pentru headerul X-Limba, iar
+    // conținutul de la server trebuie să corespundă limbii interfeței.
+    try {
+      localStorage.setItem("limba", limba);
+    } catch {
+      /* ignorăm */
+    }
   }, [limba]);
 
   function setLimba(cod) {

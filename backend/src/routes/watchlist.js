@@ -7,6 +7,7 @@ const { getMockStocks, getMockStock } = require("../mockData/stocks");
 const { isPremium, PREMIUM_WATCHLIST_LIMIT } = require("../services/stripe");
 const { getEarningsCalendar } = require("../services/fundamentals");
 const { getDailyPicks, getOnboardingPicks } = require("../services/discovery");
+const { motivFallback, localizeazaMotive } = require("../services/i18nContent");
 
 const router = express.Router();
 
@@ -135,10 +136,7 @@ router.get("/daily-picks", requireAuth, async (req, res) => {
     nume: s.nume,
     pret: s.pret,
     variatieProcent: s.variatieProcent,
-    motiv:
-      s.variatieProcent >= 0
-        ? "Printre cele mai mari creșteri de preț de azi."
-        : "Printre cele mai mari scăderi de preț de azi.",
+    motiv: motivFallback(s.variatieProcent >= 0 ? "crestere" : "scadere", req.limba),
   });
 
   for (const semn of [1, -1]) {
@@ -187,10 +185,10 @@ router.get("/daily-picks", requireAuth, async (req, res) => {
       .filter((p) => p.variatieProcent < 0)
       .sort((a, b) => a.variatieProcent - b.variatieProcent)
       .slice(0, 2);
-    return res.json({ picks: [...castiguri, ...pierderi], mover });
+    return res.json({ picks: await localizeazaMotive([...castiguri, ...pierderi], req.limba), mover });
   }
 
-  res.json({ picks: ramase, mover });
+  res.json({ picks: await localizeazaMotive(ramase, req.limba), mover });
 });
 
 // Onboarding: userul alege interese, Claude selectează N acțiuni din
@@ -217,7 +215,7 @@ router.post("/onboard", requireAuth, async (req, res) => {
     }
   }
 
-  const picks = await getOnboardingPicks(interese, count);
+  const picks = await getOnboardingPicks(interese, count, req.limba);
 
   const adaugate = [];
   for (const p of picks) {

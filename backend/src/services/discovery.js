@@ -1,5 +1,6 @@
 const { getStockList } = require("./marketData");
 const { contineLimbajDeConsiliere } = require("./radarNarrative");
+const { motivFallback, NUME_LIMBA } = require("./i18nContent");
 
 const ANTHROPIC_URL = "https://api.anthropic.com/v1/messages";
 const MODEL = "claude-haiku-4-5-20251001";
@@ -114,27 +115,28 @@ const INTEREST_LABELS = {
   dividende: "Dividende stabile",
 };
 
-function fallbackOnboardingPicks(universe, count) {
+function fallbackOnboardingPicks(universe, count, limba = "ro") {
   return universe.slice(0, count).map((s) => ({
     simbol: s.simbol,
-    motiv: "Acțiune populară, printre cele mai tranzacționate.",
+    motiv: motivFallback("popular", limba),
   }));
 }
 
-async function getOnboardingPicks(interese, count) {
+async function getOnboardingPicks(interese, count, limba = "ro") {
   const universe = await getStockList();
   if (universe.length === 0) return [];
 
   const etichete = (Array.isArray(interese) ? interese : []).map((i) => INTEREST_LABELS[i]).filter(Boolean);
   if (etichete.length === 0 || !isAiConfigured()) {
-    return fallbackOnboardingPicks(universe, count);
+    return fallbackOnboardingPicks(universe, count, limba);
   }
 
-  const prompt = `Ești un asistent care ajută un utilizator nou dintr-o aplicație educativă de investiții din România să-și construiască o primă listă de acțiuni de urmărit.
+  const numeLimba = limba === "ro" ? "română" : NUME_LIMBA[limba] || "română";
+  const prompt = `Ești un asistent care ajută un utilizator nou dintr-o aplicație educativă de investiții să-și construiască o primă listă de acțiuni de urmărit.
 
 Utilizatorul a ales aceste interese: ${etichete.join(", ")}.
 
-Din lista de mai jos, alege EXACT ${count} acțiuni care se potrivesc cel mai bine cu interesele alese. Pentru fiecare, scrie un motiv de maxim o propoziție (15-20 cuvinte) în română, care explică de ce se potrivește — limbaj exclusiv descriptiv.
+Din lista de mai jos, alege EXACT ${count} acțiuni care se potrivesc cel mai bine cu interesele alese. Pentru fiecare, scrie un motiv de maxim o propoziție (15-20 cuvinte) în limba ${numeLimba}, care explică de ce se potrivește — limbaj exclusiv descriptiv.
 
 Reguli obligatorii:
 - NU folosi niciodată cuvintele "cumpără", "vinde", "recomand", "ar trebui să", sau orice formă de sfat personal de investiții.
@@ -156,7 +158,7 @@ Răspunde STRICT cu un array JSON de exact ${count} elemente, fără text în af
     return picks;
   } catch (err) {
     console.error(`[discovery] fallback pentru onboarding: ${err.message}`);
-    return fallbackOnboardingPicks(universe, count);
+    return fallbackOnboardingPicks(universe, count, limba);
   }
 }
 

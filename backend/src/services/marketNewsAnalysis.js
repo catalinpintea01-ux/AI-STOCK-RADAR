@@ -1,12 +1,14 @@
 const crypto = require("crypto");
 const { getMarketNewsRaw } = require("./news");
 const { contineLimbajDeConsiliere } = require("./radarNarrative");
+const { traduceTexte } = require("./i18nContent");
 
 const ANTHROPIC_URL = "https://api.anthropic.com/v1/messages";
 const MODEL = "claude-haiku-4-5-20251001";
 const CACHE_TTL_MS = 30 * 60 * 1000;
 
-let cache = null; // { items, byId, expiresAt }
+let cache = null; // { items, byId, expiresAt } — sursa de adevăr (română)
+const cachePeLimba = new Map(); // limba -> { items, byId, expiresAt } — traduceri, rotite odată cu sursa
 
 function isAiConfigured() {
   return Boolean(process.env.ANTHROPIC_API_KEY);
@@ -147,13 +149,15 @@ Răspunde STRICT cu un array JSON de exact ${SELECTED_COUNT} elemente, ordonate 
   }
 }
 
-async function getAnalyzedMarketNews() {
-  if (cache && cache.expiresAt > Date.now()) {
-    return cache.items;
-  }
+async function ensureBaseCache() {
+  if (cache && cache.expiresAt > Date.now()) return;
 
   const candidates = await getMarketNewsRaw();
-  if (candidates.length === 0) return [];
+  if (candidates.length === 0) {
+    cache = { items: [], byId: new Map(), expiresAt: Date.now() + 5 * 60 * 1000 };
+    cachePeLimba.clear();
+    return;
+  }
 
   const selectate = await selectAndAnalyzeWithClaude(candidates);
 
@@ -174,12 +178,38 @@ async function getAnalyzedMarketNews() {
 
   const byId = new Map(items.map((it) => [it.id, it]));
   cache = { items, byId, expiresAt: Date.now() + CACHE_TTL_MS };
+  cachePeLimba.clear(); // selecție nouă → traducerile vechi nu mai corespund
+}
+
+// Aceleași știri (aceleași id-uri, imagini, surse) în limba cerută — doar
+// titluAI și analiza sunt traduse, cu o singură cerere Claude per limbă per
+// fereastră de cache. La eșec servim versiunea română, niciodată eroare.
+async function getAnalyzedMarketNews(limba = "ro") {
+  await ensureBaseCache();
+  if (limba === "ro" || cache.items.length === 0) return cache.items;
+
+  const cached = cachePeLimba.get(limba);
+  if (cached && cached.expiresAt === cache.expiresAt) return cached.items;
+
+  const texte = cache.items.flatMap((it) => [it.titluAI, it.analiza]);
+  const traduse = await traduceTexte(texte, limba);
+  if (!traduse) return cache.items;
+
+  const items = cache.items.map((it, i) => ({
+    ...it,
+    titluAI: traduse[i * 2],
+    analiza: traduse[i * 2 + 1],
+  }));
+  const byId = new Map(items.map((it) => [it.id, it]));
+  cachePeLimba.set(limba, { items, byId, expiresAt: cache.expiresAt });
   return items;
 }
 
-async function getMarketNewsById(id) {
-  if (!cache || cache.expiresAt <= Date.now()) {
-    await getAnalyzedMarketNews();
+async function getMarketNewsById(id, limba = "ro") {
+  await getAnalyzedMarketNews(limba);
+  if (limba !== "ro") {
+    const inLimba = cachePeLimba.get(limba)?.byId.get(id);
+    if (inLimba) return inLimba;
   }
   return cache?.byId.get(id) || null;
 }

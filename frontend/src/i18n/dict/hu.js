@@ -1,4 +1,9 @@
 export default {
+  verdict: {
+    optimist: "Optimista",
+    neutru: "Semleges",
+    rezervat: "Óvatos",
+  },
   nav: {
     portofoliuVirtual: "Virtuális portfólió",
     informare: "Tanulás",

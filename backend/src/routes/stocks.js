@@ -4,6 +4,7 @@ const { getCompanyProfile, getInsiderTransactions } = require("../services/funda
 const { getOrComputeRadarScore, getScoreChange } = require("../services/radar");
 const { getCompanyNews } = require("../services/news");
 const { getAnalyzedMarketNews, getMarketNewsById } = require("../services/marketNewsAnalysis");
+const { localizeazaRadar } = require("../services/i18nContent");
 const { requireAuth } = require("../middleware/auth");
 const prisma = require("../db");
 const { isPremium } = require("../services/stripe");
@@ -30,7 +31,7 @@ router.get("/ticker", async (req, res) => {
 });
 
 router.get("/market-news", requireAuth, async (req, res) => {
-  const news = await getAnalyzedMarketNews();
+  const news = await getAnalyzedMarketNews(req.limba);
 
   const subscription = await prisma.subscription.findUnique({ where: { userId: req.userId } });
   if (isPremium(subscription)) {
@@ -42,7 +43,7 @@ router.get("/market-news", requireAuth, async (req, res) => {
 });
 
 router.get("/market-news/:id", async (req, res) => {
-  const item = await getMarketNewsById(req.params.id);
+  const item = await getMarketNewsById(req.params.id, req.limba);
   if (!item) {
     return res.status(404).json({ error: "Știrea nu mai este disponibilă" });
   }
@@ -206,11 +207,14 @@ router.get("/:simbol/radar", async (req, res) => {
   const radar = await getOrComputeRadarScore(req.params.simbol);
   const schimbare = await getScoreChange(req.params.simbol);
   const detalii = await buildDetalii(req.params.simbol, radar.sursaDate);
+  // Narativa (rezumat/riscuri/invalidare) în limba interfeței — scorurile și
+  // verdictul rămân identice indiferent de limbă (sunt calcule, nu texte).
+  const localizat = await localizeazaRadar(radar, req.limba);
   res.json({
     radar: {
-      ...radar,
-      riscuri: JSON.parse(radar.riscuri),
-      invalidare: JSON.parse(radar.invalidare),
+      ...localizat,
+      riscuri: JSON.parse(localizat.riscuri),
+      invalidare: JSON.parse(localizat.invalidare),
     },
     schimbare,
     detalii,

@@ -6,10 +6,15 @@ function getToken() {
 
 async function request(path, options = {}) {
   const token = getToken();
+  // Limba interfeței — backend-ul livrează conținutul generat (narative
+  // radar, știri, motive research) în această limbă. Citită la fiecare
+  // cerere, ca poll-urile în curs să prindă imediat o schimbare de limbă.
+  const limba = localStorage.getItem("limba") || "ro";
   const res = await fetch(`${BASE_URL}${path}`, {
     ...options,
     headers: {
       "Content-Type": "application/json",
+      "X-Limba": limba,
       ...(token ? { Authorization: `Bearer ${token}` } : {}),
       ...options.headers,
     },
