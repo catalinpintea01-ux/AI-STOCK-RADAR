@@ -1,5 +1,11 @@
 export default {
   screens: {
+    grafic: "Árfolyam-alakulás",
+    stire1: "Az NVIDIA felülmúlja a negyedéves várakozásokat",
+    stire2: "A Fed tartja a kamatokat — a piacok fellélegeznek",
+    ed1: "Mi az az ETF?",
+    ed2: "A kamatos kamat",
+    ed3: "A diverzifikáció röviden",
     "titlu": "Ezt látod az alkalmazásban",
     "analiza": "Részvényelemzés",
     "comparator": "A vs B összehasonlító",

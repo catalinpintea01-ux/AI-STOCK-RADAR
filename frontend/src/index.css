@@ -5273,3 +5273,200 @@ html[data-theme="dark"] .workspace-panel {
     opacity: 0.07;
   }
 }
+
+/* --- Slide show-ul de ecrane (v2): bandă continuă, lentă --- */
+
+.screens-marquee {
+  position: relative;
+  z-index: 1;
+  overflow: hidden;
+  padding: 0.5rem 0 1rem;
+}
+
+/* Estompare la margini — ecranele intră și ies din scenă gradual. */
+.screens-marquee::before,
+.screens-marquee::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 56px;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.screens-marquee::before {
+  left: 0;
+  background: linear-gradient(90deg, var(--bg-page), transparent);
+}
+
+.screens-marquee::after {
+  right: 0;
+  background: linear-gradient(-90deg, var(--bg-page), transparent);
+}
+
+.screens-track {
+  display: flex;
+  width: max-content;
+  animation: screens-scroll 75s linear infinite;
+}
+
+.screens-marquee:hover .screens-track {
+  animation-play-state: paused;
+}
+
+@keyframes screens-scroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .screens-track {
+    animation: none;
+    flex-wrap: wrap;
+    width: auto;
+    justify-content: center;
+  }
+}
+
+.screens-set {
+  display: flex;
+  align-items: flex-start;
+}
+
+.screens-set .screen-card {
+  width: 300px;
+  flex-shrink: 0;
+  margin-right: 1.1rem;
+}
+
+.screen-card-accent {
+  border-color: var(--blue);
+}
+
+/* Fundalul cu sigle: mai vizibil decât în v1 (pe mobil era practic negru). */
+.screens-bg img {
+  opacity: 0.17;
+  filter: grayscale(0.2);
+}
+
+@media (max-width: 900px) {
+  .screens-bg img {
+    opacity: 0.15;
+  }
+}
+
+.screen-chart {
+  width: 100%;
+  height: 110px;
+  border-radius: var(--radius-md);
+  background: var(--bg-page);
+}
+
+.screen-range-row {
+  display: flex;
+  gap: 0.4rem;
+}
+
+.screen-range {
+  font-size: 0.68rem;
+  font-weight: 600;
+  padding: 0.2rem 0.55rem;
+  border: 1px solid var(--border);
+  border-radius: 7px;
+}
+
+.screen-range-active {
+  border-color: var(--blue);
+  color: var(--blue);
+  font-weight: 800;
+}
+
+.screen-news {
+  border-radius: var(--radius-md);
+  padding: 0.75rem 0.85rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  color: #efe9dd;
+}
+
+.screen-news span {
+  font-size: 0.62rem;
+  opacity: 0.75;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-weight: 700;
+}
+
+.screen-news strong {
+  font-size: 0.85rem;
+  line-height: 1.35;
+}
+
+.screen-news-1 {
+  background: linear-gradient(135deg, #3b362d, #1d1a15);
+}
+
+.screen-news-2 {
+  background: linear-gradient(135deg, #503a25, #23201b);
+}
+
+.screen-edu-row {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 0.55rem 0.7rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.screen-edu-open {
+  flex-direction: column;
+  align-items: stretch;
+  border-color: var(--blue);
+}
+
+.screen-edu-head {
+  display: flex;
+  justify-content: space-between;
+}
+
+.screen-edu-lines i {
+  display: block;
+  height: 6px;
+  border-radius: 4px;
+  background: var(--bg-page);
+  margin-top: 6px;
+}
+
+.screen-edu-quiz {
+  display: flex;
+  gap: 0.4rem;
+  margin-top: 0.6rem;
+}
+
+.screen-quiz-chip {
+  font-size: 0.68rem;
+  font-weight: 800;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 0.22rem 0.6rem;
+}
+
+.screen-quiz-ok {
+  border-color: #2e7d5b;
+  color: #2e7d5b;
+}
+
+.screen-edu-plus {
+  color: var(--blue);
+  font-weight: 800;
+}

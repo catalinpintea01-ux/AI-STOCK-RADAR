@@ -1,5 +1,11 @@
 export default {
   screens: {
+    grafic: "Kursverlauf",
+    stire1: "NVIDIA übertrifft die Quartalsschätzungen",
+    stire2: "Die Fed hält die Zinsen — die Märkte atmen auf",
+    ed1: "Was ist ein ETF?",
+    ed2: "Der Zinseszins",
+    ed3: "Diversifikation kurz erklärt",
     "titlu": "Was du in der App siehst",
     "analiza": "Aktienanalyse",
     "comparator": "Vergleich A vs B",

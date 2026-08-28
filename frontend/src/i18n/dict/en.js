@@ -1,5 +1,11 @@
 export default {
   screens: {
+    grafic: "Price history",
+    stire1: "NVIDIA beats quarterly estimates",
+    stire2: "The Fed holds rates — markets breathe",
+    ed1: "What is an ETF?",
+    ed2: "Compound interest",
+    ed3: "Diversification in short",
     "titlu": "What you see inside the app",
     "analiza": "Stock analysis",
     "comparator": "A vs B comparator",

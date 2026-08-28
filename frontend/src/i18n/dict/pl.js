@@ -1,5 +1,11 @@
 export default {
   screens: {
+    grafic: "Wykres ceny",
+    stire1: "NVIDIA przebija kwartalne prognozy",
+    stire2: "Fed utrzymuje stopy — rynki oddychają",
+    ed1: "Czym jest ETF?",
+    ed2: "Procent składany",
+    ed3: "Dywersyfikacja w skrócie",
     "titlu": "Co zobaczysz w aplikacji",
     "analiza": "Analiza akcji",
     "comparator": "Porównywarka A vs B",

@@ -1,5 +1,11 @@
 export default {
   screens: {
+    grafic: "Evoluția prețului",
+    stire1: "NVIDIA depășește estimările trimestriale",
+    stire2: "Fed menține dobânzile — piețele respiră",
+    ed1: "Ce este un ETF?",
+    ed2: "Dobânda compusă",
+    ed3: "Diversificarea pe scurt",
     "titlu": "Ce vezi în aplicație",
     "analiza": "Analiza acțiunii",
     "comparator": "Comparator A vs B",

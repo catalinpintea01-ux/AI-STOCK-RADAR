@@ -1,5 +1,11 @@
 export default {
   screens: {
+    grafic: "Evolução do preço",
+    stire1: "NVIDIA supera as estimativas trimestrais",
+    stire2: "A Fed mantém as taxas — os mercados respiram",
+    ed1: "O que é um ETF?",
+    ed2: "Os juros compostos",
+    ed3: "A diversificação em resumo",
     "titlu": "O que vês na aplicação",
     "analiza": "Análise da ação",
     "comparator": "Comparador A vs B",

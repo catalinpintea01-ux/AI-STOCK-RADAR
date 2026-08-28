@@ -118,7 +118,6 @@ export default function Landing() {
               key={l.src}
               src={l.src}
               alt=""
-              loading="lazy"
               style={{ top: l.top, left: l.left, width: l.size, height: l.size }}
               onError={(e) => {
                 e.currentTarget.style.display = "none";
@@ -129,130 +128,237 @@ export default function Landing() {
 
         <h2 className="landing-section-title screens-title">{t("screens.titlu")}</h2>
 
-        <div className="screens-row">
-          <div className="screen-card">
-            <div className="screen-topbar">
-              <span className="screen-dot" />
-              <span className="screen-dot" />
-              <span className="screen-dot" />
-              <span className="screen-topbar-title">{t("screens.analiza")}</span>
-            </div>
-            <div className="screen-body">
-              <div className="screen-stock-head">
-                <StockLogo simbol="NVDA" size={30} />
-                <div className="screen-stock-id">
-                  <strong>NVDA</strong>
-                  <span>NVIDIA</span>
-                </div>
-                <div className="screen-price">
-                  $217.56 <span className="gain-positive">+2.1%</span>
-                </div>
-              </div>
-              <div className="screen-verdict-row">
-                <VerdictTag verdict="optimist" />
-                <ScoreRing score={78} verdict="optimist" />
-              </div>
-              {SCREEN_BARS.map((b) => (
-                <div key={b.cheie} className="screen-score">
-                  <div className="screen-score-label">
-                    <span>{t(`screens.${b.cheie}`)}</span>
-                    <span>{b.val}/100</span>
+        {/* Slide show continuu, lent: setul de 6 ecrane e dublat, iar banda
+            translatează -50% în buclă — mișcare infinită fără salturi. */}
+        <div className="screens-marquee">
+          <div className="screens-track">
+            {[0, 1].map((setIdx) => (
+              <div className="screens-set" key={setIdx} aria-hidden={setIdx === 1}>
+                <div className="screen-card">
+                  <div className="screen-topbar">
+                    <span className="screen-dot" />
+                    <span className="screen-dot" />
+                    <span className="screen-dot" />
+                    <span className="screen-topbar-title">{t("screens.analiza")}</span>
                   </div>
-                  <div className="screen-score-track">
-                    <div className="screen-score-fill" style={{ width: `${b.val}%` }} />
+                  <div className="screen-body">
+                    <div className="screen-stock-head">
+                      <StockLogo simbol="NVDA" size={30} />
+                      <div className="screen-stock-id">
+                        <strong>NVDA</strong>
+                        <span>NVIDIA</span>
+                      </div>
+                      <div className="screen-price">
+                        $217.56 <span className="gain-positive">+2.1%</span>
+                      </div>
+                    </div>
+                    <div className="screen-verdict-row">
+                      <VerdictTag verdict="optimist" />
+                      <ScoreRing score={78} verdict="optimist" />
+                    </div>
+                    {SCREEN_BARS.map((b) => (
+                      <div key={b.cheie} className="screen-score">
+                        <div className="screen-score-label">
+                          <span>{t(`screens.${b.cheie}`)}</span>
+                          <span>{b.val}/100</span>
+                        </div>
+                        <div className="screen-score-track">
+                          <div className="screen-score-fill" style={{ width: `${b.val}%` }} />
+                        </div>
+                      </div>
+                    ))}
                   </div>
                 </div>
-              ))}
-            </div>
-          </div>
 
-          <div className="screen-card screen-card-mid">
-            <div className="screen-topbar">
-              <span className="screen-dot" />
-              <span className="screen-dot" />
-              <span className="screen-dot" />
-              <span className="screen-topbar-title">{t("screens.comparator")}</span>
-            </div>
-            <div className="screen-body">
-              <div className="screen-cmp-cols">
-                <div className="screen-cmp-col">
-                  <StockLogo simbol="NVDA" size={34} />
-                  <strong>NVDA</strong>
-                  <ScoreRing score={78} verdict="optimist" />
+                <div className="screen-card">
+                  <div className="screen-topbar">
+                    <span className="screen-dot" />
+                    <span className="screen-dot" />
+                    <span className="screen-dot" />
+                    <span className="screen-topbar-title">{t("screens.grafic")}</span>
+                  </div>
+                  <div className="screen-body">
+                    <div className="screen-stock-head">
+                      <StockLogo simbol="AAPL" size={30} />
+                      <div className="screen-stock-id">
+                        <strong>AAPL</strong>
+                        <span>Apple</span>
+                      </div>
+                      <div className="screen-price">
+                        $232.10 <span className="gain-positive">+1.4%</span>
+                      </div>
+                    </div>
+                    <svg viewBox="0 0 280 110" className="screen-chart" preserveAspectRatio="none" aria-hidden="true">
+                      <defs>
+                        <linearGradient id={`screen-grad-${setIdx}`} x1="0" y1="0" x2="0" y2="1">
+                          <stop offset="0%" stopColor="#2e7d5b" stopOpacity="0.35" />
+                          <stop offset="100%" stopColor="#2e7d5b" stopOpacity="0" />
+                        </linearGradient>
+                      </defs>
+                      <path
+                        d="M0,85 C30,80 45,60 70,64 C95,68 110,40 140,44 C170,48 185,30 215,26 C240,23 260,18 280,12 L280,110 L0,110 Z"
+                        fill={`url(#screen-grad-${setIdx})`}
+                      />
+                      <path
+                        d="M0,85 C30,80 45,60 70,64 C95,68 110,40 140,44 C170,48 185,30 215,26 C240,23 260,18 280,12"
+                        fill="none"
+                        stroke="#2e7d5b"
+                        strokeWidth="2.5"
+                      />
+                    </svg>
+                    <div className="screen-range-row">
+                      <span className="screen-range">1S</span>
+                      <span className="screen-range screen-range-active">1L</span>
+                      <span className="screen-range">6L</span>
+                      <span className="screen-range">1A</span>
+                    </div>
+                  </div>
                 </div>
-                <span className="screen-vs">vs</span>
-                <div className="screen-cmp-col">
-                  <StockLogo simbol="TSLA" size={34} />
-                  <strong>TSLA</strong>
-                  <ScoreRing score={55} verdict="neutru" />
-                </div>
-              </div>
-              <table className="screen-cmp-table">
-                <tbody>
-                  <tr>
-                    <td className="screen-win">78</td>
-                    <th>{t("dash.sortare.scor")}</th>
-                    <td>55</td>
-                  </tr>
-                  <tr>
-                    <td className="screen-win">84</td>
-                    <th>{t("screens.momentum")}</th>
-                    <td>62</td>
-                  </tr>
-                  <tr>
-                    <td>67</td>
-                    <th>{t("screens.analisti")}</th>
-                    <td className="screen-win">71</td>
-                  </tr>
-                  <tr>
-                    <td className="screen-win">32</td>
-                    <th>{t("screens.risc")}</th>
-                    <td>48</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
 
-          <div className="screen-card">
-            <div className="screen-topbar">
-              <span className="screen-dot" />
-              <span className="screen-dot" />
-              <span className="screen-dot" />
-              <span className="screen-topbar-title">{t("dash.researchZilnic")}</span>
-            </div>
-            <div className="screen-body">
-              <div className="screen-daily">
-                <div className="screen-daily-group">
-                  <span className="screen-daily-label gain-positive">{t("dash.cresteri")}</span>
-                  {SCREEN_DAILY.cresteri.map((p) => (
-                    <div key={p.simbol} className="screen-daily-row">
-                      <StockLogo simbol={p.simbol} size={22} />
-                      <strong>{p.simbol}</strong>
-                      <span className="gain-positive">+{p.val.toFixed(1)}%</span>
+                <div className="screen-card screen-card-accent">
+                  <div className="screen-topbar">
+                    <span className="screen-dot" />
+                    <span className="screen-dot" />
+                    <span className="screen-dot" />
+                    <span className="screen-topbar-title">{t("screens.comparator")}</span>
+                  </div>
+                  <div className="screen-body">
+                    <div className="screen-cmp-cols">
+                      <div className="screen-cmp-col">
+                        <StockLogo simbol="NVDA" size={34} />
+                        <strong>NVDA</strong>
+                        <ScoreRing score={78} verdict="optimist" />
+                      </div>
+                      <span className="screen-vs">vs</span>
+                      <div className="screen-cmp-col">
+                        <StockLogo simbol="TSLA" size={34} />
+                        <strong>TSLA</strong>
+                        <ScoreRing score={55} verdict="neutru" />
+                      </div>
                     </div>
-                  ))}
+                    <table className="screen-cmp-table">
+                      <tbody>
+                        <tr>
+                          <td className="screen-win">78</td>
+                          <th>{t("dash.sortare.scor")}</th>
+                          <td>55</td>
+                        </tr>
+                        <tr>
+                          <td className="screen-win">84</td>
+                          <th>{t("screens.momentum")}</th>
+                          <td>62</td>
+                        </tr>
+                        <tr>
+                          <td>67</td>
+                          <th>{t("screens.analisti")}</th>
+                          <td className="screen-win">71</td>
+                        </tr>
+                        <tr>
+                          <td className="screen-win">32</td>
+                          <th>{t("screens.risc")}</th>
+                          <td>48</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
                 </div>
-                <div className="screen-daily-group">
-                  <span className="screen-daily-label gain-negative">{t("dash.scaderi")}</span>
-                  {SCREEN_DAILY.scaderi.map((p) => (
-                    <div key={p.simbol} className="screen-daily-row">
-                      <StockLogo simbol={p.simbol} size={22} />
-                      <strong>{p.simbol}</strong>
-                      <span className="gain-negative">{p.val.toFixed(1)}%</span>
+
+                <div className="screen-card">
+                  <div className="screen-topbar">
+                    <span className="screen-dot" />
+                    <span className="screen-dot" />
+                    <span className="screen-dot" />
+                    <span className="screen-topbar-title">{t("dash.stiriRelevante")}</span>
+                  </div>
+                  <div className="screen-body">
+                    <div className="screen-news screen-news-1">
+                      <span>Reuters · {t("dash.azi")}</span>
+                      <strong>{t("screens.stire1")}</strong>
                     </div>
-                  ))}
+                    <div className="screen-news screen-news-2">
+                      <span>Bloomberg · {t("dash.azi")}</span>
+                      <strong>{t("screens.stire2")}</strong>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="screen-card">
+                  <div className="screen-topbar">
+                    <span className="screen-dot" />
+                    <span className="screen-dot" />
+                    <span className="screen-dot" />
+                    <span className="screen-topbar-title">{t("dash.researchZilnic")}</span>
+                  </div>
+                  <div className="screen-body">
+                    <div className="screen-daily">
+                      <div className="screen-daily-group">
+                        <span className="screen-daily-label gain-positive">{t("dash.cresteri")}</span>
+                        {SCREEN_DAILY.cresteri.map((pk) => (
+                          <div key={pk.simbol} className="screen-daily-row">
+                            <StockLogo simbol={pk.simbol} size={22} />
+                            <strong>{pk.simbol}</strong>
+                            <span className="gain-positive">+{pk.val.toFixed(1)}%</span>
+                          </div>
+                        ))}
+                      </div>
+                      <div className="screen-daily-group">
+                        <span className="screen-daily-label gain-negative">{t("dash.scaderi")}</span>
+                        {SCREEN_DAILY.scaderi.map((pk) => (
+                          <div key={pk.simbol} className="screen-daily-row">
+                            <StockLogo simbol={pk.simbol} size={22} />
+                            <strong>{pk.simbol}</strong>
+                            <span className="gain-negative">{pk.val.toFixed(1)}%</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                    <div className="screen-daily-selected">
+                      <StockLogo simbol="AVGO" size={26} />
+                      <div className="screen-stock-id">
+                        <strong>AVGO</strong>
+                        <span>Broadcom</span>
+                      </div>
+                      <span className="screen-follow">{t("dash.urmareste")}</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="screen-card">
+                  <div className="screen-topbar">
+                    <span className="screen-dot" />
+                    <span className="screen-dot" />
+                    <span className="screen-dot" />
+                    <span className="screen-topbar-title">{t("nav.informare")}</span>
+                  </div>
+                  <div className="screen-body">
+                    <div className="screen-edu-row">
+                      <span>{t("screens.ed1")}</span>
+                      <span className="screen-edu-plus">+</span>
+                    </div>
+                    <div className="screen-edu-row screen-edu-open">
+                      <div className="screen-edu-head">
+                        <span>{t("screens.ed2")}</span>
+                        <span className="screen-edu-plus">−</span>
+                      </div>
+                      <div className="screen-edu-lines">
+                        <i style={{ width: "92%" }} />
+                        <i style={{ width: "78%" }} />
+                        <i style={{ width: "85%" }} />
+                      </div>
+                      <div className="screen-edu-quiz">
+                        <span className="screen-quiz-chip screen-quiz-ok">A ✓</span>
+                        <span className="screen-quiz-chip">B</span>
+                        <span className="screen-quiz-chip">C</span>
+                      </div>
+                    </div>
+                    <div className="screen-edu-row">
+                      <span>{t("screens.ed3")}</span>
+                      <span className="screen-edu-plus">+</span>
+                    </div>
+                  </div>
                 </div>
               </div>
-              <div className="screen-daily-selected">
-                <StockLogo simbol="AVGO" size={26} />
-                <div className="screen-stock-id">
-                  <strong>AVGO</strong>
-                  <span>Broadcom</span>
-                </div>
-                <span className="screen-follow">{t("dash.urmareste")}</span>
-              </div>
-            </div>
+            ))}
           </div>
         </div>
 

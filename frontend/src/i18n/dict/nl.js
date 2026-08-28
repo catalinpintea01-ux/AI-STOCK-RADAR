@@ -1,5 +1,11 @@
 export default {
   screens: {
+    grafic: "Koersverloop",
+    stire1: "NVIDIA verslaat de kwartaalverwachtingen",
+    stire2: "De Fed houdt de rente aan — markten halen adem",
+    ed1: "Wat is een ETF?",
+    ed2: "Samengestelde rente",
+    ed3: "Diversificatie in het kort",
     "titlu": "Wat je in de app ziet",
     "analiza": "Aandeelanalyse",
     "comparator": "Vergelijker A vs B",
