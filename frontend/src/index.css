@@ -5726,3 +5726,42 @@ html[data-theme="dark"] .workspace-panel {
   box-shadow: none;
   filter: drop-shadow(0 10px 22px rgba(0, 0, 0, 0.35));
 }
+
+/* --- Landing desktop: secțiunile cu 4 elemente încap toate pe un rând --- */
+
+@media (min-width: 900px) {
+  .landing .landing-steps {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.9rem;
+  }
+
+  .landing .theme-grid {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.9rem;
+  }
+
+  .landing .theme-card-img img {
+    height: 116px;
+  }
+
+  .landing .theme-card-title {
+    font-size: 0.88rem;
+    left: 0.7rem;
+    bottom: 0.55rem;
+  }
+
+  .landing .theme-card-body {
+    padding: 0.7rem 0.8rem 0.85rem;
+  }
+
+  .landing .theme-card-body p {
+    font-size: 0.76rem;
+    line-height: 1.5;
+    margin-bottom: 0.55rem;
+  }
+
+  .landing .theme-ticker {
+    font-size: 0.66rem;
+    padding: 0.18rem 0.45rem;
+  }
+}
