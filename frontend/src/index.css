@@ -5470,3 +5470,42 @@ html[data-theme="dark"] .workspace-panel {
   color: var(--blue);
   font-weight: 800;
 }
+
+/* --- Slide show pe touch: scroll nativ cu degetul, nu animație CSS --- */
+
+@media (pointer: coarse) {
+  .screens-track {
+    animation: none;
+  }
+
+  .screens-marquee {
+    overflow-x: auto;
+    scroll-snap-type: x proximity;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    /* degetul poate și derula pagina vertical, și glisa banda orizontal */
+    touch-action: pan-x pan-y;
+    padding-left: 1rem;
+  }
+
+  .screens-marquee::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Fade-urile de margine ar defila împreună cu conținutul unui scroller —
+     pe touch le scoatem. */
+  .screens-marquee::before,
+  .screens-marquee::after {
+    display: none;
+  }
+
+  .screens-set .screen-card {
+    scroll-snap-align: center;
+  }
+
+  /* Setul dublat există doar pentru bucla CSS de pe desktop — la răsfoit cu
+     degetul ar dubla lista, așa că dispare. */
+  .screens-set[aria-hidden="true"] {
+    display: none;
+  }
+}

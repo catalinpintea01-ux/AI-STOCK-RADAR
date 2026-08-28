@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import AnimatedNumber from "../components/AnimatedNumber.jsx";
 import TypewriterText from "../components/TypewriterText.jsx";
@@ -61,6 +61,75 @@ const SCREEN_DAILY = {
 export default function Landing() {
   const { t } = useLang();
   const [openFaq, setOpenFaq] = useState(null);
+  const marqueeRef = useRef(null);
+
+  // Pe touch (mobil), banda CSS animată se bate cap în cap cu degetul: CSS-ul
+  // o transformă în scroll orizontal nativ (swipe + snap), iar aici adăugăm
+  // avansul automat lent — un card la ~4s — care se oprește 8s după orice
+  // atingere, ca utilizatorul să poată răsfoi singur fără să se lupte cu ea.
+  useEffect(() => {
+    const el = marqueeRef.current;
+    if (!el) return;
+    const esteTouch = window.matchMedia("(pointer: coarse)").matches;
+    if (!esteTouch) return;
+
+    let pauzatPana = 0;
+    let anulaAnimatia = null;
+    const pauza = () => {
+      pauzatPana = Date.now() + 8000;
+      if (anulaAnimatia) anulaAnimatia(); // degetul are întotdeauna prioritate
+    };
+    el.addEventListener("touchstart", pauza, { passive: true });
+    el.addEventListener("pointerdown", pauza, { passive: true });
+
+    // scrollTo({behavior:"smooth"}) e anulat de scroll-snap pe unele
+    // browsere — animăm manual scrollLeft, cadru cu cadru, până exact în
+    // poziția de snap a cardului țintă, ca snap-ul să nu aibă ce corecta.
+    function animeazaSpre(target) {
+      const start = el.scrollLeft;
+      const distanta = target - start;
+      const durata = 650;
+      const t0 = performance.now();
+      let oprit = false;
+      anulaAnimatia = () => {
+        oprit = true;
+      };
+      function pas(t) {
+        if (oprit) return;
+        const p = Math.min(1, (t - t0) / durata);
+        const ease = 1 - Math.pow(1 - p, 3);
+        el.scrollLeft = start + distanta * ease;
+        if (p < 1) requestAnimationFrame(pas);
+      }
+      requestAnimationFrame(pas);
+    }
+
+    const timer = setInterval(() => {
+      if (Date.now() < pauzatPana) return;
+      const carduri = el.querySelectorAll('.screens-set:not([aria-hidden="true"]) .screen-card');
+      if (carduri.length === 0) return;
+      const maxim = el.scrollWidth - el.clientWidth;
+      const tintaCentrata = (card) =>
+        Math.max(0, Math.min(maxim, card.offsetLeft - (el.clientWidth - card.offsetWidth) / 2));
+      // Următorul card = primul a cărui poziție de snap e clar după poziția curentă.
+      let target = null;
+      for (const card of carduri) {
+        const pozitie = tintaCentrata(card);
+        if (pozitie > el.scrollLeft + 8) {
+          target = pozitie;
+          break;
+        }
+      }
+      animeazaSpre(target === null ? 0 : target); // capăt de listă → înapoi la început
+    }, 4000);
+
+    return () => {
+      clearInterval(timer);
+      if (anulaAnimatia) anulaAnimatia();
+      el.removeEventListener("touchstart", pauza);
+      el.removeEventListener("pointerdown", pauza);
+    };
+  }, []);
 
   // Doar fapte reale despre produs — fără cifre de utilizatori sau venituri
   // inventate: pagina publică nu are voie să fabrice dovezi sociale.
@@ -130,7 +199,7 @@ export default function Landing() {
 
         {/* Slide show continuu, lent: setul de 6 ecrane e dublat, iar banda
             translatează -50% în buclă — mișcare infinită fără salturi. */}
-        <div className="screens-marquee">
+        <div className="screens-marquee" ref={marqueeRef}>
           <div className="screens-track">
             {[0, 1].map((setIdx) => (
               <div className="screens-set" key={setIdx} aria-hidden={setIdx === 1}>
