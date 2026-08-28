@@ -28,7 +28,9 @@ export default function AllocationDonut({ alocari }) {
       fractie,
       dash: `${(fractie * CIRC).toFixed(2)} ${CIRC.toFixed(2)}`,
       offset: (-offset * CIRC).toFixed(2),
-      culoare: CULORI_SECTOR[a.sector] || CULORI_SECTOR.Altele,
+      // sectorCheie = numele original (românesc) al sectorului, folosit pentru
+      // culoare; `sector` poate veni deja tradus în limba interfeței.
+      culoare: CULORI_SECTOR[a.sectorCheie || a.sector] || CULORI_SECTOR.Altele,
     };
     offset += fractie;
     return seg;

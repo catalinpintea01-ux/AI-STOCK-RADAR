@@ -1,4 +1,40 @@
 export default {
+  temeNota: "Symbole to opisowe przykłady spółek z każdego tematu, nie rekomendacje · Zdjęcia:",
+  verdictB: {
+    "sentiment": "Sentyment AI:",
+    "incredere": "Pewność:",
+    "ridicata": "wysoka",
+    "medie": "średnia",
+    "scazuta": "niska"
+  },
+  sectoare: {
+    "Tehnologie": "Technologia",
+    "Financiar": "Finanse",
+    "Sănătate": "Zdrowie",
+    "Consum": "Konsumpcja",
+    "Energie": "Energia",
+    "Industrial": "Przemysł",
+    "Telecom": "Telekomunikacja",
+    "Altele": "Inne"
+  },
+  teme: {
+    "inteligenta-artificiala": {
+      "titlu": "Sztuczna inteligencja",
+      "scurt": "Od chipów w centrach danych po kieszonkowych asystentów — wyścig AI przerysowuje całą gospodarkę."
+    },
+    "economia-spatiala": {
+      "titlu": "Gospodarka kosmiczna",
+      "scurt": "Rakiety wielokrotnego użytku, konstelacje satelitów i infrastruktura orbitalna — kosmos staje się przemysłem."
+    },
+    "drone-si-robotica": {
+      "titlu": "Drony i robotyka",
+      "scurt": "Autonomiczne dostawy, rolnictwo precyzyjne, obronność — maszyny, które latają i pracują same."
+    },
+    "pietele-globale": {
+      "titlu": "Rynki globalne",
+      "scurt": "Indeksy, giganci i codzienny puls giełd — pole, na którym rozgrywają się wszystkie tematy."
+    }
+  },
   verdict: {
     optimist: "Optymistyczny",
     neutru: "Neutralny",

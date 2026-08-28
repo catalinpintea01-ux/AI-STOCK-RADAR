@@ -1,4 +1,40 @@
 export default {
+  temeNota: "De symbolen zijn beschrijvende voorbeelden van bedrijven per thema, geen aanbevelingen · Foto's:",
+  verdictB: {
+    "sentiment": "AI-sentiment:",
+    "incredere": "Vertrouwen:",
+    "ridicata": "hoog",
+    "medie": "gemiddeld",
+    "scazuta": "laag"
+  },
+  sectoare: {
+    "Tehnologie": "Technologie",
+    "Financiar": "Financieel",
+    "Sănătate": "Gezondheid",
+    "Consum": "Consumptie",
+    "Energie": "Energie",
+    "Industrial": "Industrie",
+    "Telecom": "Telecom",
+    "Altele": "Overig"
+  },
+  teme: {
+    "inteligenta-artificiala": {
+      "titlu": "Kunstmatige intelligentie",
+      "scurt": "Van datacenterchips tot zakassistenten — de AI-race hertekent de hele economie."
+    },
+    "economia-spatiala": {
+      "titlu": "De ruimte-economie",
+      "scurt": "Herbruikbare raketten, satellietconstellaties en orbitale infrastructuur — de ruimte wordt een industrie."
+    },
+    "drone-si-robotica": {
+      "titlu": "Drones & robotica",
+      "scurt": "Autonome leveringen, precisielandbouw, defensie — machines die zelf vliegen en werken."
+    },
+    "pietele-globale": {
+      "titlu": "Wereldmarkten",
+      "scurt": "De indices, de giganten en de dagelijkse hartslag van de beurzen — het veld waarop elk thema speelt."
+    }
+  },
   verdict: {
     optimist: "Optimistisch",
     neutru: "Neutraal",

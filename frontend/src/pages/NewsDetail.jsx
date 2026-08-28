@@ -3,14 +3,15 @@ import { SkeletonPage } from "../components/Skeleton.jsx";
 import { useParams, Link } from "react-router-dom";
 import { api } from "../api";
 import Disclaimer from "../components/Disclaimer.jsx";
-
-function formatData(iso) {
-  if (!iso) return "";
-  return new Date(iso).toLocaleDateString("ro-RO", { day: "numeric", month: "long", year: "numeric" });
-}
+import { useLang } from "../i18n/index.jsx";
+import { useTraduse } from "../i18n/useTraduse.js";
 
 export default function NewsDetail() {
   const { id } = useParams();
+  const { t, locale } = useLang();
+  const tt = useTraduse({
+    sursa: "Citește sursa completă",
+  });
   const [news, setNews] = useState(null);
   const [error, setError] = useState("");
 
@@ -23,8 +24,12 @@ export default function NewsDetail() {
       .catch((err) => setError(err.message));
   }, [id]);
 
-  if (error) return <div className="page-message">Eroare: {error}</div>;
+  if (error) return <div className="page-message">{t("dash.eroare")} {error}</div>;
   if (!news) return <SkeletonPage />;
+
+  const dataFormatata = news.data
+    ? new Date(news.data).toLocaleDateString(locale, { day: "numeric", month: "long", year: "numeric" })
+    : "";
 
   return (
     <div className="portfolio-page">
@@ -38,7 +43,7 @@ export default function NewsDetail() {
       >
         <div className="news-detail-hero-body">
           <span className="hero-news-source">
-            {news.sursa} · {formatData(news.data)}
+            {news.sursa} · {dataFormatata}
           </span>
           <h1 className="news-detail-title">{news.titluAI}</h1>
         </div>
@@ -47,7 +52,7 @@ export default function NewsDetail() {
       <p className="news-detail-body">{news.analiza}</p>
 
       <a href={news.url} target="_blank" rel="noopener noreferrer" className="back-link">
-        Citește sursa completă ({news.sursa}) ↗
+        {tt("sursa")} ({news.sursa}) ↗
       </a>
 
       <Disclaimer />

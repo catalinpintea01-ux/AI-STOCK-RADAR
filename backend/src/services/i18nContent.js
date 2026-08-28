@@ -212,8 +212,9 @@ function cheieCache(texte, limba) {
 
 // Traduce un array de texte românești în limba țintă. Returnează array-ul
 // tradus sau null dacă traducerea nu e posibilă (fără cheie API, eroare,
-// răspuns invalid) — apelantul decide fallback-ul.
-async function traduceTexte(texte, limba) {
+// răspuns invalid) — apelantul decide fallback-ul. ttlMs opțional: textele
+// statice (pagini educative) merită cache lung, cele dinamice unul scurt.
+async function traduceTexte(texte, limba, ttlMs = CACHE_TTL_MS) {
   if (limba === "ro" || !LIMBI_SUPORTATE.has(limba)) return null;
   if (!process.env.ANTHROPIC_API_KEY) return null;
   if (!Array.isArray(texte) || texte.length === 0) return null;
@@ -223,9 +224,9 @@ async function traduceTexte(texte, limba) {
   if (cached && cached.expiresAt > Date.now()) return cached.out;
 
   const totalChars = texte.reduce((s, t) => s + t.length, 0);
-  const maxTokens = Math.min(4000, Math.ceil(totalChars / 2) + 400);
+  const maxTokens = Math.min(8000, Math.ceil(totalChars / 2) + 400);
 
-  const prompt = `Translate the following Romanian texts about stock markets into ${NUME_LIMBA[limba]}. They come from an educational app that never gives investment advice — keep the descriptive, educational tone and NEVER introduce advice wording (imperatives like "buy this stock", "sell", "you should invest"). Keep tickers, numbers and company names unchanged.
+  const prompt = `Translate the following Romanian texts about stock markets into ${NUME_LIMBA[limba]}. They come from an educational app that never gives investment advice — keep the descriptive, educational tone and NEVER introduce advice wording (imperatives like "buy this stock", "sell", "you should invest"). Keep tickers, numbers and company names unchanged. Keep placeholders such as {n}, {p}, {s}, {data}, {timp} EXACTLY as they are, untranslated.
 
 Respond STRICTLY with a JSON array of exactly ${texte.length} translated strings, in the same order, with no text outside the JSON.
 
@@ -262,7 +263,7 @@ ${JSON.stringify(texte)}`;
       // Evacuare simplă: ștergem cea mai veche intrare (prima din Map).
       cacheTraduceri.delete(cacheTraduceri.keys().next().value);
     }
-    cacheTraduceri.set(cheie, { out: parsed, expiresAt: Date.now() + CACHE_TTL_MS });
+    cacheTraduceri.set(cheie, { out: parsed, expiresAt: Date.now() + ttlMs });
     return parsed;
   } catch (err) {
     console.error(`[i18nContent] traducere ${limba} eșuată: ${err.message}`);

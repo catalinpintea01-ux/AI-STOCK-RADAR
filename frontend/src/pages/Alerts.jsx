@@ -4,11 +4,27 @@ import { Link } from "react-router-dom";
 import { api } from "../api";
 import StockLogo from "../components/StockLogo.jsx";
 import EmptyState from "../components/EmptyState.jsx";
+import { useLang } from "../i18n/index.jsx";
+import { useTraduse } from "../i18n/useTraduse.js";
 
 // Anti alert-fatigue: pagina e un digest zilnic ("3 schimbări importante azi"),
 // nu un puț fără fund de notificări. Istoricul complet rămâne disponibil, dar
 // restrâns; tot ce e afișat se marchează citit automat la deschidere.
 export default function Alerts() {
+  const { t, locale } = useLang();
+  const tt = useTraduse({
+    titlu: "Digest zilnic",
+    oSchimbare: "1 schimbare importantă azi în watchlist-ul tău.",
+    schimbari: "{n} schimbări importante azi în watchlist-ul tău.",
+    nicio: "Nicio schimbare importantă azi în watchlist-ul tău.",
+    stiriNoi: "{n} știri noi azi",
+    veziAnaliza: "Vezi analiza →",
+    istoric: "Istoric complet ({n})",
+    restrange: "Restrânge istoricul ↑",
+    golTitlu: "Radarul ascultă piața pentru tine",
+    golText: "Adaugă acțiuni în watchlist și aici vei găsi, o dată pe zi, doar schimbările care contează.",
+    mergiRadar: "Mergi la radar →",
+  });
   const [items, setItems] = useState(null);
   const [digest, setDigest] = useState([]);
   const [showHistory, setShowHistory] = useState(false);
@@ -27,19 +43,21 @@ export default function Alerts() {
       .catch((err) => setError(err.message));
   }, []);
 
-  if (error) return <div className="page-message">Eroare: {error}</div>;
+  if (error) return <div className="page-message">{t("dash.eroare")} {error}</div>;
   if (!items) return <SkeletonPage />;
 
   return (
     <div className="portfolio-page">
       <div className="learn-header">
         <div>
-          <h1 className="page-title">Digest zilnic</h1>
-      <p className="cash">
-        {digest.length > 0
-          ? `${digest.length} ${digest.length === 1 ? "schimbare importantă" : "schimbări importante"} azi în watchlist-ul tău.`
-          : "Nicio schimbare importantă azi în watchlist-ul tău."}
-      </p>
+          <h1 className="page-title">{tt("titlu")}</h1>
+          <p className="cash">
+            {digest.length > 0
+              ? digest.length === 1
+                ? tt("oSchimbare")
+                : tt("schimbari", { n: digest.length })
+              : tt("nicio")}
+          </p>
         </div>
         <img src="/mascota/oportunitate.png" alt="" className="mascota mascota-learn" loading="lazy" />
       </div>
@@ -54,7 +72,7 @@ export default function Alerts() {
                   <div className="digest-body">
                     <Link to={`/stock/${d.simbol}`} className="digest-symbol">
                       {d.simbol}
-                      {d.stiri > 1 && <span className="muted"> · {d.stiri} știri noi azi</span>}
+                      {d.stiri > 1 && <span className="muted"> · {tt("stiriNoi", { n: d.stiri })}</span>}
                     </Link>
                     <div>
                       <a href={d.url} target="_blank" rel="noreferrer" className="news-headline">
@@ -62,11 +80,11 @@ export default function Alerts() {
                       </a>
                     </div>
                     <div className="muted" style={{ marginTop: "0.25rem" }}>
-                      {d.sursa} · {new Date(d.createdAt).toLocaleString("ro-RO")}
+                      {d.sursa} · {new Date(d.createdAt).toLocaleString(locale)}
                     </div>
                   </div>
                   <Link to={`/stock/${d.simbol}`} className="view-analysis-button">
-                    Vezi analiza →
+                    {tt("veziAnaliza")}
                   </Link>
                 </div>
               </li>
@@ -77,7 +95,7 @@ export default function Alerts() {
 
       {items.length > 0 && (
         <button className="show-more-button" onClick={() => setShowHistory((v) => !v)}>
-          {showHistory ? "Restrânge istoricul ↑" : `Istoric complet (${items.length})`}
+          {showHistory ? tt("restrange") : tt("istoric", { n: items.length })}
         </button>
       )}
 
@@ -96,7 +114,7 @@ export default function Alerts() {
                     </a>
                   </div>
                   <div className="muted" style={{ marginTop: "0.25rem" }}>
-                    {a.sursa} · {new Date(a.createdAt).toLocaleString("ro-RO")}
+                    {a.sursa} · {new Date(a.createdAt).toLocaleString(locale)}
                   </div>
                 </div>
               </li>
@@ -108,9 +126,9 @@ export default function Alerts() {
       {items.length === 0 && (
         <section className="holdings">
           <EmptyState
-            titlu="Radarul ascultă piața pentru tine"
-            text="Adaugă acțiuni în watchlist și aici vei găsi, o dată pe zi, doar schimbările care contează."
-            ctaText="Mergi la radar →"
+            titlu={tt("golTitlu")}
+            text={tt("golText")}
+            ctaText={tt("mergiRadar")}
             ctaTo="/"
           />
         </section>

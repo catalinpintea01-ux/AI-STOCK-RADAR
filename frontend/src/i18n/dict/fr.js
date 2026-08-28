@@ -1,4 +1,40 @@
 export default {
+  temeNota: "Les symboles sont des exemples descriptifs d'entreprises de chaque thème, pas des recommandations · Photos :",
+  verdictB: {
+    "sentiment": "Sentiment IA :",
+    "incredere": "Confiance :",
+    "ridicata": "élevée",
+    "medie": "moyenne",
+    "scazuta": "faible"
+  },
+  sectoare: {
+    "Tehnologie": "Technologie",
+    "Financiar": "Finance",
+    "Sănătate": "Santé",
+    "Consum": "Consommation",
+    "Energie": "Énergie",
+    "Industrial": "Industrie",
+    "Telecom": "Télécoms",
+    "Altele": "Autres"
+  },
+  teme: {
+    "inteligenta-artificiala": {
+      "titlu": "Intelligence artificielle",
+      "scurt": "Des puces des data centers aux assistants de poche — la course à l'IA redessine toute l'économie."
+    },
+    "economia-spatiala": {
+      "titlu": "L'économie spatiale",
+      "scurt": "Fusées réutilisables, constellations de satellites et infrastructure orbitale — l'espace devient une industrie."
+    },
+    "drone-si-robotica": {
+      "titlu": "Drones et robotique",
+      "scurt": "Livraisons autonomes, agriculture de précision, défense — des machines qui volent et travaillent seules."
+    },
+    "pietele-globale": {
+      "titlu": "Marchés mondiaux",
+      "scurt": "Les indices, les géants et le pouls quotidien des bourses — le terrain où se jouent tous les thèmes."
+    }
+  },
   verdict: {
     optimist: "Optimiste",
     neutru: "Neutre",

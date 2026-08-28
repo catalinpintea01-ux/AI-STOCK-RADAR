@@ -119,6 +119,11 @@ export default function Watchlist() {
     dmh: t("dash.moment.dmh"),
   };
   const lectii = t("dash.lectii");
+  const numeSector = (s) => {
+    const v = t("sectoare." + s);
+    return typeof v === "string" && v.startsWith("sectoare.") ? s : v;
+  };
+
   const [items, setItems] = useState(null);
   const [holdings, setHoldings] = useState({});
   const [marketNews, setMarketNews] = useState([]);
@@ -736,7 +741,7 @@ export default function Watchlist() {
                   Object.entries(grupatePeSector).map(([sector, grup]) => (
                     <div key={sector} className="sector-group">
                       <h3 className="sector-group-title">
-                        {sector} <span className="muted">({grup.length})</span>
+                        {numeSector(sector)} <span className="muted">({grup.length})</span>
                       </h3>
                       <ul className="stock-list">{grup.map(renderStockRow)}</ul>
                     </div>

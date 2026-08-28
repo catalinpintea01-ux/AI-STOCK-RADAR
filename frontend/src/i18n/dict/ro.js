@@ -1,4 +1,40 @@
 export default {
+  temeNota: "Simbolurile sunt exemple descriptive de companii din fiecare temă, nu recomandări · Fotografii:",
+  verdictB: {
+    "sentiment": "Sentiment AI:",
+    "incredere": "Încredere:",
+    "ridicata": "ridicată",
+    "medie": "medie",
+    "scazuta": "scăzută"
+  },
+  sectoare: {
+    "Tehnologie": "Tehnologie",
+    "Financiar": "Financiar",
+    "Sănătate": "Sănătate",
+    "Consum": "Consum",
+    "Energie": "Energie",
+    "Industrial": "Industrial",
+    "Telecom": "Telecom",
+    "Altele": "Altele"
+  },
+  teme: {
+    "inteligenta-artificiala": {
+      "titlu": "Inteligență artificială",
+      "scurt": "De la cipurile din centrele de date la asistenții din buzunar — cursa AI redesenează întreaga economie."
+    },
+    "economia-spatiala": {
+      "titlu": "Economia spațială",
+      "scurt": "Rachete reutilizabile, constelații de sateliți și infrastructură orbitală — spațiul devine industrie."
+    },
+    "drone-si-robotica": {
+      "titlu": "Drone și robotică",
+      "scurt": "Livrări autonome, agricultură de precizie, apărare — mașinile care zboară și lucrează singure."
+    },
+    "pietele-globale": {
+      "titlu": "Piețele globale",
+      "scurt": "Indicii, marile companii și pulsul zilnic al burselor — terenul pe care se joacă toate temele."
+    }
+  },
   verdict: {
     optimist: "Optimist",
     neutru: "Neutru",

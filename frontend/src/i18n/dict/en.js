@@ -1,4 +1,40 @@
 export default {
+  temeNota: "Symbols are descriptive examples of companies in each theme, not recommendations · Photos:",
+  verdictB: {
+    "sentiment": "AI sentiment:",
+    "incredere": "Confidence:",
+    "ridicata": "high",
+    "medie": "medium",
+    "scazuta": "low"
+  },
+  sectoare: {
+    "Tehnologie": "Technology",
+    "Financiar": "Financials",
+    "Sănătate": "Healthcare",
+    "Consum": "Consumer",
+    "Energie": "Energy",
+    "Industrial": "Industrials",
+    "Telecom": "Telecom",
+    "Altele": "Other"
+  },
+  teme: {
+    "inteligenta-artificiala": {
+      "titlu": "Artificial intelligence",
+      "scurt": "From data-center chips to pocket assistants — the AI race is redrawing the whole economy."
+    },
+    "economia-spatiala": {
+      "titlu": "The space economy",
+      "scurt": "Reusable rockets, satellite constellations and orbital infrastructure — space is becoming an industry."
+    },
+    "drone-si-robotica": {
+      "titlu": "Drones & robotics",
+      "scurt": "Autonomous deliveries, precision farming, defense — machines that fly and work on their own."
+    },
+    "pietele-globale": {
+      "titlu": "Global markets",
+      "scurt": "The indices, the giants and the daily pulse of the exchanges — the field where every theme plays out."
+    }
+  },
   verdict: {
     optimist: "Optimistic",
     neutru: "Neutral",

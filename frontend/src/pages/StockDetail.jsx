@@ -7,6 +7,8 @@ import VerdictBadge from "../components/VerdictBadge.jsx";
 import Disclaimer from "../components/Disclaimer.jsx";
 import PriceChart from "../components/PriceChart.jsx";
 import LivePrice from "../components/LivePrice.jsx";
+import { useLang } from "../i18n/index.jsx";
+import { useTraduse } from "../i18n/useTraduse.js";
 
 // Intervalele graficului de preț — serii zilnice (Yahoo), fără intraday.
 const RANGES = [
@@ -24,13 +26,6 @@ function formatDelta(n, invert = false) {
   return <span className={clasa}>{semn}</span>;
 }
 
-function formatCap(m) {
-  if (m == null) return "N/A";
-  if (m >= 1e6) return `$${(m / 1e6).toFixed(2)} trilioane`;
-  if (m >= 1e3) return `$${(m / 1e3).toFixed(1)} miliarde`;
-  return `$${m.toFixed(0)} milioane`;
-}
-
 function nr(v, digite = 1) {
   return v == null ? "N/A" : v.toFixed(digite);
 }
@@ -41,6 +36,57 @@ function pct(v, digite = 1) {
 
 export default function StockDetail() {
   const { simbol } = useParams();
+  const { t, locale } = useLang();
+  const tt = useTraduse({
+    scoateWL: "− Scoate din Watchlist",
+    adaugaWL: "+ Adaugă în Watchlist",
+    azi: "azi",
+    paper: "Paper trading",
+    detii: "Deții {n} buc. @ ${p} medie",
+    nuDetii: "Nu deții încă această acțiune în portofoliul simulat.",
+    numerar: "Numerar disponibil:",
+    cumpara: "Cumpără",
+    vinde: "Vinde",
+    aiRadar: "AI Radar",
+    cumCalculam: "Cum calculăm scorul →",
+    analizam: "Analizăm acțiunea — poate dura câteva secunde...",
+    schimbareDin: "Ce s-a schimbat față de analiza din {data}",
+    scorCompozit: "Scor compozit",
+    analisti: "Analiști",
+    momentum: "Momentum",
+    fundamental: "Fundamental",
+    risc: "Risc",
+    riscuri: "Riscuri",
+    invalidare: "Ce ar invalida această perspectivă",
+    nuScor: "Nu am putut calcula scorul AI momentan.",
+    indicatori: "Indicatori financiari cheie",
+    pe: "P/E (preț/profit)",
+    cap: "Capitalizare piață",
+    beta: "Beta (volatilitate)",
+    dividend: "Randament dividend",
+    eps: "EPS (profit/acțiune)",
+    crestereVenituri: "Creștere venituri (an)",
+    marja: "Marjă profit",
+    trilioane: "trilioane",
+    miliarde: "miliarde",
+    milioane: "milioane",
+    min52: "Minim 52 săpt:",
+    max52: "Maxim 52 săpt:",
+    pretCurent: "Preț curent:",
+    recomandari: "Recomandările analiștilor",
+    ultimaLuna: "Ultima lună disponibilă",
+    rezultate: "Rezultate financiare recente",
+    estimat: "Estimat",
+    real: "Real",
+    insideri: "Tranzacții recente ale insiderilor",
+    insideriSursa: "Cumpărări/vânzări raportate de directori și angajați ai companiei (surse SEC, via Finnhub).",
+    cumparare: "Cumpărare",
+    vanzare: "Vânzare",
+    bucSufix: "buc.",
+    stiriRecente: "Știri recente",
+    stiriSursa: "Surse financiare agregate (Reuters, Yahoo Finance, PR Newswire etc. via Finnhub).",
+    nicioStire: "Nu am găsit știri recente pentru această acțiune.",
+  });
   const [quote, setQuote] = useState(null);
   const [profile, setProfile] = useState(null);
   const [radar, setRadar] = useState(null);
@@ -59,6 +105,13 @@ export default function StockDetail() {
   const [istoricChart, setIstoricChart] = useState([]);
   const [zileChart, setZileChart] = useState(30);
   const [chartLoading, setChartLoading] = useState(true);
+
+  function formatCap(m) {
+    if (m == null) return "N/A";
+    if (m >= 1e6) return `$${(m / 1e6).toFixed(2)} ${tt("trilioane")}`;
+    if (m >= 1e3) return `$${(m / 1e3).toFixed(1)} ${tt("miliarde")}`;
+    return `$${m.toFixed(0)} ${tt("milioane")}`;
+  }
 
   useEffect(() => {
     setChartLoading(true);
@@ -155,7 +208,7 @@ export default function StockDetail() {
     }
   }
 
-  if (error) return <div className="page-message">Eroare: {error}</div>;
+  if (error) return <div className="page-message">{t("dash.eroare")} {error}</div>;
 
   return (
     <div className="portfolio-page">
@@ -170,7 +223,7 @@ export default function StockDetail() {
             <span className="label">{profile?.name || simbol.toUpperCase()}</span>
           </div>
           <button className="why-button" onClick={toggleWatchlist} disabled={watchlistLoading}>
-            {inWatchlist ? "− Scoate din Watchlist" : "+ Adaugă în Watchlist"}
+            {inWatchlist ? tt("scoateWL") : tt("adaugaWL")}
           </button>
         </div>
         <span className="stock-hero-price">
@@ -179,7 +232,7 @@ export default function StockDetail() {
         {quote && (
           <span className={quote.stock.variatieProcent >= 0 ? "gain-positive stock-hero-var" : "gain-negative stock-hero-var"}>
             {quote.stock.variatieProcent >= 0 ? "+" : ""}
-            {quote.stock.variatieProcent.toFixed(2)}% azi
+            {quote.stock.variatieProcent.toFixed(2)}% {tt("azi")}
           </span>
         )}
         {profile && (
@@ -204,34 +257,32 @@ export default function StockDetail() {
       </div>
 
       <section className="holdings">
-        <h2>Paper trading</h2>
+        <h2>{tt("paper")}</h2>
         {holding ? (
           <p className="muted" style={{ marginBottom: "0.5rem" }}>
-            Deții {holding.cantitate} buc. @ ${holding.pretMediuAchizitie.toFixed(2)} medie
+            {tt("detii", { n: holding.cantitate, p: holding.pretMediuAchizitie.toFixed(2) })}
           </p>
         ) : (
-          <p className="muted" style={{ marginBottom: "0.5rem" }}>
-            Nu deții încă această acțiune în portofoliul simulat.
-          </p>
+          <p className="muted" style={{ marginBottom: "0.5rem" }}>{tt("nuDetii")}</p>
         )}
-        {cashBalance !== null && <p className="muted">Numerar disponibil: ${cashBalance.toFixed(2)}</p>}
+        {cashBalance !== null && <p className="muted">{tt("numerar")} ${cashBalance.toFixed(2)}</p>}
         {tradeError && <div className="error">{tradeError}</div>}
         <div className="trade-controls" style={{ marginTop: "0.5rem" }}>
           <input type="number" min="1" value={qty} onChange={(e) => setQty(Math.max(1, Number(e.target.value) || 1))} />
-          <button onClick={handleBuy}>Cumpără</button>
-          {holding && <button onClick={handleSell}>Vinde</button>}
+          <button onClick={handleBuy}>{tt("cumpara")}</button>
+          {holding && <button onClick={handleSell}>{tt("vinde")}</button>}
         </div>
       </section>
 
       <section className="holdings">
         <h2>
-          AI Radar{" "}
+          {tt("aiRadar")}{" "}
           <Link to="/metodologie" className="methodology-link">
-            Cum calculăm scorul →
+            {tt("cumCalculam")}
           </Link>
         </h2>
         {radarLoading ? (
-          <div className="mascota-loading"><img src="/mascota/laptop.png" alt="" className="mascota mascota-mica" /><p className="data-source">Analizăm acțiunea — poate dura câteva secunde...</p></div>
+          <div className="mascota-loading"><img src="/mascota/laptop.png" alt="" className="mascota mascota-mica" /><p className="data-source">{tt("analizam")}</p></div>
         ) : radar ? (
           <>
             <VerdictBadge verdict={radar.verdict} incredere={radar.incredere} />
@@ -239,41 +290,42 @@ export default function StockDetail() {
             {schimbare && (
               <div className="explanation" style={{ marginTop: 0 }}>
                 <div style={{ fontWeight: 700, marginBottom: "0.5rem" }}>
-                  Ce s-a schimbat față de analiza din{" "}
-                  {new Date(schimbare.dataAnterioara).toLocaleDateString("ro-RO", { day: "numeric", month: "short" })}
+                  {tt("schimbareDin", {
+                    data: new Date(schimbare.dataAnterioara).toLocaleDateString(locale, { day: "numeric", month: "short" }),
+                  })}
                 </div>
                 <div className="score-bar-label">
-                  <span>Scor compozit ({schimbare.scorAnterior} → {radar.scorCompozit})</span>
+                  <span>{tt("scorCompozit")} ({schimbare.scorAnterior} → {radar.scorCompozit})</span>
                   {formatDelta(schimbare.deltaCompozit)}
                 </div>
                 <div className="score-bar-label">
-                  <span>Analiști</span>
+                  <span>{tt("analisti")}</span>
                   {formatDelta(schimbare.deltaAnalist)}
                 </div>
                 <div className="score-bar-label">
-                  <span>Momentum</span>
+                  <span>{tt("momentum")}</span>
                   {formatDelta(schimbare.deltaMomentum)}
                 </div>
                 <div className="score-bar-label">
-                  <span>Fundamental</span>
+                  <span>{tt("fundamental")}</span>
                   {formatDelta(schimbare.deltaFundamental)}
                 </div>
                 <div className="score-bar-label">
-                  <span>Risc</span>
+                  <span>{tt("risc")}</span>
                   {formatDelta(schimbare.deltaRisc, true)}
                 </div>
               </div>
             )}
 
-            <ScoreBar label="Analiști" score={radar.scorAnalist} />
-            <ScoreBar label="Momentum" score={radar.scorMomentum} />
-            <ScoreBar label="Fundamental" score={radar.scorFundamental} />
-            <ScoreBar label="Risc" score={radar.scorRisc} />
+            <ScoreBar label={tt("analisti")} score={radar.scorAnalist} />
+            <ScoreBar label={tt("momentum")} score={radar.scorMomentum} />
+            <ScoreBar label={tt("fundamental")} score={radar.scorFundamental} />
+            <ScoreBar label={tt("risc")} score={radar.scorRisc} />
             <p className="explanation">{radar.rezumat}</p>
 
             {radar.riscuri?.length > 0 && (
               <>
-                <h2>Riscuri</h2>
+                <h2>{tt("riscuri")}</h2>
                 <ul>
                   {radar.riscuri.map((r, i) => (
                     <li key={i} className="muted">
@@ -286,7 +338,7 @@ export default function StockDetail() {
 
             {radar.invalidare?.length > 0 && (
               <>
-                <h2>Ce ar invalida această perspectivă</h2>
+                <h2>{tt("invalidare")}</h2>
                 <ul>
                   {radar.invalidare.map((r, i) => (
                     <li key={i} className="muted">
@@ -300,40 +352,40 @@ export default function StockDetail() {
             <Disclaimer />
           </>
         ) : (
-          <p className="empty">Nu am putut calcula scorul AI momentan.</p>
+          <p className="empty">{tt("nuScor")}</p>
         )}
       </section>
 
       {detalii?.metrici && (
         <section className="holdings">
-          <h2>Indicatori financiari cheie</h2>
+          <h2>{tt("indicatori")}</h2>
           <div className="metric-grid">
             <div className="metric-tile">
-              <span className="muted">P/E (preț/profit)</span>
+              <span className="muted">{tt("pe")}</span>
               <strong>{nr(detalii.metrici.pe, 1)}</strong>
             </div>
             <div className="metric-tile">
-              <span className="muted">Capitalizare piață</span>
+              <span className="muted">{tt("cap")}</span>
               <strong>{formatCap(detalii.metrici.capitalizarePiata)}</strong>
             </div>
             <div className="metric-tile">
-              <span className="muted">Beta (volatilitate)</span>
+              <span className="muted">{tt("beta")}</span>
               <strong>{nr(detalii.metrici.beta, 2)}</strong>
             </div>
             <div className="metric-tile">
-              <span className="muted">Randament dividend</span>
+              <span className="muted">{tt("dividend")}</span>
               <strong>{pct(detalii.metrici.randamentDividend, 2)}</strong>
             </div>
             <div className="metric-tile">
-              <span className="muted">EPS (profit/acțiune)</span>
+              <span className="muted">{tt("eps")}</span>
               <strong>${nr(detalii.metrici.eps, 2)}</strong>
             </div>
             <div className="metric-tile">
-              <span className="muted">Creștere venituri (an)</span>
+              <span className="muted">{tt("crestereVenituri")}</span>
               <strong>{pct(detalii.metrici.cresterVenituri, 1)}</strong>
             </div>
             <div className="metric-tile">
-              <span className="muted">Marjă profit</span>
+              <span className="muted">{tt("marja")}</span>
               <strong>{pct(detalii.metrici.marjaProfit, 1)}</strong>
             </div>
           </div>
@@ -341,8 +393,8 @@ export default function StockDetail() {
           {detalii.metrici.low52Sapt != null && detalii.metrici.high52Sapt != null && quote && (
             <div style={{ marginTop: "1rem" }}>
               <div className="score-bar-label">
-                <span>Minim 52 săpt: ${detalii.metrici.low52Sapt.toFixed(2)}</span>
-                <span>Maxim 52 săpt: ${detalii.metrici.high52Sapt.toFixed(2)}</span>
+                <span>{tt("min52")} ${detalii.metrici.low52Sapt.toFixed(2)}</span>
+                <span>{tt("max52")} ${detalii.metrici.high52Sapt.toFixed(2)}</span>
               </div>
               <div className="score-bar-track" style={{ position: "relative", height: "10px" }}>
                 <div
@@ -352,7 +404,7 @@ export default function StockDetail() {
                   }}
                 />
               </div>
-              <p className="muted" style={{ marginTop: "0.3rem" }}>Preț curent: ${quote.stock.pret.toFixed(2)}</p>
+              <p className="muted" style={{ marginTop: "0.3rem" }}>{tt("pretCurent")} ${quote.stock.pret.toFixed(2)}</p>
             </div>
           )}
         </section>
@@ -360,8 +412,8 @@ export default function StockDetail() {
 
       {detalii?.analisti && (
         <section className="holdings">
-          <h2>Recomandările analiștilor</h2>
-          <p className="muted">Ultima lună disponibilă ({detalii.analisti.period})</p>
+          <h2>{tt("recomandari")}</h2>
+          <p className="muted">{tt("ultimaLuna")} ({detalii.analisti.period})</p>
           <div className="analyst-row">
             <div className="analyst-chip analyst-strongbuy">
               <strong>{detalii.analisti.strongBuy}</strong>
@@ -389,14 +441,14 @@ export default function StockDetail() {
 
       {detalii?.earnings?.length > 0 && (
         <section className="holdings">
-          <h2>Rezultate financiare recente</h2>
+          <h2>{tt("rezultate")}</h2>
           <ul className="holding-list">
             {detalii.earnings.map((e, i) => (
               <li key={i} className="holding-row">
                 <div>
                   <strong>{e.period}</strong>
                   <div className="muted">
-                    Estimat ${e.estimate?.toFixed(2)} · Real ${e.actual?.toFixed(2)}
+                    {tt("estimat")} ${e.estimate?.toFixed(2)} · {tt("real")} ${e.actual?.toFixed(2)}
                   </div>
                 </div>
                 <div className={e.surprisePercent >= 0 ? "gain-positive" : "gain-negative"}>
@@ -411,19 +463,19 @@ export default function StockDetail() {
 
       {detalii?.tranzactiiInsideri?.length > 0 && (
         <section className="holdings">
-          <h2>Tranzacții recente ale insiderilor</h2>
-          <p className="data-source">Cumpărări/vânzări raportate de directori și angajați ai companiei (surse SEC, via Finnhub).</p>
+          <h2>{tt("insideri")}</h2>
+          <p className="data-source">{tt("insideriSursa")}</p>
           <ul className="holding-list">
-            {detalii.tranzactiiInsideri.map((t, i) => (
+            {detalii.tranzactiiInsideri.map((tr, i) => (
               <li key={i} className="holding-row">
                 <div>
-                  <strong>{t.nume}</strong>
+                  <strong>{tr.nume}</strong>
                   <div className="muted">
-                    {new Date(t.data).toLocaleDateString("ro-RO", { day: "numeric", month: "short", year: "numeric" })}
+                    {new Date(tr.data).toLocaleDateString(locale, { day: "numeric", month: "short", year: "numeric" })}
                   </div>
                 </div>
-                <div className={t.tip === "cumparare" ? "gain-positive" : "gain-negative"}>
-                  {t.tip === "cumparare" ? "Cumpărare" : "Vânzare"} · {t.actiuni.toLocaleString("ro-RO")} buc.
+                <div className={tr.tip === "cumparare" ? "gain-positive" : "gain-negative"}>
+                  {tr.tip === "cumparare" ? tt("cumparare") : tt("vanzare")} · {tr.actiuni.toLocaleString(locale)} {tt("bucSufix")}
                 </div>
               </li>
             ))}
@@ -432,15 +484,12 @@ export default function StockDetail() {
       )}
 
       <section className="holdings">
-        <h2>Știri recente</h2>
-        <p className="data-source">
-          Surse financiare agregate (Reuters, Yahoo Finance, PR Newswire etc. via Finnhub) — nu includem încă X/Twitter
-          sau CNN, care ar necesita integrări separate.
-        </p>
+        <h2>{tt("stiriRecente")}</h2>
+        <p className="data-source">{tt("stiriSursa")}</p>
         {newsLoading ? (
           <SkeletonRows count={3} />
         ) : news.length === 0 ? (
-          <p className="empty">Nu am găsit știri recente pentru această acțiune.</p>
+          <p className="empty">{tt("nicioStire")}</p>
         ) : (
           <ul className="holding-list">
             {news.map((n, i) => (
@@ -451,7 +500,7 @@ export default function StockDetail() {
                   </a>
                   {n.rezumat && <div className="muted" style={{ marginTop: "0.25rem" }}>{n.rezumat}</div>}
                   <div className="muted" style={{ marginTop: "0.25rem" }}>
-                    {n.sursa} · {new Date(n.data).toLocaleDateString("ro-RO", { day: "numeric", month: "short", year: "numeric" })}
+                    {n.sursa} · {new Date(n.data).toLocaleDateString(locale, { day: "numeric", month: "short", year: "numeric" })}
                   </div>
                 </div>
               </li>

@@ -1,4 +1,40 @@
 export default {
+  temeNota: "Die Symbole sind beschreibende Beispiele für Unternehmen je Thema, keine Empfehlungen · Fotos:",
+  verdictB: {
+    "sentiment": "KI-Sentiment:",
+    "incredere": "Vertrauen:",
+    "ridicata": "hoch",
+    "medie": "mittel",
+    "scazuta": "niedrig"
+  },
+  sectoare: {
+    "Tehnologie": "Technologie",
+    "Financiar": "Finanzen",
+    "Sănătate": "Gesundheit",
+    "Consum": "Konsum",
+    "Energie": "Energie",
+    "Industrial": "Industrie",
+    "Telecom": "Telekom",
+    "Altele": "Sonstige"
+  },
+  teme: {
+    "inteligenta-artificiala": {
+      "titlu": "Künstliche Intelligenz",
+      "scurt": "Von Rechenzentrums-Chips bis zu Taschen-Assistenten — das KI-Rennen zeichnet die ganze Wirtschaft neu."
+    },
+    "economia-spatiala": {
+      "titlu": "Die Weltraumwirtschaft",
+      "scurt": "Wiederverwendbare Raketen, Satellitenkonstellationen und orbitale Infrastruktur — der Weltraum wird Industrie."
+    },
+    "drone-si-robotica": {
+      "titlu": "Drohnen & Robotik",
+      "scurt": "Autonome Lieferungen, Präzisionslandwirtschaft, Verteidigung — Maschinen, die allein fliegen und arbeiten."
+    },
+    "pietele-globale": {
+      "titlu": "Globale Märkte",
+      "scurt": "Die Indizes, die Giganten und der tägliche Puls der Börsen — das Feld, auf dem jedes Thema spielt."
+    }
+  },
   verdict: {
     optimist: "Optimistisch",
     neutru: "Neutral",

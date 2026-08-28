@@ -1,5 +1,6 @@
 const NEWS_CACHE_TTL_MS = 10 * 60 * 1000;
-const cache = new Map(); // simbol -> { data, expiresAt }
+const cache = new Map(); // `${simbol}|${limba}` -> { data, expiresAt }
+const { NUME_LIMBA, normalizeazaLimba } = require("./i18nContent");
 
 const ANTHROPIC_URL = "https://api.anthropic.com/v1/messages";
 const TRANSLATE_MODEL = "claude-haiku-4-5-20251001";
@@ -19,11 +20,12 @@ function formatDate(d) {
 // Traduce titlurile + rezumatele într-un singur apel Claude (nu unul per știre,
 // ca să nu multiplicăm costul). Fără cheie Claude, rămân în engleză (funcțional,
 // doar netradus) — consistent cu restul aplicației.
-async function translateNews(items) {
+async function translateNews(items, limba = "ro") {
   if (!isTranslateConfigured() || items.length === 0) return items;
 
+  const numeLimba = limba === "ro" ? "română" : NUME_LIMBA[limba] || "română";
   const deTradus = items.map((n) => ({ headline: n.headline, rezumat: n.rezumat }));
-  const prompt = `Traduce în limba română următoarele titluri și rezumate de știri financiare. Păstrează sensul exact și tonul jurnalistic. Nu traduce numele companiilor, simbolurile bursiere (ex: NVDA, AAPL) sau denumirile proprii.
+  const prompt = `Traduce în limba ${numeLimba} următoarele titluri și rezumate de știri financiare. Păstrează sensul exact și tonul jurnalistic. Nu traduce numele companiilor, simbolurile bursiere (ex: NVDA, AAPL) sau denumirile proprii.
 
 Răspunde STRICT cu un array JSON de aceeași lungime și în aceeași ordine, fără text în afara lui, format:
 [{"headline": "...", "rezumat": "..."}, ...]
@@ -110,11 +112,14 @@ async function getMarketNewsRaw() {
   }
 }
 
-// Finnhub oferă gratuit știri per companie (matching pe simbol e deja făcut de API).
-async function getCompanyNews(simbol) {
+// Finnhub oferă gratuit știri per companie (matching pe simbol e deja făcut de
+// API). Traduse în limba cerută, cu cache separat per (simbol, limbă).
+async function getCompanyNews(simbol, limbaRaw = "ro") {
   if (!isConfigured()) return [];
 
-  const cached = cache.get(simbol);
+  const limba = normalizeazaLimba(limbaRaw);
+  const cheie = `${simbol}|${limba}`;
+  const cached = cache.get(cheie);
   if (cached && cached.expiresAt > Date.now()) {
     return cached.data;
   }
@@ -139,9 +144,9 @@ async function getCompanyNews(simbol) {
         data: new Date(n.datetime * 1000).toISOString(),
       }));
 
-    const traduse = await translateNews(news);
+    const traduse = await translateNews(news, limba);
 
-    cache.set(simbol, { data: traduse, expiresAt: Date.now() + NEWS_CACHE_TTL_MS });
+    cache.set(cheie, { data: traduse, expiresAt: Date.now() + NEWS_CACHE_TTL_MS });
     return traduse;
   } catch (err) {
     console.error(`[news] fallback pentru ${simbol}: ${err.message}`);

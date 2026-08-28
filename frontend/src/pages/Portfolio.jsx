@@ -7,6 +7,8 @@ import AllocationDonut from "../components/AllocationDonut.jsx";
 import EmptyState from "../components/EmptyState.jsx";
 import { PortfolioChart, buildValueHistory } from "../PortfolioChart.jsx";
 import StockLogo from "../components/StockLogo.jsx";
+import { useLang } from "../i18n/index.jsx";
+import { useTraduse } from "../i18n/useTraduse.js";
 
 function priceOf(stocks, extraQuotes, simbol) {
   // extraQuotes se reîmprospătează individual la 30s pentru deținerile tale —
@@ -18,13 +20,53 @@ function priceOf(stocks, extraQuotes, simbol) {
 
 const XP_PER_LEVEL = 100;
 
-const BADGE_INFO = {
-  "primul-pas": { icon: Target, label: "Primul pas", descriere: "Prima ta tranzacție" },
-  diversificare: { icon: Globe, label: "Diversificare", descriere: "3+ acțiuni diferite în portofoliu" },
-  consecventa: { icon: Flame, label: "Consecvență", descriere: "7 zile streak" },
+const BADGE_KEYS = {
+  "primul-pas": { icon: Target, cheie: "badgePrimulPas", cheieDesc: "badgePrimulPasDesc" },
+  diversificare: { icon: Globe, cheie: "badgeDiversificare", cheieDesc: "badgeDiversificareDesc" },
+  consecventa: { icon: Flame, cheie: "badgeConsecventa", cheieDesc: "badgeConsecventaDesc" },
 };
 
 export default function Portfolio() {
+  const { t } = useLang();
+  const tt = useTraduse({
+    titlu: "Portofoliu virtual",
+    sub: "Testează-ți strategia cu bani virtuali, înainte să riști bani reali.",
+    plataSucces: "Plata a fost procesată — abonamentul Premium se activează în câteva secunde.",
+    plataAnulata: "Plata a fost anulată — poți încerca din nou oricând din meniu.",
+    ascunde: "Ascunde",
+    streak: "{n} zile streak",
+    sanatate: "Sănătatea portofoliului (scor AI agregat)",
+    valoareTotala: "Valoare totală portofoliu",
+    numerar: "Numerar disponibil:",
+    alocare: "Alocarea pe sectoare",
+    nivel: "Nivel {n}",
+    deCe: "De ce a crescut/scăzut azi?",
+    analizez: "Analizez...",
+    actiunileTale: "Acțiunile tale",
+    rowHint: "Atinge o acțiune pentru scor AI, știri și indicatori financiari.",
+    golTitlu: "Portofoliul tău e gol",
+    golText: "Cumpără prima acțiune din piața de mai jos — cu bani virtuali, fără niciun risc real.",
+    pozitie: "{n} buc. @ ${p} medie",
+    vinde: "Vinde",
+    cumpara: "Cumpără",
+    cautaAlta: "Caută altă acțiune (SUA)",
+    searchPlaceholder: "Nume companie sau ticker (ex: Palantir, PLTR)",
+    caut: "Caut...",
+    cauta: "Caută",
+    piata: "Piață — acțiuni SUA",
+    dateLive: "Date live (Finnhub)",
+    dateMock: "Date simulate (mock) — conectează o cheie API pentru prețuri live",
+    badgePrimulPas: "Primul pas",
+    badgePrimulPasDesc: "Prima ta tranzacție",
+    badgeDiversificare: "Diversificare",
+    badgeDiversificareDesc: "3+ acțiuni diferite în portofoliu",
+    badgeConsecventa: "Consecvență",
+    badgeConsecventaDesc: "7 zile streak",
+  });
+  const numeSector = (s) => {
+    const v = t("sectoare." + s);
+    return typeof v === "string" && v.startsWith("sectoare.") ? s : v;
+  };
   const [searchParams, setSearchParams] = useSearchParams();
   const plataStatus = searchParams.get("plata");
   const [portfolio, setPortfolio] = useState(null);
@@ -192,7 +234,7 @@ export default function Portfolio() {
     }
   }
 
-  if (error) return <div className="page-message">Eroare: {error}</div>;
+  if (error) return <div className="page-message">{t("dash.eroare")} {error}</div>;
   if (!portfolio) return <SkeletonPage />;
 
   const holdingsValue = portfolio.holdings.reduce(
@@ -204,33 +246,33 @@ export default function Portfolio() {
 
   return (
     <div className="portfolio-page">
-      <h1 className="page-title">Portofoliu virtual</h1>
-      <p className="cash">Testează-ți strategia cu bani virtuali, înainte să riști bani reali.</p>
+      <h1 className="page-title">{tt("titlu")}</h1>
+      <p className="cash">{tt("sub")}</p>
 
       {plataStatus === "succes" && (
         <div className="value-card" style={{ borderColor: "var(--green)" }}>
-          Plata a fost procesată — abonamentul Premium se activează în câteva secunde.
+          {tt("plataSucces")}
           <button className="logout" style={{ marginLeft: "1rem" }} onClick={() => setSearchParams({})}>
-            Ascunde
+            {tt("ascunde")}
           </button>
         </div>
       )}
       {plataStatus === "anulat" && (
         <div className="value-card">
-          Plata a fost anulată — poți încerca din nou oricând din meniu.
+          {tt("plataAnulata")}
           <button className="logout" style={{ marginLeft: "1rem" }} onClick={() => setSearchParams({})}>
-            Ascunde
+            {tt("ascunde")}
           </button>
         </div>
       )}
 
       <header className="portfolio-header">
-        <span className="streak"><Flame size={13} className="ic" /> {user?.streakCurent ?? 0} zile streak</span>
+        <span className="streak"><Flame size={13} className="ic" /> {tt("streak", { n: user?.streakCurent ?? 0 })}</span>
       </header>
 
       {!healthLoading && health?.health && (
         <div className="value-card">
-          <span className="label">Sănătatea portofoliului (scor AI agregat)</span>
+          <span className="label">{tt("sanatate")}</span>
           <span className="value">{health.health.scorSanatate}/100</span>
           {health.health.avertismente.map((a, i) => (
             <p key={i} className="muted" style={{ marginTop: "0.25rem" }}>
@@ -241,15 +283,15 @@ export default function Portfolio() {
       )}
 
       <div className="value-card">
-        <span className="label">Valoare totală portofoliu</span>
+        <span className="label">{tt("valoareTotala")}</span>
         <span className="value">${totalValue.toFixed(2)}</span>
-        <span className="cash">Numerar disponibil: ${portfolio.cashBalance.toFixed(2)}</span>
+        <span className="cash">{tt("numerar")} ${portfolio.cashBalance.toFixed(2)}</span>
         <PortfolioChart points={history} />
       </div>
 
       {portfolio.holdings.length > 0 && (
         <div className="value-card">
-          <span className="label">Alocarea pe sectoare</span>
+          <span className="label">{tt("alocare")}</span>
           <AllocationDonut
             alocari={Object.entries(
               portfolio.holdings.reduce((acc, h) => {
@@ -257,14 +299,14 @@ export default function Portfolio() {
                 acc[sector] = (acc[sector] || 0) + h.cantitate * priceOf(stocks, extraQuotes, h.simbol);
                 return acc;
               }, {})
-            ).map(([sector, valoare]) => ({ sector, valoare }))}
+            ).map(([sector, valoare]) => ({ sector: numeSector(sector), sectorCheie: sector, valoare }))}
           />
         </div>
       )}
 
       <div className="xp-bar">
         <div className="xp-label">
-          Nivel {user?.nivel ?? 1} — {(user?.xp ?? 0) % XP_PER_LEVEL}/{XP_PER_LEVEL} XP
+          {tt("nivel", { n: user?.nivel ?? 1 })} — {(user?.xp ?? 0) % XP_PER_LEVEL}/{XP_PER_LEVEL} XP
         </div>
         <div className="xp-track">
           <div className="xp-fill" style={{ width: `${(user?.xp ?? 0) % XP_PER_LEVEL}%` }} />
@@ -274,10 +316,11 @@ export default function Portfolio() {
       {user?.badges?.length > 0 && (
         <div className="badge-row">
           {user.badges.map((b) => {
-            const info = BADGE_INFO[b.tipBadge] || { icon: Medal, label: b.tipBadge, descriere: "" };
+            const info = BADGE_KEYS[b.tipBadge];
             return (
-              <span key={b.id} className="badge-chip" title={info.descriere}>
-                {info.icon && <info.icon size={13} className="ic" />} {info.label}
+              <span key={b.id} className="badge-chip" title={info ? tt(info.cheieDesc) : ""}>
+                {info ? <info.icon size={13} className="ic" /> : <Medal size={13} className="ic" />}{" "}
+                {info ? tt(info.cheie) : b.tipBadge}
               </span>
             );
           })}
@@ -285,19 +328,19 @@ export default function Portfolio() {
       )}
 
       <button className="why-button" onClick={handleExplain} disabled={explanationLoading}>
-        {explanationLoading ? "Analizez..." : "De ce a crescut/scăzut azi?"}
+        {explanationLoading ? tt("analizez") : tt("deCe")}
       </button>
       {explanation && <p className="explanation">{explanation}</p>}
 
       {actionError && <div className="error">{actionError}</div>}
 
       <section className="holdings">
-        <h2>Acțiunile tale</h2>
+        <h2>{tt("actiunileTale")}</h2>
         {portfolio.holdings.length > 0 && (
-          <p className="row-hint">Atinge o acțiune pentru scor AI, știri și indicatori financiari.</p>
+          <p className="row-hint">{tt("rowHint")}</p>
         )}
         {portfolio.holdings.length === 0 ? (
-          <EmptyState titlu="Portofoliul tău e gol" text="Cumpără prima acțiune din piața de mai jos — cu bani virtuali, fără niciun risc real." />
+          <EmptyState titlu={tt("golTitlu")} text={tt("golText")} />
         ) : (
           <ul className="holding-list">
             {portfolio.holdings.map((h) => {
@@ -311,7 +354,7 @@ export default function Portfolio() {
                     <div>
                       <strong>{h.simbol}</strong>
                       <div className="muted">
-                        {h.cantitate} buc. @ ${h.pretMediuAchizitie.toFixed(2)} medie
+                        {tt("pozitie", { n: h.cantitate, p: h.pretMediuAchizitie.toFixed(2) })}
                       </div>
                     </div>
                     <div className="holding-right">
@@ -330,7 +373,7 @@ export default function Portfolio() {
                       value={getQty(h.simbol)}
                       onChange={(e) => setQtyFor(h.simbol, e.target.value)}
                     />
-                    <button onClick={() => handleSell(h.simbol)}>Vinde</button>
+                    <button onClick={() => handleSell(h.simbol)}>{tt("vinde")}</button>
                   </div>
                 </li>
               );
@@ -340,16 +383,16 @@ export default function Portfolio() {
       </section>
 
       <section className="search-section">
-        <h2>Caută altă acțiune (SUA)</h2>
+        <h2>{tt("cautaAlta")}</h2>
         <form className="search-form" onSubmit={handleSearch}>
           <input
             type="text"
-            placeholder="Nume companie sau ticker (ex: Palantir, PLTR)"
+            placeholder={tt("searchPlaceholder")}
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
           />
           <button type="submit" disabled={searchLoading}>
-            {searchLoading ? "Caut..." : "Caută"}
+            {searchLoading ? tt("caut") : tt("cauta")}
           </button>
         </form>
         {searchError && <div className="error">{searchError}</div>}
@@ -375,7 +418,7 @@ export default function Portfolio() {
                     value={getQty(r.simbol)}
                     onChange={(e) => setQtyFor(r.simbol, e.target.value)}
                   />
-                  <button onClick={() => handleBuy(r.simbol)}>Cumpără</button>
+                  <button onClick={() => handleBuy(r.simbol)}>{tt("cumpara")}</button>
                 </div>
               </li>
             ))}
@@ -384,15 +427,13 @@ export default function Portfolio() {
       </section>
 
       <section className="market">
-        <h2>Piață — acțiuni SUA</h2>
+        <h2>{tt("piata")}</h2>
         {stocksLoading ? (
           <SkeletonRows count={6} />
         ) : (
           stocks.length > 0 && (
             <p className="data-source">
-              {stocks[0].sursa === "finnhub"
-                ? "Date live (Finnhub)"
-                : "Date simulate (mock) — conectează o cheie API pentru prețuri live"}
+              {stocks[0].sursa === "finnhub" ? tt("dateLive") : tt("dateMock")}
             </p>
           )
         )}
@@ -424,7 +465,7 @@ export default function Portfolio() {
                   value={getQty(s.simbol)}
                   onChange={(e) => setQtyFor(s.simbol, e.target.value)}
                 />
-                <button onClick={() => handleBuy(s.simbol)}>Cumpără</button>
+                <button onClick={() => handleBuy(s.simbol)}>{tt("cumpara")}</button>
               </div>
             </li>
           ))}

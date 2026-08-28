@@ -161,7 +161,7 @@ router.get("/:simbol/profile", async (req, res) => {
 });
 
 router.get("/:simbol/news", async (req, res) => {
-  const news = await getCompanyNews(req.params.simbol.toUpperCase());
+  const news = await getCompanyNews(req.params.simbol.toUpperCase(), req.limba);
   res.json({ news });
 });
 

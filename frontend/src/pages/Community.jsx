@@ -3,8 +3,26 @@ import { SkeletonPage } from "../components/Skeleton.jsx";
 import EmptyState from "../components/EmptyState.jsx";
 import { api } from "../api";
 import StockLogo from "../components/StockLogo.jsx";
+import { useTraduse } from "../i18n/useTraduse.js";
 
 export default function Community() {
+  const tt = useTraduse({
+    titlu: "Comunitate",
+    sub: "Invită prieteni și vedeți reciproc portofoliile virtuale — toată lumea pornește de la aceiași 10.000 USD, deci comparația e corectă.",
+    codulTau: "Codul tău de invitație",
+    copiat: "Copiat!",
+    copiaza: "Copiază",
+    trimite: "Trimite-l unui prieten. Când îl introduce mai jos, deveniți prieteni și vă vedeți reciproc portofoliile.",
+    adaugaPrieten: "Adaugă un prieten",
+    placeholderCod: "Lipește codul de invitație al prietenului",
+    adauga: "Adaugă",
+    prieteni: "Prietenii tăi",
+    golTitlu: "Investițiile sunt mai clare împreună",
+    golText: "Trimite-i unui prieten codul tău de invitație sau cere-i pe al lui — vă vedeți reciproc watchlist-urile.",
+    valoare: "Valoare totală:",
+    elimina: "Elimină",
+    pozitie: "{n} buc. @ ${p} medie",
+  });
   const [inviteCode, setInviteCode] = useState("");
   const [friends, setFriends] = useState(null);
   const [codInput, setCodInput] = useState("");
@@ -51,43 +69,38 @@ export default function Community() {
 
   return (
     <div className="portfolio-page">
-      <h1 className="page-title">Comunitate</h1>
-      <p className="cash">
-        Invită prieteni și vedeți reciproc portofoliile virtuale — toată lumea pornește de la aceiași 10.000 USD, deci
-        comparația e corectă.
-      </p>
+      <h1 className="page-title">{tt("titlu")}</h1>
+      <p className="cash">{tt("sub")}</p>
 
       <div className="value-card">
-        <span className="label">Codul tău de invitație</span>
+        <span className="label">{tt("codulTau")}</span>
         <div style={{ display: "flex", gap: "0.5rem", alignItems: "center", marginTop: "0.4rem" }}>
           <code style={{ fontSize: "0.75rem", wordBreak: "break-all", flex: 1 }}>{inviteCode}</code>
           <button className="logout" onClick={copyCode}>
-            {copied ? "Copiat!" : "Copiază"}
+            {copied ? tt("copiat") : tt("copiaza")}
           </button>
         </div>
-        <p className="muted" style={{ marginTop: "0.5rem" }}>
-          Trimite-l unui prieten. Când îl introduce mai jos, deveniți prieteni și vă vedeți reciproc portofoliile.
-        </p>
+        <p className="muted" style={{ marginTop: "0.5rem" }}>{tt("trimite")}</p>
       </div>
 
       <section className="search-section">
-        <h2>Adaugă un prieten</h2>
+        <h2>{tt("adaugaPrieten")}</h2>
         <form className="search-form" onSubmit={handleAdd}>
           <input
             type="text"
-            placeholder="Lipește codul de invitație al prietenului"
+            placeholder={tt("placeholderCod")}
             value={codInput}
             onChange={(e) => setCodInput(e.target.value)}
           />
-          <button type="submit">Adaugă</button>
+          <button type="submit">{tt("adauga")}</button>
         </form>
         {error && <div className="error">{error}</div>}
       </section>
 
       <section className="holdings">
-        <h2>Prietenii tăi</h2>
+        <h2>{tt("prieteni")}</h2>
         {friends.length === 0 ? (
-          <EmptyState titlu="Investițiile sunt mai clare împreună" text="Trimite-i unui prieten codul tău de invitație sau cere-i pe al lui — vă vedeți reciproc watchlist-urile." />
+          <EmptyState titlu={tt("golTitlu")} text={tt("golText")} />
         ) : (
           <ul className="stock-list">
             {friends.map((f) => (
@@ -97,7 +110,7 @@ export default function Community() {
                     <strong>{f.email}</strong>
                     {f.valoareTotala != null && (
                       <div className="muted">
-                        Valoare totală: ${f.valoareTotala.toFixed(2)}
+                        {tt("valoare")} ${f.valoareTotala.toFixed(2)}
                       </div>
                     )}
                   </div>
@@ -109,7 +122,7 @@ export default function Community() {
                       </div>
                     )}
                     <button className="logout" onClick={() => handleRemove(f.id)} style={{ marginTop: "0.4rem" }}>
-                      Elimină
+                      {tt("elimina")}
                     </button>
                   </div>
                 </div>
@@ -123,7 +136,7 @@ export default function Community() {
                           <div>
                             <strong>{h.simbol}</strong>
                             <div className="muted">
-                              {h.cantitate} buc. @ ${h.pretMediuAchizitie.toFixed(2)} medie
+                              {tt("pozitie", { n: h.cantitate, p: h.pretMediuAchizitie.toFixed(2) })}
                             </div>
                           </div>
                         </div>

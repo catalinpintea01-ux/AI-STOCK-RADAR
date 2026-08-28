@@ -1,4 +1,40 @@
 export default {
+  temeNota: "A szimbólumok az egyes témák cégeinek leíró példái, nem ajánlások · Fotók:",
+  verdictB: {
+    "sentiment": "MI-hangulat:",
+    "incredere": "Megbízhatóság:",
+    "ridicata": "magas",
+    "medie": "közepes",
+    "scazuta": "alacsony"
+  },
+  sectoare: {
+    "Tehnologie": "Technológia",
+    "Financiar": "Pénzügy",
+    "Sănătate": "Egészségügy",
+    "Consum": "Fogyasztás",
+    "Energie": "Energia",
+    "Industrial": "Ipar",
+    "Telecom": "Telekom",
+    "Altele": "Egyéb"
+  },
+  teme: {
+    "inteligenta-artificiala": {
+      "titlu": "Mesterséges intelligencia",
+      "scurt": "Az adatközponti chipektől a zsebasszisztensekig — az MI-verseny átrajzolja az egész gazdaságot."
+    },
+    "economia-spatiala": {
+      "titlu": "Az űrgazdaság",
+      "scurt": "Újrafelhasználható rakéták, műholdkonstellációk és orbitális infrastruktúra — az űr iparággá válik."
+    },
+    "drone-si-robotica": {
+      "titlu": "Drónok és robotika",
+      "scurt": "Autonóm kiszállítás, precíziós mezőgazdaság, védelem — gépek, amelyek maguktól repülnek és dolgoznak."
+    },
+    "pietele-globale": {
+      "titlu": "Globális piacok",
+      "scurt": "Az indexek, az óriások és a tőzsdék napi pulzusa — a pálya, ahol minden téma játszódik."
+    }
+  },
   verdict: {
     optimist: "Optimista",
     neutru: "Semleges",

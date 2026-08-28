@@ -28,6 +28,7 @@ async function request(path, options = {}) {
 }
 
 export const api = {
+  traduce: (texte) => request("/i18n/translate", { method: "POST", body: JSON.stringify({ texte }) }),
   register: (email, password) =>
     request("/auth/register", { method: "POST", body: JSON.stringify({ email, password }) }),
   login: (email, password) =>

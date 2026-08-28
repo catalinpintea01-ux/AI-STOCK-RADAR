@@ -41,6 +41,7 @@ app.use("/api/alerts", alertsRoutes);
 app.use("/api/community", communityRoutes);
 app.use("/api/billing", billingRoutes);
 app.use("/api/tools", toolsRoutes);
+app.use("/api/i18n", require("./routes/i18n"));
 
 const port = process.env.PORT || 4000;
 app.listen(port, () => console.log(`Backend rulează pe portul ${port}`));
