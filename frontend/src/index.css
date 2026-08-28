@@ -5660,3 +5660,52 @@ html[data-theme="dark"] .workspace-panel {
   align-items: center;
   gap: 0.5rem;
 }
+
+/* --- Bara publică pe mobil: compactă și fără deplasare orizontală --- */
+
+/* Plasă de siguranță: nimic din landing nu mai poate împinge pagina lateral. */
+.landing {
+  overflow-x: clip;
+}
+
+@media (max-width: 640px) {
+  .landing-nav {
+    padding: 0.85rem 0;
+    gap: 0.5rem;
+  }
+
+  .landing-nav .navbar-brand {
+    font-size: 0.98rem;
+    white-space: nowrap;
+  }
+
+  .landing-nav-actions {
+    gap: 0.45rem;
+  }
+
+  /* "Autentificare" dispare — există deja "Am deja cont" în hero. */
+  .landing-nav-link {
+    display: none;
+  }
+
+  /* Selectorul de limbă rămâne doar cu steagul, fără codul "RO". */
+  .landing-nav .lang-code {
+    display: none;
+  }
+
+  .landing-nav .lang-button {
+    padding: 0.42rem 0.5rem;
+  }
+
+  .landing-nav .theme-toggle {
+    width: 32px;
+    height: 32px;
+    flex-shrink: 0;
+  }
+
+  .landing-cta-small {
+    padding: 0.45rem 0.85rem;
+    font-size: 0.8rem;
+    white-space: nowrap;
+  }
+}
