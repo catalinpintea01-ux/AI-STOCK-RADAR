@@ -179,3 +179,14 @@ model RadarScoreHistory {
 
   @@index([simbol, computedAt])
 }
+
+// Cache persistent de traduceri (texte statice de interfață + narative) —
+// memoria serverului se golește la fiecare deploy, ceea ce făcea prima
+// încărcare a fiecărei pagini/limbi lentă (un apel Claude). Cheia = hash
+// (limbă + textele sursă); conținut nou => cheie nouă, deci fără invalidare.
+model TraducereCache {
+  cheie     String   @id
+  limba     String
+  texte     String // JSON.stringify(string[])
+  createdAt DateTime @default(now())
+}

@@ -8,6 +8,7 @@
 //     dacă traducerea nu e posibilă, cădem pe șablonul determinist (radar)
 //     sau pe textul original (motive/știri) — niciodată eroare.
 const crypto = require("crypto");
+const prisma = require("../db");
 
 const ANTHROPIC_URL = "https://api.anthropic.com/v1/messages";
 const MODEL = "claude-haiku-4-5-20251001";
@@ -223,6 +224,23 @@ async function traduceTexte(texte, limba, ttlMs = CACHE_TTL_MS) {
   const cached = cacheTraduceri.get(cheie);
   if (cached && cached.expiresAt > Date.now()) return cached.out;
 
+  // Nivelul 2: cache persistent în Postgres — memoria se golește la fiecare
+  // deploy, iar fără acest nivel primul vizitator al fiecărei pagini/limbi
+  // aștepta un apel Claude întreg. Conținutul e static, deci fără expirare:
+  // texte schimbate => hash nou => intrare nouă.
+  try {
+    const rand = await prisma.traducereCache.findUnique({ where: { cheie } });
+    if (rand) {
+      const out = JSON.parse(rand.texte);
+      if (Array.isArray(out) && out.length === texte.length) {
+        cacheTraduceri.set(cheie, { out, expiresAt: Date.now() + ttlMs });
+        return out;
+      }
+    }
+  } catch (err) {
+    console.error(`[i18nContent] citire cache DB eșuată: ${err.message}`);
+  }
+
   const totalChars = texte.reduce((s, t) => s + t.length, 0);
   const maxTokens = Math.min(8000, Math.ceil(totalChars / 2) + 400);
 
@@ -264,6 +282,14 @@ ${JSON.stringify(texte)}`;
       cacheTraduceri.delete(cacheTraduceri.keys().next().value);
     }
     cacheTraduceri.set(cheie, { out: parsed, expiresAt: Date.now() + ttlMs });
+    // Persistăm în fundal — răspunsul nu așteaptă scrierea în DB.
+    prisma.traducereCache
+      .upsert({
+        where: { cheie },
+        update: { texte: JSON.stringify(parsed) },
+        create: { cheie, limba, texte: JSON.stringify(parsed) },
+      })
+      .catch((err) => console.error(`[i18nContent] scriere cache DB eșuată: ${err.message}`));
     return parsed;
   } catch (err) {
     console.error(`[i18nContent] traducere ${limba} eșuată: ${err.message}`);
