@@ -1,5 +1,8 @@
 export default {
   screens: {
+    valoare: "Teljes érték",
+    castigator: "3/4 szempontban jobb",
+    progres: "teljesített téma",
     grafic: "Árfolyam-alakulás",
     stire1: "Az NVIDIA felülmúlja a negyedéves várakozásokat",
     stire2: "A Fed tartja a kamatokat — a piacok fellélegeznek",

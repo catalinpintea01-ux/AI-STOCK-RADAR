@@ -1,5 +1,8 @@
 export default {
   screens: {
+    valoare: "Gesamtwert",
+    castigator: "vorn bei 3 von 4 Kriterien",
+    progres: "Themen abgeschlossen",
     grafic: "Kursverlauf",
     stire1: "NVIDIA übertrifft die Quartalsschätzungen",
     stire2: "Die Fed hält die Zinsen — die Märkte atmen auf",

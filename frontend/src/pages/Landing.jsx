@@ -202,6 +202,7 @@ export default function Landing() {
           <div className="screens-track">
             {[0, 1].map((setIdx) => (
               <div className="screens-set" key={setIdx} aria-hidden={setIdx === 1}>
+                {/* 1. Analiza acțiunii: verdict + delta + sub-scoruri + factori */}
                 <div className="screen-card">
                   <div className="screen-topbar">
                     <span className="screen-dot" />
@@ -224,6 +225,9 @@ export default function Landing() {
                       <VerdictTag verdict="optimist" />
                       <ScoreRing score={78} verdict="optimist" />
                     </div>
+                    <div className="screen-delta">
+                      <span className="gain-positive">▲ +5</span> {t("dash.ceSaSchimbat")}
+                    </div>
                     {SCREEN_BARS.map((b) => (
                       <div key={b.cheie} className="screen-score">
                         <div className="screen-score-label">
@@ -235,15 +239,21 @@ export default function Landing() {
                         </div>
                       </div>
                     ))}
+                    <div className="screen-factori">
+                      <span>{t("dash.factori.momentumPoz")}</span>
+                      <span>{t("dash.factori.riscPoz")}</span>
+                    </div>
                   </div>
                 </div>
 
+                {/* 2. Graficul de preț: crosshair + tooltip + bare de volum + LIVE */}
                 <div className="screen-card">
                   <div className="screen-topbar">
                     <span className="screen-dot" />
                     <span className="screen-dot" />
                     <span className="screen-dot" />
                     <span className="screen-topbar-title">{t("screens.grafic")}</span>
+                    <span className="screen-live"><i /> LIVE</span>
                   </div>
                   <div className="screen-body">
                     <div className="screen-stock-head">
@@ -256,33 +266,43 @@ export default function Landing() {
                         $232.10 <span className="gain-positive">+1.4%</span>
                       </div>
                     </div>
-                    <svg viewBox="0 0 280 110" className="screen-chart" preserveAspectRatio="none" aria-hidden="true">
-                      <defs>
-                        <linearGradient id={`screen-grad-${setIdx}`} x1="0" y1="0" x2="0" y2="1">
-                          <stop offset="0%" stopColor="#2e7d5b" stopOpacity="0.35" />
-                          <stop offset="100%" stopColor="#2e7d5b" stopOpacity="0" />
-                        </linearGradient>
-                      </defs>
-                      <path
-                        d="M0,85 C30,80 45,60 70,64 C95,68 110,40 140,44 C170,48 185,30 215,26 C240,23 260,18 280,12 L280,110 L0,110 Z"
-                        fill={`url(#screen-grad-${setIdx})`}
-                      />
-                      <path
-                        d="M0,85 C30,80 45,60 70,64 C95,68 110,40 140,44 C170,48 185,30 215,26 C240,23 260,18 280,12"
-                        fill="none"
-                        stroke="#2e7d5b"
-                        strokeWidth="2.5"
-                      />
-                    </svg>
+                    <div className="screen-chart-wrap">
+                      <svg viewBox="0 0 280 130" className="screen-chart" preserveAspectRatio="none" aria-hidden="true">
+                        <defs>
+                          <linearGradient id={`screen-grad-${setIdx}`} x1="0" y1="0" x2="0" y2="1">
+                            <stop offset="0%" stopColor="#2e7d5b" stopOpacity="0.35" />
+                            <stop offset="100%" stopColor="#2e7d5b" stopOpacity="0" />
+                          </linearGradient>
+                        </defs>
+                        {[12, 36, 60, 84, 108, 132, 156, 180, 204, 228, 252].map((x, i) => (
+                          <rect key={x} x={x} y={118 - [6, 9, 5, 11, 8, 13, 7, 10, 12, 9, 14][i]} width="14" height={[6, 9, 5, 11, 8, 13, 7, 10, 12, 9, 14][i]} fill="#8a6d4e" opacity="0.25" />
+                        ))}
+                        <path
+                          d="M0,88 C30,83 45,62 70,66 C95,70 110,42 140,46 C170,50 185,32 215,28 C240,25 260,20 280,14 L280,130 L0,130 Z"
+                          fill={`url(#screen-grad-${setIdx})`}
+                        />
+                        <path
+                          d="M0,88 C30,83 45,62 70,66 C95,70 110,42 140,46 C170,50 185,32 215,28 C240,25 260,20 280,14"
+                          fill="none"
+                          stroke="#2e7d5b"
+                          strokeWidth="2.5"
+                        />
+                        <line x1="196" y1="8" x2="196" y2="118" stroke="#9d968a" strokeWidth="1" strokeDasharray="3,3" />
+                        <circle cx="196" cy="33" r="4.5" fill="#2e7d5b" stroke="#fff" strokeWidth="2" />
+                      </svg>
+                      <span className="screen-chart-tooltip">$228.40</span>
+                    </div>
                     <div className="screen-range-row">
                       <span className="screen-range">1S</span>
                       <span className="screen-range screen-range-active">1L</span>
                       <span className="screen-range">6L</span>
                       <span className="screen-range">1A</span>
+                      <span className="screen-minmax">$196 – $236</span>
                     </div>
                   </div>
                 </div>
 
+                {/* 3. Comparatorul: prețuri sub inele + verdictul comparației */}
                 <div className="screen-card screen-card-accent">
                   <div className="screen-topbar">
                     <span className="screen-dot" />
@@ -296,12 +316,14 @@ export default function Landing() {
                         <StockLogo simbol="NVDA" size={34} />
                         <strong>NVDA</strong>
                         <ScoreRing score={78} verdict="optimist" />
+                        <span className="screen-cmp-pret">$217.56 <em className="gain-positive">+2.1%</em></span>
                       </div>
                       <span className="screen-vs">vs</span>
                       <div className="screen-cmp-col">
                         <StockLogo simbol="TSLA" size={34} />
                         <strong>TSLA</strong>
                         <ScoreRing score={55} verdict="neutru" />
+                        <span className="screen-cmp-pret">$342.10 <em className="gain-negative">-1.8%</em></span>
                       </div>
                     </div>
                     <table className="screen-cmp-table">
@@ -328,9 +350,11 @@ export default function Landing() {
                         </tr>
                       </tbody>
                     </table>
+                    <div className="screen-cmp-verdict">NVDA · {t("screens.castigator")}</div>
                   </div>
                 </div>
 
+                {/* 4. Știrile: carduri cu sentiment + acțiunea afectată */}
                 <div className="screen-card">
                   <div className="screen-topbar">
                     <span className="screen-dot" />
@@ -342,14 +366,23 @@ export default function Landing() {
                     <div className="screen-news screen-news-1">
                       <span>Reuters · {t("dash.azi")}</span>
                       <strong>{t("screens.stire1")}</strong>
+                      <div className="screen-news-meta">
+                        <em className="screen-news-chip gain-positive">NVDA +2.1%</em>
+                        <em className="screen-news-chip screen-news-chip-verdict">{t("verdict.optimist")}</em>
+                      </div>
                     </div>
                     <div className="screen-news screen-news-2">
                       <span>Bloomberg · {t("dash.azi")}</span>
                       <strong>{t("screens.stire2")}</strong>
+                      <div className="screen-news-meta">
+                        <em className="screen-news-chip">S&P 500</em>
+                        <em className="screen-news-chip screen-news-chip-verdict">{t("verdict.neutru")}</em>
+                      </div>
                     </div>
                   </div>
                 </div>
 
+                {/* 5. Research zilnic: bare de amplitudine + selecția zilei */}
                 <div className="screen-card">
                   <div className="screen-topbar">
                     <span className="screen-dot" />
@@ -361,21 +394,27 @@ export default function Landing() {
                     <div className="screen-daily">
                       <div className="screen-daily-group">
                         <span className="screen-daily-label gain-positive">{t("dash.cresteri")}</span>
-                        {SCREEN_DAILY.cresteri.map((pk) => (
-                          <div key={pk.simbol} className="screen-daily-row">
-                            <StockLogo simbol={pk.simbol} size={22} />
-                            <strong>{pk.simbol}</strong>
-                            <span className="gain-positive">+{pk.val.toFixed(1)}%</span>
+                        {SCREEN_DAILY.cresteri.map((pk, i) => (
+                          <div key={pk.simbol} className="screen-daily-item">
+                            <div className="screen-daily-row">
+                              <StockLogo simbol={pk.simbol} size={22} />
+                              <strong>{pk.simbol}</strong>
+                              <span className="gain-positive">+{pk.val.toFixed(1)}%</span>
+                            </div>
+                            <div className="screen-daily-bar screen-daily-bar-pos" style={{ width: `${[100, 72][i]}%` }} />
                           </div>
                         ))}
                       </div>
                       <div className="screen-daily-group">
                         <span className="screen-daily-label gain-negative">{t("dash.scaderi")}</span>
-                        {SCREEN_DAILY.scaderi.map((pk) => (
-                          <div key={pk.simbol} className="screen-daily-row">
-                            <StockLogo simbol={pk.simbol} size={22} />
-                            <strong>{pk.simbol}</strong>
-                            <span className="gain-negative">{pk.val.toFixed(1)}%</span>
+                        {SCREEN_DAILY.scaderi.map((pk, i) => (
+                          <div key={pk.simbol} className="screen-daily-item">
+                            <div className="screen-daily-row">
+                              <StockLogo simbol={pk.simbol} size={22} />
+                              <strong>{pk.simbol}</strong>
+                              <span className="gain-negative">{pk.val.toFixed(1)}%</span>
+                            </div>
+                            <div className="screen-daily-bar screen-daily-bar-neg" style={{ width: `${[100, 48][i]}%` }} />
                           </div>
                         ))}
                       </div>
@@ -391,6 +430,36 @@ export default function Landing() {
                   </div>
                 </div>
 
+                {/* 6. Portofoliul virtual: valoare + donut de alocare */}
+                <div className="screen-card">
+                  <div className="screen-topbar">
+                    <span className="screen-dot" />
+                    <span className="screen-dot" />
+                    <span className="screen-dot" />
+                    <span className="screen-topbar-title">{t("nav.portofoliuVirtual")}</span>
+                  </div>
+                  <div className="screen-body">
+                    <div className="screen-port-val">
+                      <span className="screen-port-label">{t("screens.valoare")}</span>
+                      <strong>$12,480</strong>
+                      <span className="gain-positive">▲ +24.8%</span>
+                    </div>
+                    <div className="screen-port-donut">
+                      <svg viewBox="0 0 110 110" aria-hidden="true">
+                        <circle cx="55" cy="55" r="40" fill="none" stroke="#8a6d4e" strokeWidth="14" strokeDasharray="113 251.3" transform="rotate(-90 55 55)" />
+                        <circle cx="55" cy="55" r="40" fill="none" stroke="#c9ab77" strokeWidth="14" strokeDasharray="63 251.3" strokeDashoffset="-113" transform="rotate(-90 55 55)" />
+                        <circle cx="55" cy="55" r="40" fill="none" stroke="#5f5b52" strokeWidth="14" strokeDasharray="75.3 251.3" strokeDashoffset="-176" transform="rotate(-90 55 55)" />
+                      </svg>
+                      <div className="screen-port-legend">
+                        <span><i style={{ background: "#8a6d4e" }} /> {t("sectoare.Tehnologie")} · 45%</span>
+                        <span><i style={{ background: "#c9ab77" }} /> {t("sectoare.Sănătate")} · 25%</span>
+                        <span><i style={{ background: "#5f5b52" }} /> {t("sectoare.Financiar")} · 30%</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* 7. Educație: progres + subiect deschis + mini-quiz */}
                 <div className="screen-card">
                   <div className="screen-topbar">
                     <span className="screen-dot" />
@@ -399,6 +468,15 @@ export default function Landing() {
                     <span className="screen-topbar-title">{t("nav.informare")}</span>
                   </div>
                   <div className="screen-body">
+                    <div className="screen-edu-progres">
+                      <div className="screen-score-label">
+                        <span>12/50 {t("screens.progres")}</span>
+                        <span>24%</span>
+                      </div>
+                      <div className="screen-score-track">
+                        <div className="screen-score-fill" style={{ width: "24%" }} />
+                      </div>
+                    </div>
                     <div className="screen-edu-row">
                       <span>{t("screens.ed1")}</span>
                       <span className="screen-edu-plus">+</span>
@@ -411,7 +489,6 @@ export default function Landing() {
                       <div className="screen-edu-lines">
                         <i style={{ width: "92%" }} />
                         <i style={{ width: "78%" }} />
-                        <i style={{ width: "85%" }} />
                       </div>
                       <div className="screen-edu-quiz">
                         <span className="screen-quiz-chip screen-quiz-ok">A ✓</span>

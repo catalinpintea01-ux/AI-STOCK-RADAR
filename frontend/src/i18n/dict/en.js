@@ -1,5 +1,8 @@
 export default {
   screens: {
+    valoare: "Total value",
+    castigator: "ahead on 3 of 4 criteria",
+    progres: "topics completed",
     grafic: "Price history",
     stire1: "NVIDIA beats quarterly estimates",
     stire2: "The Fed holds rates — markets breathe",

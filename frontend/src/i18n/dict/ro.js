@@ -1,5 +1,8 @@
 export default {
   screens: {
+    valoare: "Valoare totală",
+    castigator: "mai bun la 3 din 4 criterii",
+    progres: "subiecte parcurse",
     grafic: "Evoluția prețului",
     stire1: "NVIDIA depășește estimările trimestriale",
     stire2: "Fed menține dobânzile — piețele respiră",

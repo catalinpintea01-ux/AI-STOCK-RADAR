@@ -1,5 +1,8 @@
 export default {
   screens: {
+    valoare: "Wartość łączna",
+    castigator: "lepsza w 3 z 4 kryteriów",
+    progres: "ukończonych tematów",
     grafic: "Wykres ceny",
     stire1: "NVIDIA przebija kwartalne prognozy",
     stire2: "Fed utrzymuje stopy — rynki oddychają",

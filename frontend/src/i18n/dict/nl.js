@@ -1,5 +1,8 @@
 export default {
   screens: {
+    valoare: "Totale waarde",
+    castigator: "voor op 3 van 4 criteria",
+    progres: "onderwerpen afgerond",
     grafic: "Koersverloop",
     stire1: "NVIDIA verslaat de kwartaalverwachtingen",
     stire2: "De Fed houdt de rente aan — markten halen adem",
