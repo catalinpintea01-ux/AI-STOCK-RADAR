@@ -120,7 +120,7 @@ export default {
     facts: [
       "AI-scores automatisch elke 6 uur herberekend, voor alles wat je volgt",
       "Live koersen, elke 30 seconden ververst",
-      "Marktnieuws, elke 30 minuten opnieuw geanalyseerd",
+      "Marktnieuws, elke 2 uur opnieuw geanalyseerd",
       "De earnings-kalender, twee keer per dag bijgewerkt",
     ],
     temeTitlu: "De thema's die het volgende decennium bepalen",

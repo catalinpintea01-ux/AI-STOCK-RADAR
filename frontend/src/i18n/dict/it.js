@@ -120,7 +120,7 @@ export default {
     facts: [
       "Punteggi IA ricalcolati automaticamente ogni 6 ore, per tutto ciò che segui",
       "Prezzi live, aggiornati ogni 30 secondi",
-      "Notizie di mercato, rianalizzate ogni 30 minuti",
+      "Notizie di mercato, rianalizzate ogni 2 ore",
       "Il calendario degli utili, aggiornato due volte al giorno",
     ],
     temeTitlu: "I temi che definiscono il prossimo decennio",

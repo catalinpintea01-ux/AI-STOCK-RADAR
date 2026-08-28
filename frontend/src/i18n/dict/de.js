@@ -120,7 +120,7 @@ export default {
     facts: [
       "KI-Scores automatisch alle 6 Stunden neu berechnet, für alles Beobachtete",
       "Live-Kurse, alle 30 Sekunden aktualisiert",
-      "Marktnachrichten, alle 30 Minuten neu analysiert",
+      "Marktnachrichten, alle 2 Stunden neu analysiert",
       "Der Earnings-Kalender, zweimal täglich aktualisiert",
     ],
     temeTitlu: "Die Themen, die das nächste Jahrzehnt prägen",

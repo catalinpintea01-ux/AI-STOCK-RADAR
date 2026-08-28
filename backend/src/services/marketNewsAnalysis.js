@@ -5,7 +5,7 @@ const { traduceTexte } = require("./i18nContent");
 
 const ANTHROPIC_URL = "https://api.anthropic.com/v1/messages";
 const MODEL = "claude-haiku-4-5-20251001";
-const CACHE_TTL_MS = 30 * 60 * 1000;
+const CACHE_TTL_MS = 2 * 60 * 60 * 1000;
 
 let cache = null; // { items, byId, expiresAt } — sursa de adevăr (română)
 const cachePeLimba = new Map(); // limba -> { items, byId, expiresAt } — traduceri, rotite odată cu sursa

@@ -120,7 +120,7 @@ export default {
     facts: [
       "Oceny AI automatycznie przeliczane co 6 godzin, dla wszystkiego, co obserwujesz",
       "Ceny na żywo, odświeżane co 30 sekund",
-      "Wiadomości rynkowe, ponownie analizowane co 30 minut",
+      "Wiadomości rynkowe, ponownie analizowane co 2 godziny",
       "Kalendarz wyników, aktualizowany dwa razy dziennie",
     ],
     temeTitlu: "Tematy, które zdefiniują następną dekadę",

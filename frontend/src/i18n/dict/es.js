@@ -120,7 +120,7 @@ export default {
     facts: [
       "Puntuaciones IA recalculadas automáticamente cada 6 horas, para todo lo seguido",
       "Precios en vivo, actualizados cada 30 segundos",
-      "Noticias del mercado, reanalizadas cada 30 minutos",
+      "Noticias del mercado, reanalizadas cada 2 horas",
       "El calendario de resultados, actualizado dos veces al día",
     ],
     temeTitlu: "Los temas que definen la próxima década",

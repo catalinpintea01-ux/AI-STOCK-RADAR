@@ -120,7 +120,7 @@ export default {
     facts: [
       "Scores IA recalculés automatiquement toutes les 6 heures, pour tout ce qui est suivi",
       "Prix en direct, rafraîchis toutes les 30 secondes",
-      "Actualités du marché, ré-analysées toutes les 30 minutes",
+      "Actualités du marché, ré-analysées toutes les 2 heures",
       "Le calendrier des résultats, mis à jour deux fois par jour",
     ],
     temeTitlu: "Les thèmes qui définissent la prochaine décennie",

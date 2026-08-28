@@ -4,7 +4,7 @@ const { motivFallback, NUME_LIMBA } = require("./i18nContent");
 
 const ANTHROPIC_URL = "https://api.anthropic.com/v1/messages";
 const MODEL = "claude-haiku-4-5-20251001";
-const DAILY_PICKS_TTL_MS = 30 * 60 * 1000;
+const DAILY_PICKS_TTL_MS = 2 * 60 * 60 * 1000;
 const DAILY_PICKS_COUNT = 10;
 
 let dailyCache = null; // { items, expiresAt } — un singur calcul global, partajat de toți userii

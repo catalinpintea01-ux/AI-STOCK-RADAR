@@ -120,7 +120,7 @@ export default {
     facts: [
       "Scoruri AI recalculate automat la fiecare 6 ore, pentru tot ce e urmărit",
       "Prețuri live, reîmprospătate la fiecare 30 de secunde",
-      "Știrile pieței, re-analizate la fiecare 30 de minute",
+      "Știrile pieței, re-analizate din două în două ore",
       "Calendarul de raportări, actualizat de două ori pe zi",
     ],
     temeTitlu: "Temele care definesc următorul deceniu",

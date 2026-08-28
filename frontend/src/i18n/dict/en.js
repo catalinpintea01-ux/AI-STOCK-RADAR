@@ -120,7 +120,7 @@ export default {
     facts: [
       "AI scores automatically recalculated every 6 hours, for everything tracked",
       "Live prices, refreshed every 30 seconds",
-      "Market news, re-analyzed every 30 minutes",
+      "Market news, re-analyzed every 2 hours",
       "The earnings calendar, updated twice a day",
     ],
     temeTitlu: "The themes defining the next decade",

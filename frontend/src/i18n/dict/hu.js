@@ -120,7 +120,7 @@ export default {
     facts: [
       "MI-pontszámok automatikusan újraszámolva 6 óránként, mindenre, amit követsz",
       "Élő árak, 30 másodpercenként frissítve",
-      "Piaci hírek, 30 percenként újraelemezve",
+      "Piaci hírek, 2 óránként újraelemezve",
       "Az eredménynaptár naponta kétszer frissítve",
     ],
     temeTitlu: "A következő évtizedet meghatározó témák",
