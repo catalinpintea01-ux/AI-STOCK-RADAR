@@ -1,22 +1,14 @@
 import { useEffect, useRef, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { api } from "../api";
-import { Bell, Star, Moon, Sun } from "lucide-react";
+import { Bell, Star } from "lucide-react";
 import { useLang } from "../i18n/index.jsx";
 import LanguageSwitcher from "./LanguageSwitcher.jsx";
+import ThemeToggle from "./ThemeToggle.jsx";
 
 export default function NavBar() {
   const { t } = useLang();
   const navigate = useNavigate();
-  const [tema, setTema] = useState(document.documentElement.dataset.theme || "light");
-
-  function toggleTema() {
-    const noua = tema === "dark" ? "light" : "dark";
-    setTema(noua);
-    if (noua === "dark") document.documentElement.dataset.theme = "dark";
-    else delete document.documentElement.dataset.theme;
-    localStorage.setItem("tema", noua);
-  }
   const [unreadCount, setUnreadCount] = useState(0);
   const [premium, setPremium] = useState(null);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -81,9 +73,7 @@ export default function NavBar() {
           <Bell size={17} className="ic" />{unreadCount > 0 ? ` ${unreadCount}` : ""}
         </NavLink>
 
-        <button className="theme-toggle" onClick={toggleTema} aria-label={t("nav.comutaTema")}>
-          {tema === "dark" ? <Sun size={16} /> : <Moon size={16} />}
-        </button>
+        <ThemeToggle />
 
         <LanguageSwitcher />
 

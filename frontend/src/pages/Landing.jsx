@@ -8,6 +8,7 @@ import ThemeCards from "../components/ThemeCards.jsx";
 import RadarSweep from "../components/RadarSweep.jsx";
 import VerdictTag from "../components/VerdictTag.jsx";
 import LanguageSwitcher from "../components/LanguageSwitcher.jsx";
+import ThemeToggle from "../components/ThemeToggle.jsx";
 import { useLang } from "../i18n/index.jsx";
 import { Radar, TrendingUp, Newspaper, CalendarDays, Compass, Bell, Briefcase } from "lucide-react";
 
@@ -142,6 +143,7 @@ export default function Landing() {
       <header className="landing-nav">
         <span className="navbar-brand">AI Stock Radar</span>
         <div className="landing-nav-actions">
+          <ThemeToggle />
           <LanguageSwitcher />
           <Link to="/login" className="landing-nav-link">
             {t("landing.autentificare")}

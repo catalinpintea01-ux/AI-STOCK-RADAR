@@ -5653,3 +5653,10 @@ html[data-theme="dark"] .workspace-panel {
     justify-content: center;
   }
 }
+
+/* Colțul de sus al paginilor de autentificare ține acum și tema, și limba. */
+.auth-lang {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}

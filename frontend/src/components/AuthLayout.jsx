@@ -1,6 +1,7 @@
 import { Radar, Newspaper, Shield } from "lucide-react";
 import { useLang } from "../i18n/index.jsx";
 import LanguageSwitcher from "./LanguageSwitcher.jsx";
+import ThemeToggle from "./ThemeToggle.jsx";
 
 const ICONS = [Radar, Newspaper, Shield];
 
@@ -10,6 +11,7 @@ export default function AuthLayout({ children }) {
   return (
     <div className="auth-page">
       <div className="auth-lang">
+        <ThemeToggle />
         <LanguageSwitcher />
       </div>
       <div className="auth-brand-panel">
