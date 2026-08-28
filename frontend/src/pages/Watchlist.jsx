@@ -142,8 +142,8 @@ export default function Watchlist() {
   const [analyzing, setAnalyzing] = useState(new Set());
   const [bulkAnalyzing, setBulkAnalyzing] = useState(false);
   const [bulkProgress, setBulkProgress] = useState({ done: 0, total: 0 });
-  const [dailyPicks, setDailyPicks] = useState([]);
-  const [dailyMover, setDailyMover] = useState(null);
+  const [daily, setDaily] = useState(null); // { cresteri, scaderi, premium }
+  const [dailyTab, setDailyTab] = useState("piata");
   const [selectedDaily, setSelectedDaily] = useState(null); // simbolul coloanei selectate din grafic
   const [vix, setVix] = useState(null);
   const [universSugestii, setUniversSugestii] = useState([]);
@@ -241,14 +241,11 @@ export default function Watchlist() {
     api
       .getDailyPicks()
       .then((data) => {
-        setDailyPicks(data.picks);
-        setDailyMover(data.mover || null);
+        setDaily(data);
+        const toate = [...(data.cresteri || []), ...(data.scaderi || [])];
         setUniversSugestii((prev) => {
           const existente = new Set(prev.map((p) => p.simbol));
-          const noi = [...data.picks, ...(data.mover ? [data.mover] : [])].filter(
-            (p) => !existente.has(p.simbol)
-          );
-          return [...prev, ...noi];
+          return [...prev, ...toate.filter((p) => !existente.has(p.simbol))];
         });
       })
       .catch(() => {});
@@ -308,7 +305,6 @@ export default function Watchlist() {
 
   async function handleAddFromDaily(simbol) {
     await handleAdd(simbol);
-    setDailyPicks((prev) => prev.filter((p) => p.simbol !== simbol));
   }
 
   function toggleInteres(value) {
@@ -460,26 +456,25 @@ export default function Watchlist() {
     );
   }
 
-  // Graficul din Research zilnic: câștigurile descrescător în stânga,
-  // pierderile descrescător (după amploare) în dreapta; click pe o coloană
-  // aduce acțiunea alături, cu motivul și butoanele de acțiune.
-  const dailyCastiguri = dailyPicks
-    .filter((p) => p.variatieProcent >= 0)
+  // Research zilnic v2: mișcările din watchlist (client-side, cotațiile sunt
+  // deja încărcate) + mișcările din toată piața (server, 2+2 gratuit / 5+5
+  // Premium). Barele de amplitudine sunt relative la maximul grupului afișat.
+  const wlMiscari = items.filter((i) => typeof i.variatieProcent === "number");
+  const wlCresteri = wlMiscari
+    .filter((i) => i.variatieProcent >= 0)
     .sort((a, b) => b.variatieProcent - a.variatieProcent)
-    .slice(0, 4);
-  const dailyPierderi = dailyPicks
-    .filter((p) => p.variatieProcent < 0)
+    .slice(0, 5);
+  const wlScaderi = wlMiscari
+    .filter((i) => i.variatieProcent < 0)
     .sort((a, b) => a.variatieProcent - b.variatieProcent)
-    .slice(0, 4);
-  const dailyMaxAbs = Math.max(
-    1,
-    ...dailyCastiguri.map((p) => Math.abs(p.variatieProcent)),
-    ...dailyPierderi.map((p) => Math.abs(p.variatieProcent))
-  );
+    .slice(0, 5);
+
+  const pCresteri = daily?.cresteri || [];
+  const pScaderi = daily?.scaderi || [];
   const dailySelectat =
-    (selectedDaily && dailyPicks.find((p) => p.simbol === selectedDaily)) ||
-    dailyCastiguri[0] ||
-    dailyPierderi[0] ||
+    (selectedDaily && [...pCresteri, ...pScaderi].find((p) => p.simbol === selectedDaily)) ||
+    pCresteri[0] ||
+    pScaderi[0] ||
     null;
 
   // Când watchlist-ul are puține rânduri (plan gratuit), spațiul de sub listă
@@ -495,29 +490,6 @@ export default function Watchlist() {
           .slice(0, 6)
       : [];
 
-  function renderDailyCol(p) {
-    const inaltime = 14 + (Math.abs(p.variatieProcent) / dailyMaxAbs) * 58;
-    const selectat = dailySelectat && dailySelectat.simbol === p.simbol;
-    return (
-      <button
-        key={p.simbol}
-        type="button"
-        className={`daily-col ${selectat ? "daily-col-selected" : ""}`}
-        onClick={() => setSelectedDaily(p.simbol)}
-        aria-label={`${p.simbol}: ${p.variatieProcent.toFixed(1)}%`}
-      >
-        <span className={`daily-col-val ${p.variatieProcent >= 0 ? "gain-positive" : "gain-negative"}`}>
-          {p.variatieProcent >= 0 ? "+" : ""}
-          {p.variatieProcent.toFixed(1)}
-        </span>
-        <span
-          className={`daily-col-bar ${p.variatieProcent >= 0 ? "daily-col-bar-pos" : "daily-col-bar-neg"}`}
-          style={{ height: `${inaltime}px` }}
-        />
-        <span className="daily-col-tick">{p.simbol}</span>
-      </button>
-    );
-  }
 
   return (
     <div className="portfolio-page dash">
@@ -808,7 +780,7 @@ export default function Watchlist() {
         </main>
 
         <aside className="dash-side">
-          <section className="panel">
+          <section className="panel research-panel">
             <div className="panel-head">
               <div>
                 <p className="eyebrow">{t("dash.descopera")}</p>
@@ -816,56 +788,118 @@ export default function Watchlist() {
               </div>
             </div>
             <p className="tab-subtitle">{t("dash.researchSub")}</p>
-            {dailyPicks.length === 0 ? (
-              <div className="daily-empty">
-                {dailyMover && (
-                  <>
-                    <p className="daily-empty-label">{t("dash.mover")}</p>
-                    <ul className="stock-list">
-                      <li className="stock-row">
-                        <div className="stock-row-left">
-                          <StockLogo simbol={dailyMover.simbol} />
-                          <div>
-                            <strong>{dailyMover.simbol}</strong>
-                            <div className="muted">{dailyMover.nume}</div>
-                          </div>
+
+            <div className="research-tabs">
+              <button
+                type="button"
+                aria-pressed={dailyTab === "piata"}
+                className={dailyTab === "piata" ? "active" : ""}
+                onClick={() => setDailyTab("piata")}
+              >
+                {t("dash.researchPiata")}
+              </button>
+              <button
+                type="button"
+                aria-pressed={dailyTab === "watchlist"}
+                className={dailyTab === "watchlist" ? "active" : ""}
+                onClick={() => setDailyTab("watchlist")}
+              >
+                Watchlist
+              </button>
+            </div>
+
+            {dailyTab === "watchlist" ? (
+              wlCresteri.length + wlScaderi.length === 0 ? (
+                <p className="empty">{t("dash.researchWlGol")}</p>
+              ) : (
+                <div className="research-groups">
+                  {[
+                    { lista: wlCresteri, eticheta: t("dash.cresteri"), poz: true },
+                    { lista: wlScaderi, eticheta: t("dash.scaderi"), poz: false },
+                  ].map(
+                    (grup) =>
+                      grup.lista.length > 0 && (
+                        <div key={grup.eticheta} className="research-group">
+                          <span className={`research-group-label ${grup.poz ? "gain-positive" : "gain-negative"}`}>
+                            {grup.eticheta}
+                          </span>
+                          {grup.lista.map((it) => {
+                            const maxAbs = Math.max(...grup.lista.map((x) => Math.abs(x.variatieProcent)), 0.1);
+                            return (
+                              <Link key={it.simbol} to={`/stock/${it.simbol}`} className="research-row">
+                                <StockLogo simbol={it.simbol} size={22} />
+                                <strong>{it.simbol}</strong>
+                                <span className="research-row-bar">
+                                  <i
+                                    className={grup.poz ? "research-bar-pos" : "research-bar-neg"}
+                                    style={{ width: `${(Math.abs(it.variatieProcent) / maxAbs) * 100}%` }}
+                                  />
+                                </span>
+                                <span className={grup.poz ? "gain-positive" : "gain-negative"}>
+                                  {grup.poz ? "+" : ""}
+                                  {it.variatieProcent.toFixed(1)}%
+                                </span>
+                              </Link>
+                            );
+                          })}
                         </div>
-                        <div className="stock-right">
-                          <div className={dailyMover.variatieProcent >= 0 ? "gain-positive" : "gain-negative"}>
-                            {dailyMover.variatieProcent >= 0 ? "+" : ""}
-                            {dailyMover.variatieProcent.toFixed(1)}%
-                          </div>
-                        </div>
-                        <button className="add-watchlist-button" onClick={() => handleAdd(dailyMover.simbol)}>
-                          +
-                        </button>
-                      </li>
-                    </ul>
-                  </>
-                )}
-                <p className="daily-lesson">
-                  <Lightbulb size={14} className="ic" /> {lectii[Math.floor(Date.now() / 86400000) % lectii.length]}
-                </p>
+                      )
+                  )}
+                </div>
+              )
+            ) : daily === null ? (
+              <div className="skeleton-rows">
+                {Array.from({ length: 4 }).map((_, i) => (
+                  <div key={i} className="skeleton skeleton-row-shape" />
+                ))}
               </div>
+            ) : pCresteri.length + pScaderi.length === 0 ? (
+              <p className="daily-lesson">
+                <Lightbulb size={14} className="ic" /> {lectii[Math.floor(Date.now() / 86400000) % lectii.length]}
+              </p>
             ) : (
               <>
-                <div className="daily-chart">
-                  <div className="daily-chart-group">
-                    <span className="daily-chart-group-label gain-positive">{t("dash.cresteri")}</span>
-                    <div className="daily-chart-cols">
-                      {dailyCastiguri.map((p) => renderDailyCol(p))}
-                      {dailyCastiguri.length === 0 && <span className="daily-chart-none">—</span>}
-                    </div>
-                  </div>
-                  <div className="daily-chart-divider" />
-                  <div className="daily-chart-group">
-                    <span className="daily-chart-group-label gain-negative">{t("dash.scaderi")}</span>
-                    <div className="daily-chart-cols">
-                      {dailyPierderi.map((p) => renderDailyCol(p))}
-                      {dailyPierderi.length === 0 && <span className="daily-chart-none">—</span>}
-                    </div>
-                  </div>
+                <div className="research-groups">
+                  {[
+                    { lista: pCresteri, eticheta: t("dash.cresteri"), poz: true },
+                    { lista: pScaderi, eticheta: t("dash.scaderi"), poz: false },
+                  ].map(
+                    (grup) =>
+                      grup.lista.length > 0 && (
+                        <div key={grup.eticheta} className="research-group">
+                          <span className={`research-group-label ${grup.poz ? "gain-positive" : "gain-negative"}`}>
+                            {grup.eticheta}
+                          </span>
+                          {grup.lista.map((it) => {
+                            const maxAbs = Math.max(...grup.lista.map((x) => Math.abs(x.variatieProcent)), 0.1);
+                            const activ = dailySelectat && dailySelectat.simbol === it.simbol;
+                            return (
+                              <button
+                                key={it.simbol}
+                                type="button"
+                                className={`research-row ${activ ? "research-row-activ" : ""}`}
+                                onClick={() => setSelectedDaily(it.simbol)}
+                              >
+                                <StockLogo simbol={it.simbol} size={22} />
+                                <strong>{it.simbol}</strong>
+                                <span className="research-row-bar">
+                                  <i
+                                    className={grup.poz ? "research-bar-pos" : "research-bar-neg"}
+                                    style={{ width: `${(Math.abs(it.variatieProcent) / maxAbs) * 100}%` }}
+                                  />
+                                </span>
+                                <span className={grup.poz ? "gain-positive" : "gain-negative"}>
+                                  {grup.poz ? "+" : ""}
+                                  {it.variatieProcent.toFixed(1)}%
+                                </span>
+                              </button>
+                            );
+                          })}
+                        </div>
+                      )
+                  )}
                 </div>
+
                 {dailySelectat && (
                   <div className="daily-selected">
                     <div className="stock-row-left">
@@ -887,17 +921,25 @@ export default function Watchlist() {
                     </div>
                     <p className="daily-selected-motiv">{dailySelectat.motiv}</p>
                     <div className="daily-selected-actions">
-                      <button
-                        className="add-watchlist-button"
-                        onClick={() => handleAddFromDaily(dailySelectat.simbol)}
-                      >
-                        {t("dash.urmareste")}
-                      </button>
+                      {!simboluriUrmarite.has(dailySelectat.simbol) && (
+                        <button
+                          className="add-watchlist-button"
+                          onClick={() => handleAddFromDaily(dailySelectat.simbol)}
+                        >
+                          {t("dash.urmareste")}
+                        </button>
+                      )}
                       <Link to={`/stock/${dailySelectat.simbol}`} className="view-analysis-button daily-selected-analysis">
                         {t("dash.veziAnaliza")}
                       </Link>
                     </div>
                   </div>
+                )}
+
+                {daily && !daily.premium && (
+                  <Link to="/premium" className="show-more-button news-premium-teaser">
+                    <Lock size={12} className="ic" /> {t("dash.veziPremium")}
+                  </Link>
                 )}
               </>
             )}

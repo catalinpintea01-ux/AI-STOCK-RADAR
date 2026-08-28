@@ -111,84 +111,50 @@ router.get("/earnings", requireAuth, async (req, res) => {
   res.json({ earnings: urmatoarele, recomandate });
 });
 
-// 10 acțiuni "merită urmărite azi", calculate o singură dată global (cache
-// 30 min în discovery.js) și filtrate aici per utilizator — excludem ce
-// urmărește deja, ca secțiunea să rămână despre descoperire, nu duplicare.
+// Research zilnic: cele mai mari creșteri și scăderi din TOT universul de
+// piață (nu doar din afara watchlist-ului), cu motivul AI atașat acolo unde
+// selecția zilnică (getDailyPicks, cache 2h) l-a produs, altfel un motiv
+// determinist localizat. Gratuit: 2+2; Premium: 5+5 — aplicat server-side.
 router.get("/daily-picks", requireAuth, async (req, res) => {
-  const picks = await getDailyPicks();
+  const [univers, picks, subscription] = await Promise.all([
+    getStockList(),
+    getDailyPicks(),
+    prisma.subscription.findUnique({ where: { userId: req.userId } }),
+  ]);
 
-  const existente = await prisma.watchlist.findMany({
-    where: { userId: req.userId },
-    select: { simbol: true },
-  });
-  const existenteSet = new Set(existente.map((i) => i.simbol));
-
-  const ramase = picks.filter((p) => !existenteSet.has(p.simbol));
-
-  // Graficul din frontend are două grupuri (creșteri | scăderi). Pe o zi în
-  // care piața e într-o singură direcție, "cele mai mari mișcări" cad toate
-  // pe aceeași parte — așa că garantăm minim 3 pe fiecare parte (dacă există
-  // în univers), din cotațiile deja cache-uite, fără apeluri externe noi.
-  const MIN_PE_PARTE = 3;
-  const univers = await getStockList();
+  const motivMap = new Map(picks.map((p) => [p.simbol, p.motiv]));
   const laForma = (s) => ({
     simbol: s.simbol,
     nume: s.nume,
     pret: s.pret,
     variatieProcent: s.variatieProcent,
-    motiv: motivFallback(s.variatieProcent >= 0 ? "crestere" : "scadere", req.limba),
+    motiv:
+      motivMap.get(s.simbol) ||
+      motivFallback(s.variatieProcent >= 0 ? "crestere" : "scadere", req.limba),
   });
 
-  for (const semn of [1, -1]) {
-    const peParte = ramase.filter((p) => (semn > 0 ? p.variatieProcent >= 0 : p.variatieProcent < 0));
-    if (peParte.length >= MIN_PE_PARTE) continue;
+  const cuCotatie = univers.filter((s) => typeof s.variatieProcent === "number");
+  const cresteriToate = cuCotatie
+    .filter((s) => s.variatieProcent >= 0)
+    .sort((a, b) => b.variatieProcent - a.variatieProcent);
+  const scaderiToate = cuCotatie
+    .filter((s) => s.variatieProcent < 0)
+    .sort((a, b) => a.variatieProcent - b.variatieProcent);
 
-    const dejaAfisate = new Set(ramase.map((p) => p.simbol));
-    const completare = univers
-      .filter(
-        (s) =>
-          !existenteSet.has(s.simbol) &&
-          !dejaAfisate.has(s.simbol) &&
-          (semn > 0 ? s.variatieProcent > 0 : s.variatieProcent < 0)
-      )
-      .sort((a, b) => Math.abs(b.variatieProcent) - Math.abs(a.variatieProcent))
-      .slice(0, MIN_PE_PARTE - peParte.length)
-      .map(laForma);
-    ramase.push(...completare);
-  }
+  const premium = isPremium(subscription);
+  const pePagina = premium ? 5 : 2;
 
-  // Empty state fără fundătură: dacă nu rămâne nimic de recomandat, oferim
-  // măcar cel mai mare mover al zilei din banda ticker (cotații deja
-  // cache-uite acolo — zero apeluri Finnhub suplimentare).
-  let mover = null;
-  if (ramase.length === 0) {
-    const ticker = await getTickerTape();
-    const actiuni = ticker.filter(
-      (t) => !["SPY", "DIA", "QQQ"].includes(t.simbol) && !existenteSet.has(t.simbol)
-    );
-    if (actiuni.length > 0) {
-      mover = actiuni.reduce((max, t) =>
-        Math.abs(t.variatieProcent) > Math.abs(max.variatieProcent) ? t : max
-      );
-    }
-  }
+  const [cresteri, scaderi] = await Promise.all([
+    localizeazaMotive(cresteriToate.slice(0, pePagina).map(laForma), req.limba),
+    localizeazaMotive(scaderiToate.slice(0, pePagina).map(laForma), req.limba),
+  ]);
 
-  // Diferență de plan vizibilă în grafic: gratuit vede 2 acțiuni pe parte,
-  // Premium 4 — restul diferențelor de plan sunt aplicate tot server-side.
-  const subscription = await prisma.subscription.findUnique({ where: { userId: req.userId } });
-  if (!isPremium(subscription)) {
-    const castiguri = ramase
-      .filter((p) => p.variatieProcent >= 0)
-      .sort((a, b) => b.variatieProcent - a.variatieProcent)
-      .slice(0, 2);
-    const pierderi = ramase
-      .filter((p) => p.variatieProcent < 0)
-      .sort((a, b) => a.variatieProcent - b.variatieProcent)
-      .slice(0, 2);
-    return res.json({ picks: await localizeazaMotive([...castiguri, ...pierderi], req.limba), mover });
-  }
-
-  res.json({ picks: await localizeazaMotive(ramase, req.limba), mover });
+  res.json({
+    cresteri,
+    scaderi,
+    premium,
+    total: { cresteri: cresteriToate.length, scaderi: scaderiToate.length },
+  });
 });
 
 // Onboarding: userul alege interese, Claude selectează N acțiuni din
