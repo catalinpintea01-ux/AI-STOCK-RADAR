@@ -16,7 +16,10 @@ const BANNED_PATTERNS = [
   /\bcump[ăa]r[ăa]?\s+(acț|acest|aceast)/i,
   /\bvinde(-ți)?\s+(acț|acest|aceast)/i,
   /\bar trebui s[ăa]\s+(cump[ăa]r|vin|investe)/i,
-  /\brecomand/i,
+  // "recomand", "recomandăm", "recomandare/recomandat" = sfat direct → blocat.
+  // "recomandările analiștilor" / "recomandări (de rating)" = substantiv
+  // descriptiv despre date publice → permis (lookahead-ul exclude "ăr...").
+  /\brecomand(?!ăr)/i,
   /\bsfat(uri)? de investi/i,
   /\binvestește acum\b/i,
   /\bbuy\b.{0,15}\b(stock|shares?)\b/i,
