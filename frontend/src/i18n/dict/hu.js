@@ -4,6 +4,9 @@ export default {
     interval: "Sáv:",
   },
   screens: {
+    siguranta: "Biztonság",
+    amprenta: "A figyelőlistád lenyomata",
+    amprentaSub: "Az elemzett részvényeid részpontszámainak átlaga.",
     valoare: "Teljes érték",
     castigator: "3/4 szempontban jobb",
     progres: "teljesített téma",

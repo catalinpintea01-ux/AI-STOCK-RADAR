@@ -191,6 +191,10 @@ async function buildDetalii(simbol, sursaDateJson) {
       capitalizarePiata: m.marketCapitalization ?? null,
       beta: m.beta ?? null,
       randamentDividend: m.currentDividendYieldTTM ?? null,
+      // Sănătatea dividendului: cât din profit se duce pe dividend + ritmul
+      // de creștere pe 5 ani — fapte publice, evaluate determinist în UI.
+      payoutRatio: m.payoutRatioTTM ?? m.payoutRatioAnnual ?? null,
+      divCrestere5a: m.dividendGrowthRate5Y ?? null,
       eps: m.epsTTM ?? null,
       high52Sapt: m["52WeekHigh"] ?? null,
       low52Sapt: m["52WeekLow"] ?? null,

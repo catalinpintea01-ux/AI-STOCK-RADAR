@@ -13,6 +13,7 @@ import RadarSweep from "../components/RadarSweep.jsx";
 import ThemeCards from "../components/ThemeCards.jsx";
 import VerdictTag from "../components/VerdictTag.jsx";
 import LivePrice from "../components/LivePrice.jsx";
+import RadarPrint from "../components/RadarPrint.jsx";
 import { Zap, Target, ClipboardList, Compass, Newspaper, Activity, CalendarDays, Lightbulb, Lock } from "lucide-react";
 import { useLang } from "../i18n/index.jsx";
 
@@ -1088,6 +1089,33 @@ export default function Watchlist() {
               </ul>
             )}
           </section>
+
+          {analizateCount > 0 && (() => {
+            // Amprenta watchlist-ului: media sub-scorurilor acțiunilor deja
+            // analizate — forma agregată a întregii liste, dintr-o privire.
+            const analizate = items.filter((i) => i.radar);
+            const medie = (extrage) =>
+              Math.round(analizate.reduce((s, i) => s + extrage(i.radar), 0) / analizate.length);
+            return (
+              <section className="panel">
+                <div className="panel-head">
+                  <div>
+                    <p className="eyebrow">{t("dash.spatiulTau")}</p>
+                    <h2>{t("screens.amprenta")}</h2>
+                  </div>
+                </div>
+                <p className="tab-subtitle">{t("screens.amprentaSub")}</p>
+                <div className="radar-print-wrap">
+                  <RadarPrint
+                    analisti={medie((r) => r.scorAnalist)}
+                    momentum={medie((r) => r.scorMomentum)}
+                    fundamental={medie((r) => r.scorFundamental)}
+                    risc={medie((r) => r.scorRisc)}
+                  />
+                </div>
+              </section>
+            );
+          })()}
 
           <section className="panel mascota-panel">
             <img src="/mascota/radar.png" alt="" className="mascota mascota-sidebar" loading="lazy" />

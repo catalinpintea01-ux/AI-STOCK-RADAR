@@ -4,7 +4,7 @@ import { api } from "../api";
 import StockLogo from "./StockLogo.jsx";
 import ScoreRing from "./ScoreRing.jsx";
 import VerdictTag from "./VerdictTag.jsx";
-import { Wrench, Trophy, Search, Scale, Star } from "lucide-react";
+import { Wrench, Trophy, Search, Scale, Star, Landmark } from "lucide-react";
 import { useLang } from "../i18n/index.jsx";
 import { useTraduse } from "../i18n/useTraduse.js";
 
@@ -67,6 +67,13 @@ export default function ToolsPro() {
     cmpFundamentale: "Fundamentale",
     cmpRisc: "Risc (mai mic = mai calm)",
     castigator: "mai bun la {n} din 4 criterii",
+    insEyebrow: "SEC · ultimele 90 de zile",
+    insTitlu: "Radarul insiderilor",
+    insSub: "Companiile unde directorii au cumpărat sau vândut net propriile acțiuni — raportări publice SEC, agregate la fiecare recalcul de scor. Context descriptiv, nu recomandări.",
+    insCumparari: "Cumpărări nete",
+    insVanzari: "Vânzări nete",
+    insGol: "Datele insiderilor se colectează la următoarele runde de analiză — revino curând.",
+    insTx: "{c} cumpărări · {v} vânzări",
   });
   const numeSector = (s) => {
     const v = t("sectoare." + s);
@@ -76,6 +83,7 @@ export default function ToolsPro() {
   // Premium — null = se verifică, true = deblocate, false = overlay de upgrade.
   const [deblocat, setDeblocat] = useState(null);
   const [top, setTop] = useState([]);
+  const [insideri, setInsideri] = useState(null); // { cumparate, vandute }
 
   const [verdict, setVerdict] = useState("");
   const [sector, setSector] = useState("");
@@ -141,6 +149,10 @@ export default function ToolsPro() {
       .getToolTop()
       .then((data) => setTop(data.top))
       .catch(() => {});
+    api
+      .getToolInsideri()
+      .then(setInsideri)
+      .catch(() => {}); // 402 pe gratuit — panoul rămâne sub overlay-ul Premium
     runScreener({ sort: "compozit" });
   }, []);
 
@@ -412,6 +424,54 @@ export default function ToolsPro() {
                 )}
               </>
             ))}
+        </div>
+
+        <div className={`panel tools-panel-insideri ${blocat ? "tools-panel-locked" : ""}`}>
+          {blocat && lockOverlay}
+          <div className="panel-head">
+            <div>
+              <p className="eyebrow">{tt("insEyebrow")}</p>
+              <h2><Landmark size={16} className="h2-ic" /> {tt("insTitlu")}</h2>
+            </div>
+          </div>
+          <p className="tab-subtitle">{tt("insSub")}</p>
+          {insideri === null || insideri.cumparate.length + insideri.vandute.length === 0 ? (
+            <p className="empty">{tt("insGol")}</p>
+          ) : (
+            <div className="insideri-cols">
+              {[
+                { lista: insideri.cumparate, eticheta: tt("insCumparari"), poz: true },
+                { lista: insideri.vandute, eticheta: tt("insVanzari"), poz: false },
+              ].map(
+                (grup) =>
+                  grup.lista.length > 0 && (
+                    <div key={grup.eticheta} className="insideri-grup">
+                      <span className={`research-group-label ${grup.poz ? "gain-positive" : "gain-negative"}`}>
+                        {grup.eticheta}
+                      </span>
+                      <ul className="stock-list">
+                        {grup.lista.map((r) => (
+                          <li key={r.simbol} className="stock-row">
+                            <Link to={`/stock/${r.simbol}`} className="watch-row-link">
+                              <StockLogo simbol={r.simbol} />
+                              <div>
+                                <strong>{r.simbol}</strong>
+                                <div className="muted">{tt("insTx", { c: r.cumparari, v: r.vanzari })}</div>
+                              </div>
+                              <span className={`insideri-net ${grup.poz ? "gain-positive" : "gain-negative"}`}>
+                                {grup.poz ? "+" : ""}
+                                {Math.round(r.net).toLocaleString()}
+                              </span>
+                              <span className="row-chevron">›</span>
+                            </Link>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )
+              )}
+            </div>
+          )}
         </div>
       </div>
     </section>

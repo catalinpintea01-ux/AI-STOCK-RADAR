@@ -7,6 +7,7 @@ import VerdictBadge from "../components/VerdictBadge.jsx";
 import Disclaimer from "../components/Disclaimer.jsx";
 import PriceChart from "../components/PriceChart.jsx";
 import LivePrice from "../components/LivePrice.jsx";
+import RadarPrint from "../components/RadarPrint.jsx";
 import { useLang } from "../i18n/index.jsx";
 import { useTraduse } from "../i18n/useTraduse.js";
 
@@ -102,6 +103,28 @@ export default function StockDetail() {
     stiriRecente: "Știri recente",
     stiriSursa: "Surse financiare agregate (Reuters, Yahoo Finance, PR Newswire etc. via Finnhub).",
     nicioStire: "Nu am găsit știri recente pentru această acțiune.",
+    divTitlu: "Sănătatea dividendului",
+    divRandament: "Randament anual",
+    divPayout: "Payout (din profit)",
+    divCrestere: "Creștere pe 5 ani",
+    divSolid: "Solid",
+    divModerat: "Moderat",
+    divTensionat: "Tensionat",
+    divNota: "Evaluare deterministă pe praguri publice: payout sub 60% = solid, 60–85% = moderat, peste 85% = tensionat. Context descriptiv, nu o garanție.",
+    evalTitlu: "Contextul evaluării",
+    evalPe: "P/E curent: {p} — prețul plătit pentru fiecare dolar de profit anual.",
+    evalPesteMedie: "Prețul e cu {p}% peste media sa din ultimele 12 luni.",
+    evalSubMedie: "Prețul e cu {p}% sub media sa din ultimele 12 luni.",
+    evalInterval: "În intervalul pe 52 de săptămâni, prețul se află la {p}% din drumul dintre minim și maxim.",
+    evalNota: "Fapte descriptive pentru context — nu o estimare de valoare „corectă” și nu o recomandare.",
+    narTitlu: "Narativa mea",
+    narSub: "Scrie-ți teza pentru această acțiune: de ce o urmărești și ce te-ar face să te răzgândești. Radarul o confruntă apoi cu evoluția scorurilor.",
+    narPlaceholder: "Ex: Cred în creșterea pe termen lung datorită X. M-aș răzgândi dacă Y...",
+    narSalveaza: "Salvează narativa",
+    narSalvat: "Salvat ✓",
+    narDeCand: "De când ți-ai scris narativa ({data}):",
+    narPremium: "Narativele sunt un instrument Premium: îți scrii tezele, iar radarul ți le confruntă cu evoluția reală a scorurilor.",
+    veziPremium: "Vezi ce include Premium →",
   });
   const [quote, setQuote] = useState(null);
   const [profile, setProfile] = useState(null);
@@ -121,6 +144,44 @@ export default function StockDetail() {
   const [istoricChart, setIstoricChart] = useState([]);
   const [zileChart, setZileChart] = useState(30);
   const [chartLoading, setChartLoading] = useState(true);
+  const [istoric365, setIstoric365] = useState(null);
+  const [narativa, setNarativa] = useState(null);
+  const [narPremium, setNarPremium] = useState(null);
+  const [narText, setNarText] = useState("");
+  const [narStatus, setNarStatus] = useState(""); // "" | "saving" | "saved"
+
+  // Media pe 12 luni pentru "Contextul evaluării" + narativa personală.
+  useEffect(() => {
+    setIstoric365(null);
+    api
+      .getStockHistory(simbol, 365)
+      .then((data) => setIstoric365(data.istoric || []))
+      .catch(() => setIstoric365([]));
+    setNarativa(null);
+    setNarText("");
+    setNarStatus("");
+    api
+      .getNarativa(simbol)
+      .then((data) => {
+        setNarativa(data.narativa);
+        setNarPremium(data.premium);
+        if (data.narativa) setNarText(data.narativa.teza);
+      })
+      .catch(() => {});
+  }, [simbol]);
+
+  async function salveazaNarativa() {
+    setNarStatus("saving");
+    try {
+      const data = await api.saveNarativa(simbol, narText);
+      setNarativa(data.narativa);
+      setNarStatus("saved");
+      setTimeout(() => setNarStatus(""), 2500);
+    } catch (err) {
+      setNarStatus("");
+      setTradeError(err.message);
+    }
+  }
 
   function formatCap(m) {
     if (m == null) return "N/A";
@@ -312,6 +373,15 @@ export default function StockDetail() {
               </div>
             )}
 
+            <div className="radar-print-wrap">
+              <RadarPrint
+                analisti={radar.scorAnalist}
+                momentum={radar.scorMomentum}
+                fundamental={radar.scorFundamental}
+                risc={radar.scorRisc}
+              />
+            </div>
+
             {schimbare && (
               <div className="explanation" style={{ marginTop: 0 }}>
                 <div style={{ fontWeight: 700, marginBottom: "0.5rem" }}>
@@ -381,6 +451,52 @@ export default function StockDetail() {
         )}
       </section>
 
+      <section className="holdings">
+        <h2>{tt("narTitlu")}</h2>
+        {narPremium === false ? (
+          <>
+            <p className="muted">{tt("narPremium")}</p>
+            <Link to="/premium" className="methodology-link">{tt("veziPremium")}</Link>
+          </>
+        ) : (
+          <>
+            <p className="tab-subtitle">{tt("narSub")}</p>
+            <textarea
+              className="narativa-text"
+              rows={4}
+              maxLength={2000}
+              placeholder={tt("narPlaceholder")}
+              value={narText}
+              onChange={(e) => setNarText(e.target.value)}
+            />
+            <div className="narativa-actiuni">
+              <button className="add-watchlist-button" onClick={salveazaNarativa} disabled={narStatus === "saving"}>
+                {narStatus === "saved" ? tt("narSalvat") : tt("narSalveaza")}
+              </button>
+            </div>
+            {narativa && radar && narativa.scorInitial != null && (
+              <div className="explanation narativa-delta">
+                <div style={{ fontWeight: 700, marginBottom: "0.4rem" }}>
+                  {tt("narDeCand", {
+                    data: new Date(narativa.updatedAt).toLocaleDateString(locale, { day: "numeric", month: "short" }),
+                  })}
+                </div>
+                <div className="score-bar-label">
+                  <span>{tt("scorCompozit")} ({narativa.scorInitial} → {radar.scorCompozit})</span>
+                  {formatDelta(radar.scorCompozit - narativa.scorInitial)}
+                </div>
+                {narativa.momentumInitial != null && (
+                  <div className="score-bar-label">
+                    <span>{tt("momentum")} ({narativa.momentumInitial} → {radar.scorMomentum})</span>
+                    {formatDelta(radar.scorMomentum - narativa.momentumInitial)}
+                  </div>
+                )}
+              </div>
+            )}
+          </>
+        )}
+      </section>
+
       {detalii?.metrici && (
         <section className="holdings">
           <h2>{tt("indicatori")}</h2>
@@ -434,6 +550,75 @@ export default function StockDetail() {
           )}
         </section>
       )}
+
+      {detalii?.metrici && detalii.metrici.randamentDividend > 0 && (() => {
+        // Praguri publice, aplicate determinist: payout sub 60% = solid,
+        // 60–85% = moderat, peste 85% = tensionat. Payout-ul Finnhub poate
+        // veni ca fracție (0.35) sau ca procent (35) — normalizăm defensiv.
+        let payout = detalii.metrici.payoutRatio;
+        if (payout != null && payout > 0 && payout <= 1.5) payout *= 100;
+        const nivel = payout == null ? null : payout < 60 ? "solid" : payout <= 85 ? "moderat" : "tensionat";
+        return (
+          <section className="holdings">
+            <h2>
+              {tt("divTitlu")}{" "}
+              {nivel && (
+                <span className={`div-badge div-badge-${nivel}`}>
+                  {nivel === "solid" ? tt("divSolid") : nivel === "moderat" ? tt("divModerat") : tt("divTensionat")}
+                </span>
+              )}
+            </h2>
+            <div className="metric-grid">
+              <div className="metric-tile">
+                <span className="muted">{tt("divRandament")}</span>
+                <strong>{pct(detalii.metrici.randamentDividend, 2)}</strong>
+              </div>
+              <div className="metric-tile">
+                <span className="muted">{tt("divPayout")}</span>
+                <strong>{payout == null ? "N/A" : `${payout.toFixed(0)}%`}</strong>
+              </div>
+              <div className="metric-tile">
+                <span className="muted">{tt("divCrestere")}</span>
+                <strong>{pct(detalii.metrici.divCrestere5a, 1)}</strong>
+              </div>
+            </div>
+            <p className="data-source">{tt("divNota")}</p>
+          </section>
+        );
+      })()}
+
+      {quote && detalii?.metrici && (() => {
+        const pretCurent = quote.stock.pret;
+        const fapte = [];
+        if (detalii.metrici.pe != null) fapte.push(tt("evalPe", { p: detalii.metrici.pe.toFixed(1) }));
+        if (istoric365 && istoric365.length > 20) {
+          const medie = istoric365.reduce((s, x) => s + x.pret, 0) / istoric365.length;
+          const dif = ((pretCurent - medie) / medie) * 100;
+          fapte.push(
+            dif >= 0
+              ? tt("evalPesteMedie", { p: dif.toFixed(1) })
+              : tt("evalSubMedie", { p: Math.abs(dif).toFixed(1) })
+          );
+        }
+        if (detalii.metrici.low52Sapt != null && detalii.metrici.high52Sapt != null) {
+          const pozitie = Math.round(
+            Math.min(100, Math.max(0, ((pretCurent - detalii.metrici.low52Sapt) / (detalii.metrici.high52Sapt - detalii.metrici.low52Sapt)) * 100))
+          );
+          fapte.push(tt("evalInterval", { p: pozitie }));
+        }
+        if (fapte.length === 0) return null;
+        return (
+          <section className="holdings">
+            <h2>{tt("evalTitlu")}</h2>
+            <ul className="eval-list">
+              {fapte.map((f) => (
+                <li key={f}>{f}</li>
+              ))}
+            </ul>
+            <p className="data-source">{tt("evalNota")}</p>
+          </section>
+        );
+      })()}
 
       {detalii?.analisti && (
         <section className="holdings">

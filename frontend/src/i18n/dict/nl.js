@@ -4,6 +4,9 @@ export default {
     interval: "Bereik:",
   },
   screens: {
+    siguranta: "Veiligheid",
+    amprenta: "De voetafdruk van je watchlist",
+    amprentaSub: "Het gemiddelde van de deelscores van je geanalyseerde aandelen.",
     valoare: "Totale waarde",
     castigator: "voor op 3 van 4 criteria",
     progres: "onderwerpen afgerond",

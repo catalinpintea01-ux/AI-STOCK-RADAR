@@ -4,6 +4,9 @@ export default {
     interval: "Zakres:",
   },
   screens: {
+    siguranta: "Bezpieczeństwo",
+    amprenta: "Odcisk twojej listy",
+    amprentaSub: "Średnia ocen cząstkowych analizowanych akcji z twojej listy.",
     valoare: "Wartość łączna",
     castigator: "lepsza w 3 z 4 kryteriów",
     progres: "ukończonych tematów",

@@ -81,6 +81,35 @@ router.get("/screener", requirePremium, async (req, res) => {
   res.json({ rezultate, totalAnalizate: scoruri.length });
 });
 
+// Radarul insiderilor: companiile din tot ce a analizat AI-ul unde directorii
+// au cumpărat/vândut net propriile acțiuni în ultimele 90 de zile (raportări
+// SEC publice, agregate la fiecare recalcul de scor). Pur descriptiv.
+router.get("/insideri", requirePremium, async (req, res) => {
+  const scoruri = await prisma.radarScore.findMany();
+
+  const randuri = scoruri
+    .map((s) => {
+      try {
+        const d = JSON.parse(s.sursaDate);
+        if (typeof d.insiderNet90d !== "number") return null;
+        return {
+          ...imbogateste(s),
+          cumparari: d.insiderCumparari90d || 0,
+          vanzari: d.insiderVanzari90d || 0,
+          net: d.insiderNet90d,
+        };
+      } catch {
+        return null;
+      }
+    })
+    .filter((r) => r && r.cumparari + r.vanzari > 0);
+
+  const cumparate = randuri.filter((r) => r.net > 0).sort((a, b) => b.net - a.net).slice(0, 8);
+  const vandute = randuri.filter((r) => r.net < 0).sort((a, b) => a.net - b.net).slice(0, 5);
+
+  res.json({ cumparate, vandute, disponibile: randuri.length });
+});
+
 function comparaScor(eticheta, a, b, simbolA, simbolB) {
   if (a === b) return `${eticheta}: egalitate (${a}/100).`;
   const castiga = a > b ? simbolA : simbolB;

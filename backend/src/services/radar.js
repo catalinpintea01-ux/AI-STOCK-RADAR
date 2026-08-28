@@ -129,13 +129,19 @@ async function computeAndStore(simbol) {
     headlines,
   });
 
+  // Agregatele insiderilor pe 90 de zile alimentează și "Radarul insiderilor"
+  // din Tool-urile Pro (change > 0 = achiziție, < 0 = vânzare, per SEC).
+  const tx90 = (insiderTx || []).filter(
+    (t) => new Date(t.transactionDate).getTime() >= Date.now() - 90 * 24 * 60 * 60 * 1000
+  );
   const sursaDate = JSON.stringify({
     recommendation: recommendation[0] || null,
     earningsRecent: earnings.slice(0, 4),
     metric,
-    insiderCount90d: (insiderTx || []).filter(
-      (t) => new Date(t.transactionDate).getTime() >= Date.now() - 90 * 24 * 60 * 60 * 1000
-    ).length,
+    insiderCount90d: tx90.length,
+    insiderCumparari90d: tx90.filter((t) => (t.change ?? 0) > 0).length,
+    insiderVanzari90d: tx90.filter((t) => (t.change ?? 0) < 0).length,
+    insiderNet90d: tx90.reduce((s, t) => s + (t.change ?? 0), 0),
   });
 
   const data = {

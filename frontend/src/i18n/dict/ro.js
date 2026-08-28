@@ -4,6 +4,9 @@ export default {
     interval: "Interval:",
   },
   screens: {
+    siguranta: "Siguranță",
+    amprenta: "Amprenta watchlist-ului",
+    amprentaSub: "Media sub-scorurilor acțiunilor analizate din lista ta.",
     valoare: "Valoare totală",
     castigator: "mai bun la 3 din 4 criterii",
     progres: "subiecte parcurse",

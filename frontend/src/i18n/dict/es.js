@@ -4,6 +4,9 @@ export default {
     interval: "Rango:",
   },
   screens: {
+    siguranta: "Seguridad",
+    amprenta: "La huella de tu lista",
+    amprentaSub: "La media de las subpuntuaciones de las acciones analizadas de tu lista.",
     valoare: "Valor total",
     castigator: "mejor en 3 de 4 criterios",
     progres: "temas completados",

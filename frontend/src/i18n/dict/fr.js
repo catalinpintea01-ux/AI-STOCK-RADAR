@@ -4,6 +4,9 @@ export default {
     interval: "Plage :",
   },
   screens: {
+    siguranta: "Sécurité",
+    amprenta: "L'empreinte de votre watchlist",
+    amprentaSub: "La moyenne des sous-scores des actions analysées de votre liste.",
     valoare: "Valeur totale",
     castigator: "devant sur 3 critères sur 4",
     progres: "sujets terminés",

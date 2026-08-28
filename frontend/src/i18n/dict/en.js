@@ -4,6 +4,9 @@ export default {
     interval: "Range:",
   },
   screens: {
+    siguranta: "Safety",
+    amprenta: "Your watchlist's footprint",
+    amprentaSub: "The average sub-scores of the analyzed stocks in your list.",
     valoare: "Total value",
     castigator: "ahead on 3 of 4 criteria",
     progres: "topics completed",

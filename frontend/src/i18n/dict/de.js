@@ -4,6 +4,9 @@ export default {
     interval: "Spanne:",
   },
   screens: {
+    siguranta: "Sicherheit",
+    amprenta: "Der Fußabdruck deiner Watchlist",
+    amprentaSub: "Der Durchschnitt der Teil-Scores deiner analysierten Aktien.",
     valoare: "Gesamtwert",
     castigator: "vorn bei 3 von 4 Kriterien",
     progres: "Themen abgeschlossen",

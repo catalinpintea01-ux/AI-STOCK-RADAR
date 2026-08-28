@@ -190,3 +190,19 @@ model TraducereCache {
   texte     String // JSON.stringify(string[])
   createdAt DateTime @default(now())
 }
+
+// "Narativa mea" (tool Pro): teza personală a utilizatorului pentru o
+// acțiune, cu instantaneul scorurilor de la momentul scrierii — UI-ul
+// compară determinist teza cu evoluția ulterioară a scorurilor.
+model Narativa {
+  id              String   @id @default(uuid())
+  userId          String
+  simbol          String
+  teza            String
+  scorInitial     Int?
+  momentumInitial Int?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@unique([userId, simbol])
+}

@@ -4,6 +4,9 @@ export default {
     interval: "Intervalo:",
   },
   screens: {
+    siguranta: "Segurança",
+    amprenta: "A pegada da tua watchlist",
+    amprentaSub: "A média das subpontuações das ações analisadas da tua lista.",
     valoare: "Valor total",
     castigator: "à frente em 3 de 4 critérios",
     progres: "temas concluídos",
