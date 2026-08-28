@@ -22,7 +22,24 @@ const FOTO_CTA = {
 const FACT_ICONS = [Radar, TrendingUp, Newspaper, CalendarDays];
 const FEATURE_ICONS = [Radar, Compass, Newspaper, CalendarDays, Bell, Briefcase];
 
-const LOGO_WALL = ["AAPL", "MSFT", "NVDA", "TSLA", "AMZN", "GOOGL", "META", "NFLX", "JPM", "V", "KO", "DIS"];
+// Companiile din peretele interactiv de sub slide show — două benzi care
+// rulează în direcții opuse, cu chip-uri mari (logo + nume), click → register.
+const COMPANII_R1 = [
+  ["AAPL", "Apple"],
+  ["MSFT", "Microsoft"],
+  ["NVDA", "NVIDIA"],
+  ["TSLA", "Tesla"],
+  ["AMZN", "Amazon"],
+  ["GOOGL", "Alphabet"],
+];
+const COMPANII_R2 = [
+  ["META", "Meta"],
+  ["NFLX", "Netflix"],
+  ["JPM", "JPMorgan"],
+  ["V", "Visa"],
+  ["KO", "Coca-Cola"],
+  ["DIS", "Disney"],
+];
 
 // Fundalul secțiunii de ecrane: sigle mari, estompate, ale unor companii
 // cunoscute (SpaceX nu e listată — logo-ul vine direct de pe domeniul ei).
@@ -64,9 +81,10 @@ export default function Landing() {
   const marqueeRef = useRef(null);
 
   // Pe touch (mobil), banda CSS animată se bate cap în cap cu degetul: CSS-ul
-  // o transformă în scroll orizontal nativ (swipe + snap), iar aici adăugăm
-  // avansul automat lent — un card la ~4s — care se oprește 8s după orice
-  // atingere, ca utilizatorul să poată răsfoi singur fără să se lupte cu ea.
+  // o transformă în scroll orizontal nativ (swipe cu inerție), iar aici o
+  // împingem CONTINUU și lent (~22px/s, ca pe desktop). Setul e dublat, deci
+  // când trecem de jumătate revenim cu exact o jumătate — buclă fără salturi.
+  // Orice atingere oprește mișcarea 4s; apoi reia de unde a lăsat-o degetul.
   useEffect(() => {
     const el = marqueeRef.current;
     if (!el) return;
@@ -74,58 +92,35 @@ export default function Landing() {
     if (!esteTouch) return;
 
     let pauzatPana = 0;
-    let anulaAnimatia = null;
     const pauza = () => {
-      pauzatPana = Date.now() + 8000;
-      if (anulaAnimatia) anulaAnimatia(); // degetul are întotdeauna prioritate
+      pauzatPana = Date.now() + 4000;
     };
     el.addEventListener("touchstart", pauza, { passive: true });
     el.addEventListener("pointerdown", pauza, { passive: true });
 
-    // scrollTo({behavior:"smooth"}) e anulat de scroll-snap pe unele
-    // browsere — animăm manual scrollLeft, cadru cu cadru, până exact în
-    // poziția de snap a cardului țintă, ca snap-ul să nu aibă ce corecta.
-    function animeazaSpre(target) {
-      const start = el.scrollLeft;
-      const distanta = target - start;
-      const durata = 650;
-      const t0 = performance.now();
-      let oprit = false;
-      anulaAnimatia = () => {
-        oprit = true;
-      };
-      function pas(t) {
-        if (oprit) return;
-        const p = Math.min(1, (t - t0) / durata);
-        const ease = 1 - Math.pow(1 - p, 3);
-        el.scrollLeft = start + distanta * ease;
-        if (p < 1) requestAnimationFrame(pas);
-      }
-      requestAnimationFrame(pas);
-    }
-
-    const timer = setInterval(() => {
-      if (Date.now() < pauzatPana) return;
-      const carduri = el.querySelectorAll('.screens-set:not([aria-hidden="true"]) .screen-card');
-      if (carduri.length === 0) return;
-      const maxim = el.scrollWidth - el.clientWidth;
-      const tintaCentrata = (card) =>
-        Math.max(0, Math.min(maxim, card.offsetLeft - (el.clientWidth - card.offsetWidth) / 2));
-      // Următorul card = primul a cărui poziție de snap e clar după poziția curentă.
-      let target = null;
-      for (const card of carduri) {
-        const pozitie = tintaCentrata(card);
-        if (pozitie > el.scrollLeft + 8) {
-          target = pozitie;
-          break;
+    let rafId;
+    let rest = 0; // fracțiunile de pixel se acumulează, altfel viteza mică s-ar pierde la rotunjire
+    let ultim = performance.now();
+    function pas(t) {
+      const dt = Math.min(100, t - ultim);
+      ultim = t;
+      if (Date.now() >= pauzatPana) {
+        rest += dt * 0.022; // ~22px/s
+        const intregi = Math.floor(rest);
+        if (intregi > 0) {
+          rest -= intregi;
+          const jumatate = el.scrollWidth / 2;
+          let nou = el.scrollLeft + intregi;
+          if (jumatate > 0 && nou >= jumatate) nou -= jumatate;
+          el.scrollLeft = nou;
         }
       }
-      animeazaSpre(target === null ? 0 : target); // capăt de listă → înapoi la început
-    }, 4000);
+      rafId = requestAnimationFrame(pas);
+    }
+    rafId = requestAnimationFrame(pas);
 
     return () => {
-      clearInterval(timer);
-      if (anulaAnimatia) anulaAnimatia();
+      cancelAnimationFrame(rafId);
       el.removeEventListener("touchstart", pauza);
       el.removeEventListener("pointerdown", pauza);
     };
@@ -136,8 +131,10 @@ export default function Landing() {
   const stats = [
     { text: t("landing.statOrice"), label: t("landing.statOriceLabel") },
     { value: 4, label: t("landing.statSub") },
-    { value: 10000, label: t("landing.statUsd") },
     { value: 7, label: t("landing.statStiri") },
+    { value: 10, label: t("landing.statLimbi") },
+    { value: 50, label: t("landing.statEducatie") },
+    { value: 6, label: t("landing.statOre") },
   ];
 
   return (
@@ -436,14 +433,25 @@ export default function Landing() {
 
       <section className="landing-logo-wall">
         <p className="landing-logo-wall-title">{t("landing.logoWall")}</p>
-        <div className="landing-logo-wall-grid">
-          {LOGO_WALL.map((s) => (
-            <span key={s} className="landing-logo-chip">
-              <StockLogo simbol={s} size={22} />
-              {s}
-            </span>
-          ))}
-        </div>
+        {[COMPANII_R1, COMPANII_R2].map((rand, idxRand) => (
+          <div key={idxRand} className={`logo-marquee ${idxRand === 1 ? "logo-marquee-rev" : ""}`}>
+            <div className="logo-marquee-track">
+              {[0, 1].map((dup) => (
+                <div className="logo-marquee-set" key={dup} aria-hidden={dup === 1}>
+                  {rand.map(([simbol, nume]) => (
+                    <Link key={simbol} to="/register" className="logo-chip-mare">
+                      <StockLogo simbol={simbol} size={36} />
+                      <span className="logo-chip-nume">
+                        <strong>{simbol}</strong>
+                        <span>{nume}</span>
+                      </span>
+                    </Link>
+                  ))}
+                </div>
+              ))}
+            </div>
+          </div>
+        ))}
       </section>
 
       <section className="landing-stats">

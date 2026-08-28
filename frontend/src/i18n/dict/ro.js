@@ -128,6 +128,9 @@ export default {
     statSub: "sub-scoruri în fiecare analiză AI",
     statUsd: "USD virtuali la înscriere",
     statStiri: "știri de piață analizate AI zilnic",
+    statLimbi: "limbi — interfață și analize traduse automat",
+    statEducatie: "subiecte de educație financiară, cu quiz-uri și calculatoare",
+    statOre: "ore — ritmul de reîmprospătare automată a scorurilor AI",
     cumTitlu: "Cum funcționează",
     pasi: [
       { titlu: "Creează-ți contul", text: "Gratuit, în câteva secunde. Fără card bancar." },
@@ -138,6 +141,10 @@ export default {
       {
         titlu: "Primești analiza",
         text: "Scoruri AI, știri relevante și calendar de raportări — actualizate automat, zi de zi.",
+      },
+      {
+        titlu: "Exersezi fără risc",
+        text: "Testezi deciziile pe portofoliul virtual și urmărești cum evoluează — înveți fără bani reali.",
       },
     ],
     featuresTitlu: "Tot ce ai nevoie, într-un singur radar",

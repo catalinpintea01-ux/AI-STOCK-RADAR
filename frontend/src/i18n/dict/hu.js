@@ -128,6 +128,9 @@ export default {
     statSub: "részpontszám minden MI-elemzésben",
     statUsd: "virtuális USD regisztrációkor",
     statStiri: "piaci hír naponta MI-vel elemezve",
+    statLimbi: "nyelv — lefordított felület és elemzések",
+    statEducatie: "pénzügyi oktatási téma, kvízekkel és kalkulátorokkal",
+    statOre: "óra — az MI-pontszámok automatikus frissítési ciklusa",
     cumTitlu: "Hogyan működik",
     pasi: [
       { titlu: "Hozd létre a fiókod", text: "Ingyen, néhány másodperc alatt. Bankkártya nélkül." },
@@ -138,6 +141,10 @@ export default {
       {
         titlu: "Megkapod az elemzést",
         text: "MI-pontszámok, releváns hírek és eredménynaptár — automatikusan frissítve, minden nap.",
+      },
+      {
+        titlu: "Gyakorolj kockázat nélkül",
+        text: "A virtuális portfólión teszteled a döntéseidet és követed az alakulásukat — tanulás valódi pénz nélkül.",
       },
     ],
     featuresTitlu: "Minden, amire szükséged van, egyetlen radarban",

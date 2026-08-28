@@ -128,6 +128,9 @@ export default {
     statSub: "sub-scores in every AI analysis",
     statUsd: "virtual USD when you sign up",
     statStiri: "market news AI-analyzed daily",
+    statLimbi: "languages — interface and analyses translated",
+    statEducatie: "financial-education topics, with quizzes and calculators",
+    statOre: "hours — automatic refresh cycle of the AI scores",
     cumTitlu: "How it works",
     pasi: [
       { titlu: "Create your account", text: "Free, in a few seconds. No bank card." },
@@ -138,6 +141,10 @@ export default {
       {
         titlu: "Get the analysis",
         text: "AI scores, relevant news and an earnings calendar — updated automatically, every day.",
+      },
+      {
+        titlu: "Practice risk-free",
+        text: "You test decisions on the virtual portfolio and watch how they play out — learning without real money.",
       },
     ],
     featuresTitlu: "Everything you need, in a single radar",

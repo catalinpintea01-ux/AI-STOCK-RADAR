@@ -128,6 +128,9 @@ export default {
     statSub: "sous-scores dans chaque analyse IA",
     statUsd: "USD virtuels à l'inscription",
     statStiri: "actualités de marché analysées par IA chaque jour",
+    statLimbi: "langues — interface et analyses traduites",
+    statEducatie: "sujets d'éducation financière, avec quiz et calculateurs",
+    statOre: "heures — cycle d'actualisation automatique des scores IA",
     cumTitlu: "Comment ça marche",
     pasi: [
       { titlu: "Créez votre compte", text: "Gratuit, en quelques secondes. Sans carte bancaire." },
@@ -138,6 +141,10 @@ export default {
       {
         titlu: "Recevez l'analyse",
         text: "Scores IA, actualités pertinentes et calendrier des résultats — mis à jour automatiquement, chaque jour.",
+      },
+      {
+        titlu: "Entraînez-vous sans risque",
+        text: "Vous testez vos décisions sur le portefeuille virtuel et suivez leur évolution — apprendre sans argent réel.",
       },
     ],
     featuresTitlu: "Tout ce qu'il vous faut, dans un seul radar",

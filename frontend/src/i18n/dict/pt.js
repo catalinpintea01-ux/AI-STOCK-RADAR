@@ -128,6 +128,9 @@ export default {
     statSub: "subpontuações em cada análise IA",
     statUsd: "USD virtuais ao registares-te",
     statStiri: "notícias de mercado analisadas por IA diariamente",
+    statLimbi: "idiomas — interface e análises traduzidas",
+    statEducatie: "temas de educação financeira, com quizzes e calculadoras",
+    statOre: "horas — ciclo de atualização automática das pontuações IA",
     cumTitlu: "Como funciona",
     pasi: [
       { titlu: "Cria a tua conta", text: "Grátis, em segundos. Sem cartão bancário." },
@@ -138,6 +141,10 @@ export default {
       {
         titlu: "Recebe a análise",
         text: "Pontuações IA, notícias relevantes e calendário de resultados — atualizados automaticamente, todos os dias.",
+      },
+      {
+        titlu: "Pratica sem risco",
+        text: "Testas as decisões na carteira virtual e vês como evoluem — aprendes sem dinheiro real.",
       },
     ],
     featuresTitlu: "Tudo o que precisas, num único radar",

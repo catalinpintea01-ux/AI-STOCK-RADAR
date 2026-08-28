@@ -128,6 +128,9 @@ export default {
     statSub: "deelscores in elke AI-analyse",
     statUsd: "virtuele USD bij aanmelding",
     statStiri: "marktnieuws dagelijks door AI geanalyseerd",
+    statLimbi: "talen — interface en analyses vertaald",
+    statEducatie: "onderwerpen financiële educatie, met quizzen en rekentools",
+    statOre: "uur — automatische verversingscyclus van de AI-scores",
     cumTitlu: "Hoe het werkt",
     pasi: [
       { titlu: "Maak je account aan", text: "Gratis, in een paar seconden. Zonder bankkaart." },
@@ -138,6 +141,10 @@ export default {
       {
         titlu: "Ontvang de analyse",
         text: "AI-scores, relevant nieuws en een earnings-kalender — automatisch bijgewerkt, elke dag.",
+      },
+      {
+        titlu: "Oefen zonder risico",
+        text: "Je test beslissingen in de virtuele portefeuille en ziet hoe ze uitpakken — leren zonder echt geld.",
       },
     ],
     featuresTitlu: "Alles wat je nodig hebt, in één radar",

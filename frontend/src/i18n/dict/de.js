@@ -128,6 +128,9 @@ export default {
     statSub: "Teil-Scores in jeder KI-Analyse",
     statUsd: "virtuelle USD bei der Anmeldung",
     statStiri: "Marktnachrichten täglich per KI analysiert",
+    statLimbi: "Sprachen — Oberfläche und Analysen übersetzt",
+    statEducatie: "Finanzbildungs-Themen mit Quiz und Rechnern",
+    statOre: "Stunden — automatischer Aktualisierungszyklus der KI-Scores",
     cumTitlu: "So funktioniert es",
     pasi: [
       { titlu: "Erstelle dein Konto", text: "Kostenlos, in Sekunden. Ohne Bankkarte." },
@@ -138,6 +141,10 @@ export default {
       {
         titlu: "Erhalte die Analyse",
         text: "KI-Scores, relevante Nachrichten und Earnings-Kalender — automatisch aktualisiert, jeden Tag.",
+      },
+      {
+        titlu: "Übe ohne Risiko",
+        text: "Du testest Entscheidungen im virtuellen Portfolio und siehst, wie sie sich entwickeln — lernen ohne echtes Geld.",
       },
     ],
     featuresTitlu: "Alles, was du brauchst, in einem einzigen Radar",

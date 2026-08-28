@@ -128,6 +128,9 @@ export default {
     statSub: "oceny cząstkowe w każdej analizie AI",
     statUsd: "wirtualnych USD przy rejestracji",
     statStiri: "wiadomości rynkowych analizowanych przez AI dziennie",
+    statLimbi: "języków — interfejs i analizy przetłumaczone",
+    statEducatie: "tematów edukacji finansowej, z quizami i kalkulatorami",
+    statOre: "godzin — cykl automatycznego odświeżania ocen AI",
     cumTitlu: "Jak to działa",
     pasi: [
       { titlu: "Utwórz konto", text: "Za darmo, w kilka sekund. Bez karty bankowej." },
@@ -138,6 +141,10 @@ export default {
       {
         titlu: "Otrzymuj analizę",
         text: "Oceny AI, istotne wiadomości i kalendarz wyników — aktualizowane automatycznie, każdego dnia.",
+      },
+      {
+        titlu: "Ćwicz bez ryzyka",
+        text: "Testujesz decyzje w wirtualnym portfelu i obserwujesz ich rozwój — nauka bez prawdziwych pieniędzy.",
       },
     ],
     featuresTitlu: "Wszystko, czego potrzebujesz, w jednym radarze",

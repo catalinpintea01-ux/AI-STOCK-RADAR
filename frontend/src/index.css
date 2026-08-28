@@ -5509,3 +5509,147 @@ html[data-theme="dark"] .workspace-panel {
     display: none;
   }
 }
+
+/* --- Rafinări landing v3 --- */
+
+/* Toate ecranele din slide show au exact aceeași înălțime. */
+.screens-set .screen-card {
+  height: 372px;
+  display: flex;
+  flex-direction: column;
+}
+
+.screens-set .screen-body {
+  flex: 1;
+}
+
+.screen-news {
+  flex: 1;
+  justify-content: center;
+}
+
+/* Pe touch: fără snap (banda curge continuu) și cu ambele seturi vizibile,
+   ca bucla să fie fără capăt — suprascrie regulile anterioare. */
+@media (pointer: coarse) {
+  .screens-marquee {
+    scroll-snap-type: none;
+  }
+  .screens-set .screen-card {
+    scroll-snap-align: none;
+  }
+  .screens-set[aria-hidden="true"] {
+    display: flex;
+  }
+}
+
+/* Statisticile: 6 puncte, 3 pe rând pe desktop, 2 pe mobil. */
+.landing-stats {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+@media (max-width: 700px) {
+  .landing-stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Peretele de companii: două benzi cu chip-uri mari, direcții opuse. */
+.logo-marquee {
+  overflow: hidden;
+  position: relative;
+  padding: 0.4rem 0;
+}
+
+.logo-marquee::before,
+.logo-marquee::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 48px;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.logo-marquee::before {
+  left: 0;
+  background: linear-gradient(90deg, var(--bg-page), transparent);
+}
+
+.logo-marquee::after {
+  right: 0;
+  background: linear-gradient(-90deg, var(--bg-page), transparent);
+}
+
+.logo-marquee-track {
+  display: flex;
+  width: max-content;
+  animation: logo-scroll 42s linear infinite;
+}
+
+.logo-marquee-rev .logo-marquee-track {
+  animation-direction: reverse;
+}
+
+.logo-marquee:hover .logo-marquee-track {
+  animation-play-state: paused;
+}
+
+@keyframes logo-scroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.logo-marquee-set {
+  display: flex;
+}
+
+.logo-chip-mare {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 0.6rem 1rem;
+  margin-right: 0.9rem;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--card-bg);
+  text-decoration: none;
+  color: var(--text);
+  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+  white-space: nowrap;
+}
+
+.logo-chip-mare:hover {
+  transform: translateY(-3px) scale(1.04);
+  border-color: var(--blue);
+  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.22);
+}
+
+.logo-chip-nume {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.15;
+}
+
+.logo-chip-nume strong {
+  font-size: 0.88rem;
+  font-weight: 800;
+}
+
+.logo-chip-nume span {
+  font-size: 0.7rem;
+  opacity: 0.7;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .logo-marquee-track {
+    animation: none;
+    flex-wrap: wrap;
+    width: auto;
+    justify-content: center;
+  }
+}
