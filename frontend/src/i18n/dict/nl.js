@@ -1,4 +1,8 @@
 export default {
+  chart: {
+    gol: "De koershistorie wordt opgebouwd — kom snel terug.",
+    interval: "Bereik:",
+  },
   screens: {
     valoare: "Totale waarde",
     castigator: "voor op 3 van 4 criteria",

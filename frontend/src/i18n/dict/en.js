@@ -1,4 +1,8 @@
 export default {
+  chart: {
+    gol: "Price history is still accumulating — check back soon.",
+    interval: "Range:",
+  },
   screens: {
     valoare: "Total value",
     castigator: "ahead on 3 of 4 criteria",

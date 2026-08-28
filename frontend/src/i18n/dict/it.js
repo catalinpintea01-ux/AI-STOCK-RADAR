@@ -1,4 +1,8 @@
 export default {
+  chart: {
+    gol: "Lo storico dei prezzi si sta accumulando — torna presto.",
+    interval: "Intervallo:",
+  },
   screens: {
     valoare: "Valore totale",
     castigator: "avanti in 3 criteri su 4",

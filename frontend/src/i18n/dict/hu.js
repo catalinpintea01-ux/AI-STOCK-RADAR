@@ -1,4 +1,8 @@
 export default {
+  chart: {
+    gol: "Az árfolyamtörténet még gyűlik — nézz vissza hamarosan.",
+    interval: "Sáv:",
+  },
   screens: {
     valoare: "Teljes érték",
     castigator: "3/4 szempontban jobb",

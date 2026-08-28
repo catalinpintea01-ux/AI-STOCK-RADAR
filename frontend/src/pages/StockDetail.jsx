@@ -34,6 +34,22 @@ function pct(v, digite = 1) {
   return v == null ? "N/A" : `${v.toFixed(digite)}%`;
 }
 
+// Cei mai marcanți 2 factori din spatele scorului (aceleași praguri ca pe
+// rândurile din watchlist: ≥60 punct forte, ≤40 punct slab).
+function factoriPrincipali(radar, t) {
+  const factori = [
+    { val: radar.scorAnalist, pozitiv: t("dash.factori.analistiPoz"), negativ: t("dash.factori.analistiNeg") },
+    { val: radar.scorMomentum, pozitiv: t("dash.factori.momentumPoz"), negativ: t("dash.factori.momentumNeg") },
+    { val: radar.scorFundamental, pozitiv: t("dash.factori.fundPoz"), negativ: t("dash.factori.fundNeg") },
+    { val: 100 - radar.scorRisc, pozitiv: t("dash.factori.riscPoz"), negativ: t("dash.factori.riscNeg") },
+  ];
+  return factori
+    .filter((f) => f.val >= 60 || f.val <= 40)
+    .sort((a, b) => Math.abs(b.val - 50) - Math.abs(a.val - 50))
+    .slice(0, 2)
+    .map((f) => (f.val >= 60 ? f.pozitiv : f.negativ));
+}
+
 export default function StockDetail() {
   const { simbol } = useParams();
   const { t, locale } = useLang();
@@ -228,6 +244,7 @@ export default function StockDetail() {
         </div>
         <span className="stock-hero-price">
           {quote ? <LivePrice value={quote.stock.pret} /> : "..."}
+          {quote && <span className="live-badge"><i /> LIVE</span>}
         </span>
         {quote && (
           <span className={quote.stock.variatieProcent >= 0 ? "gain-positive stock-hero-var" : "gain-negative stock-hero-var"}>
@@ -286,6 +303,14 @@ export default function StockDetail() {
         ) : radar ? (
           <>
             <VerdictBadge verdict={radar.verdict} incredere={radar.incredere} />
+
+            {factoriPrincipali(radar, t).length > 0 && (
+              <div className="factor-chips">
+                {factoriPrincipali(radar, t).map((f) => (
+                  <span key={f}>{f}</span>
+                ))}
+              </div>
+            )}
 
             {schimbare && (
               <div className="explanation" style={{ marginTop: 0 }}>

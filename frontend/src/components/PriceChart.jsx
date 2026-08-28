@@ -1,4 +1,5 @@
 import { useMemo, useRef, useState } from "react";
+import { useLang } from "../i18n/index.jsx";
 
 // Grafic de preț în stilul brokerilor moderni: linie + umplere gradient,
 // verde/roșu după direcția intervalului, crosshair la hover cu preț și dată.
@@ -9,6 +10,7 @@ const PAD_TOP = 14;
 const PAD_BOTTOM = 6;
 
 export default function PriceChart({ istoric }) {
+  const { t, locale } = useLang();
   const svgRef = useRef(null);
   const [hoverIdx, setHoverIdx] = useState(null);
 
@@ -29,7 +31,7 @@ export default function PriceChart({ istoric }) {
   }, [istoric]);
 
   if (!istoric || istoric.length < 2) {
-    return <p className="chart-empty">Istoricul de preț se acumulează — revino curând.</p>;
+    return <p className="chart-empty">{t("chart.gol")}</p>;
   }
 
   const culoare = crestere ? "#2e7d5b" : "#bf4438";
@@ -51,12 +53,12 @@ export default function PriceChart({ istoric }) {
           <>
             <strong>${hover.pret.toFixed(2)}</strong>
             <span className="muted">
-              {new Date(hover.t).toLocaleDateString("ro-RO", { day: "numeric", month: "short", year: "numeric" })}
+              {new Date(hover.t).toLocaleDateString(locale, { day: "numeric", month: "short", year: "numeric" })}
             </span>
           </>
         ) : (
           <span className="muted">
-            Interval: ${min.toFixed(2)} – ${max.toFixed(2)}
+            {t("chart.interval")} ${min.toFixed(2)} – ${max.toFixed(2)}
           </span>
         )}
       </div>

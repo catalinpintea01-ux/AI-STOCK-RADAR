@@ -5970,3 +5970,105 @@ html[data-theme="dark"] .workspace-panel {
 .screen-edu-progres {
   margin-bottom: 0.1rem;
 }
+
+/* --- Detaliile din mockupuri, aduse în aplicația reală --- */
+
+/* Chip-urile de factori sub verdictul din analiza acțiunii */
+.factor-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin: 0.6rem 0 0.9rem;
+}
+
+.factor-chips span {
+  font-size: 0.72rem;
+  font-weight: 700;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 0.24rem 0.6rem;
+  color: var(--blue);
+}
+
+/* Badge-ul LIVE de lângă prețul din header-ul acțiunii */
+.live-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  margin-left: 0.6rem;
+  font-size: 0.62rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  color: #2e7d5b;
+  vertical-align: middle;
+}
+
+.live-badge i {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #2e7d5b;
+  animation: screen-puls 1.6s ease-in-out infinite;
+}
+
+/* Concluzia comparatorului A vs B */
+.cmp-concluzie {
+  text-align: center;
+  font-size: 0.78rem;
+  font-weight: 800;
+  color: var(--blue);
+  border: 1px dashed var(--blue);
+  border-radius: 999px;
+  padding: 0.4rem 0.8rem;
+  margin: 0.75rem auto 0;
+  width: fit-content;
+}
+
+/* Chip-urile de context de pe cardurile de știri din dashboard */
+.hero-news-meta {
+  display: flex;
+  gap: 0.35rem;
+  margin-top: 0.35rem;
+}
+
+.hero-news-chip {
+  font-style: normal;
+  font-size: 0.62rem;
+  font-weight: 800;
+  border-radius: 999px;
+  padding: 0.16rem 0.5rem;
+  background: rgba(255, 255, 255, 0.16);
+  color: #efe9dd;
+}
+
+.hero-news-chip-verdict {
+  color: #d3bf9c;
+}
+
+/* Bara de progres a învățării din Informare */
+.learn-progres {
+  margin-bottom: 1rem;
+}
+
+.learn-progres-label {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.78rem;
+  font-weight: 700;
+  margin-bottom: 0.3rem;
+}
+
+.learn-progres-track {
+  height: 8px;
+  border-radius: 6px;
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  overflow: hidden;
+}
+
+.learn-progres-fill {
+  height: 100%;
+  border-radius: 6px;
+  background: linear-gradient(90deg, var(--blue), #d3bf9c);
+  transition: width 0.4s ease;
+}

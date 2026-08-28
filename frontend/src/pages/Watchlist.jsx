@@ -925,6 +925,16 @@ export default function Watchlist() {
                       <div className="hero-news-body">
                         <span className="hero-news-source">{n.sursa} · {t("dash.azi")}</span>
                         <h3 className="hero-news-headline">{n.titluAI}</h3>
+                        {(n.simbol || n.sentiment) && (
+                          <span className="hero-news-meta">
+                            {n.simbol && <em className="hero-news-chip">{n.simbol}</em>}
+                            {n.sentiment && (
+                              <em className="hero-news-chip hero-news-chip-verdict">
+                                {t(`verdict.${n.sentiment}`)}
+                              </em>
+                            )}
+                          </span>
+                        )}
                       </div>
                     </Link>
                   ))}

@@ -1,4 +1,8 @@
 export default {
+  chart: {
+    gol: "Istoricul de preț se acumulează — revino curând.",
+    interval: "Interval:",
+  },
   screens: {
     valoare: "Valoare totală",
     castigator: "mai bun la 3 din 4 criterii",

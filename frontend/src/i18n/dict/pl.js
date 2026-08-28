@@ -1,4 +1,8 @@
 export default {
+  chart: {
+    gol: "Historia cen dopiero się gromadzi — wróć wkrótce.",
+    interval: "Zakres:",
+  },
   screens: {
     valoare: "Wartość łączna",
     castigator: "lepsza w 3 z 4 kryteriów",

@@ -66,6 +66,7 @@ export default function ToolsPro() {
     cmpMomentum: "Momentum",
     cmpFundamentale: "Fundamentale",
     cmpRisc: "Risc (mai mic = mai calm)",
+    castigator: "mai bun la {n} din 4 criterii",
   });
   const numeSector = (s) => {
     const v = t("sectoare." + s);
@@ -291,6 +292,33 @@ export default function ToolsPro() {
                   })}
                 </tbody>
               </table>
+
+              {(() => {
+                // Concluzia factuală a comparației: câte criterii câștigă
+                // fiecare (scor/momentum/analiști mai mari, risc mai mic).
+                const a = comparatie.a;
+                const b = comparatie.b;
+                let aWins = 0;
+                let bWins = 0;
+                for (const [ka, kb, lowerWins] of [
+                  ["scorCompozit", "scorCompozit", false],
+                  ["scorMomentum", "scorMomentum", false],
+                  ["scorAnalist", "scorAnalist", false],
+                  ["scorRisc", "scorRisc", true],
+                ]) {
+                  if (a[ka] === b[kb]) continue;
+                  const aBetter = lowerWins ? a[ka] < b[kb] : a[ka] > b[kb];
+                  if (aBetter) aWins++;
+                  else bWins++;
+                }
+                if (aWins === bWins) return null;
+                const lider = aWins > bWins ? a : b;
+                return (
+                  <div className="cmp-concluzie">
+                    {lider.simbol} · {tt("castigator", { n: Math.max(aWins, bWins) })}
+                  </div>
+                );
+              })()}
 
               <div className="tools-compare-links">
                 <Link to={`/stock/${comparatie.a.simbol}`} className="view-analysis-button">

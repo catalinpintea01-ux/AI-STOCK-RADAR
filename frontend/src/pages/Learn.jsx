@@ -5,6 +5,7 @@ import { TOPICS_EXTRA } from "../data/learnTopics2.js";
 import { QUIZZES } from "../data/learnQuizzes.js";
 import { TopicQuiz, CALCULATOARE } from "../components/LearnInteractive.jsx";
 import { useTraduse } from "../i18n/useTraduse.js";
+import { useLang } from "../i18n/index.jsx";
 
 const TOATE_TOPICELE = [...TOPICS, ...TOPICS_EXTRA];
 
@@ -78,13 +79,38 @@ export default function Learn() {
     nicio: "Niciun subiect nu corespunde căutării.",
     dictionar: "Dicționar financiar ({n} termeni)",
   });
+  const { t } = useLang();
   const ttTitlu = useTitluriTraduse();
   const [expanded, setExpanded] = useState(null);
   const [filtru, setFiltru] = useState("");
 
+  // Progresul de învățare: subiectele deschise vreodată, ținute local —
+  // suficient pentru sentimentul de parcurs, fără nimic pe server.
+  const [citite, setCitite] = useState(() => {
+    try {
+      return new Set(JSON.parse(localStorage.getItem("subiecteCitite") || "[]"));
+    } catch {
+      return new Set();
+    }
+  });
+
   function toggle(id) {
     setExpanded((prev) => (prev === id ? null : id));
+    if (id !== "dictionar" && !citite.has(id)) {
+      setCitite((prev) => {
+        const next = new Set(prev);
+        next.add(id);
+        try {
+          localStorage.setItem("subiecteCitite", JSON.stringify([...next]));
+        } catch {
+          /* mod privat — progresul rămâne pe sesiune */
+        }
+      return next;
+      });
+    }
   }
+
+  const procentCitite = Math.round((citite.size / TOATE_TOPICELE.length) * 100);
 
   const topiceFiltrate = TOATE_TOPICELE.filter((t) =>
     `${t.titlu} ${ttTitlu(t.id)}`.toLowerCase().includes(filtru.toLowerCase())
@@ -99,6 +125,20 @@ export default function Learn() {
         </div>
         <img src="/mascota/prezinta.png" alt="" className="mascota mascota-learn" loading="lazy" />
       </div>
+
+      {citite.size > 0 && (
+        <div className="learn-progres">
+          <div className="learn-progres-label">
+            <span>
+              {citite.size}/{TOATE_TOPICELE.length} {t("screens.progres")}
+            </span>
+            <span>{procentCitite}%</span>
+          </div>
+          <div className="learn-progres-track">
+            <div className="learn-progres-fill" style={{ width: `${procentCitite}%` }} />
+          </div>
+        </div>
+      )}
 
       <div className="search-section">
         <input

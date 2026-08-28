@@ -1,4 +1,8 @@
 export default {
+  chart: {
+    gol: "Die Kurshistorie baut sich noch auf — schau bald wieder vorbei.",
+    interval: "Spanne:",
+  },
   screens: {
     valoare: "Gesamtwert",
     castigator: "vorn bei 3 von 4 Kriterien",

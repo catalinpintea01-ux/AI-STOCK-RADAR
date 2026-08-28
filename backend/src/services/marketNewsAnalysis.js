@@ -79,6 +79,8 @@ Pentru fiecare din cele ${SELECTED_COUNT} știri alese, produci:
 2. "titluAI": un titlu propriu, atractiv, în limba română (nu traducere literală a celui original, ci un titlu jurnalistic nou, scris de tine)
 3. "analiza": un text de context de 3-5 propoziții (aproximativ 100-150 cuvinte) în limba română, care explică de ce această știre contează pentru piețele financiare, ce sectoare sau companii ar putea fi afectate, și ce ar merita urmărit în continuare
 4. "cuvantCheie": 1-3 cuvinte în limba engleză, potrivite pentru căutarea unei fotografii de stock sugestive pentru subiectul știrii (ex: "oil pipeline", "stock exchange trading floor", "semiconductor factory")
+5. "sentiment": exact una dintre valorile "optimist", "neutru" sau "rezervat" — tonul de piață al știrii, descriptiv
+6. "simbol": ticker-ul principal al companiei/indicelui afectat (ex: "NVDA", "SPY"), sau null dacă știrea nu vizează clar unul
 
 Reguli obligatorii:
 - NU folosi niciodată cuvintele "cumpără", "vinde", "recomand", "ar trebui să", sau orice formă de sfat personal de investiții.
@@ -88,7 +90,7 @@ Reguli obligatorii:
 ${candidates.map((n, i) => `${i + 1}. Titlu original: ${n.headline}\nRezumat: ${n.rezumat || "(fără rezumat)"}\nSursă: ${n.sursa}`).join("\n\n")}
 
 Răspunde STRICT cu un array JSON de exact ${SELECTED_COUNT} elemente, ordonate de la cea mai relevantă la cea mai puțin relevantă, fără text în afara lui:
-[{"index": 1, "titluAI": "...", "analiza": "...", "cuvantCheie": "..."}, ...]`;
+[{"index": 1, "titluAI": "...", "analiza": "...", "cuvantCheie": "...", "sentiment": "...", "simbol": "..."}, ...]`;
 
   try {
     const res = await fetch(ANTHROPIC_URL, {
@@ -138,6 +140,11 @@ Răspunde STRICT cu un array JSON de exact ${SELECTED_COUNT} elemente, ordonate 
         titluAI: p.titluAI,
         analiza: p.analiza,
         cuvantCheie: typeof p.cuvantCheie === "string" ? p.cuvantCheie : null,
+        sentiment: ["optimist", "neutru", "rezervat"].includes(p.sentiment) ? p.sentiment : null,
+        simbol:
+          typeof p.simbol === "string" && /^[A-Z.]{1,6}$/.test(p.simbol.trim().toUpperCase())
+            ? p.simbol.trim().toUpperCase()
+            : null,
       });
     }
 
@@ -168,6 +175,8 @@ async function ensureBaseCache() {
         id: makeId(n.url),
         titluAI: s.titluAI,
         analiza: s.analiza,
+        sentiment: s.sentiment || null,
+        simbol: s.simbol || null,
         sursa: n.sursa,
         url: n.url,
         data: n.data,
