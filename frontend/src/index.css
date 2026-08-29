@@ -6610,3 +6610,68 @@ html {
   color: var(--blue);
   text-decoration: underline;
 }
+
+/* ── Pagina de administrare ────────────────────────────────────────────── */
+.admin-stats {
+  margin-bottom: 1.1rem;
+}
+.admin-zile {
+  display: flex;
+  align-items: flex-end;
+  gap: 6px;
+}
+.admin-zi {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  min-width: 0;
+}
+.admin-zi-nr {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--blue);
+  min-height: 1em;
+}
+.admin-zi-bara {
+  width: 100%;
+  max-width: 34px;
+  border-radius: 5px 5px 2px 2px;
+  background: linear-gradient(180deg, var(--blue-light), var(--blue));
+}
+.admin-zi-eticheta {
+  font-size: 0.68rem;
+  color: var(--muted);
+}
+.admin-tabel {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+.admin-tabel th {
+  text-align: left;
+  padding: 0.45rem 0.6rem;
+  color: var(--muted);
+  font-size: 0.76rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  border-bottom: 1px solid var(--border);
+}
+.admin-tabel td {
+  padding: 0.5rem 0.6rem;
+  border-bottom: 1px solid var(--border);
+  word-break: break-all;
+}
+.admin-rand-test td {
+  color: var(--muted);
+}
+.admin-badge-test {
+  display: inline-block;
+  margin-left: 0.4rem;
+  padding: 0.05rem 0.45rem;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  font-size: 0.68rem;
+  color: var(--muted);
+}

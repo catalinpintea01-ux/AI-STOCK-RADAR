@@ -16,6 +16,7 @@ import ThemePage from "./pages/ThemePage.jsx";
 import VixPage from "./pages/VixPage.jsx";
 import { Termeni, Confidentialitate } from "./pages/Legal.jsx";
 import Resetare from "./pages/Resetare.jsx";
+import Admin from "./pages/Admin.jsx";
 import Despre from "./pages/Despre.jsx";
 import Risc from "./pages/Risc.jsx";
 import NavBar from "./components/NavBar.jsx";
@@ -134,6 +135,14 @@ export default function App() {
         element={
           <PrivateLayout>
             <Community />
+          </PrivateLayout>
+        }
+      />
+      <Route
+        path="/admin"
+        element={
+          <PrivateLayout>
+            <Admin />
           </PrivateLayout>
         }
       />

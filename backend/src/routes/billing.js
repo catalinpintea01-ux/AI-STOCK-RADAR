@@ -8,12 +8,19 @@ const router = express.Router();
 const FRONTEND_URL = process.env.FRONTEND_URL || "http://localhost:5173";
 
 router.get("/status", requireAuth, async (req, res) => {
-  const subscription = await prisma.subscription.findUnique({ where: { userId: req.userId } });
+  const [subscription, user] = await Promise.all([
+    prisma.subscription.findUnique({ where: { userId: req.userId } }),
+    prisma.user.findUnique({ where: { id: req.userId }, select: { email: true } }),
+  ]);
+  const { ADMIN_EMAILS } = require("./admin");
   res.json({
     plan: subscription?.plan || "free",
     status: subscription?.status || "inactive",
     premium: isPremium(subscription),
     currentPeriodEnd: subscription?.currentPeriodEnd || null,
+    // Meniul arată linkul "Administrare" doar adminilor — decizia reală de
+    // acces rămâne pe server (403 în routes/admin.js).
+    admin: Boolean(user && ADMIN_EMAILS.has(user.email.toLowerCase())),
   });
 });
 

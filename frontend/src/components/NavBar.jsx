@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { api } from "../api";
-import { Bell, Star, Radar, Info, ShieldAlert } from "lucide-react";
+import { Bell, Star, Radar, Info, ShieldAlert, BarChart3 } from "lucide-react";
 import { useLang } from "../i18n/index.jsx";
 import LanguageSwitcher from "./LanguageSwitcher.jsx";
 import ThemeToggle from "./ThemeToggle.jsx";
@@ -11,6 +11,7 @@ export default function NavBar() {
   const navigate = useNavigate();
   const [unreadCount, setUnreadCount] = useState(0);
   const [premium, setPremium] = useState(null);
+  const [admin, setAdmin] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const menuRef = useRef(null);
 
@@ -27,7 +28,10 @@ export default function NavBar() {
 
     api
       .getBillingStatus()
-      .then((data) => setPremium(data.premium))
+      .then((data) => {
+        setPremium(data.premium);
+        setAdmin(Boolean(data.admin));
+      })
       .catch(() => {});
   }, []);
 
@@ -139,6 +143,15 @@ export default function NavBar() {
               >
                 <ShieldAlert size={14} className="ic" /> {t("fRisc")}
               </NavLink>
+              {admin && (
+                <NavLink
+                  to="/admin"
+                  className={({ isActive }) => (isActive ? "navbar-dropdown-link active" : "navbar-dropdown-link")}
+                  onClick={() => setMenuOpen(false)}
+                >
+                  <BarChart3 size={14} className="ic" /> Administrare
+                </NavLink>
+              )}
               {premium === true && (
                 <button className="navbar-dropdown-link navbar-dropdown-button" onClick={handleManageClick}>
                   {t("nav.gestioneaza")}

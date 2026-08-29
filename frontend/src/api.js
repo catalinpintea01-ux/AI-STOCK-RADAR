@@ -75,6 +75,7 @@ export const api = {
   addFriend: (cod) => request("/community/friends", { method: "POST", body: JSON.stringify({ cod }) }),
   removeFriend: (friendId) => request(`/community/friends/${friendId}`, { method: "DELETE" }),
   getBrief: () => request("/brief"),
+  getAdminRezumat: () => request("/admin/rezumat"),
   getToolTop: () => request("/tools/top"),
   getToolScreener: (params) => request(`/tools/screener?${new URLSearchParams(params)}`),
   getToolCompare: (a, b) =>
