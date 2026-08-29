@@ -6337,3 +6337,50 @@ html[data-theme="dark"] .workspace-panel {
   fill: var(--text);
   font-weight: 800;
 }
+
+/* --- Pachetul de încredere: why-us + link ancoră + footer extins --- */
+
+html {
+  scroll-behavior: smooth;
+}
+
+.hero-cum-link {
+  display: inline-block;
+  margin-top: 1.1rem;
+  color: var(--muted);
+  text-decoration: none;
+  font-size: 0.85rem;
+  font-weight: 600;
+  transition: color 0.15s ease;
+}
+
+.hero-cum-link:hover {
+  color: var(--blue);
+}
+
+.landing-why {
+  text-align: center;
+  margin: 3.5rem auto 4rem;
+  max-width: 720px;
+}
+
+.landing-why-1 {
+  color: var(--muted);
+  font-size: 1.05rem;
+  margin: 0 0 0.4rem;
+}
+
+.landing-why-2 {
+  font-size: clamp(1.4rem, 3.4vw, 2rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  margin: 0;
+  background: linear-gradient(90deg, var(--text), var(--blue));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.landing-footer-links {
+  margin-bottom: 0.6rem;
+}

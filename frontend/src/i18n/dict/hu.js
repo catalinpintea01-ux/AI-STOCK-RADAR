@@ -1,4 +1,32 @@
 export default {
+  disclaimerRisc: "A befektetés kockázattal jár, beleértve a tőke esetleges elvesztését.",
+  whyUs1: "A legtöbb platform adatokat ad.",
+  whyUs2: "Az AI Stock Radar megmondja, hova érdemes nézni.",
+  heroCum: "Nézd meg, hogyan működik ↓",
+  fDespre: "Rólunk",
+  fContact: "Kapcsolat",
+  fRisc: "Kockázati figyelmeztetés",
+  desprePagina: {
+    "titlu": "Az AI Stock Radarról",
+    "sub": "Kik vagyunk és mit csinálunk — röviden és kertelés nélkül.",
+    "p1": "Az AI Stock Radar egy Romániában épített oktatási célú tőzsdeelemző platform. Mesterséges intelligenciával alakítjuk a nyilvános piaci adatokat — árakat, jelentéseket, híreket, elemzői értékeléseket — bárki számára érthető pontszámokká és magyarázatokká, 10 nyelven.",
+    "ceFacemTitlu": "Mit csinál a platform",
+    "ceFacem": "Átvizsgálja az amerikai piacot, minden részvényre 0–100 közötti MI-pontszámot számol (elemzők, momentum, fundamentumok, kockázat), összefoglalja a nap híreit, és virtuális portfóliót ad, amelyen valódi pénz nélkül gyakorolhatsz.",
+    "ceNuTitlu": "Mit NEM csinál a platform",
+    "ceNu": "Nem nyújt befektetési tanácsadást, személyre szabott ajánlásokat, árfolyam-előrejelzéseket vagy ígért hozamokat. A pontszámok és szövegek a részvény nyilvános kontextusát írják le — a döntés és a felelősség a tiéd.",
+    "cineTitlu": "Ki áll a projekt mögött",
+    "cine": "A platformot a Romániában bejegyzett [CÉG SRL] üzemelteti. Kis csapat vagyunk, egyetlen dolognak szentelve: érthető pénzügyi oktatás, szakzsargon és üres ígéretek nélkül.",
+    "contactTitlu": "Kapcsolat",
+    "contact": "Bármikor írhatsz nekünk a {email} címre — 48 órán belül válaszolunk."
+  },
+  riscPagina: {
+    "titlu": "Kockázati figyelmeztetés",
+    "p1": "A pénzügyi eszközökbe történő befektetés kockázattal jár, beleértve a befektetett tőke részleges vagy teljes elvesztését. A múltbeli teljesítmény nem garantálja a jövőbeli eredményeket.",
+    "p2": "Az AI Stock Radar kizárólag tájékoztatási és oktatási célú kutatási és elemzési eszközöket biztosít. A platformon semmi sem minősül pénzügyi vagy befektetési tanácsadásnak, személyre szabott ajánlásnak, illetve pénzügyi eszközök vételére vagy eladására vonatkozó ajánlatnak.",
+    "p3": "Az MI által generált pontszámok, értékelések és szövegek harmadik felektől származó nyilvános adatok automatikus összefoglalói; hibákat, késéseket vagy hiányosságokat tartalmazhatnak. A saját kutatásod kiindulópontjai — nem utasítások és nem profitígéretek.",
+    "p4": "A virtuális portfólió fiktív pénzt használ valódi árakkal: az ott elért eredmények nem vihetők át automatikusan a valós piacra, ahol költségek, likviditás és érzelmek is közbeszólnak.",
+    "p5": "Minden befektetési döntés előtt mérd fel pénzügyi helyzetedet és kockázattűrésedet, és szükség esetén fordulj engedéllyel rendelkező tanácsadóhoz."
+  },
   chart: {
     gol: "Az árfolyamtörténet még gyűlik — nézz vissza hamarosan.",
     interval: "Sáv:",

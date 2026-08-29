@@ -1,4 +1,32 @@
 export default {
+  disclaimerRisc: "Investițiile implică riscuri, inclusiv pierderea capitalului.",
+  whyUs1: "Cele mai multe platforme îți dau date.",
+  whyUs2: "AI Stock Radar îți spune unde merită să te uiți.",
+  heroCum: "Vezi cum funcționează ↓",
+  fDespre: "Despre",
+  fContact: "Contact",
+  fRisc: "Avertisment de risc",
+  desprePagina: {
+    "titlu": "Despre AI Stock Radar",
+    "sub": "Cine suntem și ce facem — pe scurt și fără ocolișuri.",
+    "p1": "AI Stock Radar este o platformă educațională de analiză bursieră construită în România. Folosim inteligența artificială ca să transformăm datele publice de piață — prețuri, raportări, știri, evaluările analiștilor — în scoruri și explicații pe înțelesul oricui, disponibile în 10 limbi.",
+    "ceFacemTitlu": "Ce face platforma",
+    "ceFacem": "Scanează piața americană, calculează un scor AI de la 0 la 100 pentru fiecare acțiune (analiști, momentum, fundamentale, risc), rezumă știrile zilei și îți oferă un portofoliu virtual pe care exersezi fără bani reali.",
+    "ceNuTitlu": "Ce NU face platforma",
+    "ceNu": "Nu oferă consultanță de investiții, nu face recomandări personalizate, nu prezice prețuri și nu promite randamente. Scorurile și textele descriu contextul public al unei acțiuni — deciziile și responsabilitatea îți aparțin.",
+    "cineTitlu": "Cine e în spatele proiectului",
+    "cine": "Platforma este operată de [DENUMIRE FIRMĂ SRL], înregistrată în România. Suntem o echipă mică, dedicată unui singur lucru: educație financiară clară, fără jargon și fără promisiuni goale.",
+    "contactTitlu": "Contact",
+    "contact": "Ne poți scrie oricând la {email} — răspundem în cel mult 48 de ore."
+  },
+  riscPagina: {
+    "titlu": "Avertisment de risc",
+    "p1": "Investițiile în instrumente financiare implică riscuri, inclusiv pierderea parțială sau totală a capitalului investit. Performanța trecută nu garantează rezultate viitoare.",
+    "p2": "AI Stock Radar oferă instrumente de cercetare și analiză exclusiv în scop informativ și educațional. Nimic de pe această platformă nu constituie consultanță financiară sau de investiții, recomandare personalizată ori ofertă de a cumpăra sau vinde instrumente financiare.",
+    "p3": "Scorurile, verdictele și textele generate de inteligența artificială sunt rezumate automate ale unor date publice furnizate de terți; pot conține erori, întârzieri sau omisiuni. Sunt puncte de plecare pentru propria ta documentare — nu instrucțiuni și nu promisiuni de profit.",
+    "p4": "Portofoliul virtual folosește bani fictivi cu prețuri reale: rezultatele obținute acolo nu se transferă automat în piața reală, unde intervin costuri, lichiditate și emoții.",
+    "p5": "Înainte de orice decizie de investiții, evaluează-ți situația financiară și toleranța la risc și, dacă e nevoie, consultă un consultant autorizat."
+  },
   chart: {
     gol: "Istoricul de preț se acumulează — revino curând.",
     interval: "Interval:",

@@ -15,6 +15,8 @@ import Premium from "./pages/Premium.jsx";
 import ThemePage from "./pages/ThemePage.jsx";
 import VixPage from "./pages/VixPage.jsx";
 import { Termeni, Confidentialitate } from "./pages/Legal.jsx";
+import Despre from "./pages/Despre.jsx";
+import Risc from "./pages/Risc.jsx";
 import NavBar from "./components/NavBar.jsx";
 import BottomNav from "./components/BottomNav.jsx";
 
@@ -50,6 +52,8 @@ export default function App() {
       <Route path="/" element={<HomeRoute />} />
       <Route path="/termeni" element={<Termeni />} />
       <Route path="/confidentialitate" element={<Confidentialitate />} />
+      <Route path="/despre" element={<Despre />} />
+      <Route path="/risc" element={<Risc />} />
       <Route
         path="/portofoliu"
         element={

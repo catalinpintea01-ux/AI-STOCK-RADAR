@@ -1,4 +1,32 @@
 export default {
+  disclaimerRisc: "Investing involves risk, including the possible loss of capital.",
+  whyUs1: "Most platforms give you data.",
+  whyUs2: "AI Stock Radar tells you where it's worth looking.",
+  heroCum: "See how it works ↓",
+  fDespre: "About",
+  fContact: "Contact",
+  fRisc: "Risk disclaimer",
+  desprePagina: {
+    "titlu": "About AI Stock Radar",
+    "sub": "Who we are and what we do — briefly and plainly.",
+    "p1": "AI Stock Radar is an educational stock-analysis platform built in Romania. We use artificial intelligence to turn public market data — prices, earnings, news, analyst ratings — into scores and explanations anyone can understand, available in 10 languages.",
+    "ceFacemTitlu": "What the platform does",
+    "ceFacem": "It scans the US market, computes a 0–100 AI score for every stock (analysts, momentum, fundamentals, risk), summarizes the day's news and gives you a virtual portfolio to practice on without real money.",
+    "ceNuTitlu": "What the platform does NOT do",
+    "ceNu": "It does not provide investment advice, personalized recommendations, price predictions or promised returns. The scores and texts describe a stock's public context — the decisions and the responsibility are yours.",
+    "cineTitlu": "Who is behind the project",
+    "cine": "The platform is operated by [COMPANY SRL], registered in Romania. We are a small team dedicated to one thing: clear financial education, without jargon and without empty promises.",
+    "contactTitlu": "Contact",
+    "contact": "You can write to us anytime at {email} — we reply within 48 hours."
+  },
+  riscPagina: {
+    "titlu": "Risk disclaimer",
+    "p1": "Investing in financial instruments involves risk, including the partial or total loss of the invested capital. Past performance does not guarantee future results.",
+    "p2": "AI Stock Radar provides research and analytical tools for informational and educational purposes only. Nothing on this platform constitutes financial or investment advice, a personalized recommendation, or an offer to buy or sell financial instruments.",
+    "p3": "The AI-generated scores, verdicts and texts are automated summaries of public data supplied by third parties; they may contain errors, delays or omissions. They are starting points for your own research — not instructions and not promises of profit.",
+    "p4": "The virtual portfolio uses fictitious money with real prices: results obtained there do not automatically transfer to the real market, where costs, liquidity and emotions come into play.",
+    "p5": "Before any investment decision, assess your financial situation and risk tolerance and, if needed, consult a licensed advisor."
+  },
   chart: {
     gol: "Price history is still accumulating — check back soon.",
     interval: "Range:",

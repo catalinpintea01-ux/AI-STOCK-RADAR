@@ -1,4 +1,32 @@
 export default {
+  disclaimerRisc: "Inwestowanie wiąże się z ryzykiem, w tym możliwą utratą kapitału.",
+  whyUs1: "Większość platform daje ci dane.",
+  whyUs2: "AI Stock Radar mówi ci, gdzie warto spojrzeć.",
+  heroCum: "Zobacz, jak to działa ↓",
+  fDespre: "O nas",
+  fContact: "Kontakt",
+  fRisc: "Ostrzeżenie o ryzyku",
+  desprePagina: {
+    "titlu": "O AI Stock Radar",
+    "sub": "Kim jesteśmy i co robimy — krótko i bez owijania.",
+    "p1": "AI Stock Radar to edukacyjna platforma analizy giełdowej zbudowana w Rumunii. Używamy sztucznej inteligencji, aby zamieniać publiczne dane rynkowe — ceny, wyniki, wiadomości, oceny analityków — w oceny i wyjaśnienia zrozumiałe dla każdego, dostępne w 10 językach.",
+    "ceFacemTitlu": "Co robi platforma",
+    "ceFacem": "Skanuje rynek amerykański, oblicza ocenę AI od 0 do 100 dla każdej akcji (analitycy, momentum, fundamenty, ryzyko), streszcza wiadomości dnia i daje ci wirtualny portfel do ćwiczeń bez prawdziwych pieniędzy.",
+    "ceNuTitlu": "Czego platforma NIE robi",
+    "ceNu": "Nie oferuje doradztwa inwestycyjnego, spersonalizowanych rekomendacji, prognoz cen ani obiecanych zysków. Oceny i teksty opisują publiczny kontekst akcji — decyzje i odpowiedzialność należą do ciebie.",
+    "cineTitlu": "Kto stoi za projektem",
+    "cine": "Platformą zarządza [FIRMA SRL], zarejestrowana w Rumunii. Jesteśmy małym zespołem oddanym jednej rzeczy: jasnej edukacji finansowej, bez żargonu i bez pustych obietnic.",
+    "contactTitlu": "Kontakt",
+    "contact": "Możesz napisać do nas w każdej chwili na {email} — odpowiadamy w ciągu 48 godzin."
+  },
+  riscPagina: {
+    "titlu": "Ostrzeżenie o ryzyku",
+    "p1": "Inwestowanie w instrumenty finansowe wiąże się z ryzykiem, w tym częściową lub całkowitą utratą zainwestowanego kapitału. Wyniki z przeszłości nie gwarantują przyszłych rezultatów.",
+    "p2": "AI Stock Radar dostarcza narzędzia badawcze i analityczne wyłącznie w celach informacyjnych i edukacyjnych. Nic na tej platformie nie stanowi doradztwa finansowego lub inwestycyjnego, spersonalizowanej rekomendacji ani oferty kupna lub sprzedaży instrumentów finansowych.",
+    "p3": "Oceny, werdykty i teksty generowane przez AI to automatyczne streszczenia publicznych danych od podmiotów trzecich; mogą zawierać błędy, opóźnienia lub pominięcia. Są punktem wyjścia do własnych badań — nie instrukcjami ani obietnicami zysku.",
+    "p4": "Wirtualny portfel używa fikcyjnych pieniędzy przy prawdziwych cenach: wyniki tam osiągnięte nie przenoszą się automatycznie na rynek realny, gdzie dochodzą koszty, płynność i emocje.",
+    "p5": "Przed każdą decyzją inwestycyjną oceń swoją sytuację finansową i tolerancję ryzyka, a w razie potrzeby skonsultuj się z licencjonowanym doradcą."
+  },
   chart: {
     gol: "Historia cen dopiero się gromadzi — wróć wkrótce.",
     interval: "Zakres:",

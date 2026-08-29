@@ -1,4 +1,32 @@
 export default {
+  disclaimerRisc: "Beleggen brengt risico's met zich mee, waaronder mogelijk kapitaalverlies.",
+  whyUs1: "De meeste platforms geven je data.",
+  whyUs2: "AI Stock Radar vertelt je waar het de moeite waard is om te kijken.",
+  heroCum: "Zie hoe het werkt ↓",
+  fDespre: "Over ons",
+  fContact: "Contact",
+  fRisc: "Risicowaarschuwing",
+  desprePagina: {
+    "titlu": "Over AI Stock Radar",
+    "sub": "Wie we zijn en wat we doen — kort en zonder omwegen.",
+    "p1": "AI Stock Radar is een educatief platform voor aandelenanalyse, gebouwd in Roemenië. We gebruiken kunstmatige intelligentie om publieke marktdata — koersen, resultaten, nieuws, analistenbeoordelingen — om te zetten in scores en uitleg die iedereen begrijpt, beschikbaar in 10 talen.",
+    "ceFacemTitlu": "Wat het platform doet",
+    "ceFacem": "Het scant de Amerikaanse markt, berekent voor elk aandeel een AI-score van 0 tot 100 (analisten, momentum, fundamentals, risico), vat het nieuws van de dag samen en geeft je een virtuele portefeuille om risicoloos te oefenen.",
+    "ceNuTitlu": "Wat het platform NIET doet",
+    "ceNu": "Het biedt geen beleggingsadvies, geen gepersonaliseerde aanbevelingen, geen koersvoorspellingen en geen beloofde rendementen. De scores en teksten beschrijven de publieke context van een aandeel — de beslissingen en de verantwoordelijkheid zijn van jou.",
+    "cineTitlu": "Wie achter het project zit",
+    "cine": "Het platform wordt beheerd door [BEDRIJF SRL], geregistreerd in Roemenië. We zijn een klein team met één doel: heldere financiële educatie, zonder jargon en zonder loze beloften.",
+    "contactTitlu": "Contact",
+    "contact": "Je kunt ons altijd schrijven op {email} — we antwoorden binnen 48 uur."
+  },
+  riscPagina: {
+    "titlu": "Risicowaarschuwing",
+    "p1": "Beleggen in financiële instrumenten brengt risico's met zich mee, waaronder het gedeeltelijke of volledige verlies van het geïnvesteerde kapitaal. In het verleden behaalde resultaten bieden geen garantie voor de toekomst.",
+    "p2": "AI Stock Radar biedt onderzoeks- en analysetools uitsluitend voor informatieve en educatieve doeleinden. Niets op dit platform vormt financieel of beleggingsadvies, een gepersonaliseerde aanbeveling of een aanbod om financiële instrumenten te kopen of verkopen.",
+    "p3": "De door AI gegenereerde scores, oordelen en teksten zijn automatische samenvattingen van publieke data van derden; ze kunnen fouten, vertragingen of omissies bevatten. Het zijn startpunten voor je eigen onderzoek — geen instructies en geen winstbeloften.",
+    "p4": "De virtuele portefeuille gebruikt fictief geld met echte prijzen: daar behaalde resultaten vertalen zich niet automatisch naar de echte markt, waar kosten, liquiditeit en emoties meespelen.",
+    "p5": "Beoordeel vóór elke beleggingsbeslissing je financiële situatie en risicotolerantie en raadpleeg zo nodig een erkend adviseur."
+  },
   chart: {
     gol: "De koershistorie wordt opgebouwd — kom snel terug.",
     interval: "Bereik:",

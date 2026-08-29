@@ -1,4 +1,32 @@
 export default {
+  disclaimerRisc: "Investir envolve riscos, incluindo a possível perda do capital.",
+  whyUs1: "A maioria das plataformas dá-te dados.",
+  whyUs2: "O AI Stock Radar diz-te onde vale a pena olhar.",
+  heroCum: "Vê como funciona ↓",
+  fDespre: "Sobre nós",
+  fContact: "Contacto",
+  fRisc: "Aviso de risco",
+  desprePagina: {
+    "titlu": "Sobre o AI Stock Radar",
+    "sub": "Quem somos e o que fazemos — em resumo e sem rodeios.",
+    "p1": "O AI Stock Radar é uma plataforma educativa de análise bolsista construída na Roménia. Usamos inteligência artificial para transformar dados públicos de mercado — preços, resultados, notícias, avaliações de analistas — em pontuações e explicações que qualquer pessoa entende, disponíveis em 10 idiomas.",
+    "ceFacemTitlu": "O que a plataforma faz",
+    "ceFacem": "Analisa o mercado americano, calcula uma pontuação IA de 0 a 100 para cada ação (analistas, momentum, fundamentais, risco), resume as notícias do dia e dá-te uma carteira virtual para praticares sem dinheiro real.",
+    "ceNuTitlu": "O que a plataforma NÃO faz",
+    "ceNu": "Não oferece aconselhamento de investimento, recomendações personalizadas, previsões de preços nem retornos prometidos. As pontuações e os textos descrevem o contexto público de uma ação — as decisões e a responsabilidade são tuas.",
+    "cineTitlu": "Quem está por trás do projeto",
+    "cine": "A plataforma é operada por [EMPRESA SRL], registada na Roménia. Somos uma equipa pequena dedicada a uma só coisa: educação financeira clara, sem jargão e sem promessas vazias.",
+    "contactTitlu": "Contacto",
+    "contact": "Podes escrever-nos a qualquer momento para {email} — respondemos em até 48 horas."
+  },
+  riscPagina: {
+    "titlu": "Aviso de risco",
+    "p1": "Investir em instrumentos financeiros envolve riscos, incluindo a perda parcial ou total do capital investido. O desempenho passado não garante resultados futuros.",
+    "p2": "O AI Stock Radar fornece ferramentas de pesquisa e análise exclusivamente para fins informativos e educativos. Nada nesta plataforma constitui aconselhamento financeiro ou de investimento, recomendação personalizada ou oferta de compra ou venda de instrumentos financeiros.",
+    "p3": "As pontuações, veredictos e textos gerados por IA são resumos automáticos de dados públicos fornecidos por terceiros; podem conter erros, atrasos ou omissões. São pontos de partida para a tua própria pesquisa — não instruções nem promessas de lucro.",
+    "p4": "A carteira virtual usa dinheiro fictício com preços reais: os resultados obtidos aí não se transferem automaticamente para o mercado real, onde entram custos, liquidez e emoções.",
+    "p5": "Antes de qualquer decisão de investimento, avalia a tua situação financeira e tolerância ao risco e, se necessário, consulta um consultor autorizado."
+  },
   chart: {
     gol: "O histórico de preços está a acumular-se — volta em breve.",
     interval: "Intervalo:",

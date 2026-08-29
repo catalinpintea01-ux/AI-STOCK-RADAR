@@ -176,6 +176,9 @@ export default function Landing() {
             </Link>
           </div>
           <p className="mega-note">{t("landing.nota")}</p>
+          <a href="#cum-functioneaza" className="hero-cum-link">
+            {t("heroCum")}
+          </a>
         </div>
       </section>
 
@@ -544,7 +547,12 @@ export default function Landing() {
         ))}
       </section>
 
-      <section className="landing-section">
+      <section className="landing-why">
+        <p className="landing-why-1">{t("whyUs1")}</p>
+        <p className="landing-why-2">{t("whyUs2")}</p>
+      </section>
+
+      <section className="landing-section" id="cum-functioneaza">
         <h2 className="landing-section-title">{t("landing.cumTitlu")}</h2>
         <div className="landing-steps">
           {t("landing.pasi").map((s, i) => (
@@ -676,12 +684,19 @@ export default function Landing() {
       <footer className="landing-footer">
         <span className="navbar-brand">AI Stock Radar</span>
         <div className="landing-footer-links">
-          <Link to="/login">{t("landing.autentificare")}</Link>
-          <Link to="/register">{t("landing.creeazaCont")}</Link>
+          <Link to="/despre">{t("fDespre")}</Link>
+          <a href="mailto:contact@stockradarai.com">{t("fContact")}</a>
           <Link to="/termeni">{t("landing.termeni")}</Link>
           <Link to="/confidentialitate">{t("landing.confidentialitate")}</Link>
+          <Link to="/risc">{t("fRisc")}</Link>
         </div>
-        <p className="landing-footer-disclaimer">{t("disclaimer.footer")}</p>
+        <div className="landing-footer-links">
+          <Link to="/login">{t("landing.autentificare")}</Link>
+          <Link to="/register">{t("landing.creeazaCont")}</Link>
+        </div>
+        <p className="landing-footer-disclaimer">
+          {t("disclaimer.footer")} {t("disclaimerRisc")}
+        </p>
       </footer>
     </div>
   );

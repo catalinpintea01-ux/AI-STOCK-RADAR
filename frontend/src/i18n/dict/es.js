@@ -1,4 +1,32 @@
 export default {
+  disclaimerRisc: "Invertir implica riesgos, incluida la posible pérdida del capital.",
+  whyUs1: "La mayoría de las plataformas te dan datos.",
+  whyUs2: "AI Stock Radar te dice dónde merece la pena mirar.",
+  heroCum: "Mira cómo funciona ↓",
+  fDespre: "Acerca de",
+  fContact: "Contacto",
+  fRisc: "Aviso de riesgo",
+  desprePagina: {
+    "titlu": "Acerca de AI Stock Radar",
+    "sub": "Quiénes somos y qué hacemos — en breve y sin rodeos.",
+    "p1": "AI Stock Radar es una plataforma educativa de análisis bursátil construida en Rumanía. Usamos inteligencia artificial para convertir datos públicos de mercado — precios, resultados, noticias, valoraciones de analistas — en puntuaciones y explicaciones comprensibles para cualquiera, disponibles en 10 idiomas.",
+    "ceFacemTitlu": "Qué hace la plataforma",
+    "ceFacem": "Escanea el mercado estadounidense, calcula una puntuación IA de 0 a 100 para cada acción (analistas, momentum, fundamentales, riesgo), resume las noticias del día y te da una cartera virtual para practicar sin dinero real.",
+    "ceNuTitlu": "Qué NO hace la plataforma",
+    "ceNu": "No ofrece asesoramiento de inversión, recomendaciones personalizadas, predicciones de precios ni rendimientos prometidos. Las puntuaciones y los textos describen el contexto público de una acción — las decisiones y la responsabilidad son tuyas.",
+    "cineTitlu": "Quién está detrás del proyecto",
+    "cine": "La plataforma está operada por [EMPRESA SRL], registrada en Rumanía. Somos un equipo pequeño dedicado a una sola cosa: educación financiera clara, sin jerga y sin promesas vacías.",
+    "contactTitlu": "Contacto",
+    "contact": "Puedes escribirnos en cualquier momento a {email} — respondemos en un máximo de 48 horas."
+  },
+  riscPagina: {
+    "titlu": "Aviso de riesgo",
+    "p1": "Invertir en instrumentos financieros implica riesgos, incluida la pérdida parcial o total del capital invertido. El rendimiento pasado no garantiza resultados futuros.",
+    "p2": "AI Stock Radar ofrece herramientas de investigación y análisis exclusivamente con fines informativos y educativos. Nada en esta plataforma constituye asesoramiento financiero o de inversión, una recomendación personalizada ni una oferta de compra o venta de instrumentos financieros.",
+    "p3": "Las puntuaciones, veredictos y textos generados por IA son resúmenes automáticos de datos públicos de terceros; pueden contener errores, retrasos u omisiones. Son puntos de partida para tu propia investigación — no instrucciones ni promesas de beneficio.",
+    "p4": "La cartera virtual usa dinero ficticio con precios reales: los resultados obtenidos allí no se trasladan automáticamente al mercado real, donde intervienen costes, liquidez y emociones.",
+    "p5": "Antes de cualquier decisión de inversión, evalúa tu situación financiera y tu tolerancia al riesgo y, si es necesario, consulta a un asesor autorizado."
+  },
   chart: {
     gol: "El historial de precios se está acumulando — vuelve pronto.",
     interval: "Rango:",

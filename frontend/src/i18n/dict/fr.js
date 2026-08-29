@@ -1,4 +1,32 @@
 export default {
+  disclaimerRisc: "Investir comporte des risques, y compris la perte possible du capital.",
+  whyUs1: "La plupart des plateformes vous donnent des données.",
+  whyUs2: "AI Stock Radar vous dit où il vaut la peine de regarder.",
+  heroCum: "Voir comment ça marche ↓",
+  fDespre: "À propos",
+  fContact: "Contact",
+  fRisc: "Avertissement sur les risques",
+  desprePagina: {
+    "titlu": "À propos d'AI Stock Radar",
+    "sub": "Qui nous sommes et ce que nous faisons — en bref et sans détour.",
+    "p1": "AI Stock Radar est une plateforme éducative d'analyse boursière construite en Roumanie. Nous utilisons l'intelligence artificielle pour transformer les données publiques de marché — cours, résultats, actualités, notes des analystes — en scores et explications compréhensibles par tous, disponibles en 10 langues.",
+    "ceFacemTitlu": "Ce que fait la plateforme",
+    "ceFacem": "Elle scanne le marché américain, calcule un score IA de 0 à 100 pour chaque action (analystes, momentum, fondamentaux, risque), résume l'actualité du jour et vous offre un portefeuille virtuel pour vous entraîner sans argent réel.",
+    "ceNuTitlu": "Ce que la plateforme ne fait PAS",
+    "ceNu": "Elle ne fournit pas de conseil en investissement, pas de recommandations personnalisées, pas de prédictions de prix ni de rendements promis. Les scores et les textes décrivent le contexte public d'une action — les décisions et la responsabilité vous appartiennent.",
+    "cineTitlu": "Qui est derrière le projet",
+    "cine": "La plateforme est opérée par [SOCIÉTÉ SRL], enregistrée en Roumanie. Nous sommes une petite équipe dédiée à une seule chose : une éducation financière claire, sans jargon et sans promesses creuses.",
+    "contactTitlu": "Contact",
+    "contact": "Vous pouvez nous écrire à tout moment à {email} — nous répondons sous 48 heures."
+  },
+  riscPagina: {
+    "titlu": "Avertissement sur les risques",
+    "p1": "Investir dans des instruments financiers comporte des risques, y compris la perte partielle ou totale du capital investi. Les performances passées ne garantissent pas les résultats futurs.",
+    "p2": "AI Stock Radar fournit des outils de recherche et d'analyse à des fins exclusivement informatives et éducatives. Rien sur cette plateforme ne constitue un conseil financier ou d'investissement, une recommandation personnalisée ou une offre d'achat ou de vente d'instruments financiers.",
+    "p3": "Les scores, verdicts et textes générés par l'IA sont des résumés automatiques de données publiques fournies par des tiers ; ils peuvent contenir des erreurs, des retards ou des omissions. Ce sont des points de départ pour vos propres recherches — pas des instructions ni des promesses de profit.",
+    "p4": "Le portefeuille virtuel utilise de l'argent fictif avec des prix réels : les résultats obtenus ne se transfèrent pas automatiquement au marché réel, où interviennent coûts, liquidité et émotions.",
+    "p5": "Avant toute décision d'investissement, évaluez votre situation financière et votre tolérance au risque et, si nécessaire, consultez un conseiller agréé."
+  },
   chart: {
     gol: "L'historique des prix s'accumule — revenez bientôt.",
     interval: "Plage :",
