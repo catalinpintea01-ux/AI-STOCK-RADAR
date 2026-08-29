@@ -114,6 +114,16 @@ export default {
     footer: "Conținut educativ generat automat, nu este consultanță de investiții. Scorurile și textele din aplicație descriu context public, nu recomandări de cumpărare sau vânzare.",
   },
   auth: {
+    uitatParola: "Ai uitat parola?",
+    resetTitlu: "Resetare parolă",
+    resetSub: "Scrie emailul contului și îți trimitem un link de resetare, valabil o oră.",
+    resetTrimite: "Trimite linkul de resetare",
+    resetTrimis: "Dacă există un cont cu acest email, linkul de resetare e pe drum. Verifică și folderul Spam.",
+    resetNouaSub: "Alege o parolă nouă (minim 8 caractere).",
+    parolaNoua: "Parola nouă",
+    resetSchimba: "Schimbă parola",
+    resetGata: "Parola a fost schimbată. Te ducem la autentificare...",
+    inapoiLogin: "← Înapoi la autentificare",
     tagline:
       "Urmărește acțiuni, primești context AI zilnic despre ele și exersează pe un portofoliu virtual — fără risc real.",
     puncte: [

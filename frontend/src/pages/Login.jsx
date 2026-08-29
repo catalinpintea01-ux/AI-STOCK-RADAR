@@ -60,6 +60,9 @@ export default function Login() {
             {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
           </button>
         </div>
+        <p className="auth-forgot">
+          <Link to="/resetare">{t("auth.uitatParola")}</Link>
+        </p>
         <button type="submit" disabled={loading}>
           {loading ? t("auth.seAutentifica") : t("auth.loginTitlu")}
         </button>

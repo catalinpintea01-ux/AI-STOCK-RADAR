@@ -114,6 +114,16 @@ export default {
     footer: "Automatisch generierter Bildungsinhalt, keine Anlageberatung. Die Scores und Texte in der App beschreiben öffentlichen Kontext, keine Kauf- oder Verkaufsempfehlungen.",
   },
   auth: {
+    uitatParola: "Passwort vergessen?",
+    resetTitlu: "Passwort zurücksetzen",
+    resetSub: "Gib die E-Mail deines Kontos ein und wir senden dir einen Link zum Zurücksetzen — eine Stunde gültig.",
+    resetTrimite: "Link senden",
+    resetTrimis: "Falls ein Konto mit dieser E-Mail existiert, ist der Link unterwegs. Prüfe auch den Spam-Ordner.",
+    resetNouaSub: "Wähle ein neues Passwort (mindestens 8 Zeichen).",
+    parolaNoua: "Neues Passwort",
+    resetSchimba: "Passwort ändern",
+    resetGata: "Dein Passwort wurde geändert. Weiter zur Anmeldung...",
+    inapoiLogin: "← Zurück zur Anmeldung",
     tagline:
       "Beobachte Aktien, erhalte täglich KI-Kontext dazu und übe mit einem virtuellen Portfolio — ohne echtes Risiko.",
     puncte: [

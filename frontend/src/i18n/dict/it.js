@@ -114,6 +114,16 @@ export default {
     footer: "Contenuto educativo generato automaticamente, non è consulenza sugli investimenti. I punteggi e i testi dell'app descrivono contesto pubblico, non raccomandazioni di acquisto o vendita.",
   },
   auth: {
+    uitatParola: "Hai dimenticato la password?",
+    resetTitlu: "Reimposta password",
+    resetSub: "Inserisci l'email del tuo account e ti invieremo un link di reimpostazione, valido per un'ora.",
+    resetTrimite: "Invia il link",
+    resetTrimis: "Se esiste un account con questa email, il link è in arrivo. Controlla anche la cartella Spam.",
+    resetNouaSub: "Scegli una nuova password (minimo 8 caratteri).",
+    parolaNoua: "Nuova password",
+    resetSchimba: "Cambia password",
+    resetGata: "La password è stata cambiata. Ti portiamo all'accesso...",
+    inapoiLogin: "← Torna all'accesso",
     tagline:
       "Segui le azioni, ricevi ogni giorno contesto IA su di esse e fai pratica con un portafoglio virtuale — senza rischio reale.",
     puncte: [

@@ -114,6 +114,16 @@ export default {
     footer: "Automatisch gegenereerde educatieve inhoud, geen beleggingsadvies. De scores en teksten in de app beschrijven publieke context, geen koop- of verkoopaanbevelingen.",
   },
   auth: {
+    uitatParola: "Wachtwoord vergeten?",
+    resetTitlu: "Wachtwoord opnieuw instellen",
+    resetSub: "Vul het e-mailadres van je account in en we sturen je een resetlink, één uur geldig.",
+    resetTrimite: "Verstuur resetlink",
+    resetTrimis: "Als er een account bestaat met dit e-mailadres, is de link onderweg. Controleer ook je spammap.",
+    resetNouaSub: "Kies een nieuw wachtwoord (minimaal 8 tekens).",
+    parolaNoua: "Nieuw wachtwoord",
+    resetSchimba: "Wachtwoord wijzigen",
+    resetGata: "Je wachtwoord is gewijzigd. We brengen je naar het inloggen...",
+    inapoiLogin: "← Terug naar inloggen",
     tagline:
       "Volg aandelen, ontvang dagelijks AI-context erover en oefen met een virtuele portefeuille — zonder echt risico.",
     puncte: [

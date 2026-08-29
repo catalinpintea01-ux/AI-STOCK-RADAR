@@ -6595,3 +6595,18 @@ html {
   font-size: 0.9rem;
   color: var(--muted);
 }
+
+/* ── Resetare parolă ───────────────────────────────────────────────────── */
+.auth-forgot {
+  margin: -0.35rem 0 0.75rem;
+  text-align: right;
+  font-size: 0.85rem;
+}
+.auth-forgot a {
+  color: var(--muted);
+  text-decoration: none;
+}
+.auth-forgot a:hover {
+  color: var(--blue);
+  text-decoration: underline;
+}

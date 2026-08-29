@@ -114,6 +114,16 @@ export default {
     footer: "Treści edukacyjne generowane automatycznie, nie stanowią doradztwa inwestycyjnego. Oceny i teksty w aplikacji opisują publiczny kontekst, a nie rekomendacje kupna lub sprzedaży.",
   },
   auth: {
+    uitatParola: "Nie pamiętasz hasła?",
+    resetTitlu: "Resetowanie hasła",
+    resetSub: "Podaj email konta, a wyślemy Ci link do resetu, ważny przez godzinę.",
+    resetTrimite: "Wyślij link",
+    resetTrimis: "Jeśli konto z tym emailem istnieje, link jest w drodze. Sprawdź też folder Spam.",
+    resetNouaSub: "Wybierz nowe hasło (minimum 8 znaków).",
+    parolaNoua: "Nowe hasło",
+    resetSchimba: "Zmień hasło",
+    resetGata: "Hasło zostało zmienione. Przenosimy Cię do logowania...",
+    inapoiLogin: "← Wróć do logowania",
     tagline:
       "Obserwuj akcje, otrzymuj codzienny kontekst AI na ich temat i ćwicz na wirtualnym portfelu — bez realnego ryzyka.",
     puncte: [

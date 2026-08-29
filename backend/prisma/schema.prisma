@@ -24,6 +24,23 @@ model User {
   alerts        Alert[]
   prietenii     Friendship[] @relation("PrietenieUser")
   preinregistrare PremiumWaitlist?
+  resetari      PasswordReset[]
+}
+
+// Resetare de parolă: stocăm doar hash-ul SHA-256 al tokenului (tokenul brut
+// pleacă exclusiv în emailul utilizatorului), valabil 60 min, o singură
+// folosire. Toate tokenurile userului se șterg după o resetare reușită.
+model PasswordReset {
+  id        String    @id @default(uuid())
+  userId    String
+  tokenHash String    @unique
+  expiresAt DateTime
+  usedAt    DateTime?
+  createdAt DateTime  @default(now())
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@index([userId])
 }
 
 model Portfolio {

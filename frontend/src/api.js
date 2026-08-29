@@ -79,6 +79,10 @@ export const api = {
   getToolScreener: (params) => request(`/tools/screener?${new URLSearchParams(params)}`),
   getToolCompare: (a, b) =>
     request(`/tools/compare?a=${encodeURIComponent(a)}&b=${encodeURIComponent(b)}`),
+  forgotPassword: (email) =>
+    request("/auth/forgot", { method: "POST", body: JSON.stringify({ email }) }),
+  resetPassword: (token, password) =>
+    request("/auth/reset", { method: "POST", body: JSON.stringify({ token, password }) }),
   getBillingStatus: () => request("/billing/status"),
   getWaitlist: () => request("/billing/waitlist"),
   joinWaitlist: (email) =>

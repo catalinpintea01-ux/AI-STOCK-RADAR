@@ -114,6 +114,16 @@ export default {
     footer: "Automatikusan generált oktatási tartalom, nem befektetési tanácsadás. Az alkalmazás pontszámai és szövegei nyilvános kontextust írnak le, nem vételi vagy eladási ajánlásokat.",
   },
   auth: {
+    uitatParola: "Elfelejtetted a jelszavad?",
+    resetTitlu: "Jelszó visszaállítása",
+    resetSub: "Írd be a fiókod email-címét, és küldünk egy visszaállító linket — egy órán át érvényes.",
+    resetTrimite: "Link küldése",
+    resetTrimis: "Ha létezik fiók ezzel az email-címmel, a link úton van. Nézd meg a Spam mappát is.",
+    resetNouaSub: "Válassz új jelszót (legalább 8 karakter).",
+    parolaNoua: "Új jelszó",
+    resetSchimba: "Jelszó módosítása",
+    resetGata: "A jelszavad megváltozott. Átirányítunk a bejelentkezéshez...",
+    inapoiLogin: "← Vissza a bejelentkezéshez",
     tagline:
       "Kövess részvényeket, kapj róluk naponta MI-kontextust, és gyakorolj egy virtuális portfólión — valódi kockázat nélkül.",
     puncte: [

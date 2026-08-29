@@ -114,6 +114,16 @@ export default {
     footer: "Contenu éducatif généré automatiquement, pas un conseil en investissement. Les scores et textes de l'application décrivent un contexte public, pas des recommandations d'achat ou de vente.",
   },
   auth: {
+    uitatParola: "Mot de passe oublié ?",
+    resetTitlu: "Réinitialiser le mot de passe",
+    resetSub: "Saisissez l'e-mail de votre compte et nous vous enverrons un lien de réinitialisation, valable une heure.",
+    resetTrimite: "Envoyer le lien",
+    resetTrimis: "Si un compte existe pour cet e-mail, le lien est en route. Vérifiez aussi le dossier Spam.",
+    resetNouaSub: "Choisissez un nouveau mot de passe (8 caractères minimum).",
+    parolaNoua: "Nouveau mot de passe",
+    resetSchimba: "Changer le mot de passe",
+    resetGata: "Votre mot de passe a été changé. Redirection vers la connexion...",
+    inapoiLogin: "← Retour à la connexion",
     tagline:
       "Suivez des actions, recevez chaque jour du contexte IA à leur sujet et entraînez-vous sur un portefeuille virtuel — sans risque réel.",
     puncte: [

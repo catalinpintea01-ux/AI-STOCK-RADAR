@@ -114,6 +114,16 @@ export default {
     footer: "Contenido educativo generado automáticamente, no es asesoramiento de inversión. Las puntuaciones y textos de la aplicación describen contexto público, no recomendaciones de compra o venta.",
   },
   auth: {
+    uitatParola: "¿Olvidaste tu contraseña?",
+    resetTitlu: "Restablecer contraseña",
+    resetSub: "Escribe el email de tu cuenta y te enviaremos un enlace de restablecimiento, válido durante una hora.",
+    resetTrimite: "Enviar enlace",
+    resetTrimis: "Si existe una cuenta con este email, el enlace está en camino. Revisa también la carpeta de Spam.",
+    resetNouaSub: "Elige una contraseña nueva (mínimo 8 caracteres).",
+    parolaNoua: "Contraseña nueva",
+    resetSchimba: "Cambiar contraseña",
+    resetGata: "Tu contraseña se ha cambiado. Te llevamos al inicio de sesión...",
+    inapoiLogin: "← Volver al inicio de sesión",
     tagline:
       "Sigue acciones, recibe contexto diario de IA sobre ellas y practica con una cartera virtual — sin riesgo real.",
     puncte: [

@@ -114,6 +114,16 @@ export default {
     footer: "Conteúdo educativo gerado automaticamente, não é aconselhamento de investimento. As pontuações e textos da aplicação descrevem contexto público, não recomendações de compra ou venda.",
   },
   auth: {
+    uitatParola: "Esqueceste-te da palavra-passe?",
+    resetTitlu: "Repor palavra-passe",
+    resetSub: "Escreve o email da tua conta e enviamos-te um link de reposição, válido por uma hora.",
+    resetTrimite: "Enviar link",
+    resetTrimis: "Se existir uma conta com este email, o link vai a caminho. Verifica também a pasta de Spam.",
+    resetNouaSub: "Escolhe uma palavra-passe nova (mínimo 8 caracteres).",
+    parolaNoua: "Nova palavra-passe",
+    resetSchimba: "Alterar palavra-passe",
+    resetGata: "A palavra-passe foi alterada. A levar-te para o início de sessão...",
+    inapoiLogin: "← Voltar ao início de sessão",
     tagline:
       "Acompanha ações, recebe diariamente contexto de IA sobre elas e pratica numa carteira virtual — sem risco real.",
     puncte: [

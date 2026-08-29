@@ -114,6 +114,16 @@ export default {
     footer: "Automatically generated educational content, not investment advice. The scores and texts in the app describe public context, not buy or sell recommendations.",
   },
   auth: {
+    uitatParola: "Forgot your password?",
+    resetTitlu: "Reset password",
+    resetSub: "Enter your account email and we'll send you a reset link, valid for one hour.",
+    resetTrimite: "Send reset link",
+    resetTrimis: "If an account exists for this email, the reset link is on its way. Check your Spam folder too.",
+    resetNouaSub: "Choose a new password (at least 8 characters).",
+    parolaNoua: "New password",
+    resetSchimba: "Change password",
+    resetGata: "Your password has been changed. Taking you to sign in...",
+    inapoiLogin: "← Back to sign in",
     tagline:
       "Track stocks, get daily AI context about them and practice on a virtual portfolio — with no real risk.",
     puncte: [
