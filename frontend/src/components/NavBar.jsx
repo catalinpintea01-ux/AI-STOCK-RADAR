@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { api } from "../api";
-import { Bell, Star, Radar } from "lucide-react";
+import { Bell, Star, Radar, Info, ShieldAlert } from "lucide-react";
 import { useLang } from "../i18n/index.jsx";
 import LanguageSwitcher from "./LanguageSwitcher.jsx";
 import ThemeToggle from "./ThemeToggle.jsx";
@@ -122,6 +122,22 @@ export default function NavBar() {
                 onClick={() => setMenuOpen(false)}
               >
                 {t("nav.comunitate")}
+              </NavLink>
+              <NavLink
+                to="/despre"
+                className={({ isActive }) =>
+                  isActive ? "navbar-dropdown-link navbar-dropdown-separator active" : "navbar-dropdown-link navbar-dropdown-separator"
+                }
+                onClick={() => setMenuOpen(false)}
+              >
+                <Info size={14} className="ic" /> {t("fDespre")}
+              </NavLink>
+              <NavLink
+                to="/risc"
+                className={({ isActive }) => (isActive ? "navbar-dropdown-link active" : "navbar-dropdown-link")}
+                onClick={() => setMenuOpen(false)}
+              >
+                <ShieldAlert size={14} className="ic" /> {t("fRisc")}
               </NavLink>
               {premium === true && (
                 <button className="navbar-dropdown-link navbar-dropdown-button" onClick={handleManageClick}>
