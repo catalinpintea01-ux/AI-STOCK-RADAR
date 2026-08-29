@@ -15,7 +15,7 @@ export default {
     "ceNuTitlu": "Mit NEM csinál a platform",
     "ceNu": "Nem nyújt befektetési tanácsadást, személyre szabott ajánlásokat, árfolyam-előrejelzéseket vagy ígért hozamokat. A pontszámok és szövegek a részvény nyilvános kontextusát írják le — a döntés és a felelősség a tiéd.",
     "cineTitlu": "Ki áll a projekt mögött",
-    "cine": "A platformot a Romániában bejegyzett [CÉG SRL] üzemelteti. Kis csapat vagyunk, egyetlen dolognak szentelve: érthető pénzügyi oktatás, szakzsargon és üres ígéretek nélkül.",
+    "cine": "Az AI Stock Radar egy független projekt, amelyet Romániában fejleszt egy kis csapat, egyetlen dolognak szentelve: érthető pénzügyi oktatás, szakzsargon és üres ígéretek nélkül. A projekt cégként való bejegyzése folyamatban van — amint a regisztráció lezárul, ez az oldal frissül a teljes jogi adatokkal.",
     "contactTitlu": "Kapcsolat",
     "contact": "Bármikor írhatsz nekünk a {email} címre — 48 órán belül válaszolunk."
   },

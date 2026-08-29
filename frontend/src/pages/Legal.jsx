@@ -21,8 +21,11 @@ export function Termeni() {
     <LegalLayout titlu="Termeni și condiții" actualizat="25 august 2026">
       <h2>1. Cine suntem</h2>
       <p>
-        Platforma AI Stock Radar („Platforma", „noi") este operată de [DENUMIRE FIRMĂ SRL],
-        înregistrată în România, [CUI / Nr. Reg. Com. / sediu]. Contact:{" "}
+        Platforma AI Stock Radar („Platforma", „noi") este un proiect independent dezvoltat în
+        România, aflat în curs de formalizare ca societate comercială. Până la finalizarea
+        înregistrării, Platforma nu comercializează servicii cu plată (abonamentul Premium este
+        disponibil doar ca preînregistrare gratuită), iar această secțiune se va actualiza cu
+        datele complete de identificare. Contact:{" "}
         <a href="mailto:contact@stockradarai.com">contact@stockradarai.com</a>.
       </p>
 
@@ -98,8 +101,10 @@ export function Confidentialitate() {
     <LegalLayout titlu="Politica de confidențialitate" actualizat="25 august 2026">
       <h2>1. Operatorul datelor</h2>
       <p>
-        [DENUMIRE FIRMĂ SRL], [sediu, CUI] — operator de date în sensul Regulamentului (UE)
-        2016/679 (GDPR). Contact:{" "}
+        Operatorul datelor, în sensul Regulamentului (UE) 2016/679 (GDPR), este dezvoltatorul
+        platformei AI Stock Radar — proiect independent din România, în curs de formalizare ca
+        societate comercială; la finalizarea înregistrării, această secțiune se va actualiza cu
+        datele complete de identificare ale operatorului. Contact:{" "}
         <a href="mailto:contact@stockradarai.com">contact@stockradarai.com</a>.
       </p>
 

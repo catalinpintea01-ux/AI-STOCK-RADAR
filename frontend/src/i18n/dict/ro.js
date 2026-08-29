@@ -15,7 +15,7 @@ export default {
     "ceNuTitlu": "Ce NU face platforma",
     "ceNu": "Nu oferă consultanță de investiții, nu face recomandări personalizate, nu prezice prețuri și nu promite randamente. Scorurile și textele descriu contextul public al unei acțiuni — deciziile și responsabilitatea îți aparțin.",
     "cineTitlu": "Cine e în spatele proiectului",
-    "cine": "Platforma este operată de [DENUMIRE FIRMĂ SRL], înregistrată în România. Suntem o echipă mică, dedicată unui singur lucru: educație financiară clară, fără jargon și fără promisiuni goale.",
+    "cine": "AI Stock Radar este un proiect independent, dezvoltat în România de o echipă mică, dedicată unui singur lucru: educație financiară clară, fără jargon și fără promisiuni goale. Proiectul este în curs de formalizare ca societate — imediat ce înregistrarea e finalizată, această pagină se actualizează cu datele complete de identificare.",
     "contactTitlu": "Contact",
     "contact": "Ne poți scrie oricând la {email} — răspundem în cel mult 48 de ore."
   },
