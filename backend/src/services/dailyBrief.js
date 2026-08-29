@@ -109,7 +109,15 @@ async function genereazaTextRo(fapte) {
     if (!res.ok) throw new Error(`Claude API a răspuns cu status ${res.status}`);
 
     const data = await res.json();
-    const text = data.content?.[0]?.text?.trim() || "";
+    // Promptul interzice markdown, dar modelul mai strecoară câte un titlu
+    // "# ..." — îl eliminăm determinist și aplatizăm totul într-un paragraf.
+    const text = (data.content?.[0]?.text?.trim() || "")
+      .split("\n")
+      .filter((linie) => !/^#{1,6}\s/.test(linie.trim()))
+      .join("\n")
+      .replace(/\*\*/g, "")
+      .replace(/\s*\n+\s*/g, " ")
+      .trim();
     if (text.length < 80) throw new Error("Răspuns prea scurt");
     if (contineLimbajDeConsiliere(text)) {
       console.error("[brief] limbaj de consiliere detectat — folosesc fallback-ul determinist");
