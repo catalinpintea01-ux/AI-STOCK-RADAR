@@ -491,9 +491,8 @@ export default function Watchlist() {
     null;
 
   // Când watchlist-ul are puține rânduri (plan gratuit), spațiul de sub listă
-  // se umple cu sugestii de adăugare — desktop-ul nu mai arată gol, iar
-  // utilizatorul are mereu un pas următor (limita de 3 → puntea spre Premium).
-  const listaMica = items !== null && items.length < 6;
+  // se umple cu sugestii de adăugare — utilizatorul are mereu un pas următor
+  // (limita de 3 → puntea spre Premium).
   const simboluriUrmarite = new Set((items || []).map((i) => i.simbol));
   const sugestiiRadar =
     items && items.length > 0 && items.length < 6
@@ -747,6 +746,10 @@ export default function Watchlist() {
                   ))}
                 </div>
 
+                {/* Zona listei are înălțime plafonată cu scroll intern pe desktop —
+                    înălțimea coloanei nu mai depinde de câte acțiuni urmărești,
+                    deci coloanele rămân mereu aliniate, fără goluri. */}
+                <div className="workspace-scroll">
                 {filteredItems.length === 0 ? (
                   <p className="empty">{t("dash.nicioPotrivire")}</p>
                 ) : grupatePeSector ? (
@@ -807,16 +810,60 @@ export default function Watchlist() {
                     )}
                   </>
                 )}
+                </div>
               </>
             )}
           </section>
 
-          {listaMica && (
-            <section className="dash-personas dash-personas-main">
-              <h2 className="dash-personas-title">{t("landing.temeTitlu")}</h2>
-              <ThemeCards />
-            </section>
-          )}
+          <section className="panel">
+            <div className="panel-head">
+              <div>
+                <p className="eyebrow">{t("dash.contextulZilei")}</p>
+                <h2><Newspaper size={16} className="h2-ic" /> {t("dash.stiriRelevante")}</h2>
+              </div>
+            </div>
+            {marketNews.length === 0 ? (
+              <p className="empty">{t("dash.nicioStire")}</p>
+            ) : (
+              <>
+                <div className="hero-news">
+                  {(showAllNews ? marketNews : marketNews.slice(0, 3)).map((n) => (
+                    <Link
+                      key={n.id}
+                      to={`/stiri/${n.id}`}
+                      className="hero-news-card"
+                      style={n.imagine ? { backgroundImage: `url(${n.imagine})` } : undefined}
+                    >
+                      <div className="hero-news-body">
+                        <span className="hero-news-source">{n.sursa} · {t("dash.azi")}</span>
+                        <h3 className="hero-news-headline">{n.titluAI}</h3>
+                        {(n.simbol || n.sentiment) && (
+                          <span className="hero-news-meta">
+                            {n.simbol && <em className="hero-news-chip">{n.simbol}</em>}
+                            {n.sentiment && (
+                              <em className="hero-news-chip hero-news-chip-verdict">
+                                {t(`verdict.${n.sentiment}`)}
+                              </em>
+                            )}
+                          </span>
+                        )}
+                      </div>
+                    </Link>
+                  ))}
+                </div>
+                {marketNews.length > 3 && (
+                  <button className="show-more-button" onClick={() => setShowAllNews((v) => !v)}>
+                    {showAllNews ? t("dash.restrange") : t("dash.arataToate", { n: marketNews.length })}
+                  </button>
+                )}
+                {marketNewsTotal > marketNews.length && (
+                  <Link to="/premium" className="show-more-button news-premium-teaser">
+                    <Lock size={12} className="ic" /> {t("dash.teaser", { n: marketNewsTotal - marketNews.length })}
+                  </Link>
+                )}
+              </>
+            )}
+          </section>
         </main>
 
         <aside className="dash-side">
@@ -988,56 +1035,6 @@ export default function Watchlist() {
           <section className="panel">
             <div className="panel-head">
               <div>
-                <p className="eyebrow">{t("dash.contextulZilei")}</p>
-                <h2><Newspaper size={16} className="h2-ic" /> {t("dash.stiriRelevante")}</h2>
-              </div>
-            </div>
-            {marketNews.length === 0 ? (
-              <p className="empty">{t("dash.nicioStire")}</p>
-            ) : (
-              <>
-                <div className="hero-news">
-                  {(showAllNews ? marketNews : marketNews.slice(0, 3)).map((n) => (
-                    <Link
-                      key={n.id}
-                      to={`/stiri/${n.id}`}
-                      className="hero-news-card"
-                      style={n.imagine ? { backgroundImage: `url(${n.imagine})` } : undefined}
-                    >
-                      <div className="hero-news-body">
-                        <span className="hero-news-source">{n.sursa} · {t("dash.azi")}</span>
-                        <h3 className="hero-news-headline">{n.titluAI}</h3>
-                        {(n.simbol || n.sentiment) && (
-                          <span className="hero-news-meta">
-                            {n.simbol && <em className="hero-news-chip">{n.simbol}</em>}
-                            {n.sentiment && (
-                              <em className="hero-news-chip hero-news-chip-verdict">
-                                {t(`verdict.${n.sentiment}`)}
-                              </em>
-                            )}
-                          </span>
-                        )}
-                      </div>
-                    </Link>
-                  ))}
-                </div>
-                {marketNews.length > 3 && (
-                  <button className="show-more-button" onClick={() => setShowAllNews((v) => !v)}>
-                    {showAllNews ? t("dash.restrange") : t("dash.arataToate", { n: marketNews.length })}
-                  </button>
-                )}
-                {marketNewsTotal > marketNews.length && (
-                  <Link to="/premium" className="show-more-button news-premium-teaser">
-                    <Lock size={12} className="ic" /> {t("dash.teaser", { n: marketNewsTotal - marketNews.length })}
-                  </Link>
-                )}
-              </>
-            )}
-          </section>
-
-          <section className="panel">
-            <div className="panel-head">
-              <div>
                 <p className="eyebrow">{t("dash.scoruriMiscare")}</p>
                 <h2><Activity size={16} className="h2-ic" /> {t("dash.ceSaSchimbat")}</h2>
               </div>
@@ -1058,69 +1055,6 @@ export default function Watchlist() {
                         </div>
                       </div>
                       {formatDelta(item.schimbare.deltaCompozit)}
-                      <span className="row-chevron">›</span>
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            )}
-          </section>
-
-          <section className="panel" id="earnings-panel">
-            <div className="panel-head">
-              <div>
-                <p className="eyebrow">{t("dash.calendar")}</p>
-                <h2><CalendarDays size={16} className="h2-ic" /> {t("dash.raportari")}</h2>
-              </div>
-            </div>
-            {earnings.length === 0 && earningsRecomandate.length > 0 ? (
-              <>
-                <p className="tab-subtitle">{t("dash.raportareRecomandate")}</p>
-                <ul className="stock-list">
-                  {earningsRecomandate.map((e) => (
-                    <li key={`${e.simbol}-${e.data}`} className="stock-row">
-                      <div className="stock-row-left">
-                        <StockLogo simbol={e.simbol} />
-                        <div>
-                          <strong>{e.simbol}</strong>
-                          <div className="muted">
-                            {t("dash.raporteaza")} {formatZileRamase(e.data, t)}
-                            {e.moment && momentLabel[e.moment] ? ` · ${momentLabel[e.moment]}` : ""}
-                          </div>
-                        </div>
-                      </div>
-                      <button
-                        className="add-watchlist-button"
-                        onClick={async () => {
-                          await handleAdd(e.simbol);
-                          // Acțiunea abia adăugată are raportare apropiată — recitim
-                          // calendarul ca să treacă din "recomandate" în lista reală.
-                          const data = await api.getEarningsCalendar();
-                          setEarnings(data.earnings);
-                          setEarningsRecomandate(data.recomandate || []);
-                        }}
-                      >
-                        +
-                      </button>
-                    </li>
-                  ))}
-                </ul>
-              </>
-            ) : earnings.length === 0 ? (
-              <p className="empty">{t("dash.nicioRaportare")}</p>
-            ) : (
-              <ul className="stock-list">
-                {earnings.slice(0, 5).map((e) => (
-                  <li key={`${e.simbol}-${e.data}`} className="stock-row">
-                    <Link to={`/stock/${e.simbol}`} className="watch-row-link">
-                      <StockLogo simbol={e.simbol} />
-                      <div>
-                        <strong>{e.simbol}</strong>
-                        <div className="muted">
-                          {t("dash.raporteaza")} {formatZileRamase(e.data, t)}
-                          {e.moment && momentLabel[e.moment] ? ` · ${momentLabel[e.moment]}` : ""}
-                        </div>
-                      </div>
                       <span className="row-chevron">›</span>
                     </Link>
                   </li>
@@ -1169,14 +1103,75 @@ export default function Watchlist() {
         </aside>
       </div>
 
+      <section className="panel earnings-wide" id="earnings-panel">
+        <div className="panel-head">
+          <div>
+            <p className="eyebrow">{t("dash.calendar")}</p>
+            <h2><CalendarDays size={16} className="h2-ic" /> {t("dash.raportari")}</h2>
+          </div>
+        </div>
+        {earnings.length === 0 && earningsRecomandate.length > 0 ? (
+          <>
+            <p className="tab-subtitle">{t("dash.raportareRecomandate")}</p>
+            <ul className="stock-list earnings-grid">
+              {earningsRecomandate.map((e) => (
+                <li key={`${e.simbol}-${e.data}`} className="stock-row">
+                  <div className="stock-row-left">
+                    <StockLogo simbol={e.simbol} />
+                    <div>
+                      <strong>{e.simbol}</strong>
+                      <div className="muted">
+                        {t("dash.raporteaza")} {formatZileRamase(e.data, t)}
+                        {e.moment && momentLabel[e.moment] ? ` · ${momentLabel[e.moment]}` : ""}
+                      </div>
+                    </div>
+                  </div>
+                  <button
+                    className="add-watchlist-button"
+                    onClick={async () => {
+                      await handleAdd(e.simbol);
+                      // Acțiunea abia adăugată are raportare apropiată — recitim
+                      // calendarul ca să treacă din "recomandate" în lista reală.
+                      const data = await api.getEarningsCalendar();
+                      setEarnings(data.earnings);
+                      setEarningsRecomandate(data.recomandate || []);
+                    }}
+                  >
+                    +
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </>
+        ) : earnings.length === 0 ? (
+          <p className="empty">{t("dash.nicioRaportare")}</p>
+        ) : (
+          <ul className="stock-list earnings-grid">
+            {earnings.slice(0, 6).map((e) => (
+              <li key={`${e.simbol}-${e.data}`} className="stock-row">
+                <Link to={`/stock/${e.simbol}`} className="watch-row-link">
+                  <StockLogo simbol={e.simbol} />
+                  <div>
+                    <strong>{e.simbol}</strong>
+                    <div className="muted">
+                      {t("dash.raporteaza")} {formatZileRamase(e.data, t)}
+                      {e.moment && momentLabel[e.moment] ? ` · ${momentLabel[e.moment]}` : ""}
+                    </div>
+                  </div>
+                  <span className="row-chevron">›</span>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        )}
+      </section>
+
       <ToolsPro />
 
-      {!listaMica && (
-        <section className="dash-personas">
-          <h2 className="dash-personas-title">{t("landing.temeTitlu")}</h2>
-          <ThemeCards />
-        </section>
-      )}
+      <section className="dash-personas">
+        <h2 className="dash-personas-title">{t("landing.temeTitlu")}</h2>
+        <ThemeCards />
+      </section>
 
       <Disclaimer />
     </div>
