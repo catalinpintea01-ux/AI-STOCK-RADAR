@@ -62,14 +62,49 @@ const SORT_KEYS = {
   risc: (s) => s.scorRisc, // crescător: risc mic primul
 };
 
+// Presetări — filtre predefinite peste datele deja calculate (sursaDate.metric),
+// zero apeluri externe. Fiecare returnează și criteriul (variatie5z / zileDeLaMax)
+// ca cifra din spatele filtrului să fie vizibilă, nu doar afirmată.
+const PRESETURI = {
+  momentum: {
+    filtru: (s) => s.scorMomentum >= 65,
+    sort: (s) => -s.scorMomentum,
+  },
+  neobisnuite: {
+    filtru: (s) => typeof s.variatie5z === "number" && Math.abs(s.variatie5z) >= 7,
+    sort: (s) => -Math.abs(s.variatie5z ?? 0),
+  },
+  max52: {
+    filtru: (s) => typeof s.zileDeLaMax === "number" && s.zileDeLaMax <= 30,
+    sort: (s) => s.zileDeLaMax ?? Infinity,
+  },
+};
+
+// Extrage din sursaDate cifrele pe care se sprijină presetările.
+function cuMetrice(scor, s) {
+  try {
+    const metric = JSON.parse(scor.sursaDate).metric || {};
+    const r5 = metric["5DayPriceReturnDaily"];
+    s.variatie5z = typeof r5 === "number" ? Math.round(r5 * 10) / 10 : null;
+    const dataMax = metric["52WeekHighDate"];
+    s.zileDeLaMax = dataMax ? Math.floor((Date.now() - new Date(dataMax).getTime()) / (24 * 60 * 60 * 1000)) : null;
+  } catch {
+    s.variatie5z = null;
+    s.zileDeLaMax = null;
+  }
+  return s;
+}
+
 router.get("/screener", requirePremium, async (req, res) => {
-  const { verdict, sector, minScor, sort } = req.query;
+  const { verdict, sector, minScor, sort, preset } = req.query;
   const scoruri = await prisma.radarScore.findMany();
 
-  const cheie = SORT_KEYS[sort] || SORT_KEYS.compozit;
+  const presetActiv = PRESETURI[preset] || null;
+  const cheie = presetActiv ? presetActiv.sort : SORT_KEYS[sort] || SORT_KEYS.compozit;
   const rezultate = scoruri
-    .map(imbogateste)
+    .map((scor) => cuMetrice(scor, imbogateste(scor)))
     .filter((s) => {
+      if (presetActiv && !presetActiv.filtru(s)) return false;
       if (verdict && s.verdict !== verdict) return false;
       if (sector && s.sector !== sector) return false;
       if (minScor && s.scorCompozit < Number(minScor)) return false;
@@ -78,7 +113,7 @@ router.get("/screener", requirePremium, async (req, res) => {
     .sort((a, b) => cheie(a) - cheie(b))
     .slice(0, 20);
 
-  res.json({ rezultate, totalAnalizate: scoruri.length });
+  res.json({ rezultate, totalAnalizate: scoruri.length, preset: presetActiv ? preset : null });
 });
 
 // Radarul insiderilor: companiile din tot ce a analizat AI-ul unde directorii

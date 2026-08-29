@@ -6384,3 +6384,117 @@ html {
 .landing-footer-links {
   margin-bottom: 0.6rem;
 }
+
+/* ── AI Daily Brief — cardul de dimineață de pe Radar ─────────────────── */
+.brief-panel {
+  margin-bottom: 1rem;
+  border-left: 3px solid var(--blue);
+}
+.brief-head {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  margin-bottom: 0.5rem;
+}
+.brief-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--blue) 14%, transparent);
+  color: var(--blue);
+  flex-shrink: 0;
+}
+.brief-titlu {
+  font-size: 1.05rem;
+  margin: 0;
+}
+.brief-data {
+  margin-left: auto;
+  font-size: 0.8rem;
+  color: var(--muted);
+  text-transform: capitalize;
+  white-space: nowrap;
+}
+.brief-text {
+  margin: 0;
+  line-height: 1.65;
+  color: var(--text);
+}
+.brief-simboluri {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  margin-top: 0.7rem;
+  font-size: 0.85rem;
+}
+.brief-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.25rem 0.6rem;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--card-bg);
+  color: var(--text);
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.82rem;
+  transition: border-color 0.15s ease, transform 0.15s ease;
+}
+.brief-chip:hover {
+  border-color: var(--blue);
+  transform: translateY(-1px);
+}
+@media (max-width: 640px) {
+  .brief-data { display: none; }
+}
+
+/* ── Presetări screener — filtre gata gândite, un click ───────────────── */
+.screener-presets {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  margin-bottom: 0.7rem;
+}
+.screener-preset-chip {
+  padding: 0.35rem 0.8rem;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--card-bg);
+  color: var(--text);
+  font-size: 0.83rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+.screener-preset-chip:hover:not(:disabled) {
+  border-color: var(--blue);
+}
+.screener-preset-chip.active {
+  background: var(--blue);
+  border-color: var(--blue);
+  color: #fff;
+}
+.screener-preset-chip:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+.screener-preset-fact {
+  display: block;
+  font-size: 0.76rem;
+  margin-top: 0.15rem;
+  color: var(--muted);
+}
+
+/* ── Alerte de scor în Digest ──────────────────────────────────────────── */
+.news-headline-wrap {
+  text-decoration: none;
+}
+.scor-alerta-verdict {
+  color: var(--muted);
+  font-weight: 500;
+}

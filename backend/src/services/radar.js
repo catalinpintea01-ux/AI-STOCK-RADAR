@@ -160,11 +160,29 @@ async function computeAndStore(simbol) {
     generatAi: narrative.generatAi,
   };
 
+  // Scorul anterior, citit înainte de upsert — baza alertelor de scor de mai jos.
+  const anterior = await prisma.radarScore.findUnique({
+    where: { simbol },
+    select: { scorCompozit: true, verdict: true },
+  });
+
   const saved = await prisma.radarScore.upsert({
     where: { simbol },
     update: data,
     create: { simbol, ...data },
   });
+
+  // Alerte pentru cei care urmăresc simbolul, doar la schimbări notabile
+  // (verdict schimbat sau salt ≥10 puncte). Best-effort: o eroare aici nu are
+  // voie să strice calculul de scor în sine.
+  if (anterior) {
+    try {
+      const { creeazaAlerteScor } = require("./alerts");
+      await creeazaAlerteScor(simbol, anterior, data);
+    } catch (err) {
+      console.error(`[radar] alerte de scor eșuate pentru ${simbol}: ${err.message}`);
+    }
+  }
 
   // Jurnal append-only pentru "Ce s-a schimbat" — o înregistrare per calcul,
   // separată de RadarScore (care e doar cache-ul "cel mai recent").

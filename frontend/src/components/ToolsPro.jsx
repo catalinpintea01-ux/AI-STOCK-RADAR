@@ -74,6 +74,13 @@ export default function ToolsPro() {
     insVanzari: "Vânzări nete",
     insGol: "Datele insiderilor se colectează la următoarele runde de analiză — revino curând.",
     insTx: "{c} cumpărări · {v} vânzări",
+    presetMomentum: "Momentum puternic",
+    presetNeobisnuite: "Mișcări neobișnuite",
+    presetMax52: "Aproape de max 52 săpt.",
+    presetToate: "Fără presetare",
+    var5z: "{p}% în 5 zile",
+    zileMax: "max 52s acum {n} zile",
+    aziMax: "max 52s atins azi",
   });
   const numeSector = (s) => {
     const v = t("sectoare." + s);
@@ -89,6 +96,7 @@ export default function ToolsPro() {
   const [sector, setSector] = useState("");
   const [minScor, setMinScor] = useState("");
   const [sortBy, setSortBy] = useState("compozit");
+  const [preset, setPreset] = useState("");
   const [screenerRezultate, setScreenerRezultate] = useState(null);
   const [screenerTotal, setScreenerTotal] = useState(0);
   const [screenerLoading, setScreenerLoading] = useState(false);
@@ -156,13 +164,25 @@ export default function ToolsPro() {
     runScreener({ sort: "compozit" });
   }, []);
 
-  function handleScreener(e) {
-    e.preventDefault();
+  function paramsCurenti(presetAles) {
     const params = { sort: sortBy };
+    if (presetAles) params.preset = presetAles;
     if (verdict) params.verdict = verdict;
     if (sector) params.sector = sector;
     if (minScor) params.minScor = minScor;
-    runScreener(params);
+    return params;
+  }
+
+  function handleScreener(e) {
+    e.preventDefault();
+    runScreener(paramsCurenti(preset));
+  }
+
+  // Chip-urile de presetare rulează imediat — un click, un filtru gata gândit.
+  function handlePreset(nume) {
+    const nou = preset === nume ? "" : nume;
+    setPreset(nou);
+    runScreener(paramsCurenti(nou));
   }
 
   function handleCompare(e) {
@@ -357,6 +377,24 @@ export default function ToolsPro() {
               </span>
             )}
           </div>
+          <div className="screener-presets">
+            {[
+              { id: "momentum", eticheta: tt("presetMomentum") },
+              { id: "neobisnuite", eticheta: tt("presetNeobisnuite") },
+              { id: "max52", eticheta: tt("presetMax52") },
+            ].map((p) => (
+              <button
+                key={p.id}
+                type="button"
+                className={`screener-preset-chip ${preset === p.id ? "active" : ""}`}
+                aria-pressed={preset === p.id}
+                onClick={() => handlePreset(p.id)}
+                disabled={screenerLoading}
+              >
+                {p.eticheta}
+              </button>
+            ))}
+          </div>
           <form className="tools-screener-form" onSubmit={handleScreener}>
             <select value={verdict} onChange={(e) => setVerdict(e.target.value)}>
               <option value="">{tt("oriceVerdict")}</option>
@@ -404,6 +442,16 @@ export default function ToolsPro() {
                           <div className="muted">
                             {numeSector(s.sector)} · <VerdictTag verdict={s.verdict} />
                           </div>
+                          {preset === "neobisnuite" && typeof s.variatie5z === "number" && (
+                            <span className={`screener-preset-fact ${s.variatie5z >= 0 ? "gain-positive" : "gain-negative"}`}>
+                              {tt("var5z", { p: `${s.variatie5z >= 0 ? "+" : ""}${s.variatie5z}` })}
+                            </span>
+                          )}
+                          {preset === "max52" && typeof s.zileDeLaMax === "number" && (
+                            <span className="screener-preset-fact">
+                              {s.zileDeLaMax === 0 ? tt("aziMax") : tt("zileMax", { n: s.zileDeLaMax })}
+                            </span>
+                          )}
                         </div>
                         <div className="screener-subs">
                           <span>A {s.scorAnalist}</span>

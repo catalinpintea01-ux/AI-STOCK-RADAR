@@ -24,7 +24,30 @@ export default function Alerts() {
     golTitlu: "Radarul ascultă piața pentru tine",
     golText: "Adaugă acțiuni în watchlist și aici vei găsi, o dată pe zi, doar schimbările care contează.",
     mergiRadar: "Mergi la radar →",
+    scorUrcat: "Scorul AI a urcat de la {vechi} la {nou}",
+    scorCoborat: "Scorul AI a coborât de la {vechi} la {nou}",
+    verdictNou: "verdict nou:",
   });
+  // Alertele de scor poartă un JSON structurat în headline (nu text fix) —
+  // propoziția se compune aici, în limba utilizatorului.
+  function ScorAlerta({ a }) {
+    let date;
+    try {
+      date = JSON.parse(a.headline);
+    } catch {
+      return <span className="news-headline">{a.headline}</span>;
+    }
+    const urcat = date.nou >= date.vechi;
+    return (
+      <span className="news-headline scor-alerta">
+        {urcat ? tt("scorUrcat", { vechi: date.vechi, nou: date.nou }) : tt("scorCoborat", { vechi: date.vechi, nou: date.nou })}
+        {date.verdictNou !== date.verdictVechi && (
+          <span className="scor-alerta-verdict"> · {tt("verdictNou")} {t(`verdict.${date.verdictNou}`)}</span>
+        )}
+      </span>
+    );
+  }
+
   const [items, setItems] = useState(null);
   const [digest, setDigest] = useState([]);
   const [showHistory, setShowHistory] = useState(false);
@@ -75,9 +98,15 @@ export default function Alerts() {
                       {d.stiri > 1 && <span className="muted"> · {tt("stiriNoi", { n: d.stiri })}</span>}
                     </Link>
                     <div>
-                      <a href={d.url} target="_blank" rel="noreferrer" className="news-headline">
-                        {d.headline}
-                      </a>
+                      {d.tip === "scor" ? (
+                        <Link to={`/stock/${d.simbol}`} className="news-headline-wrap">
+                          <ScorAlerta a={d} />
+                        </Link>
+                      ) : (
+                        <a href={d.url} target="_blank" rel="noreferrer" className="news-headline">
+                          {d.headline}
+                        </a>
+                      )}
                     </div>
                     <div className="muted" style={{ marginTop: "0.25rem" }}>
                       {d.sursa} · {new Date(d.createdAt).toLocaleString(locale)}
@@ -109,9 +138,15 @@ export default function Alerts() {
                     <strong>{a.simbol}</strong>
                   </Link>
                   <div>
-                    <a href={a.url} target="_blank" rel="noreferrer" className="news-headline">
-                      {a.headline}
-                    </a>
+                    {a.tip === "scor" ? (
+                      <Link to={`/stock/${a.simbol}`} className="news-headline-wrap">
+                        <ScorAlerta a={a} />
+                      </Link>
+                    ) : (
+                      <a href={a.url} target="_blank" rel="noreferrer" className="news-headline">
+                        {a.headline}
+                      </a>
+                    )}
                   </div>
                   <div className="muted" style={{ marginTop: "0.25rem" }}>
                     {a.sursa} · {new Date(a.createdAt).toLocaleString(locale)}

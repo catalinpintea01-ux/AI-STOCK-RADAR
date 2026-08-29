@@ -110,6 +110,7 @@ model Alert {
   headline  String
   url       String
   sursa     String
+  tip       String   @default("stire") // "stire" | "scor" — scor = schimbare de scor AI, headline poartă JSON structurat
   createdAt DateTime @default(now())
   citit     Boolean  @default(false)
 

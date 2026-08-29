@@ -14,8 +14,9 @@ import ThemeCards from "../components/ThemeCards.jsx";
 import VerdictTag from "../components/VerdictTag.jsx";
 import LivePrice from "../components/LivePrice.jsx";
 import RadarPrint from "../components/RadarPrint.jsx";
-import { Zap, Target, ClipboardList, Compass, Newspaper, Activity, CalendarDays, Lightbulb, Lock } from "lucide-react";
+import { Zap, Target, ClipboardList, Compass, Newspaper, Activity, CalendarDays, Lightbulb, Lock, Sunrise } from "lucide-react";
 import { useLang } from "../i18n/index.jsx";
+import { useTraduse } from "../i18n/useTraduse.js";
 
 
 
@@ -125,6 +126,12 @@ export default function Watchlist() {
     return typeof v === "string" && v.startsWith("sectoare.") ? s : v;
   };
 
+  const ttBrief = useTraduse({
+    eyebrow: "AI Daily Brief",
+    titlu: "Piața pe scurt, în această dimineață",
+    mentionate: "În radar azi:",
+  });
+
   const [items, setItems] = useState(null);
   const [holdings, setHoldings] = useState({});
   const [marketNews, setMarketNews] = useState([]);
@@ -147,6 +154,7 @@ export default function Watchlist() {
   const [dailyTab, setDailyTab] = useState("piata");
   const [selectedDaily, setSelectedDaily] = useState(null); // simbolul coloanei selectate din grafic
   const [vix, setVix] = useState(null);
+  const [brief, setBrief] = useState(null); // { zi, text, simboluri }
   const [universSugestii, setUniversSugestii] = useState([]);
   const [interese, setInterese] = useState([]);
   const [onboarding, setOnboarding] = useState(false);
@@ -229,6 +237,10 @@ export default function Watchlist() {
       .getVix()
       .then(setVix)
       .catch(() => {});
+    api
+      .getBrief()
+      .then(setBrief)
+      .catch(() => {}); // fără brief nu se întâmplă nimic — cardul pur și simplu nu apare
     api
       .getTicker()
       .then((data) => {
@@ -554,6 +566,33 @@ export default function Watchlist() {
         )}
         </div>
       </header>
+
+      {brief && brief.text && (
+        <section className="panel brief-panel">
+          <div className="brief-head">
+            <span className="brief-icon"><Sunrise size={18} /></span>
+            <div>
+              <p className="eyebrow">{ttBrief("eyebrow")}</p>
+              <h2 className="brief-titlu">{ttBrief("titlu")}</h2>
+            </div>
+            <span className="brief-data">
+              {new Date(brief.zi).toLocaleDateString(locale, { weekday: "long", day: "numeric", month: "long" })}
+            </span>
+          </div>
+          <p className="brief-text">{brief.text}</p>
+          {brief.simboluri?.length > 0 && (
+            <div className="brief-simboluri">
+              <span className="muted">{ttBrief("mentionate")}</span>
+              {brief.simboluri.map((s) => (
+                <Link key={s} to={`/stock/${s}`} className="brief-chip">
+                  <StockLogo simbol={s} size={18} />
+                  {s}
+                </Link>
+              ))}
+            </div>
+          )}
+        </section>
+      )}
 
       {items.length > 0 && analizateCount === 0 && (
         <p className="dash-pending">{t("dash.pendingToate", { n: items.length })}</p>

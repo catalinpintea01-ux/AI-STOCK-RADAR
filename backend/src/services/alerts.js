@@ -40,6 +40,49 @@ async function checkForNewAlerts(userId) {
   return createdCount;
 }
 
+// Praguri pentru alertele de scor: verdictul schimbat e mereu relevant; o
+// mișcare de compozit sub 10 puncte e zgomot statistic, nu semnal.
+const SCOR_DELTA_MIN = 10;
+
+// Creează alerte "scor" pentru toți utilizatorii care urmăresc simbolul, când
+// recalculul radarului aduce o schimbare notabilă. Chemată din radar.js după
+// upsert — url-ul poartă ziua, deci constrângerea unică [userId, simbol, url]
+// limitează natural la o singură alertă de scor pe simbol pe zi per user.
+async function creeazaAlerteScor(simbol, vechi, nou) {
+  const verdictSchimbat = vechi.verdict !== nou.verdict;
+  const delta = nou.scorCompozit - vechi.scorCompozit;
+  if (!verdictSchimbat && Math.abs(delta) < SCOR_DELTA_MIN) return 0;
+
+  const watchers = await prisma.watchlist.findMany({ where: { simbol }, select: { userId: true } });
+  if (watchers.length === 0) return 0;
+
+  // Headline structurat (JSON) — frontend-ul compune propoziția în limba
+  // utilizatorului; un text fix în română nu s-ar putea traduce fiabil.
+  const headline = JSON.stringify({
+    vechi: vechi.scorCompozit,
+    nou: nou.scorCompozit,
+    verdictVechi: vechi.verdict,
+    verdictNou: nou.verdict,
+  });
+  const url = `scor:${new Date().toISOString().slice(0, 10)}`;
+
+  let create = 0;
+  for (const w of watchers) {
+    try {
+      await prisma.alert.create({
+        data: { userId: w.userId, simbol, headline, url, sursa: "AI Radar", tip: "scor" },
+      });
+      create += 1;
+    } catch (err) {
+      if (err.code !== "P2002") throw err; // duplicat pe ziua curentă — deja alertat
+    }
+  }
+  if (create > 0) {
+    console.log(`[alerts] ${simbol}: scor ${vechi.scorCompozit}→${nou.scorCompozit} — ${create} alerte de scor create`);
+  }
+  return create;
+}
+
 async function getAlerts(userId) {
   return prisma.alert.findMany({
     where: { userId },
@@ -74,6 +117,7 @@ async function getDigest(userId) {
     headline: g.ultima.headline,
     url: g.ultima.url,
     sursa: g.ultima.sursa,
+    tip: g.ultima.tip,
     createdAt: g.ultima.createdAt,
   }));
 
@@ -91,4 +135,4 @@ async function markAllRead(userId) {
   await prisma.alert.updateMany({ where: { userId, citit: false }, data: { citit: true } });
 }
 
-module.exports = { checkForNewAlerts, getAlerts, getDigest, markAlertRead, markAllRead };
+module.exports = { checkForNewAlerts, creeazaAlerteScor, getAlerts, getDigest, markAlertRead, markAllRead };

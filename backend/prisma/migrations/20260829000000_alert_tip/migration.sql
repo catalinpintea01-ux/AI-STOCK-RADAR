@@ -1,0 +1,1 @@
+ALTER TABLE "Alert" ADD COLUMN "tip" TEXT NOT NULL DEFAULT 'stire';
