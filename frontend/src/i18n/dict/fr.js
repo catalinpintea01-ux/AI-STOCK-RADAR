@@ -224,6 +224,8 @@ export default {
     gratuit: "Gratuit",
     celMaiPopular: "Le plus populaire",
     peLuna: "RON / mois",
+    inCurand: "Bientôt disponible",
+    ofertaLansare: "🎁 3 mois à un tarif spécial pour les premiers inscrits",
     freeFeatures: [
       "3 actions suivies",
       "Scores IA complets (4 sous-scores + verdict)",
@@ -232,13 +234,13 @@ export default {
       "Portefeuille virtuel de 10 000 USD",
     ],
     premiumFeatures: [
-      "3 premiers jours gratuits, annulez à tout moment",
+      "Accès prioritaire au lancement pour les préinscrits",
       "Watchlist illimitée",
       "Les 7 actualités analysées par IA + research complet",
       "Outils Pro : screener et comparateur A vs B",
       "Gestion de l'abonnement directement dans l'application",
     ],
-    incepePremium: "Commencer avec Premium →",
+    incepePremium: "Réserver un accès prioritaire →",
     faqTitlu: "Questions fréquentes",
     faq: [
       {
@@ -255,7 +257,7 @@ export default {
       },
       {
         q: "Qu'est-ce que Premium apporte en plus ?",
-        a: "Watchlist illimitée (le plan gratuit est limité à 3 actions suivies), les 7 actualités analysées par IA par jour, le research quotidien complet et les outils Pro : un screener avec filtres et le comparateur d'actions face à face. Les 3 premiers jours sont gratuits — vous saisissez votre carte à l'activation et pouvez annuler avant le premier paiement.",
+        a: "Watchlist illimitée (le plan gratuit est limité à 3 actions suivies), les 7 actualités analysées par IA chaque jour, le research quotidien complet et les outils Pro : un screener filtrable et le comparateur d'actions côte à côte. Premium arrive bientôt — créez un compte gratuit et préinscrivez-vous depuis la page Premium : les premiers inscrits bénéficient de 3 mois à un tarif spécial de lancement, sans aucun paiement maintenant.",
       },
       {
         q: "Puis-je annuler à tout moment ?",

@@ -29,12 +29,19 @@ export default function Premium() {
     activ: "Ai abonamentul Premium activ — toate instrumentele sunt deblocate.",
     gestioneaza: "Gestionează abonamentul",
     gratuit: "Gratuit",
-    trial: "3 zile gratuit, apoi 29,99 RON/lună",
+    trial: "se lansează în curând",
     nelimitat: "Nelimitat",
     panaLa3: "până la limita de 3",
-    cta: "Începe cu 3 zile gratuit →",
-    deschid: "Se deschide activarea...",
-    nota: "Cardul se introduce la activare, prin Stripe · Primele 3 zile sunt gratuite, apoi abonamentul continuă automat cu 29,99 RON/lună · Anulezi oricând în perioada de probă și nu plătești nimic",
+    curand: "Premium se lansează în curând",
+    curandSub: "Lasă-ne emailul și primești acces prioritar în ziua lansării.",
+    oferta: "🎁 Primii utilizatori de pe listă primesc 3 luni de Premium la un preț special de lansare.",
+    emailPlaceholder: "adresa ta de email",
+    rezerva: "Rezervă-mi accesul prioritar",
+    rezervat: "Ești pe listă! Te anunțăm imediat ce Premium se lansează.",
+    pozitia: "Locul tău pe lista de așteptare: #{n}",
+    schimbaEmail: "Vrei alt email? Trimite din nou cu adresa nouă.",
+    trimit: "Se salvează...",
+    notaGratis: "Nu plătești nimic acum și nu îți cerem cardul. Folosim emailul o singură dată, ca să te anunțăm la lansare.",
     r0: "Acțiuni urmărite în radar",
     r1: "Scoruri AI complete (4 sub-scoruri + verdict + factori)",
     r2: "Digest zilnic cu schimbările importante",
@@ -50,23 +57,34 @@ export default function Premium() {
   const [premium, setPremium] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [waitlist, setWaitlist] = useState(null); // { inscris, email, pozitie }
+  const [email, setEmail] = useState("");
 
   useEffect(() => {
     api
       .getBillingStatus()
       .then((data) => setPremium(data.premium))
       .catch(() => setPremium(false));
+    api
+      .getWaitlist()
+      .then((data) => {
+        setWaitlist(data);
+        setEmail(data.email || "");
+      })
+      .catch(() => setWaitlist({ inscris: false, email: "" }));
   }, []);
 
-  async function handleUpgrade() {
+  async function handleWaitlist(e) {
+    e.preventDefault();
     setLoading(true);
     setError("");
     try {
-      track("start_trial");
-      const data = await api.createCheckoutSession();
-      window.location.href = data.url;
+      track("waitlist_join");
+      const data = await api.joinWaitlist(email);
+      setWaitlist(data);
     } catch (err) {
       setError(err.message);
+    } finally {
       setLoading(false);
     }
   }
@@ -135,13 +153,34 @@ export default function Premium() {
           </tbody>
         </table>
 
-        {premium === false && (
-          <div className="premium-cta-row">
+        {premium === false && waitlist !== null && (
+          <div className="premium-cta-row premium-prelansare">
             <img src="/mascota/sarbatoreste.png" alt="" className="mascota mascota-premium" loading="lazy" />
-            <button className="landing-cta" onClick={handleUpgrade} disabled={loading}>
-              {loading ? tt("deschid") : <><Star size={14} className="ic" /> {tt("cta")}</>}
-            </button>
-            <p className="muted premium-note">{tt("nota")}</p>
+            <h3 className="prelansare-titlu">{tt("curand")}</h3>
+            <p className="prelansare-sub">{tt("curandSub")}</p>
+            <p className="prelansare-oferta">{tt("oferta")}</p>
+
+            {waitlist.inscris ? (
+              <div className="prelansare-succes">
+                <p className="prelansare-confirmare">✓ {tt("rezervat")}</p>
+                {waitlist.pozitie && <p className="prelansare-pozitie">{tt("pozitia", { n: waitlist.pozitie })}</p>}
+                <p className="muted premium-note">{tt("schimbaEmail")}</p>
+              </div>
+            ) : null}
+
+            <form className="prelansare-form" onSubmit={handleWaitlist}>
+              <input
+                type="email"
+                required
+                value={email}
+                placeholder={tt("emailPlaceholder")}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+              <button type="submit" className="landing-cta" disabled={loading}>
+                {loading ? tt("trimit") : <><Star size={14} className="ic" /> {tt("rezerva")}</>}
+              </button>
+            </form>
+            <p className="muted premium-note">{tt("notaGratis")}</p>
           </div>
         )}
         {error && <div className="error">{error}</div>}

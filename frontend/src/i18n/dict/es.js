@@ -224,6 +224,8 @@ export default {
     gratuit: "Gratis",
     celMaiPopular: "El más popular",
     peLuna: "RON / mes",
+    inCurand: "Próximamente",
+    ofertaLansare: "🎁 3 meses a un precio especial para los primeros inscritos",
     freeFeatures: [
       "3 acciones seguidas",
       "Puntuaciones IA completas (4 subpuntuaciones + veredicto)",
@@ -232,13 +234,13 @@ export default {
       "Cartera virtual de 10.000 USD",
     ],
     premiumFeatures: [
-      "Primeros 3 días gratis, cancela cuando quieras",
+      "Acceso prioritario en el lanzamiento para preinscritos",
       "Lista de seguimiento ilimitada",
       "Las 7 noticias analizadas por IA + research completo",
       "Herramientas Pro: screener y comparador A vs B",
       "Gestiona la suscripción directamente en la aplicación",
     ],
-    incepePremium: "Empieza con Premium →",
+    incepePremium: "Reserva acceso prioritario →",
     faqTitlu: "Preguntas frecuentes",
     faq: [
       {
@@ -255,7 +257,7 @@ export default {
       },
       {
         q: "¿Qué obtengo extra con Premium?",
-        a: "Lista de seguimiento ilimitada (el plan gratuito se limita a 3 acciones), las 7 noticias analizadas por IA al día, research diario completo y las herramientas Pro: screener con filtros y el comparador de acciones cara a cara. Los primeros 3 días son gratis — introduces la tarjeta al activar y puedes cancelar antes del primer pago.",
+        a: "Watchlist ilimitada (el plan gratuito se limita a 3 acciones seguidas), las 7 noticias analizadas por IA al día, research diario completo y las herramientas Pro: un screener con filtros y el comparador de acciones cara a cara. Premium se lanza pronto: crea una cuenta gratuita y preinscríbete desde la página Premium; los primeros inscritos reciben 3 meses a un precio especial de lanzamiento, sin ningún pago ahora.",
       },
       {
         q: "¿Puedo cancelar cuando quiera?",

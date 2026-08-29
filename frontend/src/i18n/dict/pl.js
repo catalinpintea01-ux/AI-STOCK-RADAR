@@ -224,6 +224,8 @@ export default {
     gratuit: "Za darmo",
     celMaiPopular: "Najpopularniejszy",
     peLuna: "RON / miesiąc",
+    inCurand: "Wkrótce",
+    ofertaLansare: "🎁 3 miesiące w specjalnej cenie dla pierwszych zapisanych",
     freeFeatures: [
       "3 obserwowane akcje",
       "Pełne oceny AI (4 oceny cząstkowe + werdykt)",
@@ -232,13 +234,13 @@ export default {
       "Wirtualny portfel 10 000 USD",
     ],
     premiumFeatures: [
-      "Pierwsze 3 dni za darmo, anuluj w każdej chwili",
+      "Priorytetowy dostęp przy starcie dla zapisanych",
       "Nielimitowana lista obserwowanych",
       "Wszystkie 7 wiadomości analizowanych przez AI + pełny research",
       "Narzędzia Pro: screener i porównywarka A vs B",
       "Zarządzanie subskrypcją bezpośrednio w aplikacji",
     ],
-    incepePremium: "Zacznij z Premium →",
+    incepePremium: "Zarezerwuj priorytetowy dostęp →",
     faqTitlu: "Częste pytania",
     faq: [
       {
@@ -255,7 +257,7 @@ export default {
       },
       {
         q: "Co dodatkowo daje Premium?",
-        a: "Nielimitowaną listę obserwowanych (darmowy plan jest ograniczony do 3 akcji), wszystkie 7 wiadomości analizowanych przez AI dziennie, pełny codzienny research i narzędzia Pro: screener z filtrami oraz porównywarkę akcji obok siebie. Pierwsze 3 dni są darmowe — kartę podajesz przy aktywacji i możesz anulować przed pierwszą płatnością.",
+        a: "Nielimitowana watchlista (plan darmowy jest ograniczony do 3 obserwowanych akcji), wszystkie 7 wiadomości analizowanych przez AI dziennie, pełny codzienny research i narzędzia Pro: screener z filtrami oraz porównywarka akcji obok siebie. Premium startuje wkrótce — załóż darmowe konto i zapisz się na stronie Premium: pierwsi zapisani otrzymają 3 miesiące w specjalnej cenie startowej, bez żadnej płatności teraz.",
       },
       {
         q: "Czy mogę zrezygnować w każdej chwili?",

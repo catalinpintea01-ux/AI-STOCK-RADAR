@@ -224,6 +224,8 @@ export default {
     gratuit: "Gratis",
     celMaiPopular: "Am beliebtesten",
     peLuna: "RON / Monat",
+    inCurand: "Demnächst",
+    ofertaLansare: "🎁 3 Monate zum Sonderpreis für die ersten Anmeldungen",
     freeFeatures: [
       "3 beobachtete Aktien",
       "Vollständige KI-Scores (4 Teil-Scores + Urteil)",
@@ -232,13 +234,13 @@ export default {
       "Virtuelles Portfolio mit 10.000 USD",
     ],
     premiumFeatures: [
-      "Die ersten 3 Tage gratis, jederzeit kündbar",
+      "Vorrangiger Zugang zum Start für Vorregistrierte",
       "Unbegrenzte Watchlist",
       "Alle 7 KI-analysierten Nachrichten + volles Research",
       "Pro-Tools: Screener und A-vs-B-Vergleich",
       "Abo-Verwaltung direkt in der App",
     ],
-    incepePremium: "Mit Premium starten →",
+    incepePremium: "Vorrangigen Zugang reservieren →",
     faqTitlu: "Häufige Fragen",
     faq: [
       {
@@ -255,7 +257,7 @@ export default {
       },
       {
         q: "Was bekomme ich mit Premium zusätzlich?",
-        a: "Unbegrenzte Watchlist (der Gratis-Plan ist auf 3 beobachtete Aktien begrenzt), alle 7 KI-analysierten Nachrichten pro Tag, volles tägliches Research und die Pro-Tools: Screener mit Filtern und den direkten Aktienvergleich. Die ersten 3 Tage sind gratis — du gibst deine Karte bei der Aktivierung ein und kannst vor der ersten Zahlung jederzeit kündigen.",
+        a: "Unbegrenzte Watchlist (der Gratisplan ist auf 3 beobachtete Aktien begrenzt), alle 7 KI-analysierten Nachrichten pro Tag, vollständiges tägliches Research und die Pro-Tools: ein filterbarer Screener und der direkte Aktienvergleich. Premium startet in Kürze — erstelle ein kostenloses Konto und registriere dich auf der Premium-Seite vor: die ersten Anmeldungen erhalten 3 Monate zum Sonder-Startpreis, ganz ohne Zahlung jetzt.",
       },
       {
         q: "Kann ich jederzeit kündigen?",

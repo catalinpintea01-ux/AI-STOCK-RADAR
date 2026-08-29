@@ -6533,3 +6533,65 @@ html {
     gap: 0.2rem 1.1rem;
   }
 }
+
+/* ── Preînregistrare Premium ───────────────────────────────────────────── */
+.landing-plan-price-curand {
+  font-size: 1.5rem;
+}
+.landing-plan-oferta {
+  margin: -0.4rem 0 0.9rem;
+  font-size: 0.86rem;
+  font-weight: 600;
+  color: var(--blue);
+}
+.premium-prelansare {
+  text-align: center;
+}
+.prelansare-titlu {
+  margin: 0.5rem 0 0.2rem;
+  font-size: 1.25rem;
+  font-weight: 800;
+}
+.prelansare-sub {
+  margin: 0 0 0.5rem;
+  color: var(--muted);
+}
+.prelansare-oferta {
+  display: inline-block;
+  margin: 0 0 0.9rem;
+  padding: 0.45rem 0.9rem;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--blue) 12%, transparent);
+  color: var(--blue);
+  font-weight: 700;
+  font-size: 0.9rem;
+}
+.prelansare-form {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: 0.6rem;
+}
+.prelansare-form input {
+  padding: 0.65rem 0.9rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background: var(--card-bg);
+  color: var(--text);
+  min-width: 260px;
+  font-size: 0.95rem;
+}
+.prelansare-succes {
+  margin-bottom: 0.9rem;
+}
+.prelansare-confirmare {
+  margin: 0 0 0.25rem;
+  font-weight: 700;
+  color: var(--price-up);
+}
+.prelansare-pozitie {
+  margin: 0 0 0.3rem;
+  font-size: 0.9rem;
+  color: var(--muted);
+}

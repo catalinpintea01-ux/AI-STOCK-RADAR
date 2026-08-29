@@ -224,6 +224,8 @@ export default {
     gratuit: "Gratuit",
     celMaiPopular: "Cel mai popular",
     peLuna: "RON / lună",
+    inCurand: "În curând",
+    ofertaLansare: "🎁 3 luni la preț special pentru primii înscriși",
     freeFeatures: [
       "3 acțiuni urmărite",
       "Scoruri AI complete (4 sub-scoruri + verdict)",
@@ -232,13 +234,13 @@ export default {
       "Portofoliu virtual de 10.000 USD",
     ],
     premiumFeatures: [
-      "Primele 3 zile gratuite, anulezi oricând",
+      "Acces prioritar la lansare pentru cei preînregistrați",
       "Watchlist nelimitat",
       "Toate cele 7 știri analizate AI + research complet",
       "Tool-uri Pro: screener și comparator A vs B",
       "Gestionare abonament direct din aplicație",
     ],
-    incepePremium: "Începe cu Premium →",
+    incepePremium: "Rezervă acces prioritar →",
     faqTitlu: "Întrebări frecvente",
     faq: [
       {
@@ -255,7 +257,7 @@ export default {
       },
       {
         q: "Ce primesc în plus la Premium?",
-        a: "Watchlist nelimitat (planul gratuit e limitat la 3 acțiuni urmărite), toate cele 7 știri analizate AI pe zi, research zilnic complet și tool-urile Pro: screener cu filtre și comparatorul de acțiuni față în față. Primele 3 zile sunt gratuite — introduci cardul la activare și poți anula oricând înainte de prima plată.",
+        a: "Watchlist nelimitat (planul gratuit e limitat la 3 acțiuni urmărite), toate cele 7 știri analizate AI pe zi, research zilnic complet și tool-urile Pro: screener cu filtre și comparatorul de acțiuni față în față. Premium se lansează în curând — creează-ți un cont gratuit și preînregistrează-te din pagina Premium: primii înscriși primesc 3 luni la un preț special de lansare, fără nicio plată acum.",
       },
       {
         q: "Pot renunța oricând?",

@@ -224,6 +224,8 @@ export default {
     gratuit: "Free",
     celMaiPopular: "Most popular",
     peLuna: "RON / month",
+    inCurand: "Coming soon",
+    ofertaLansare: "🎁 3 months at a special price for early sign-ups",
     freeFeatures: [
       "3 tracked stocks",
       "Full AI scores (4 sub-scores + verdict)",
@@ -232,13 +234,13 @@ export default {
       "10,000 USD virtual portfolio",
     ],
     premiumFeatures: [
-      "First 3 days free, cancel anytime",
+      "Priority access at launch for pre-registered users",
       "Unlimited watchlist",
       "All 7 AI-analyzed news + full research",
       "Pro tools: screener and A vs B comparator",
       "Manage your subscription right in the app",
     ],
-    incepePremium: "Start with Premium →",
+    incepePremium: "Reserve priority access →",
     faqTitlu: "Frequently asked questions",
     faq: [
       {
@@ -255,7 +257,7 @@ export default {
       },
       {
         q: "What extra do I get with Premium?",
-        a: "Unlimited watchlist (the free plan is limited to 3 tracked stocks), all 7 AI-analyzed news per day, full daily research and the Pro tools: a filterable screener and the side-by-side stock comparator. The first 3 days are free — you enter your card at activation and can cancel anytime before the first payment.",
+        a: "Unlimited watchlist (the free plan is limited to 3 tracked stocks), all 7 AI-analyzed news per day, full daily research and the Pro tools: a filterable screener and the side-by-side stock comparator. Premium launches soon — create a free account and pre-register from the Premium page: early sign-ups get 3 months at a special launch price, with no payment now.",
       },
       {
         q: "Can I cancel anytime?",

@@ -80,6 +80,9 @@ export const api = {
   getToolCompare: (a, b) =>
     request(`/tools/compare?a=${encodeURIComponent(a)}&b=${encodeURIComponent(b)}`),
   getBillingStatus: () => request("/billing/status"),
+  getWaitlist: () => request("/billing/waitlist"),
+  joinWaitlist: (email) =>
+    request("/billing/waitlist", { method: "POST", body: JSON.stringify({ email }) }),
   createCheckoutSession: () => request("/billing/checkout", { method: "POST" }),
   openBillingPortal: () => request("/billing/portal", { method: "POST" }),
 };

@@ -48,12 +48,12 @@ export function Termeni() {
       <h2>4. Abonamente, perioada de probă și plăți</h2>
       <p>
         Planul gratuit include funcțiile de bază, cu limitele afișate în pagina „Planuri și
-        prețuri". Abonamentul Premium (29,99 RON/lună) include o perioadă de probă gratuită de 3
-        zile; cardul este colectat la activare prin procesatorul de plăți Stripe, iar facturarea
-        începe automat la finalul perioadei de probă dacă abonamentul nu este anulat. Poți anula
-        oricând din aplicație („Gestionează abonamentul"); anularea în perioada de probă nu
-        implică niciun cost, iar după facturare păstrezi accesul până la finalul perioadei
-        plătite. Prețurile pot fi modificate cu notificare prealabilă.
+        prețuri". Abonamentul Premium nu este încă disponibil la vânzare: în prezent oferim doar
+        preînregistrare gratuită (email pentru acces prioritar la lansare); nu colectăm carduri și
+        nu încasăm plăți. La lansare, plățile vor fi procesate prin Stripe, iar condițiile — preț,
+        eventuala perioadă de probă, dreptul de anulare și oferta pentru primii utilizatori — vor
+        fi afișate clar înainte de orice plată. Prețurile pot fi modificate cu notificare
+        prealabilă.
       </p>
 
       <h2>5. Sursele de date și acuratețea</h2>

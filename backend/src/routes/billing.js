@@ -17,6 +17,54 @@ router.get("/status", requireAuth, async (req, res) => {
   });
 });
 
+// ── Preînregistrare Premium ──────────────────────────────────────────────
+// Până la trecerea Stripe pe live nu încasăm bani: strângem doar emailuri
+// pentru acces prioritar la lansare (+ oferta primilor utilizatori).
+
+const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+
+router.get("/waitlist", requireAuth, async (req, res) => {
+  const [inscriere, user, total] = await Promise.all([
+    prisma.premiumWaitlist.findUnique({ where: { userId: req.userId } }),
+    prisma.user.findUnique({ where: { id: req.userId }, select: { email: true } }),
+    prisma.premiumWaitlist.count(),
+  ]);
+
+  let pozitie = null;
+  if (inscriere) {
+    pozitie = (await prisma.premiumWaitlist.count({ where: { createdAt: { lte: inscriere.createdAt } } }));
+  }
+
+  res.json({
+    inscris: Boolean(inscriere),
+    email: inscriere?.email || user?.email || "",
+    pozitie,
+    total,
+  });
+});
+
+router.post("/waitlist", requireAuth, async (req, res) => {
+  const emailBrut = String(req.body?.email || "").trim().toLowerCase();
+  let email = emailBrut;
+  if (!email) {
+    const user = await prisma.user.findUnique({ where: { id: req.userId }, select: { email: true } });
+    email = user?.email || "";
+  }
+  if (!EMAIL_REGEX.test(email)) {
+    return res.status(400).json({ error: "Adresa de email nu pare validă." });
+  }
+
+  const inscriere = await prisma.premiumWaitlist.upsert({
+    where: { userId: req.userId },
+    update: { email },
+    create: { userId: req.userId, email },
+  });
+
+  const pozitie = await prisma.premiumWaitlist.count({ where: { createdAt: { lte: inscriere.createdAt } } });
+  const total = await prisma.premiumWaitlist.count();
+  res.json({ inscris: true, email, pozitie, total });
+});
+
 router.post("/checkout", requireAuth, async (req, res) => {
   if (!stripe) {
     return res.status(503).json({ error: "Plățile nu sunt configurate momentan" });

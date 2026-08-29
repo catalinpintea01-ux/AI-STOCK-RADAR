@@ -23,6 +23,7 @@ model User {
   watchlists    Watchlist[]
   alerts        Alert[]
   prietenii     Friendship[] @relation("PrietenieUser")
+  preinregistrare PremiumWaitlist?
 }
 
 model Portfolio {
@@ -75,6 +76,18 @@ model Badge {
   userId       String
   tipBadge     String
   dataObtinut  DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id])
+}
+
+// Preînregistrare Premium — până la trecerea Stripe pe live (necesită firmă),
+// Premium nu se vinde: strângem emailuri pentru acces prioritar + oferta de
+// lansare. Un rând per utilizator; emailul poate diferi de cel de cont.
+model PremiumWaitlist {
+  id        String   @id @default(uuid())
+  userId    String   @unique
+  email     String
+  createdAt DateTime @default(now())
 
   user User @relation(fields: [userId], references: [id])
 }

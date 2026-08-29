@@ -224,6 +224,8 @@ export default {
     gratuit: "Ingyenes",
     celMaiPopular: "A legnépszerűbb",
     peLuna: "RON / hónap",
+    inCurand: "Hamarosan",
+    ofertaLansare: "🎁 3 hónap kedvezményes áron az első feliratkozóknak",
     freeFeatures: [
       "3 követett részvény",
       "Teljes MI-pontszámok (4 részpontszám + értékelés)",
@@ -232,13 +234,13 @@ export default {
       "10 000 USD virtuális portfólió",
     ],
     premiumFeatures: [
-      "Az első 3 nap ingyenes, bármikor lemondhatod",
+      "Elsőbbségi hozzáférés az induláskor az előregisztrálóknak",
       "Korlátlan figyelőlista",
       "Mind a 7 MI-vel elemzett hír + teljes research",
       "Pro eszközök: screener és A vs B összehasonlító",
       "Előfizetés-kezelés közvetlenül az alkalmazásban",
     ],
-    incepePremium: "Kezdd Premiummal →",
+    incepePremium: "Elsőbbségi hozzáférés foglalása →",
     faqTitlu: "Gyakori kérdések",
     faq: [
       {
@@ -255,7 +257,7 @@ export default {
       },
       {
         q: "Mit kapok pluszban a Premiummal?",
-        a: "Korlátlan figyelőlistát (az ingyenes csomag 3 követett részvényre korlátozott), mind a 7 naponta MI-vel elemzett hírt, teljes napi researcht és a Pro eszközöket: szűrős screenert és az egymás melletti részvény-összehasonlítót. Az első 3 nap ingyenes — a kártyát aktiváláskor adod meg, és az első fizetés előtt bármikor lemondhatod.",
+        a: "Korlátlan watchlist (az ingyenes csomag 3 követett részvényre korlátozott), mind a 7 AI-elemzett hír naponta, teljes napi research és a Pro eszközök: szűrhető screener és a részvény-összehasonlító egymás mellett. A Premium hamarosan indul — hozz létre ingyenes fiókot és előregisztrálj a Premium oldalon: az első feliratkozók 3 hónapot kapnak kedvezményes induló áron, mostani fizetés nélkül.",
       },
       {
         q: "Bármikor lemondhatom?",

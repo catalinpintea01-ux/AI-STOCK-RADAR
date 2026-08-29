@@ -224,6 +224,8 @@ export default {
     gratuit: "Gratis",
     celMaiPopular: "Populairst",
     peLuna: "RON / maand",
+    inCurand: "Binnenkort",
+    ofertaLansare: "🎁 3 maanden voor een speciale prijs voor vroege inschrijvers",
     freeFeatures: [
       "3 gevolgde aandelen",
       "Volledige AI-scores (4 deelscores + oordeel)",
@@ -232,13 +234,13 @@ export default {
       "Virtuele portefeuille van 10.000 USD",
     ],
     premiumFeatures: [
-      "Eerste 3 dagen gratis, altijd opzegbaar",
+      "Voorrang bij de lancering voor vooraf geregistreerden",
       "Onbeperkte watchlist",
       "Alle 7 AI-geanalyseerde nieuwsberichten + volledige research",
       "Pro-tools: screener en A-vs-B-vergelijker",
       "Abonnementsbeheer direct in de app",
     ],
-    incepePremium: "Begin met Premium →",
+    incepePremium: "Reserveer voorrangstoegang →",
     faqTitlu: "Veelgestelde vragen",
     faq: [
       {
@@ -255,7 +257,7 @@ export default {
       },
       {
         q: "Wat krijg ik extra met Premium?",
-        a: "Onbeperkte watchlist (het gratis plan is beperkt tot 3 gevolgde aandelen), alle 7 AI-geanalyseerde nieuwsberichten per dag, volledige dagelijkse research en de Pro-tools: een screener met filters en de aandelenvergelijker zij aan zij. De eerste 3 dagen zijn gratis — je voert je kaart in bij activering en kunt vóór de eerste betaling opzeggen.",
+        a: "Onbeperkte watchlist (het gratis plan is beperkt tot 3 gevolgde aandelen), alle 7 AI-geanalyseerde nieuwsberichten per dag, volledig dagelijks research en de Pro-tools: een filterbare screener en de aandelenvergelijker zij aan zij. Premium lanceert binnenkort — maak een gratis account en registreer je vooraf op de Premium-pagina: vroege inschrijvers krijgen 3 maanden voor een speciale lanceringsprijs, zonder nu iets te betalen.",
       },
       {
         q: "Kan ik altijd opzeggen?",
