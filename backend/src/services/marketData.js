@@ -130,10 +130,43 @@ async function getStock(simbol) {
   }
 }
 
+// Cache de rezultat cu "stale-while-revalidate" pentru listele întregi:
+// parcurgerea secvențială a universului (~60 de simboluri × fetch + pauză
+// anti-rate-limit) durează zeci de secunde la rece — de neacceptat pe drumul
+// unei cereri HTTP. Lista se calculează O SINGURĂ dată și se servește tuturor;
+// după expirare, primul apel primește instant varianta veche și declanșează
+// recalcularea în fundal. Nimeni nu mai așteaptă Finnhub-ul în pagină.
+function cuCacheSWR(fetcher, ttlMs) {
+  let cache = { data: null, refreshedAt: 0 };
+  let inFlight = null;
+
+  return async function () {
+    if (cache.data && Date.now() - cache.refreshedAt < ttlMs) return cache.data;
+
+    if (!inFlight) {
+      inFlight = fetcher()
+        .then((data) => {
+          cache = { data, refreshedAt: Date.now() };
+          return data;
+        })
+        .catch((err) => {
+          console.error(`[marketData] reîmprospătare listă eșuată: ${err.message}`);
+          if (cache.data) return cache.data; // varianta veche e mai bună decât o eroare
+          throw err;
+        })
+        .finally(() => {
+          inFlight = null;
+        });
+    }
+
+    return cache.data ? cache.data : inFlight;
+  };
+}
+
 // Cererile se fac secvențial (nu în paralel) ca să nu depășim limita de
 // rate a planului gratuit Finnhub. Pauza se aplică doar când chiar facem
 // o cerere reală de rețea — rezultatele deja în cache nu o declanșează.
-async function getStockList() {
+async function fetchStockListIntern() {
   const symbols = getMockStocks().map((s) => s.simbol);
   const results = [];
 
@@ -145,6 +178,8 @@ async function getStockList() {
 
   return results;
 }
+
+const getStockList = cuCacheSWR(fetchStockListIntern, 5 * 60 * 1000);
 
 // Indici majori (via ETF-uri care îi urmăresc — Finnhub nu oferă gratuit
 // simboluri de index brute precum ^GSPC) + câteva acțiuni foarte cunoscute,
@@ -162,7 +197,7 @@ const TICKER_TAPE_SYMBOLS = [
   { simbol: "META", nume: "Meta" },
 ];
 
-async function getTickerTape() {
+async function fetchTickerTapeIntern() {
   if (!isConfigured()) return [];
 
   const results = [];
@@ -178,6 +213,8 @@ async function getTickerTape() {
   }
   return results;
 }
+
+const getTickerTape = cuCacheSWR(fetchTickerTapeIntern, 60 * 1000);
 
 async function searchStocks(query) {
   if (!isConfigured() || !query || query.trim().length === 0) {

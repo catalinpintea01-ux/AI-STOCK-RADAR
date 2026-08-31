@@ -53,3 +53,12 @@ app.listen(port, () => console.log(`Backend rulează pe portul ${port}`));
 // ca un utilizator care doar deschide aplicația să găsească deja analiză
 // gata făcută, nu un buton pe care nu știe că trebuie să-l apese.
 scheduler.start();
+
+// Încălzește cache-urile de liste imediat după boot — primul vizitator de
+// după un deploy nu trebuie să plătească parcurgerea la rece a universului
+// Finnhub (~60 de simboluri secvențial ≈ zeci de secunde).
+setTimeout(() => {
+  const { getStockList, getTickerTape } = require("./services/marketData");
+  getStockList().catch(() => {});
+  getTickerTape().catch(() => {});
+}, 5000);
