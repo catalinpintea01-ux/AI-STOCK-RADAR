@@ -6793,3 +6793,169 @@ html {
   .harta-n3 { width: 70px;  height: 46px; }
   .harta-n4 { width: 58px;  height: 40px; }
 }
+
+/* ═══════════════════════════════════════════════════════════════════════
+   STRATUL PREMIUM — rafinare vizuală globală (aplicat peste tot ce e sus).
+   Tipografie cu caracter (Fraunces la titluri), fundal cu ambianță în loc
+   de alb plat, panouri cu adâncime reală, butoane cu gradient și lumină.
+   ═══════════════════════════════════════════════════════════════════════ */
+:root {
+  --font-display: "Fraunces", Georgia, "Times New Roman", serif;
+  --shadow-card: 0 1px 2px rgba(60, 50, 30, 0.05), 0 8px 24px -8px rgba(60, 50, 30, 0.12);
+  --shadow-card-hover: 0 2px 4px rgba(60, 50, 30, 0.06), 0 16px 40px -12px rgba(60, 50, 30, 0.22);
+  --sus-lumina: rgba(255, 255, 255, 0.6); /* linia de lumină din vârful panourilor */
+}
+html[data-theme="dark"] {
+  --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.35), 0 10px 28px -10px rgba(0, 0, 0, 0.55);
+  --shadow-card-hover: 0 2px 4px rgba(0, 0, 0, 0.4), 0 18px 44px -14px rgba(0, 0, 0, 0.7);
+  --sus-lumina: rgba(255, 255, 255, 0.06);
+}
+
+/* Fundalul paginii: ambianță caldă radială în loc de culoare plată. */
+body {
+  background:
+    radial-gradient(1100px 520px at 12% -120px, color-mix(in srgb, var(--blue) 9%, transparent), transparent 70%),
+    radial-gradient(900px 460px at 88% -160px, color-mix(in srgb, var(--blue) 6%, transparent), transparent 70%),
+    var(--bg-page);
+  background-attachment: fixed;
+}
+
+/* Tipografie: titlurile capătă caracter editorial (Fraunces), corpul rămâne
+   Inter. Spațierea negativă dă senzația de "publicație", nu de formular. */
+.page-title,
+.panel-head h2,
+.mega-headline,
+.dash-mega-headline,
+.landing-section-title,
+.dash-personas-title,
+.hero-news-headline,
+.prelansare-titlu,
+.brief-titlu,
+.auth-card h1,
+.landing-plan h3,
+.legal-page h1,
+.legal-body h2 {
+  font-family: var(--font-display);
+  letter-spacing: -0.015em;
+  font-weight: 600;
+}
+.page-title { font-size: 1.75rem; }
+.panel-head h2 { font-size: 1.14rem; }
+.eyebrow {
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  font-size: 0.68rem;
+  color: color-mix(in srgb, var(--blue) 75%, var(--muted));
+}
+
+/* Panourile: gradient discret de sus în jos + linie de lumină în vârf —
+   adâncime reală în loc de chenar alb plat. */
+.panel,
+.holdings,
+.auth-card,
+.stat-tile,
+.suggestion-card,
+.daily-selected {
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--card-bg) 94%, #fff 6%) 0%,
+    var(--card-bg) 45%
+  );
+  box-shadow: inset 0 1px 0 var(--sus-lumina), var(--shadow-card);
+  border-color: color-mix(in srgb, var(--border) 88%, var(--blue) 12%);
+}
+html[data-theme="dark"] .panel,
+html[data-theme="dark"] .holdings,
+html[data-theme="dark"] .auth-card,
+html[data-theme="dark"] .stat-tile,
+html[data-theme="dark"] .suggestion-card,
+html[data-theme="dark"] .daily-selected {
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--card-bg) 90%, #fff 4%) 0%,
+    var(--card-bg) 50%
+  );
+}
+.panel:hover {
+  box-shadow: inset 0 1px 0 var(--sus-lumina), var(--shadow-card-hover);
+  transition: box-shadow 0.25s ease;
+}
+
+/* Butoanele principale: gradient bronz + lumină interioară + halou la hover. */
+.landing-cta,
+.auth-card button[type="submit"],
+.why-button,
+.add-watchlist-button,
+.view-analysis-button,
+.analyze-all-button {
+  background: linear-gradient(160deg, color-mix(in srgb, var(--blue-light) 80%, #fff 12%) 0%, var(--blue) 55%, color-mix(in srgb, var(--blue) 82%, #000 18%) 100%);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35), 0 4px 14px -4px color-mix(in srgb, var(--blue) 55%, transparent);
+  border: none;
+  transition: transform 0.15s ease, box-shadow 0.2s ease, filter 0.2s ease;
+}
+.landing-cta:hover,
+.auth-card button[type="submit"]:hover,
+.why-button:hover,
+.add-watchlist-button:hover,
+.view-analysis-button:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.05);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4), 0 10px 26px -6px color-mix(in srgb, var(--blue) 65%, transparent);
+}
+
+/* Inputuri: focus elegant cu inel bronz difuz, nu contur brutal. */
+input, select, textarea {
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+input:focus, select:focus, textarea:focus {
+  outline: none;
+  border-color: var(--blue) !important;
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--blue) 18%, transparent);
+}
+
+/* Plăcile hărții: sticlă fină deasupra culorii + colțuri mai moi. */
+.harta-tile {
+  border-radius: 8px;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.22), inset 0 -8px 14px -10px rgba(0, 0, 0, 0.28);
+}
+.harta-tile:hover {
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3), var(--shadow-card-hover);
+}
+
+/* Chipuri și pastile: contur cald + micro-tranziții. */
+.filter-chip, .onboarding-chip, .screener-preset-chip, .harta-moduri button, .research-tabs button {
+  transition: border-color 0.15s ease, background 0.15s ease, color 0.15s ease, transform 0.12s ease;
+}
+.filter-chip:hover, .onboarding-chip:hover, .screener-preset-chip:hover:not(:disabled), .harta-moduri button:hover {
+  transform: translateY(-1px);
+}
+
+/* Scrollbar global subțire, în tonul temei. */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: color-mix(in srgb, var(--blue) 35%, var(--border)) transparent;
+}
+*::-webkit-scrollbar { width: 8px; height: 8px; }
+*::-webkit-scrollbar-thumb {
+  background: color-mix(in srgb, var(--blue) 30%, var(--border));
+  border-radius: 4px;
+}
+*::-webkit-scrollbar-track { background: transparent; }
+
+/* Hero-ul dashboard-ului și al landing-ului: profunzime cu halou bronz. */
+.mega-hero {
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.07), 0 24px 60px -24px rgba(20, 16, 10, 0.5);
+}
+
+/* Tabelele (Premium, Admin): antet mai aerisit, rânduri cu hover cald. */
+.premium-table th, .admin-tabel th {
+  letter-spacing: 0.06em;
+}
+.admin-tabel tbody tr:hover td, .premium-table tbody tr:hover td {
+  background: color-mix(in srgb, var(--blue) 5%, transparent);
+}
+
+/* Selecția de text în tonul brandului. */
+::selection {
+  background: color-mix(in srgb, var(--blue) 28%, transparent);
+}
