@@ -57,11 +57,31 @@ export default function HartaPietei() {
   const [actiuni, setActiuni] = useState(null);
   const [mod, setMod] = useState("variatie");
 
+  // Reîncercări cu pauze crescătoare: un backend abia pornit (cache rece)
+  // poate răspunde greu la primul apel — harta apare când datele sunt gata,
+  // în loc să dispară definitiv la prima eroare.
   useEffect(() => {
-    api
-      .getHarta()
-      .then((data) => setActiuni(data.actiuni))
-      .catch(() => setActiuni([]));
+    let anulat = false;
+    let timer = null;
+    const incearca = (ramase) => {
+      api
+        .getHarta()
+        .then((data) => {
+          if (!anulat) setActiuni(data.actiuni);
+        })
+        .catch(() => {
+          if (!anulat && ramase > 0) {
+            timer = setTimeout(() => incearca(ramase - 1), (4 - ramase) * 6000);
+          } else if (!anulat) {
+            setActiuni([]);
+          }
+        });
+    };
+    incearca(3);
+    return () => {
+      anulat = true;
+      if (timer) clearTimeout(timer);
+    };
   }, []);
 
   const sectoare = useMemo(() => {

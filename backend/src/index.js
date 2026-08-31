@@ -31,7 +31,16 @@ app.use((req, res, next) => {
   next();
 });
 
-app.get("/health", (req, res) => res.json({ ok: true }));
+// uptimeSec + memoria: dacă uptime-ul se resetează des, containerul crapă și
+// repornește (și golește cache-urile din memorie) — primul lucru de verificat
+// când "pagina se încarcă greu".
+app.get("/health", (req, res) =>
+  res.json({
+    ok: true,
+    uptimeSec: Math.round(process.uptime()),
+    rssMb: Math.round(process.memoryUsage().rss / 1024 / 1024),
+  })
+);
 
 app.use("/api/auth", authRoutes);
 app.use("/api/portfolio", portfolioRoutes);
