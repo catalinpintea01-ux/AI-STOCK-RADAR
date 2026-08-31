@@ -30,6 +30,49 @@ router.get("/ticker", async (req, res) => {
   res.json({ ticker });
 });
 
+// Harta pieței — mozaicul întregului univers pentru pagina Radar: sector,
+// variația zilei, scorul AI și capitalizarea (dimensiunea plăcii). Totul din
+// cache-uri deja calculate (lista SWR + scorurile din DB) — zero apeluri
+// externe pe drumul cererii.
+router.get("/harta", requireAuth, async (req, res) => {
+  const [univers, scoruri] = await Promise.all([
+    getStockList(),
+    prisma.radarScore.findMany({
+      select: { simbol: true, scorCompozit: true, verdict: true, sursaDate: true },
+    }),
+  ]);
+
+  const scorMap = new Map(
+    scoruri.map((s) => {
+      let cap = null;
+      try {
+        const m = JSON.parse(s.sursaDate)?.metric;
+        if (typeof m?.marketCapitalization === "number") cap = m.marketCapitalization; // milioane USD
+      } catch {
+        // sursaDate coruptă/veche — placa rămâne la dimensiunea implicită
+      }
+      return [s.simbol, { scor: s.scorCompozit, verdict: s.verdict, cap }];
+    })
+  );
+
+  const actiuni = (univers || [])
+    .filter((s) => s && typeof s.variatieProcent === "number")
+    .map((s) => {
+      const extra = scorMap.get(s.simbol) || {};
+      return {
+        simbol: s.simbol,
+        nume: s.nume,
+        sector: s.sector || "Altele",
+        variatieProcent: s.variatieProcent,
+        scor: extra.scor ?? null,
+        verdict: extra.verdict ?? null,
+        cap: extra.cap ?? null,
+      };
+    });
+
+  res.json({ actiuni });
+});
+
 router.get("/market-news", requireAuth, async (req, res) => {
   const news = await getAnalyzedMarketNews(req.limba);
 

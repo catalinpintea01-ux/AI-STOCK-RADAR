@@ -6675,3 +6675,121 @@ html {
   font-size: 0.68rem;
   color: var(--muted);
 }
+
+/* ── Harta pieței — mozaic pe sectoare (stil Finviz) ──────────────────── */
+.harta-panel {
+  margin-bottom: 1.1rem;
+}
+.harta-moduri {
+  display: flex;
+  gap: 0.4rem;
+}
+.harta-moduri button {
+  padding: 0.32rem 0.75rem;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--card-bg);
+  color: var(--muted);
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: border-color 0.15s ease, color 0.15s ease, background 0.15s ease;
+}
+.harta-moduri button.active {
+  background: var(--blue);
+  border-color: var(--blue);
+  color: #fff;
+}
+.harta-sectoare {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.9rem 1.2rem;
+  margin-top: 0.5rem;
+}
+.harta-sector {
+  flex: 1 1 260px;
+  min-width: 0;
+}
+.harta-sector-titlu {
+  display: block;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--muted);
+  margin-bottom: 0.35rem;
+}
+.harta-placi {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 3px;
+  align-content: flex-start;
+}
+.harta-tile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1px;
+  border-radius: 6px;
+  text-decoration: none;
+  color: var(--text);
+  line-height: 1.15;
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
+  overflow: hidden;
+}
+.harta-tile:hover {
+  transform: scale(1.07);
+  box-shadow: var(--shadow-card-hover);
+  z-index: 2;
+  position: relative;
+}
+.harta-tile-alb {
+  color: #fff;
+}
+.harta-tile strong {
+  font-size: 0.82rem;
+  letter-spacing: 0.01em;
+}
+.harta-tile span {
+  font-size: 0.68rem;
+  opacity: 0.9;
+}
+.harta-n1 { width: 128px; height: 84px; }
+.harta-n2 { width: 100px; height: 68px; }
+.harta-n3 { width: 82px;  height: 54px; }
+.harta-n4 { width: 66px;  height: 44px; }
+.harta-n4 strong { font-size: 0.7rem; }
+.harta-n4 span { font-size: 0.6rem; }
+
+.harta-legenda {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  margin-top: 0.8rem;
+  font-size: 0.78rem;
+  flex-wrap: wrap;
+}
+.harta-legenda-chip {
+  width: 14px;
+  height: 14px;
+  border-radius: 4px;
+  display: inline-block;
+}
+.harta-legenda-bara {
+  width: 110px;
+  height: 8px;
+  border-radius: 4px;
+}
+.harta-legenda-variatie {
+  background: linear-gradient(90deg, rgba(191,68,56,0.8), rgba(130,121,106,0.18), rgba(46,125,91,0.8));
+}
+.harta-legenda-scor {
+  background: linear-gradient(90deg, rgba(138,109,78,0.12), rgba(138,109,78,0.87));
+}
+@media (max-width: 640px) {
+  .harta-n1 { width: 104px; height: 68px; }
+  .harta-n2 { width: 84px;  height: 56px; }
+  .harta-n3 { width: 70px;  height: 46px; }
+  .harta-n4 { width: 58px;  height: 40px; }
+}

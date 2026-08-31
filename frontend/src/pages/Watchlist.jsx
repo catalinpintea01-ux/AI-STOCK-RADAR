@@ -14,6 +14,7 @@ import ThemeCards from "../components/ThemeCards.jsx";
 import VerdictTag from "../components/VerdictTag.jsx";
 import LivePrice from "../components/LivePrice.jsx";
 import RadarPrint from "../components/RadarPrint.jsx";
+import HartaPietei from "../components/HartaPietei.jsx";
 import { Zap, Target, ClipboardList, Compass, Newspaper, Activity, CalendarDays, Lightbulb, Lock, Sunrise } from "lucide-react";
 import { useLang } from "../i18n/index.jsx";
 import { useTraduse } from "../i18n/useTraduse.js";
@@ -1102,6 +1103,8 @@ export default function Watchlist() {
           </section>
         </aside>
       </div>
+
+      <HartaPietei />
 
       <section className="panel earnings-wide" id="earnings-panel">
         <div className="panel-head">
