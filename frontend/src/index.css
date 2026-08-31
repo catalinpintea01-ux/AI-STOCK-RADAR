@@ -6959,3 +6959,61 @@ input:focus, select:focus, textarea:focus {
 ::selection {
   background: color-mix(in srgb, var(--blue) 28%, transparent);
 }
+
+/* ── Dark "graphite metallic" — recalibrare à la Revolut ─────────────────
+   Fundal antracit neutru (nu maro-negru cald), carduri cu gradient diagonal
+   de metal periat + linie de lumină argintie, accentul auriu păstrat. */
+html[data-theme="dark"] {
+  --bg-page: #0b0c0e;
+  --card-bg: #17181c;
+  --border: #262930;
+  --surface-2: #1d1f24;
+  --text: #edeef1;
+  --muted: #8f949e;
+  --gradient-brand: linear-gradient(135deg, #2b2e35 0%, #41454f 100%);
+  --accent-soft: #23252b;
+  --success-soft: #1f2320;
+  --sk-1: #1a1c20;
+  --sk-2: #24262c;
+  --sus-lumina: rgba(220, 228, 240, 0.09);
+}
+
+/* Ambianța paginii: un abur argintiu sus-stânga + unul auriu sus-dreapta,
+   pe antracit cu o coborâre foarte lentă spre negru. */
+html[data-theme="dark"] body {
+  background:
+    radial-gradient(1100px 520px at 12% -120px, rgba(190, 200, 215, 0.055), transparent 70%),
+    radial-gradient(900px 460px at 88% -160px, rgba(211, 191, 156, 0.05), transparent 70%),
+    linear-gradient(180deg, #0e0f12 0%, #0b0c0e 480px),
+    var(--bg-page);
+  background-attachment: fixed;
+}
+
+/* Cardurile: metal periat — gradient diagonal cu un vârf de lumină rece. */
+html[data-theme="dark"] .panel,
+html[data-theme="dark"] .holdings,
+html[data-theme="dark"] .auth-card,
+html[data-theme="dark"] .stat-tile,
+html[data-theme="dark"] .suggestion-card,
+html[data-theme="dark"] .daily-selected {
+  background: linear-gradient(160deg, #1d1f25 0%, #16171b 46%, #191a1f 100%);
+  border-color: #272a31;
+  box-shadow: inset 0 1px 0 var(--sus-lumina), var(--shadow-card);
+}
+
+/* Hero-ul: muchie metalică sus + halou discret. */
+html[data-theme="dark"] .mega-hero {
+  box-shadow: inset 0 1px 0 rgba(220, 228, 240, 0.12), 0 24px 60px -24px rgba(0, 0, 0, 0.8);
+}
+
+/* Chipuri, inputuri, dropdown-uri: grafit în loc de maro. */
+html[data-theme="dark"] input,
+html[data-theme="dark"] select,
+html[data-theme="dark"] textarea {
+  background: #131417;
+  border-color: #2a2d34;
+}
+html[data-theme="dark"] .navbar-dropdown {
+  background: linear-gradient(160deg, #1e2026 0%, #17181c 100%);
+  border-color: #272a31;
+}
