@@ -161,6 +161,12 @@ async function ensureBaseCache() {
 
   const candidates = await getMarketNewsRaw();
   if (candidates.length === 0) {
+    // Sursa e momentan indisponibilă: păstrăm selecția analizată existentă
+    // (dacă avem una) încă 5 minute, în loc s-o înlocuim cu un panou gol.
+    if (cache && cache.items.length > 0) {
+      cache.expiresAt = Date.now() + 5 * 60 * 1000;
+      return;
+    }
     cache = { items: [], byId: new Map(), expiresAt: Date.now() + 5 * 60 * 1000 };
     cachePeLimba.clear();
     return;

@@ -89,7 +89,7 @@ async function getMarketNewsRaw() {
 
   try {
     const res = await fetch(url);
-    if (!res.ok) return [];
+    if (!res.ok) throw new Error(`Finnhub a răspuns cu status ${res.status}`);
 
     const data = await res.json();
     const news = (Array.isArray(data) ? data : [])
@@ -104,11 +104,16 @@ async function getMarketNewsRaw() {
         data: new Date(n.datetime * 1000).toISOString(),
       }));
 
+    if (news.length === 0) throw new Error("Finnhub a întors o listă goală");
+
     marketNewsRawCache = { data: news, expiresAt: Date.now() + MARKET_NEWS_RAW_CACHE_TTL_MS };
     return news;
   } catch (err) {
+    // Rate-limit (429) sau orice altă eroare: ultima listă bună, chiar
+    // expirată, e mereu mai utilă decât un panou gol. Reîncercarea reală
+    // se întâmplă la următorul apel (nu prelungim expirarea aici).
     console.error(`[news] fallback pentru piață generală: ${err.message}`);
-    return [];
+    return marketNewsRawCache?.data?.length ? marketNewsRawCache.data : [];
   }
 }
 
