@@ -1,7 +1,9 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { api } from "../api";
-import { Map } from "lucide-react";
+// "Map as IconHarta": importul gol ("Map") ar umbri constructorul global Map
+// folosit mai jos la grupare — și ar crăpa întreaga pagină.
+import { Map as IconHarta } from "lucide-react";
 import { useLang } from "../i18n/index.jsx";
 import { useTraduse } from "../i18n/useTraduse.js";
 
@@ -86,7 +88,7 @@ export default function HartaPietei() {
       <div className="panel-head">
         <div>
           <p className="eyebrow">{tt("eyebrow")}</p>
-          <h2><Map size={16} className="h2-ic" /> {tt("titlu")}</h2>
+          <h2><IconHarta size={16} className="h2-ic" /> {tt("titlu")}</h2>
         </div>
         <div className="harta-moduri">
           <button
