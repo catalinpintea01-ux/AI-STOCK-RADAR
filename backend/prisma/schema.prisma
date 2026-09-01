@@ -245,6 +245,20 @@ model PonderiRadar {
   actualizatLa     DateTime @default(now())
 }
 
+// Brieful personal al watchlist-ului: un rând per (utilizator, zi). Premium
+// primește text generat de Claude (max 1 apel/user/zi — acest cache e frâna
+// de cost); planul gratuit primește sinteza deterministă (generatAi=false).
+model BriefPersonal {
+  id        String   @id @default(uuid())
+  userId    String
+  zi        String // "YYYY-MM-DD"
+  textRo    String
+  generatAi Boolean  @default(false)
+  creatLa   DateTime @default(now())
+
+  @@unique([userId, zi])
+}
+
 // Cache persistent de traduceri (texte statice de interfață + narative) —
 // memoria serverului se golește la fiecare deploy, ceea ce făcea prima
 // încărcare a fiecărei pagini/limbi lentă (un apel Claude). Cheia = hash

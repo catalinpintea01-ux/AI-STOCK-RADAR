@@ -7645,3 +7645,24 @@ html[data-theme="dark"] .plan-badge {
   .radar-center-head { flex-direction: column; text-align: center; }
   .footprint-spider { max-width: 240px; }
 }
+
+/* Brieful personal al watchlist-ului, sub brieful pieței. */
+.brief-personal {
+  margin-top: 0.9rem;
+  padding-top: 0.9rem;
+  border-top: 1px dashed var(--border);
+}
+.brief-personal-titlu {
+  margin: 0 0 0.35rem;
+  font-family: "Fraunces", serif;
+  font-size: 1rem;
+  font-weight: 600;
+}
+.brief-personal-upsell {
+  display: inline-block;
+  margin-top: 0.4rem;
+  font-size: 0.8rem;
+  color: var(--blue);
+  text-decoration: none;
+  border-bottom: 1px dashed color-mix(in srgb, var(--blue) 55%, transparent);
+}

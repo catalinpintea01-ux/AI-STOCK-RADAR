@@ -133,6 +133,8 @@ export default function Watchlist() {
     eyebrow: "AI Daily Brief",
     titlu: "Piața pe scurt, în această dimineață",
     mentionate: "În radar azi:",
+    personalTitlu: "Watchlist-ul tău, pe scurt",
+    personalPremium: "Cu Premium, acest brief e scris zilnic de AI, personalizat pe lista ta →",
   });
 
   const [items, setItems] = useState(null);
@@ -158,6 +160,12 @@ export default function Watchlist() {
   const [selectedDaily, setSelectedDaily] = useState(null); // simbolul coloanei selectate din grafic
   const [vix, setVix] = useState(null);
   const [brief, setBrief] = useState(null); // { zi, text, simboluri }
+  // Brieful personal al listei: gratuit = sinteza deterministă, Premium =
+  // text AI (1 apel/zi, cache în DB pe server). gol:true = listă goală.
+  const [briefPersonal, setBriefPersonal] = useState(null);
+  useEffect(() => {
+    api.getBriefPersonal().then(setBriefPersonal).catch(() => {});
+  }, []);
   // Doar pentru cartonașul mic din hero (procentul live); panoul mare
   // RadarCenter de sub grilă își încarcă singur datele.
   const [acurateteHero, setAcurateteHero] = useState(null);
@@ -606,6 +614,18 @@ export default function Watchlist() {
             </span>
           </div>
           <p className="brief-text">{brief.text}</p>
+
+          {briefPersonal && !briefPersonal.gol && briefPersonal.text && (
+            <div className="brief-personal">
+              <p className="brief-personal-titlu">{ttBrief("personalTitlu")}</p>
+              <p className="brief-text">{briefPersonal.text}</p>
+              {!briefPersonal.premium && (
+                <Link to="/premium" className="brief-personal-upsell">
+                  {ttBrief("personalPremium")}
+                </Link>
+              )}
+            </div>
+          )}
           {brief.simboluri?.length > 0 && (
             <div className="brief-simboluri">
               <span className="muted">{ttBrief("mentionate")}</span>
