@@ -156,6 +156,13 @@ export default function Watchlist() {
   const [selectedDaily, setSelectedDaily] = useState(null); // simbolul coloanei selectate din grafic
   const [vix, setVix] = useState(null);
   const [brief, setBrief] = useState(null); // { zi, text, simboluri }
+  // Acuratețea + ponderile radarului (public, agregat) — pentru cartonașul
+  // "radarul se verifică singur" din hero. Eșec = null, cartonașul arată
+  // varianta descriptivă fără cifre.
+  const [acuratete, setAcuratete] = useState(null);
+  useEffect(() => {
+    api.getRadarAcuratete().then(setAcuratete).catch(() => {});
+  }, []);
   const [universSugestii, setUniversSugestii] = useState([]);
   const [interese, setInterese] = useState([]);
   const [onboarding, setOnboarding] = useState(false);
@@ -535,6 +542,24 @@ export default function Watchlist() {
           <p className="mega-sub dash-mega-sub">
             {t("dash.sub")} <Link to="/metodologie" className="methodology-link">{t("dash.cumCalculam")}</Link>
           </p>
+
+          <div className="hero-invata">
+            <img src="/mascota/mascota-hero.png" alt="Mascota StockRadar AI" className="hero-invata-mascota" loading="lazy" />
+            <div>
+              <strong>{t("landing.invataTitlu")}</strong>
+              {acuratete?.procent != null && acuratete.total >= 20 ? (
+                <p>
+                  <span className="hero-invata-procent">
+                    {t("landing.invataStat")
+                      .replace("{procent}", String(acuratete.procent))
+                      .replace("{n}", String(acuratete.total))}
+                  </span>
+                </p>
+              ) : (
+                <p>{t("landing.invataText")}</p>
+              )}
+            </div>
+          </div>
 
         {items.length > 0 && analizateCount > 0 && (
           <div className="dash-stats">

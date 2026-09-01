@@ -834,8 +834,10 @@ body {
 }
 
 .why-button:disabled {
-  background: #eef1f2;
-  color: #9ca3af;
+  /* Tokeni de temă, nu gri fix: varianta veche (#eef1f2/#9ca3af) era gri pe
+     gri în tema deschisă și pată deschisă în cea închisă. */
+  background: var(--surface-2);
+  color: var(--muted);
   cursor: default;
   box-shadow: none;
 }
@@ -1348,7 +1350,7 @@ body {
 }
 
 .analyst-hold {
-  background: #f3f4f6;
+  background: var(--surface-2); /* fundal de temă — #f3f4f6 fix era ilizibil pe dark */
   color: var(--muted);
 }
 
@@ -1512,7 +1514,7 @@ body {
 }
 
 .why-button-secondary:disabled {
-  color: #9ca3af;
+  color: var(--muted);
   cursor: default;
 }
 
@@ -7248,4 +7250,15 @@ html[data-theme="dark"] .navbar-dropdown {
     text-align: center;
     gap: 8px;
   }
+}
+/* Varianta din dashboard-ul logat: aliniată cu restul conținutului din hero. */
+.dash-mega-content .hero-invata {
+  margin-left: 0;
+  margin-right: auto;
+}
+
+/* Insigna "Cel mai avantajos" de pe planul anual: pe dark, accentul auriu
+   deschis cu text ALB era ilizibil (1.8:1) — text închis pe auriu. */
+html[data-theme="dark"] .plan-badge {
+  color: #221c12;
 }
