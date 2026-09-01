@@ -130,15 +130,21 @@ async function genereazaTextRo(fapte) {
   }
 }
 
+// Un fallback (credit AI lipsă, eroare pasageră) nu are voie să rămână
+// "brieful zilei" până la miezul nopții — după 30 min reîncercăm generarea.
+const REINCEARCA_FALLBACK_MS = 30 * 60 * 1000;
+
 async function getDailyBrief(limba = "ro") {
   const zi = ziCurenta();
+  const fallbackExpirat =
+    cacheZi && !cacheZi.generatAi && Date.now() - (cacheZi.creatLa || 0) > REINCEARCA_FALLBACK_MS;
 
-  if (!cacheZi || cacheZi.zi !== zi) {
+  if (!cacheZi || cacheZi.zi !== zi || fallbackExpirat) {
     if (!inFlight) {
       inFlight = (async () => {
         const fapte = await adunaFapte();
         const { text, generatAi } = await genereazaTextRo(fapte);
-        cacheZi = { zi, textRo: text, generatAi, fapte };
+        cacheZi = { zi, textRo: text, generatAi, fapte, creatLa: Date.now() };
       })().finally(() => {
         inFlight = null;
       });
