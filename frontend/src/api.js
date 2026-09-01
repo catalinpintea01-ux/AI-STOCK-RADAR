@@ -30,6 +30,7 @@ async function request(path, options = {}) {
 export const api = {
   traduce: (texte) => request("/i18n/translate", { method: "POST", body: JSON.stringify({ texte }) }),
   getToolInsideri: () => request("/tools/insideri"),
+  getRadarAcuratete: () => request("/radar/acuratete"),
   getNarativa: (simbol) => request(`/narative/${encodeURIComponent(simbol)}`),
   saveNarativa: (simbol, teza) =>
     request(`/narative/${encodeURIComponent(simbol)}`, { method: "PUT", body: JSON.stringify({ teza }) }),

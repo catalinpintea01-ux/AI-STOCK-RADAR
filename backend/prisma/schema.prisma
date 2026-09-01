@@ -211,6 +211,40 @@ model RadarScoreHistory {
   @@index([simbol, computedAt])
 }
 
+// Evaluarea zilnică a radarului: verdictul dat acum ~5 zile de tranzacționare
+// vs variația reală a prețului de atunci (5DayPriceReturnDaily din metricile
+// deja stocate — zero apeluri Finnhub în plus). Un rând per (zi, simbol);
+// sursa publică a statisticii "s-a potrivit sau nu".
+model EvaluareRadar {
+  id                    String   @id @default(uuid())
+  zi                    String // "YYYY-MM-DD" — ziua evaluării
+  simbol                String
+  verdict               String // verdictul de acum ~5 zile
+  scorAtunci            Int
+  scorMomentumAtunci    Int
+  scorAnalistAtunci     Int
+  scorFundamentalAtunci Int
+  variatiePct           Float // variația reală pe 5 zile, în %
+  potrivire             Boolean
+  createdAt             DateTime @default(now())
+
+  @@unique([zi, simbol])
+  @@index([zi])
+}
+
+// Ponderile compozitului, ajustate zilnic din evaluări (max ±1 punct/zi,
+// fiecare pilon direcțional limitat la 15–40; riscul rămâne fix la 20).
+// Un singur rând (id=1) — sursa de adevăr persistentă pentru radar.js.
+model PonderiRadar {
+  id               Int      @id @default(1)
+  wMomentum        Int      @default(30)
+  wAnalist         Int      @default(30)
+  wFundamental     Int      @default(20)
+  wRisc            Int      @default(20)
+  ziUltimaAjustare String?
+  actualizatLa     DateTime @default(now())
+}
+
 // Cache persistent de traduceri (texte statice de interfață + narative) —
 // memoria serverului se golește la fiecare deploy, ceea ce făcea prima
 // încărcare a fiecărei pagini/limbi lentă (un apel Claude). Cheia = hash

@@ -91,9 +91,16 @@ function scoreRisc(metric) {
   return { score: clamp(Math.round(parts.reduce((a, b) => a + b, 0) / parts.length), 0, 100), hasData: true };
 }
 
-function computeComposite({ momentum, analyst, fundamental, risc }) {
+// Ponderile vin din PonderiRadar (ajustate zilnic de evaluareRadar.js în
+// limite fixe); fără parametru, cad pe valorile istorice 30/30/20/20.
+function computeComposite({ momentum, analyst, fundamental, risc }, ponderi) {
+  const w = ponderi || { momentum: 30, analist: 30, fundamental: 20, risc: 20 };
   const compozit = Math.round(
-    0.3 * momentum.score + 0.3 * analyst.score + 0.2 * fundamental.score + 0.2 * (100 - risc.score)
+    (w.momentum * momentum.score +
+      w.analist * analyst.score +
+      w.fundamental * fundamental.score +
+      w.risc * (100 - risc.score)) /
+      (w.momentum + w.analist + w.fundamental + w.risc)
   );
 
   let verdict = "neutru";
@@ -118,7 +125,14 @@ async function computeAndStore(simbol) {
   const momentum = scoreMomentum(metric);
   const fundamental = scoreFundamental(earnings, insiderTx);
   const risc = scoreRisc(metric);
-  const { compozit, verdict, incredere } = computeComposite({ momentum, analyst, fundamental, risc });
+
+  let ponderi = null;
+  try {
+    ponderi = await require("./evaluareRadar").getPonderi();
+  } catch {
+    // fără ponderi din DB, computeComposite cade pe valorile implicite
+  }
+  const { compozit, verdict, incredere } = computeComposite({ momentum, analyst, fundamental, risc }, ponderi);
 
   // Scorul anterior: baza pentru refolosirea narativei ȘI pentru alertele de
   // scor de după upsert.

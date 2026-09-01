@@ -81,6 +81,16 @@ export default function Landing() {
   const [openFaq, setOpenFaq] = useState(null);
   const marqueeRef = useRef(null);
 
+  // Ponderile curente + acuratețea evaluărilor zilnice (public, agregat).
+  // Eșec = null: secțiunea cade elegant pe valorile statice din dicționar.
+  const [acuratete, setAcuratete] = useState(null);
+  useEffect(() => {
+    import("../api.js")
+      .then(({ api }) => api.getRadarAcuratete())
+      .then(setAcuratete)
+      .catch(() => {});
+  }, []);
+
   // Pe touch (mobil), banda CSS animată se bate cap în cap cu degetul: CSS-ul
   // o transformă în scroll orizontal nativ (swipe cu inerție), iar aici o
   // împingem CONTINUU și lent (~22px/s, ca pe desktop). Setul e dublat, deci
@@ -597,6 +607,39 @@ export default function Landing() {
                 );
               })}
             </ul>
+
+            <h3 className="landing-piloni-titlu">{t("landing.piloniTitlu")}</h3>
+            <div className="landing-piloni">
+              {t("landing.piloni").map((p, i) => {
+                const chei = ["momentum", "analist", "fundamental", "risc"];
+                const pondere = acuratete?.ponderi?.[chei[i]];
+                return (
+                  <div key={p.titlu} className="landing-pilon">
+                    <div className="landing-pilon-head">
+                      <span className="landing-pilon-nume">{p.titlu}</span>
+                      <span className="landing-pilon-pondere">{pondere ?? [30, 30, 20, 20][i]}%</span>
+                    </div>
+                    <p>{p.text}</p>
+                  </div>
+                );
+              })}
+            </div>
+            <p className="landing-piloni-nota">{t("landing.ponderiNota")}</p>
+
+            <div className="landing-invata">
+              <h3>{t("landing.invataTitlu")}</h3>
+              <p>{t("landing.invataText")}</p>
+              {acuratete?.procent != null && acuratete.total >= 20 ? (
+                <p className="landing-invata-stat">
+                  {t("landing.invataStat")
+                    .replace("{procent}", String(acuratete.procent))
+                    .replace("{n}", String(acuratete.total))}
+                </p>
+              ) : (
+                <p className="landing-invata-stat landing-invata-colectare">{t("landing.invataColectare")}</p>
+              )}
+              <p className="landing-invata-disclaimer">{t("landing.invataDisclaimer")}</p>
+            </div>
           </div>
         </div>
       </section>

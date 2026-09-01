@@ -39,9 +39,24 @@ async function runFillPass() {
   console.log(`[scheduler] pas de completare terminat — ${procesate}/${simboluri.length} simboluri verificate`);
 }
 
+// Evaluarea zilnică a radarului (verdicte de acum 5 zile vs realitate +
+// ajustarea ponderilor). Idempotentă per zi, deci o verificăm oră de oră —
+// costul unei chemări repetate e un singur COUNT în DB.
+async function runEvaluare() {
+  try {
+    const { evalueazaZi } = require("./evaluareRadar");
+    await evalueazaZi();
+  } catch (err) {
+    console.error(`[scheduler] evaluare zilnică eșuată: ${err.message}`);
+  }
+}
+
 function start() {
   setTimeout(runFillPass, FIRST_RUN_DELAY_MS);
   setInterval(runFillPass, FILL_INTERVAL_MS);
+
+  setTimeout(runEvaluare, 2 * 60 * 1000); // la 2 min după boot avem deja DB-ul cald
+  setInterval(runEvaluare, 60 * 60 * 1000);
 }
 
 module.exports = { start };
