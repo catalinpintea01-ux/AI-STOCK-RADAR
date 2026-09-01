@@ -7343,7 +7343,10 @@ html[data-theme="dark"] .plan-badge {
 .landing-radar-full {
   display: block;
   border-radius: 0;
-  padding: 2.5rem max(1.25rem, calc(50vw - 640px)) 2.75rem;
+  /* Fundalul acoperă tot ecranul, dar CONȚINUTUL se aliniază exact cu restul
+     casetelor din .landing (max-width 1040px, padding 1.5rem) — altfel banda
+     părea "ruptă" față de coloanele centrate de deasupra și dedesubt. */
+  padding: 2.5rem max(1.5rem, calc(50vw - 520px + 1.5rem)) 2.75rem;
 }
 .landing-radar-top {
   display: grid;
@@ -7517,4 +7520,90 @@ html[data-theme="dark"] .plan-badge {
   color: #cdc6b8;
   font-variant-numeric: tabular-nums;
   white-space: nowrap;
+}
+
+/* ===== Centrul radarului — panoul mare din hero-ul dashboard-ului ===== */
+.radar-center {
+  width: 100%;
+  margin-top: 20px;
+  border: 1px solid rgba(226, 184, 102, 0.35);
+  background: rgba(255, 255, 255, 0.035);
+  border-radius: 18px;
+  padding: 18px 20px 20px;
+  text-align: left;
+}
+.radar-center-head {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 14px;
+}
+.radar-center-mascota {
+  width: 84px;
+  height: 84px;
+  object-fit: contain;
+  flex-shrink: 0;
+  filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.35));
+}
+.radar-center-head h2 {
+  margin: 0 0 3px;
+  font-family: "Fraunces", serif;
+  font-size: 1.25rem;
+  color: #f5f1e8;
+}
+.radar-center-head p {
+  margin: 0;
+  font-size: 0.85rem;
+  color: #cdc6b8;
+}
+.radar-center-stat {
+  margin-top: 4px !important;
+  color: #e2b866 !important;
+  font-weight: 600;
+}
+.radar-center-stat strong { font-size: 1.05rem; }
+.radar-center-colectare { color: #cdc6b8 !important; font-weight: 500; }
+
+.radar-center-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 10px;
+}
+.radar-mini { padding: 12px 14px; }
+.radar-mini h4 { font-size: 0.9rem; margin-bottom: 8px; }
+.radar-mini .sim-rand { grid-template-columns: 78px 1fr 30px; margin-bottom: 5px; }
+.radar-mini .sim-rezultat strong { font-size: 1.5rem; }
+.radar-mini .acc-rand { grid-template-columns: 76px 1fr auto; margin-bottom: 6px; }
+.zile-grafic-mic { height: 88px; }
+
+.radar-cifra-rand {
+  margin: 0 0 7px;
+  font-size: 0.82rem;
+  color: #cdc6b8;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  flex-wrap: wrap;
+}
+.radar-cifra-rand strong { color: #f0ebdf; }
+.radar-watch-verdicte strong { color: #e2b866; }
+.radar-extreme { display: flex; gap: 6px; flex-wrap: wrap; }
+.radar-extreme-titlu { margin: 8px 0 6px !important; }
+.radar-ceas-punct { width: 9px; height: 9px; border-radius: 50%; display: inline-block; }
+.radar-ceas-on { background: #59b28e; box-shadow: 0 0 8px rgba(89, 178, 142, 0.8); }
+.radar-ceas-off { background: #8f857a; }
+.radar-vix-link {
+  display: inline-block;
+  margin-top: 4px;
+  font-size: 0.82rem;
+  color: #e2b866;
+  text-decoration: none;
+  border-bottom: 1px dashed rgba(226, 184, 102, 0.5);
+}
+.radar-vix-link strong { font-size: 0.95rem; }
+.radar-app-sub-inline { font-size: 0.72rem; color: #cdc6b8; }
+
+@media (max-width: 640px) {
+  .radar-center-head { flex-direction: column; text-align: center; }
+  .radar-center { text-align: left; }
 }
