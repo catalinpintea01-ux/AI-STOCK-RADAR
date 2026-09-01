@@ -15,7 +15,7 @@ export default {
     "ceNuTitlu": "Qué NO hace la plataforma",
     "ceNu": "No ofrece asesoramiento de inversión, recomendaciones personalizadas, predicciones de precios ni rendimientos prometidos. Las puntuaciones y los textos describen el contexto público de una acción — las decisiones y la responsabilidad son tuyas.",
     "cineTitlu": "Quién está detrás del proyecto",
-    "cine": "AI Stock Radar es un proyecto independiente desarrollado en Rumanía por un equipo pequeño dedicado a una sola cosa: educación financiera clara, sin jerga y sin promesas vacías. El proyecto está en proceso de constitución como empresa; en cuanto se complete el registro, esta página se actualizará con los datos legales completos.",
+    "cine": "La plataforma está operada por Jess Print Gift Shop SRL, registrada en Rumanía. Somos un equipo pequeño dedicado a una sola cosa: educación financiera clara, sin jerga y sin promesas vacías.",
     "contactTitlu": "Contacto",
     "contact": "Puedes escribirnos en cualquier momento a {email} — respondemos en un máximo de 48 horas."
   },
@@ -234,6 +234,7 @@ export default {
     gratuit: "Gratis",
     celMaiPopular: "El más popular",
     peLuna: "RON / mes",
+    sauAnual: "o 299,99 RON/año — 2 meses gratis",
     inCurand: "Próximamente",
     ofertaLansare: "🎁 3 meses a un precio especial para los primeros inscritos",
     freeFeatures: [
@@ -244,13 +245,13 @@ export default {
       "Cartera virtual de 10.000 USD",
     ],
     premiumFeatures: [
-      "Acceso prioritario en el lanzamiento para preinscritos",
+      "Primeros 3 días gratis, cancela cuando quieras",
       "Lista de seguimiento ilimitada",
       "Las 7 noticias analizadas por IA + research completo",
       "Herramientas Pro: screener y comparador A vs B",
       "Gestiona la suscripción directamente en la aplicación",
     ],
-    incepePremium: "Reserva acceso prioritario →",
+    incepePremium: "Empieza con Premium →",
     faqTitlu: "Preguntas frecuentes",
     faq: [
       {
@@ -267,7 +268,7 @@ export default {
       },
       {
         q: "¿Qué obtengo extra con Premium?",
-        a: "Watchlist ilimitada (el plan gratuito se limita a 3 acciones seguidas), las 7 noticias analizadas por IA al día, research diario completo y las herramientas Pro: un screener con filtros y el comparador de acciones cara a cara. Premium se lanza pronto: crea una cuenta gratuita y preinscríbete desde la página Premium; los primeros inscritos reciben 3 meses a un precio especial de lanzamiento, sin ningún pago ahora.",
+        a: "Watchlist ilimitada (el plan gratuito se limita a 3 acciones seguidas), las 7 noticias analizadas por IA al día, research diario completo y las herramientas Pro: un screener con filtros y el comparador de acciones cara a cara. Los primeros 3 días son gratis: introduces la tarjeta al activar y puedes cancelar antes del primer pago. Elige entre el plan mensual (29,99 RON/mes) y el anual (299,99 RON/año — el equivalente a dos meses gratis).",
       },
       {
         q: "¿Puedo cancelar cuando quiera?",

@@ -2,6 +2,7 @@ import { Radar, Newspaper, Shield } from "lucide-react";
 import { useLang } from "../i18n/index.jsx";
 import LanguageSwitcher from "./LanguageSwitcher.jsx";
 import ThemeToggle from "./ThemeToggle.jsx";
+import FooterLegal from "./FooterLegal.jsx";
 
 const ICONS = [Radar, Newspaper, Shield];
 
@@ -32,7 +33,10 @@ export default function AuthLayout({ children }) {
           </ul>
         </div>
       </div>
-      <div className="auth-form-panel">{children}</div>
+      <div className="auth-form-panel">
+        {children}
+        <FooterLegal />
+      </div>
     </div>
   );
 }

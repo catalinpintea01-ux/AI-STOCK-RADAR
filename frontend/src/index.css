@@ -7017,3 +7017,97 @@ html[data-theme="dark"] .navbar-dropdown {
   background: linear-gradient(160deg, #1e2026 0%, #17181c 100%);
   border-color: #272a31;
 }
+
+/* ── Subsol legal global + selectorul de plan Premium ─────────────────── */
+.footer-legal {
+  max-width: 1180px;
+  margin: 2rem auto 1rem;
+  padding: 0 1.5rem 4.5rem; /* loc pentru BottomNav pe mobil */
+  text-align: center;
+}
+.footer-legal-links {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  font-size: 0.8rem;
+}
+.footer-legal-links a {
+  color: var(--muted);
+  text-decoration: none;
+}
+.footer-legal-links a:hover {
+  color: var(--blue);
+  text-decoration: underline;
+}
+.footer-legal-links span {
+  color: var(--border);
+}
+.footer-legal-firma {
+  margin: 0.4rem 0 0;
+  font-size: 0.72rem;
+  color: color-mix(in srgb, var(--muted) 70%, transparent);
+}
+.auth-form-panel .footer-legal {
+  padding-bottom: 1rem;
+  margin-top: 1.2rem;
+}
+@media (min-width: 900px) {
+  .footer-legal { padding-bottom: 1.5rem; }
+}
+
+.plan-selector {
+  display: flex;
+  gap: 0.7rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin: 0.4rem 0 1rem;
+}
+.plan-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.15rem;
+  min-width: 170px;
+  padding: 0.9rem 1.2rem 0.8rem;
+  border: 2px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--card-bg);
+  cursor: pointer;
+  font: inherit;
+  color: var(--text);
+  transition: border-color 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
+}
+.plan-card:hover {
+  transform: translateY(-1px);
+}
+.plan-card.active {
+  border-color: var(--blue);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--blue) 15%, transparent), var(--shadow-card);
+}
+.plan-badge {
+  position: absolute;
+  top: -0.65rem;
+  padding: 0.12rem 0.6rem;
+  border-radius: 999px;
+  background: var(--blue);
+  color: #fff;
+  font-size: 0.66rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+}
+.plan-nume {
+  font-weight: 700;
+  font-size: 0.95rem;
+}
+.plan-pret {
+  font-weight: 800;
+  font-size: 1.05rem;
+}
+.plan-econ {
+  font-size: 0.74rem;
+  color: var(--price-up);
+  font-weight: 600;
+}

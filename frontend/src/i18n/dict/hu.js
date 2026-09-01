@@ -15,7 +15,7 @@ export default {
     "ceNuTitlu": "Mit NEM csinál a platform",
     "ceNu": "Nem nyújt befektetési tanácsadást, személyre szabott ajánlásokat, árfolyam-előrejelzéseket vagy ígért hozamokat. A pontszámok és szövegek a részvény nyilvános kontextusát írják le — a döntés és a felelősség a tiéd.",
     "cineTitlu": "Ki áll a projekt mögött",
-    "cine": "Az AI Stock Radar egy független projekt, amelyet Romániában fejleszt egy kis csapat, egyetlen dolognak szentelve: érthető pénzügyi oktatás, szakzsargon és üres ígéretek nélkül. A projekt cégként való bejegyzése folyamatban van — amint a regisztráció lezárul, ez az oldal frissül a teljes jogi adatokkal.",
+    "cine": "A platformot a Romániában bejegyzett Jess Print Gift Shop SRL üzemelteti. Kis csapat vagyunk, egyetlen dolognak szentelve: érthető pénzügyi oktatás, szakzsargon és üres ígéretek nélkül.",
     "contactTitlu": "Kapcsolat",
     "contact": "Bármikor írhatsz nekünk a {email} címre — 48 órán belül válaszolunk."
   },
@@ -234,6 +234,7 @@ export default {
     gratuit: "Ingyenes",
     celMaiPopular: "A legnépszerűbb",
     peLuna: "RON / hónap",
+    sauAnual: "vagy 299,99 RON/év — 2 hónap ingyen",
     inCurand: "Hamarosan",
     ofertaLansare: "🎁 3 hónap kedvezményes áron az első feliratkozóknak",
     freeFeatures: [
@@ -244,13 +245,13 @@ export default {
       "10 000 USD virtuális portfólió",
     ],
     premiumFeatures: [
-      "Elsőbbségi hozzáférés az induláskor az előregisztrálóknak",
+      "Az első 3 nap ingyenes, bármikor lemondható",
       "Korlátlan figyelőlista",
       "Mind a 7 MI-vel elemzett hír + teljes research",
       "Pro eszközök: screener és A vs B összehasonlító",
       "Előfizetés-kezelés közvetlenül az alkalmazásban",
     ],
-    incepePremium: "Elsőbbségi hozzáférés foglalása →",
+    incepePremium: "Kezdd a Premiummal →",
     faqTitlu: "Gyakori kérdések",
     faq: [
       {
@@ -267,7 +268,7 @@ export default {
       },
       {
         q: "Mit kapok pluszban a Premiummal?",
-        a: "Korlátlan watchlist (az ingyenes csomag 3 követett részvényre korlátozott), mind a 7 AI-elemzett hír naponta, teljes napi research és a Pro eszközök: szűrhető screener és a részvény-összehasonlító egymás mellett. A Premium hamarosan indul — hozz létre ingyenes fiókot és előregisztrálj a Premium oldalon: az első feliratkozók 3 hónapot kapnak kedvezményes induló áron, mostani fizetés nélkül.",
+        a: "Korlátlan watchlist (az ingyenes csomag 3 követett részvényre korlátozott), mind a 7 AI-elemzett hír naponta, teljes napi research és a Pro eszközök: szűrhető screener és a részvény-összehasonlító egymás mellett. Az első 3 nap ingyenes — a kártyát aktiváláskor adod meg, és az első fizetés előtt bármikor lemondhatod. Választhatsz a havi (29,99 RON/hó) és az éves csomag (299,99 RON/év — két ingyenes hónapnak megfelelő) között.",
       },
       {
         q: "Bármikor lemondhatom?",

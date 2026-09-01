@@ -15,7 +15,7 @@ export default {
     "ceNuTitlu": "Was die Plattform NICHT macht",
     "ceNu": "Sie bietet keine Anlageberatung, keine personalisierten Empfehlungen, keine Kursprognosen und keine versprochenen Renditen. Die Scores und Texte beschreiben den öffentlichen Kontext einer Aktie — die Entscheidungen und die Verantwortung liegen bei dir.",
     "cineTitlu": "Wer hinter dem Projekt steht",
-    "cine": "AI Stock Radar ist ein unabhängiges Projekt, entwickelt in Rumänien von einem kleinen Team mit einem einzigen Ziel: klare Finanzbildung, ohne Fachjargon und ohne leere Versprechen. Das Projekt befindet sich im Prozess der Firmengründung — sobald die Registrierung abgeschlossen ist, wird diese Seite mit den vollständigen rechtlichen Angaben aktualisiert.",
+    "cine": "Die Plattform wird von Jess Print Gift Shop SRL betrieben, registriert in Rumänien. Wir sind ein kleines Team mit einem einzigen Ziel: klare Finanzbildung, ohne Fachjargon und ohne leere Versprechen.",
     "contactTitlu": "Kontakt",
     "contact": "Du kannst uns jederzeit unter {email} schreiben — wir antworten innerhalb von 48 Stunden."
   },
@@ -234,6 +234,7 @@ export default {
     gratuit: "Gratis",
     celMaiPopular: "Am beliebtesten",
     peLuna: "RON / Monat",
+    sauAnual: "oder 299,99 RON/Jahr — 2 Monate gratis",
     inCurand: "Demnächst",
     ofertaLansare: "🎁 3 Monate zum Sonderpreis für die ersten Anmeldungen",
     freeFeatures: [
@@ -244,13 +245,13 @@ export default {
       "Virtuelles Portfolio mit 10.000 USD",
     ],
     premiumFeatures: [
-      "Vorrangiger Zugang zum Start für Vorregistrierte",
+      "Erste 3 Tage gratis, jederzeit kündbar",
       "Unbegrenzte Watchlist",
       "Alle 7 KI-analysierten Nachrichten + volles Research",
       "Pro-Tools: Screener und A-vs-B-Vergleich",
       "Abo-Verwaltung direkt in der App",
     ],
-    incepePremium: "Vorrangigen Zugang reservieren →",
+    incepePremium: "Mit Premium starten →",
     faqTitlu: "Häufige Fragen",
     faq: [
       {
@@ -267,7 +268,7 @@ export default {
       },
       {
         q: "Was bekomme ich mit Premium zusätzlich?",
-        a: "Unbegrenzte Watchlist (der Gratisplan ist auf 3 beobachtete Aktien begrenzt), alle 7 KI-analysierten Nachrichten pro Tag, vollständiges tägliches Research und die Pro-Tools: ein filterbarer Screener und der direkte Aktienvergleich. Premium startet in Kürze — erstelle ein kostenloses Konto und registriere dich auf der Premium-Seite vor: die ersten Anmeldungen erhalten 3 Monate zum Sonder-Startpreis, ganz ohne Zahlung jetzt.",
+        a: "Unbegrenzte Watchlist (der Gratisplan ist auf 3 beobachtete Aktien begrenzt), alle 7 KI-analysierten Nachrichten pro Tag, vollständiges tägliches Research und die Pro-Tools: ein filterbarer Screener und der direkte Aktienvergleich. Die ersten 3 Tage sind gratis — die Karte wird bei der Aktivierung hinterlegt und du kannst vor der ersten Zahlung jederzeit kündigen. Wähle zwischen dem Monatsplan (29,99 RON/Monat) und dem Jahresplan (299,99 RON/Jahr — das entspricht zwei Gratismonaten).",
       },
       {
         q: "Kann ich jederzeit kündigen?",

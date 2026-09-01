@@ -89,7 +89,8 @@ export const api = {
   getWaitlist: () => request("/billing/waitlist"),
   joinWaitlist: (email) =>
     request("/billing/waitlist", { method: "POST", body: JSON.stringify({ email }) }),
-  createCheckoutSession: () => request("/billing/checkout", { method: "POST" }),
+  createCheckoutSession: (plan) =>
+    request("/billing/checkout", { method: "POST", body: JSON.stringify({ plan }) }),
   openBillingPortal: () => request("/billing/portal", { method: "POST" }),
 };
 

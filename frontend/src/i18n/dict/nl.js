@@ -15,7 +15,7 @@ export default {
     "ceNuTitlu": "Wat het platform NIET doet",
     "ceNu": "Het biedt geen beleggingsadvies, geen gepersonaliseerde aanbevelingen, geen koersvoorspellingen en geen beloofde rendementen. De scores en teksten beschrijven de publieke context van een aandeel — de beslissingen en de verantwoordelijkheid zijn van jou.",
     "cineTitlu": "Wie achter het project zit",
-    "cine": "AI Stock Radar is een onafhankelijk project, ontwikkeld in Roemenië door een klein team met één doel: heldere financiële educatie, zonder jargon en zonder loze beloften. Het project wordt momenteel als bedrijf geregistreerd — zodra de registratie rond is, wordt deze pagina bijgewerkt met de volledige juridische gegevens.",
+    "cine": "Het platform wordt beheerd door Jess Print Gift Shop SRL, geregistreerd in Roemenië. We zijn een klein team met één doel: heldere financiële educatie, zonder jargon en zonder loze beloften.",
     "contactTitlu": "Contact",
     "contact": "Je kunt ons altijd schrijven op {email} — we antwoorden binnen 48 uur."
   },
@@ -234,6 +234,7 @@ export default {
     gratuit: "Gratis",
     celMaiPopular: "Populairst",
     peLuna: "RON / maand",
+    sauAnual: "of 299,99 RON/jaar — 2 maanden gratis",
     inCurand: "Binnenkort",
     ofertaLansare: "🎁 3 maanden voor een speciale prijs voor vroege inschrijvers",
     freeFeatures: [
@@ -244,13 +245,13 @@ export default {
       "Virtuele portefeuille van 10.000 USD",
     ],
     premiumFeatures: [
-      "Voorrang bij de lancering voor vooraf geregistreerden",
+      "Eerste 3 dagen gratis, altijd opzegbaar",
       "Onbeperkte watchlist",
       "Alle 7 AI-geanalyseerde nieuwsberichten + volledige research",
       "Pro-tools: screener en A-vs-B-vergelijker",
       "Abonnementsbeheer direct in de app",
     ],
-    incepePremium: "Reserveer voorrangstoegang →",
+    incepePremium: "Begin met Premium →",
     faqTitlu: "Veelgestelde vragen",
     faq: [
       {
@@ -267,7 +268,7 @@ export default {
       },
       {
         q: "Wat krijg ik extra met Premium?",
-        a: "Onbeperkte watchlist (het gratis plan is beperkt tot 3 gevolgde aandelen), alle 7 AI-geanalyseerde nieuwsberichten per dag, volledig dagelijks research en de Pro-tools: een filterbare screener en de aandelenvergelijker zij aan zij. Premium lanceert binnenkort — maak een gratis account en registreer je vooraf op de Premium-pagina: vroege inschrijvers krijgen 3 maanden voor een speciale lanceringsprijs, zonder nu iets te betalen.",
+        a: "Onbeperkte watchlist (het gratis plan is beperkt tot 3 gevolgde aandelen), alle 7 AI-geanalyseerde nieuwsberichten per dag, volledig dagelijks research en de Pro-tools: een filterbare screener en de aandelenvergelijker zij aan zij. De eerste 3 dagen zijn gratis — je voert je kaart in bij activering en kunt vóór de eerste betaling opzeggen. Kies tussen het maandplan (29,99 RON/maand) en het jaarplan (299,99 RON/jaar — het equivalent van twee gratis maanden).",
       },
       {
         q: "Kan ik altijd opzeggen?",

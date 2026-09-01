@@ -15,7 +15,7 @@ export default {
     "ceNuTitlu": "Czego platforma NIE robi",
     "ceNu": "Nie oferuje doradztwa inwestycyjnego, spersonalizowanych rekomendacji, prognoz cen ani obiecanych zysków. Oceny i teksty opisują publiczny kontekst akcji — decyzje i odpowiedzialność należą do ciebie.",
     "cineTitlu": "Kto stoi za projektem",
-    "cine": "AI Stock Radar to niezależny projekt tworzony w Rumunii przez mały zespół oddany jednej rzeczy: jasnej edukacji finansowej, bez żargonu i bez pustych obietnic. Projekt jest w trakcie rejestracji jako spółka — gdy tylko rejestracja się zakończy, ta strona zostanie zaktualizowana o pełne dane prawne.",
+    "cine": "Platformą zarządza Jess Print Gift Shop SRL, zarejestrowana w Rumunii. Jesteśmy małym zespołem oddanym jednej rzeczy: jasnej edukacji finansowej, bez żargonu i bez pustych obietnic.",
     "contactTitlu": "Kontakt",
     "contact": "Możesz napisać do nas w każdej chwili na {email} — odpowiadamy w ciągu 48 godzin."
   },
@@ -234,6 +234,7 @@ export default {
     gratuit: "Za darmo",
     celMaiPopular: "Najpopularniejszy",
     peLuna: "RON / miesiąc",
+    sauAnual: "lub 299,99 RON/rok — 2 miesiące gratis",
     inCurand: "Wkrótce",
     ofertaLansare: "🎁 3 miesiące w specjalnej cenie dla pierwszych zapisanych",
     freeFeatures: [
@@ -244,13 +245,13 @@ export default {
       "Wirtualny portfel 10 000 USD",
     ],
     premiumFeatures: [
-      "Priorytetowy dostęp przy starcie dla zapisanych",
+      "Pierwsze 3 dni za darmo, anuluj kiedy chcesz",
       "Nielimitowana lista obserwowanych",
       "Wszystkie 7 wiadomości analizowanych przez AI + pełny research",
       "Narzędzia Pro: screener i porównywarka A vs B",
       "Zarządzanie subskrypcją bezpośrednio w aplikacji",
     ],
-    incepePremium: "Zarezerwuj priorytetowy dostęp →",
+    incepePremium: "Zacznij z Premium →",
     faqTitlu: "Częste pytania",
     faq: [
       {
@@ -267,7 +268,7 @@ export default {
       },
       {
         q: "Co dodatkowo daje Premium?",
-        a: "Nielimitowana watchlista (plan darmowy jest ograniczony do 3 obserwowanych akcji), wszystkie 7 wiadomości analizowanych przez AI dziennie, pełny codzienny research i narzędzia Pro: screener z filtrami oraz porównywarka akcji obok siebie. Premium startuje wkrótce — załóż darmowe konto i zapisz się na stronie Premium: pierwsi zapisani otrzymają 3 miesiące w specjalnej cenie startowej, bez żadnej płatności teraz.",
+        a: "Nielimitowana watchlista (plan darmowy jest ograniczony do 3 obserwowanych akcji), wszystkie 7 wiadomości analizowanych przez AI dziennie, pełny codzienny research i narzędzia Pro: screener z filtrami oraz porównywarka akcji obok siebie. Pierwsze 3 dni są darmowe — kartę podajesz przy aktywacji i możesz anulować przed pierwszą płatnością. Wybierz plan miesięczny (29,99 RON/mies.) lub roczny (299,99 RON/rok — równowartość dwóch darmowych miesięcy).",
       },
       {
         q: "Czy mogę zrezygnować w każdej chwili?",

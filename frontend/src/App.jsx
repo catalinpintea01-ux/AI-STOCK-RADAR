@@ -21,6 +21,7 @@ import Despre from "./pages/Despre.jsx";
 import Risc from "./pages/Risc.jsx";
 import NavBar from "./components/NavBar.jsx";
 import BottomNav from "./components/BottomNav.jsx";
+import FooterLegal from "./components/FooterLegal.jsx";
 
 function PrivateLayout({ children }) {
   if (!getToken()) return <Navigate to="/login" replace />;
@@ -28,6 +29,7 @@ function PrivateLayout({ children }) {
     <>
       <NavBar />
       {children}
+      <FooterLegal />
       <BottomNav />
     </>
   );

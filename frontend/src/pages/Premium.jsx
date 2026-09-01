@@ -29,19 +29,19 @@ export default function Premium() {
     activ: "Ai abonamentul Premium activ — toate instrumentele sunt deblocate.",
     gestioneaza: "Gestionează abonamentul",
     gratuit: "Gratuit",
-    trial: "se lansează în curând",
+    trial: "3 zile gratuit, apoi de la 25 RON/lună",
     nelimitat: "Nelimitat",
     panaLa3: "până la limita de 3",
-    curand: "Premium se lansează în curând",
-    curandSub: "Lasă-ne emailul și primești acces prioritar în ziua lansării.",
-    oferta: "🎁 Primii utilizatori de pe listă primesc 3 luni de Premium la un preț special de lansare.",
-    emailPlaceholder: "adresa ta de email",
-    rezerva: "Rezervă-mi accesul prioritar",
-    rezervat: "Ești pe listă! Te anunțăm imediat ce Premium se lansează.",
-    pozitia: "Locul tău pe lista de așteptare: #{n}",
-    schimbaEmail: "Vrei alt email? Trimite din nou cu adresa nouă.",
-    trimit: "Se salvează...",
-    notaGratis: "Nu plătești nimic acum și nu îți cerem cardul. Folosim emailul o singură dată, ca să te anunțăm la lansare.",
+    alegePlanul: "Alege-ți planul",
+    planLunar: "Lunar",
+    planLunarPret: "29,99 RON/lună",
+    planAnual: "Anual",
+    planAnualPret: "299,99 RON/an",
+    planAnualEcon: "2 luni gratuite · ~25 RON/lună",
+    celMaiAvantajos: "Cel mai avantajos",
+    cta: "Începe cu 3 zile gratuit →",
+    deschid: "Se deschide activarea...",
+    nota: "Cardul se introduce la activare, prin Stripe · Primele 3 zile sunt gratuite, apoi abonamentul continuă automat cu prețul planului ales · Anulezi oricând în perioada de probă și nu plătești nimic",
     r0: "Acțiuni urmărite în radar",
     r1: "Scoruri AI complete (4 sub-scoruri + verdict + factori)",
     r2: "Digest zilnic cu schimbările importante",
@@ -57,34 +57,24 @@ export default function Premium() {
   const [premium, setPremium] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const [waitlist, setWaitlist] = useState(null); // { inscris, email, pozitie }
-  const [email, setEmail] = useState("");
+  const [plan, setPlan] = useState("anual"); // preselectat cel avantajos
 
   useEffect(() => {
     api
       .getBillingStatus()
       .then((data) => setPremium(data.premium))
       .catch(() => setPremium(false));
-    api
-      .getWaitlist()
-      .then((data) => {
-        setWaitlist(data);
-        setEmail(data.email || "");
-      })
-      .catch(() => setWaitlist({ inscris: false, email: "" }));
   }, []);
 
-  async function handleWaitlist(e) {
-    e.preventDefault();
+  async function handleUpgrade() {
     setLoading(true);
     setError("");
     try {
-      track("waitlist_join");
-      const data = await api.joinWaitlist(email);
-      setWaitlist(data);
+      track("start_trial", { plan });
+      const data = await api.createCheckoutSession(plan);
+      window.location.href = data.url;
     } catch (err) {
       setError(err.message);
-    } finally {
       setLoading(false);
     }
   }
@@ -153,34 +143,38 @@ export default function Premium() {
           </tbody>
         </table>
 
-        {premium === false && waitlist !== null && (
+        {premium === false && (
           <div className="premium-cta-row premium-prelansare">
             <img src="/mascota/sarbatoreste.png" alt="" className="mascota mascota-premium" loading="lazy" />
-            <h3 className="prelansare-titlu">{tt("curand")}</h3>
-            <p className="prelansare-sub">{tt("curandSub")}</p>
-            <p className="prelansare-oferta">{tt("oferta")}</p>
+            <h3 className="prelansare-titlu">{tt("alegePlanul")}</h3>
 
-            {waitlist.inscris ? (
-              <div className="prelansare-succes">
-                <p className="prelansare-confirmare">✓ {tt("rezervat")}</p>
-                {waitlist.pozitie && <p className="prelansare-pozitie">{tt("pozitia", { n: waitlist.pozitie })}</p>}
-                <p className="muted premium-note">{tt("schimbaEmail")}</p>
-              </div>
-            ) : null}
-
-            <form className="prelansare-form" onSubmit={handleWaitlist}>
-              <input
-                type="email"
-                required
-                value={email}
-                placeholder={tt("emailPlaceholder")}
-                onChange={(e) => setEmail(e.target.value)}
-              />
-              <button type="submit" className="landing-cta" disabled={loading}>
-                {loading ? tt("trimit") : <><Star size={14} className="ic" /> {tt("rezerva")}</>}
+            <div className="plan-selector">
+              <button
+                type="button"
+                className={`plan-card ${plan === "lunar" ? "active" : ""}`}
+                aria-pressed={plan === "lunar"}
+                onClick={() => setPlan("lunar")}
+              >
+                <span className="plan-nume">{tt("planLunar")}</span>
+                <span className="plan-pret">{tt("planLunarPret")}</span>
               </button>
-            </form>
-            <p className="muted premium-note">{tt("notaGratis")}</p>
+              <button
+                type="button"
+                className={`plan-card ${plan === "anual" ? "active" : ""}`}
+                aria-pressed={plan === "anual"}
+                onClick={() => setPlan("anual")}
+              >
+                <span className="plan-badge">{tt("celMaiAvantajos")}</span>
+                <span className="plan-nume">{tt("planAnual")}</span>
+                <span className="plan-pret">{tt("planAnualPret")}</span>
+                <span className="plan-econ">{tt("planAnualEcon")}</span>
+              </button>
+            </div>
+
+            <button className="landing-cta" onClick={handleUpgrade} disabled={loading}>
+              {loading ? tt("deschid") : <><Star size={14} className="ic" /> {tt("cta")}</>}
+            </button>
+            <p className="muted premium-note">{tt("nota")}</p>
           </div>
         )}
         {error && <div className="error">{error}</div>}

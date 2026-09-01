@@ -21,11 +21,8 @@ export function Termeni() {
     <LegalLayout titlu="Termeni și condiții" actualizat="25 august 2026">
       <h2>1. Cine suntem</h2>
       <p>
-        Platforma AI Stock Radar („Platforma", „noi") este un proiect independent dezvoltat în
-        România, aflat în curs de formalizare ca societate comercială. Până la finalizarea
-        înregistrării, Platforma nu comercializează servicii cu plată (abonamentul Premium este
-        disponibil doar ca preînregistrare gratuită), iar această secțiune se va actualiza cu
-        datele complete de identificare. Contact:{" "}
+        Platforma AI Stock Radar („Platforma", „noi") este operată de Jess Print Gift Shop SRL,
+        societate înregistrată în România. Contact:{" "}
         <a href="mailto:contact@stockradarai.com">contact@stockradarai.com</a>.
       </p>
 
@@ -51,12 +48,13 @@ export function Termeni() {
       <h2>4. Abonamente, perioada de probă și plăți</h2>
       <p>
         Planul gratuit include funcțiile de bază, cu limitele afișate în pagina „Planuri și
-        prețuri". Abonamentul Premium nu este încă disponibil la vânzare: în prezent oferim doar
-        preînregistrare gratuită (email pentru acces prioritar la lansare); nu colectăm carduri și
-        nu încasăm plăți. La lansare, plățile vor fi procesate prin Stripe, iar condițiile — preț,
-        eventuala perioadă de probă, dreptul de anulare și oferta pentru primii utilizatori — vor
-        fi afișate clar înainte de orice plată. Prețurile pot fi modificate cu notificare
-        prealabilă.
+        prețuri". Abonamentul Premium este disponibil în două variante: lunar (29,99 RON/lună) și
+        anual (299,99 RON/an). Ambele includ o perioadă de probă gratuită de 3 zile; cardul este
+        colectat la activare prin procesatorul de plăți Stripe, iar facturarea începe automat la
+        finalul perioadei de probă dacă abonamentul nu este anulat. Poți anula oricând din
+        aplicație („Gestionează abonamentul"); anularea în perioada de probă nu implică niciun
+        cost, iar după facturare păstrezi accesul până la finalul perioadei plătite. Prețurile pot
+        fi modificate cu notificare prealabilă.
       </p>
 
       <h2>5. Sursele de date și acuratețea</h2>
@@ -101,10 +99,9 @@ export function Confidentialitate() {
     <LegalLayout titlu="Politica de confidențialitate" actualizat="25 august 2026">
       <h2>1. Operatorul datelor</h2>
       <p>
-        Operatorul datelor, în sensul Regulamentului (UE) 2016/679 (GDPR), este dezvoltatorul
-        platformei AI Stock Radar — proiect independent din România, în curs de formalizare ca
-        societate comercială; la finalizarea înregistrării, această secțiune se va actualiza cu
-        datele complete de identificare ale operatorului. Contact:{" "}
+        Operatorul datelor, în sensul Regulamentului (UE) 2016/679 (GDPR), este Jess Print Gift
+        Shop SRL, societate înregistrată în România — operatorul platformei AI Stock Radar.
+        Contact:{" "}
         <a href="mailto:contact@stockradarai.com">contact@stockradarai.com</a>.
       </p>
 
