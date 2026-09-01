@@ -148,6 +148,9 @@ export default function App() {
           </PrivateLayout>
         }
       />
+      {/* Orice URL necunoscut ducea la o pagină complet albă (niciun element
+          randat) — acum întoarce vizitatorul acasă. */}
+      <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );
 }

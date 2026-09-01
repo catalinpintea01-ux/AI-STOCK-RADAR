@@ -2526,9 +2526,8 @@ button.stat-tile:hover {
   flex-shrink: 0;
 }
 
-.view-analysis-button:hover {
-  background: color-mix(in srgb, var(--blue) 16%, var(--accent-soft));
-}
+/* Hover-ul de fundal e definit de stratul vizual premium (gradient bronz +
+   brightness) — un fundal deschis aici făcea textul bronz ilizibil în rest. */
 
 /* --- Landing: hero pe 2 coloane cu mockup de produs + perete de logo-uri --- */
 
@@ -6895,6 +6894,9 @@ html[data-theme="dark"] .daily-selected {
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35), 0 4px 14px -4px color-mix(in srgb, var(--blue) 55%, transparent);
   border: none;
   transition: transform 0.15s ease, box-shadow 0.2s ease, filter 0.2s ease;
+  /* Textul TREBUIE să fie deschis pe gradientul bronz — unele dintre aceste
+     butoane aveau culoarea de bază bronz (ilizibil pe propriul fundal). */
+  color: #fcf9f2;
 }
 .landing-cta:hover,
 .auth-card button[type="submit"]:hover,
