@@ -7623,3 +7623,25 @@ html[data-theme="dark"] .plan-badge {
   background: transparent;
   padding: 0;
 }
+
+/* Amprenta watchlist-ului (panou lat): spider-ul în capul panoului + chip-uri
+   cu scoruri. Spider-ul are fundal propriu deschis? Nu — RadarPrint e SVG cu
+   linii pe currentColor; pe fundalul închis îi dăm culoarea deschisă. */
+.footprint-spider {
+  flex-shrink: 0;
+  color: #e6dfd2;
+  max-width: 300px;
+}
+.footprint-chip {
+  background: rgba(226, 184, 102, 0.16);
+  color: #e2b866;
+}
+.footprint-chip em {
+  font-style: normal;
+  font-weight: 800;
+  margin-left: 2px;
+}
+@media (max-width: 700px) {
+  .radar-center-head { flex-direction: column; text-align: center; }
+  .footprint-spider { max-width: 240px; }
+}
