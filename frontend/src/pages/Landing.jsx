@@ -627,7 +627,7 @@ export default function Landing() {
             <span className="landing-plan-badge">{t("landing.celMaiPopular")}</span>
             <h3>Premium</h3>
             <p className="landing-plan-price">
-              29,99 <span>{t("landing.peLuna")}</span>
+              $29 <span>{t("landing.peLuna")}</span>
             </p>
             <p className="landing-plan-oferta">{t("landing.sauAnual")}</p>
             <ul>

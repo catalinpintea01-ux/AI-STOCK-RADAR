@@ -233,14 +233,14 @@ export default {
     preturiTitlu: "Simple pricing",
     gratuit: "Free",
     celMaiPopular: "Most popular",
-    peLuna: "RON / month",
-    sauAnual: "or 299.99 RON/year — 2 months free",
+    peLuna: "/ month",
+    sauAnual: "or $290/year — 2 months free",
     inCurand: "Coming soon",
     ofertaLansare: "🎁 3 months at a special price for early sign-ups",
     freeFeatures: [
       "3 tracked stocks",
       "Full AI scores (4 sub-scores + verdict)",
-      "3 AI-analyzed news per day",
+      "2 AI-analyzed news per day",
       "Daily digest and earnings calendar",
       "10,000 USD virtual portfolio",
     ],
@@ -268,7 +268,7 @@ export default {
       },
       {
         q: "What extra do I get with Premium?",
-        a: "Unlimited watchlist (the free plan is limited to 3 tracked stocks), all 7 AI-analyzed news per day, full daily research and the Pro tools: a filterable screener and the side-by-side stock comparator. The first 3 days are free — you enter your card at activation and can cancel anytime before the first payment. Choose between the monthly plan (29.99 RON/month) and the annual one (299.99 RON/year — the equivalent of two months free).",
+        a: "Unlimited watchlist (the free plan is limited to 3 tracked stocks), all 7 AI-analyzed news per day (vs 2 on free), full daily research (top 5 gainers + 5 losers) and the Pro tools: a filterable screener and the side-by-side stock comparator. The first 3 days are free — you enter your card at activation and can cancel anytime before the first payment. Choose between the monthly plan ($29/month) and the annual one ($290/year — the equivalent of two months free).",
       },
       {
         q: "Can I cancel anytime?",

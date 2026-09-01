@@ -233,14 +233,14 @@ export default {
     preturiTitlu: "Proste ceny",
     gratuit: "Za darmo",
     celMaiPopular: "Najpopularniejszy",
-    peLuna: "RON / miesiąc",
-    sauAnual: "lub 299,99 RON/rok — 2 miesiące gratis",
+    peLuna: "/ mies.",
+    sauAnual: "lub 290 $/rok — 2 miesiące gratis",
     inCurand: "Wkrótce",
     ofertaLansare: "🎁 3 miesiące w specjalnej cenie dla pierwszych zapisanych",
     freeFeatures: [
       "3 obserwowane akcje",
       "Pełne oceny AI (4 oceny cząstkowe + werdykt)",
-      "3 wiadomości analizowane przez AI dziennie",
+      "2 wiadomości analizowane przez AI dziennie",
       "Codzienny przegląd i kalendarz wyników",
       "Wirtualny portfel 10 000 USD",
     ],
@@ -268,7 +268,7 @@ export default {
       },
       {
         q: "Co dodatkowo daje Premium?",
-        a: "Nielimitowana watchlista (plan darmowy jest ograniczony do 3 obserwowanych akcji), wszystkie 7 wiadomości analizowanych przez AI dziennie, pełny codzienny research i narzędzia Pro: screener z filtrami oraz porównywarka akcji obok siebie. Pierwsze 3 dni są darmowe — kartę podajesz przy aktywacji i możesz anulować przed pierwszą płatnością. Wybierz plan miesięczny (29,99 RON/mies.) lub roczny (299,99 RON/rok — równowartość dwóch darmowych miesięcy).",
+        a: "Nielimitowana watchlista (plan darmowy jest ograniczony do 3 obserwowanych akcji), wszystkie 7 wiadomości analizowanych przez AI dziennie (wobec 2 w darmowym), pełny codzienny research (top 5 wzrostów + 5 spadków) i narzędzia Pro: screener z filtrami oraz porównywarka akcji obok siebie. Pierwsze 3 dni są darmowe — kartę podajesz przy aktywacji i możesz anulować przed pierwszą płatnością. Wybierz plan miesięczny (29 $/mies.) lub roczny (290 $/rok — równowartość dwóch darmowych miesięcy).",
       },
       {
         q: "Czy mogę zrezygnować w każdej chwili?",

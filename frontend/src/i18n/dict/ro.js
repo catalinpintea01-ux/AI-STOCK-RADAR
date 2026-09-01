@@ -233,14 +233,14 @@ export default {
     preturiTitlu: "Prețuri simple",
     gratuit: "Gratuit",
     celMaiPopular: "Cel mai popular",
-    peLuna: "RON / lună",
-    sauAnual: "sau 299,99 RON/an — 2 luni gratuite",
+    peLuna: "/ lună",
+    sauAnual: "sau $290/an — 2 luni gratuite",
     inCurand: "În curând",
     ofertaLansare: "🎁 3 luni la preț special pentru primii înscriși",
     freeFeatures: [
       "3 acțiuni urmărite",
       "Scoruri AI complete (4 sub-scoruri + verdict)",
-      "3 știri analizate AI pe zi",
+      "2 știri analizate AI pe zi",
       "Digest zilnic și calendar de raportări",
       "Portofoliu virtual de 10.000 USD",
     ],
@@ -268,7 +268,7 @@ export default {
       },
       {
         q: "Ce primesc în plus la Premium?",
-        a: "Watchlist nelimitat (planul gratuit e limitat la 3 acțiuni urmărite), toate cele 7 știri analizate AI pe zi, research zilnic complet și tool-urile Pro: screener cu filtre și comparatorul de acțiuni față în față. Primele 3 zile sunt gratuite — introduci cardul la activare și poți anula oricând înainte de prima plată. Ai de ales între planul lunar (29,99 RON/lună) și cel anual (299,99 RON/an — echivalentul a două luni gratuite).",
+        a: "Watchlist nelimitat (planul gratuit e limitat la 3 acțiuni urmărite), toate cele 7 știri analizate AI pe zi (față de 2 pe gratuit), research zilnic complet (top 5 creșteri + 5 scăderi) și tool-urile Pro: screener cu filtre și comparatorul de acțiuni față în față. Primele 3 zile sunt gratuite — introduci cardul la activare și poți anula oricând înainte de prima plată. Ai de ales între planul lunar ($29/lună) și cel anual ($290/an — echivalentul a două luni gratuite).",
       },
       {
         q: "Pot renunța oricând?",

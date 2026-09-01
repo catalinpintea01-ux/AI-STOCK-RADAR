@@ -233,14 +233,14 @@ export default {
     preturiTitlu: "Einfache Preise",
     gratuit: "Gratis",
     celMaiPopular: "Am beliebtesten",
-    peLuna: "RON / Monat",
-    sauAnual: "oder 299,99 RON/Jahr — 2 Monate gratis",
+    peLuna: "/ Monat",
+    sauAnual: "oder $290/Jahr — 2 Monate gratis",
     inCurand: "Demnächst",
     ofertaLansare: "🎁 3 Monate zum Sonderpreis für die ersten Anmeldungen",
     freeFeatures: [
       "3 beobachtete Aktien",
       "Vollständige KI-Scores (4 Teil-Scores + Urteil)",
-      "3 KI-analysierte Nachrichten pro Tag",
+      "2 KI-analysierte Nachrichten pro Tag",
       "Täglicher Digest und Earnings-Kalender",
       "Virtuelles Portfolio mit 10.000 USD",
     ],
@@ -268,7 +268,7 @@ export default {
       },
       {
         q: "Was bekomme ich mit Premium zusätzlich?",
-        a: "Unbegrenzte Watchlist (der Gratisplan ist auf 3 beobachtete Aktien begrenzt), alle 7 KI-analysierten Nachrichten pro Tag, vollständiges tägliches Research und die Pro-Tools: ein filterbarer Screener und der direkte Aktienvergleich. Die ersten 3 Tage sind gratis — die Karte wird bei der Aktivierung hinterlegt und du kannst vor der ersten Zahlung jederzeit kündigen. Wähle zwischen dem Monatsplan (29,99 RON/Monat) und dem Jahresplan (299,99 RON/Jahr — das entspricht zwei Gratismonaten).",
+        a: "Unbegrenzte Watchlist (der Gratisplan ist auf 3 beobachtete Aktien begrenzt), alle 7 KI-analysierten Nachrichten pro Tag (statt 2 im Gratisplan), vollständiges tägliches Research (Top 5 Gewinner + 5 Verlierer) und die Pro-Tools: ein filterbarer Screener und der direkte Aktienvergleich. Die ersten 3 Tage sind gratis — die Karte wird bei der Aktivierung hinterlegt und du kannst vor der ersten Zahlung jederzeit kündigen. Wähle zwischen dem Monatsplan ($29/Monat) und dem Jahresplan ($290/Jahr — das entspricht zwei Gratismonaten).",
       },
       {
         q: "Kann ich jederzeit kündigen?",

@@ -41,14 +41,17 @@ function imbogateste(s) {
   };
 }
 
-// Top 5 scoruri AI din tot ce e deja analizat — citire pură din cache-ul de
+// Top scoruri AI din tot ce e deja analizat — citire pură din cache-ul de
 // scoruri, zero apeluri externe. Ranking descriptiv, nu listă de cumpărat.
+// Gratuit: primele 3 (teaser real); Premium: top 5 complet.
 router.get("/top", async (req, res) => {
+  const subscription = await prisma.subscription.findUnique({ where: { userId: req.userId } });
+  const cate = isPremium(subscription) ? 5 : 3;
   const scoruri = await prisma.radarScore.findMany({
     orderBy: { scorCompozit: "desc" },
-    take: 5,
+    take: cate,
   });
-  res.json({ top: scoruri.map(imbogateste) });
+  res.json({ top: scoruri.map(imbogateste), premium: isPremium(subscription) });
 });
 
 // Screener pe scorurile deja calculate: verdict + sector + scor minim +

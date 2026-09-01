@@ -13,7 +13,7 @@ const { getEarningsCalendar } = require("../services/fundamentals");
 
 const router = express.Router();
 
-const FREE_NEWS_LIMIT = 3; // planul gratuit vede primele 3 (cele mai relevante); Premium — toate 7
+const FREE_NEWS_LIMIT = 2; // planul gratuit vede primele 2 (cele mai relevante); Premium — toate 7
 
 router.get("/search", async (req, res) => {
   const results = await searchStocks(req.query.q || "");

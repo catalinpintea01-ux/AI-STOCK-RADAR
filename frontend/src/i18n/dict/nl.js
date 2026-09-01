@@ -233,14 +233,14 @@ export default {
     preturiTitlu: "Eenvoudige prijzen",
     gratuit: "Gratis",
     celMaiPopular: "Populairst",
-    peLuna: "RON / maand",
-    sauAnual: "of 299,99 RON/jaar — 2 maanden gratis",
+    peLuna: "/ maand",
+    sauAnual: "of $290/jaar — 2 maanden gratis",
     inCurand: "Binnenkort",
     ofertaLansare: "🎁 3 maanden voor een speciale prijs voor vroege inschrijvers",
     freeFeatures: [
       "3 gevolgde aandelen",
       "Volledige AI-scores (4 deelscores + oordeel)",
-      "3 AI-geanalyseerde nieuwsberichten per dag",
+      "2 AI-geanalyseerde nieuwsberichten per dag",
       "Dagelijkse digest en earnings-kalender",
       "Virtuele portefeuille van 10.000 USD",
     ],
@@ -268,7 +268,7 @@ export default {
       },
       {
         q: "Wat krijg ik extra met Premium?",
-        a: "Onbeperkte watchlist (het gratis plan is beperkt tot 3 gevolgde aandelen), alle 7 AI-geanalyseerde nieuwsberichten per dag, volledig dagelijks research en de Pro-tools: een filterbare screener en de aandelenvergelijker zij aan zij. De eerste 3 dagen zijn gratis — je voert je kaart in bij activering en kunt vóór de eerste betaling opzeggen. Kies tussen het maandplan (29,99 RON/maand) en het jaarplan (299,99 RON/jaar — het equivalent van twee gratis maanden).",
+        a: "Onbeperkte watchlist (het gratis plan is beperkt tot 3 gevolgde aandelen), alle 7 AI-geanalyseerde nieuwsberichten per dag (tegenover 2 gratis), volledig dagelijks research (top 5 stijgers + 5 dalers) en de Pro-tools: een filterbare screener en de aandelenvergelijker zij aan zij. De eerste 3 dagen zijn gratis — je voert je kaart in bij activering en kunt vóór de eerste betaling opzeggen. Kies tussen het maandplan ($29/maand) en het jaarplan ($290/jaar — het equivalent van twee gratis maanden).",
       },
       {
         q: "Kan ik altijd opzeggen?",

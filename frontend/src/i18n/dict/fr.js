@@ -233,14 +233,14 @@ export default {
     preturiTitlu: "Des prix simples",
     gratuit: "Gratuit",
     celMaiPopular: "Le plus populaire",
-    peLuna: "RON / mois",
-    sauAnual: "ou 299,99 RON/an — 2 mois gratuits",
+    peLuna: "/ mois",
+    sauAnual: "ou 290 $/an — 2 mois gratuits",
     inCurand: "Bientôt disponible",
     ofertaLansare: "🎁 3 mois à un tarif spécial pour les premiers inscrits",
     freeFeatures: [
       "3 actions suivies",
       "Scores IA complets (4 sous-scores + verdict)",
-      "3 actualités analysées par IA par jour",
+      "2 actualités analysées par IA par jour",
       "Digest quotidien et calendrier des résultats",
       "Portefeuille virtuel de 10 000 USD",
     ],
@@ -268,7 +268,7 @@ export default {
       },
       {
         q: "Qu'est-ce que Premium apporte en plus ?",
-        a: "Watchlist illimitée (le plan gratuit est limité à 3 actions suivies), les 7 actualités analysées par IA chaque jour, le research quotidien complet et les outils Pro : un screener filtrable et le comparateur d'actions côte à côte. Les 3 premiers jours sont gratuits — vous saisissez votre carte à l'activation et pouvez annuler avant le premier paiement. Choisissez entre le plan mensuel (29,99 RON/mois) et l'annuel (299,99 RON/an — l'équivalent de deux mois gratuits).",
+        a: "Watchlist illimitée (le plan gratuit est limité à 3 actions suivies), les 7 actualités analysées par IA chaque jour (contre 2 en gratuit), le research quotidien complet (top 5 hausses + 5 baisses) et les outils Pro : un screener filtrable et le comparateur d'actions côte à côte. Les 3 premiers jours sont gratuits — vous saisissez votre carte à l'activation et pouvez annuler avant le premier paiement. Choisissez entre le plan mensuel (29 $/mois) et l'annuel (290 $/an — l'équivalent de deux mois gratuits).",
       },
       {
         q: "Puis-je annuler à tout moment ?",

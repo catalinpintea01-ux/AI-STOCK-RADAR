@@ -233,14 +233,14 @@ export default {
     preturiTitlu: "Egyszerű árak",
     gratuit: "Ingyenes",
     celMaiPopular: "A legnépszerűbb",
-    peLuna: "RON / hónap",
-    sauAnual: "vagy 299,99 RON/év — 2 hónap ingyen",
+    peLuna: "/ hó",
+    sauAnual: "vagy $290/év — 2 hónap ingyen",
     inCurand: "Hamarosan",
     ofertaLansare: "🎁 3 hónap kedvezményes áron az első feliratkozóknak",
     freeFeatures: [
       "3 követett részvény",
       "Teljes MI-pontszámok (4 részpontszám + értékelés)",
-      "Napi 3 MI-vel elemzett hír",
+      "napi 2 AI-elemzett hír",
       "Napi összefoglaló és eredménynaptár",
       "10 000 USD virtuális portfólió",
     ],
@@ -268,7 +268,7 @@ export default {
       },
       {
         q: "Mit kapok pluszban a Premiummal?",
-        a: "Korlátlan watchlist (az ingyenes csomag 3 követett részvényre korlátozott), mind a 7 AI-elemzett hír naponta, teljes napi research és a Pro eszközök: szűrhető screener és a részvény-összehasonlító egymás mellett. Az első 3 nap ingyenes — a kártyát aktiváláskor adod meg, és az első fizetés előtt bármikor lemondhatod. Választhatsz a havi (29,99 RON/hó) és az éves csomag (299,99 RON/év — két ingyenes hónapnak megfelelő) között.",
+        a: "Korlátlan watchlist (az ingyenes csomag 3 követett részvényre korlátozott), mind a 7 AI-elemzett hír naponta (az ingyenes 2-vel szemben), teljes napi research (top 5 emelkedő + 5 eső) és a Pro eszközök: szűrhető screener és a részvény-összehasonlító egymás mellett. Az első 3 nap ingyenes — a kártyát aktiváláskor adod meg, és az első fizetés előtt bármikor lemondhatod. Választhatsz a havi ($29/hó) és az éves csomag ($290/év — két ingyenes hónapnak megfelelő) között.",
       },
       {
         q: "Bármikor lemondhatom?",

@@ -48,8 +48,8 @@ export function Termeni() {
       <h2>4. Abonamente, perioada de probă și plăți</h2>
       <p>
         Planul gratuit include funcțiile de bază, cu limitele afișate în pagina „Planuri și
-        prețuri". Abonamentul Premium este disponibil în două variante: lunar (29,99 RON/lună) și
-        anual (299,99 RON/an). Ambele includ o perioadă de probă gratuită de 3 zile; cardul este
+        prețuri". Abonamentul Premium este disponibil în două variante: lunar (29 USD/lună) și
+        anual (290 USD/an). Ambele includ o perioadă de probă gratuită de 3 zile; cardul este
         colectat la activare prin procesatorul de plăți Stripe, iar facturarea începe automat la
         finalul perioadei de probă dacă abonamentul nu este anulat. Poți anula oricând din
         aplicație („Gestionează abonamentul"); anularea în perioada de probă nu implică niciun

@@ -1,7 +1,7 @@
 const express = require("express");
 const prisma = require("../db");
 const { requireAuth } = require("../middleware/auth");
-const { stripe, getOrCreateCustomer, getAnnualPriceId, isPremium, TRIAL_DAYS } = require("../services/stripe");
+const { stripe, getOrCreateCustomer, getPriceId, isPremium, TRIAL_DAYS } = require("../services/stripe");
 
 const router = express.Router();
 
@@ -92,10 +92,10 @@ router.post("/checkout", requireAuth, async (req, res) => {
     });
   }
 
-  // Planul: "lunar" (implicit, 29,99 RON/lună) sau "anual" (299,99 RON/an —
-  // ~2 luni gratuite). Ambele încep cu același trial de 3 zile.
+  // Planul: "lunar" (implicit, $29/lună) sau "anual" ($290/an — 2 luni
+  // gratuite). Ambele în USD (monedă universală) și cu același trial de 3 zile.
   const plan = req.body?.plan === "anual" ? "anual" : "lunar";
-  const priceId = plan === "anual" ? await getAnnualPriceId() : process.env.STRIPE_PRICE_ID;
+  const priceId = await getPriceId(plan);
 
   const session = await stripe.checkout.sessions.create({
     customer: customerId,

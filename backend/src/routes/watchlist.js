@@ -142,7 +142,7 @@ router.get("/daily-picks", requireAuth, async (req, res) => {
     .sort((a, b) => a.variatieProcent - b.variatieProcent);
 
   const premium = isPremium(subscription);
-  const pePagina = premium ? 5 : 2;
+  const pePagina = premium ? 5 : 1; // gratuit: câte un teaser pe fiecare parte
 
   const [cresteri, scaderi] = await Promise.all([
     localizeazaMotive(cresteriToate.slice(0, pePagina).map(laForma), req.limba),
