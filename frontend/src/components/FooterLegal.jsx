@@ -16,7 +16,9 @@ export default function FooterLegal() {
         <span aria-hidden="true">·</span>
         <Link to="/despre">{t("fDespre")}</Link>
       </nav>
-      <p className="footer-legal-firma">© {new Date().getFullYear()} Jess Print Gift Shop SRL · AI Stock Radar</p>
+      {/* Doar brandul în footer (modelul WeltPixel) — entitatea juridică
+          apare exclusiv în Termeni și Confidențialitate, unde e obligatorie. */}
+      <p className="footer-legal-firma">Copyright © {new Date().getFullYear()} AI Stock Radar. All rights reserved.</p>
     </footer>
   );
 }

@@ -15,7 +15,7 @@ export default {
     "ceNuTitlu": "Mit NEM csinál a platform",
     "ceNu": "Nem nyújt befektetési tanácsadást, személyre szabott ajánlásokat, árfolyam-előrejelzéseket vagy ígért hozamokat. A pontszámok és szövegek a részvény nyilvános kontextusát írják le — a döntés és a felelősség a tiéd.",
     "cineTitlu": "Ki áll a projekt mögött",
-    "cine": "A platformot a Romániában bejegyzett Jess Print Gift Shop SRL üzemelteti. Kis csapat vagyunk, egyetlen dolognak szentelve: érthető pénzügyi oktatás, szakzsargon és üres ígéretek nélkül.",
+    "cine": "Az AI Stock Radart Romániában építi egy kis csapat, egyetlen dolognak szentelve: érthető pénzügyi oktatás, szakzsargon és üres ígéretek nélkül. Az üzemeltető teljes jogi adatai a Felhasználási feltételekben találhatók.",
     "contactTitlu": "Kapcsolat",
     "contact": "Bármikor írhatsz nekünk a {email} címre — 48 órán belül válaszolunk."
   },

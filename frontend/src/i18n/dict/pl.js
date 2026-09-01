@@ -15,7 +15,7 @@ export default {
     "ceNuTitlu": "Czego platforma NIE robi",
     "ceNu": "Nie oferuje doradztwa inwestycyjnego, spersonalizowanych rekomendacji, prognoz cen ani obiecanych zysków. Oceny i teksty opisują publiczny kontekst akcji — decyzje i odpowiedzialność należą do ciebie.",
     "cineTitlu": "Kto stoi za projektem",
-    "cine": "Platformą zarządza Jess Print Gift Shop SRL, zarejestrowana w Rumunii. Jesteśmy małym zespołem oddanym jednej rzeczy: jasnej edukacji finansowej, bez żargonu i bez pustych obietnic.",
+    "cine": "AI Stock Radar powstaje w Rumunii, tworzony przez mały zespół oddany jednej rzeczy: jasnej edukacji finansowej, bez żargonu i bez pustych obietnic. Pełne dane prawne operatora znajdują się w Regulaminie.",
     "contactTitlu": "Kontakt",
     "contact": "Możesz napisać do nas w każdej chwili na {email} — odpowiadamy w ciągu 48 godzin."
   },

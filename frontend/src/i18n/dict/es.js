@@ -15,7 +15,7 @@ export default {
     "ceNuTitlu": "Qué NO hace la plataforma",
     "ceNu": "No ofrece asesoramiento de inversión, recomendaciones personalizadas, predicciones de precios ni rendimientos prometidos. Las puntuaciones y los textos describen el contexto público de una acción — las decisiones y la responsabilidad son tuyas.",
     "cineTitlu": "Quién está detrás del proyecto",
-    "cine": "La plataforma está operada por Jess Print Gift Shop SRL, registrada en Rumanía. Somos un equipo pequeño dedicado a una sola cosa: educación financiera clara, sin jerga y sin promesas vacías.",
+    "cine": "AI Stock Radar está construido en Rumanía por un equipo pequeño dedicado a una sola cosa: educación financiera clara, sin jerga y sin promesas vacías. Los datos legales completos del operador están en los Términos y condiciones.",
     "contactTitlu": "Contacto",
     "contact": "Puedes escribirnos en cualquier momento a {email} — respondemos en un máximo de 48 horas."
   },
