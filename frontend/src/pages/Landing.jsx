@@ -186,6 +186,25 @@ export default function Landing() {
             </Link>
           </div>
           <p className="mega-note">{t("landing.nota")}</p>
+
+          <div className="hero-invata">
+            <img src="/mascota/mascota-hero.png" alt="Mascota StockRadar AI" className="hero-invata-mascota" loading="lazy" />
+            <div>
+              <strong>{t("landing.invataTitlu")}</strong>
+              {acuratete?.procent != null && acuratete.total >= 20 ? (
+                <p>
+                  <span className="hero-invata-procent">
+                    {t("landing.invataStat")
+                      .replace("{procent}", String(acuratete.procent))
+                      .replace("{n}", String(acuratete.total))}
+                  </span>
+                </p>
+              ) : (
+                <p>{t("landing.invataText")}</p>
+              )}
+            </div>
+          </div>
+
           <a href="#cum-functioneaza" className="hero-cum-link">
             {t("heroCum")}
           </a>
