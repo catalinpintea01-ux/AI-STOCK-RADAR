@@ -120,14 +120,44 @@ async function computeAndStore(simbol) {
   const risc = scoreRisc(metric);
   const { compozit, verdict, incredere } = computeComposite({ momentum, analyst, fundamental, risc });
 
-  const headlines = await getCompanyNews(simbol);
-  const narrative = await generateRadarNarrative({
-    simbol,
-    scoruri: { analyst: analyst.score, momentum: momentum.score, fundamental: fundamental.score, risc: risc.score, compozit },
-    verdict,
-    fapte: { recommendation: recommendation[0] || null, insiderTx, earnings: earnings.slice(0, 4), metric },
-    headlines,
-  });
+  // Scorul anterior: baza pentru refolosirea narativei ȘI pentru alertele de
+  // scor de după upsert.
+  const anterior = await prisma.radarScore.findUnique({ where: { simbol } });
+
+  // Economie majoră de apeluri Claude: dacă scorul abia s-a mișcat (< 5
+  // puncte) și verdictul e neschimbat, textul existent rămâne valabil — îl
+  // refolosim și actualizăm doar cifrele. Fără asta, robotul de fundal
+  // regenera ~240 de narative/zi pentru scoruri practic identice.
+  const PRAG_NARATIVA_NOUA = 5;
+  let narrative = null;
+  if (
+    anterior &&
+    anterior.generatAi &&
+    anterior.verdict === verdict &&
+    Math.abs(compozit - anterior.scorCompozit) < PRAG_NARATIVA_NOUA
+  ) {
+    try {
+      narrative = {
+        rezumat: anterior.rezumat,
+        riscuri: JSON.parse(anterior.riscuri),
+        invalidare: JSON.parse(anterior.invalidare),
+        generatAi: true,
+      };
+    } catch {
+      narrative = null; // date vechi corupte — generăm normal
+    }
+  }
+
+  if (!narrative) {
+    const headlines = await getCompanyNews(simbol);
+    narrative = await generateRadarNarrative({
+      simbol,
+      scoruri: { analyst: analyst.score, momentum: momentum.score, fundamental: fundamental.score, risc: risc.score, compozit },
+      verdict,
+      fapte: { recommendation: recommendation[0] || null, insiderTx, earnings: earnings.slice(0, 4), metric },
+      headlines,
+    });
+  }
 
   // Agregatele insiderilor pe 90 de zile alimentează și "Radarul insiderilor"
   // din Tool-urile Pro (change > 0 = achiziție, < 0 = vânzare, per SEC).
@@ -159,12 +189,6 @@ async function computeAndStore(simbol) {
     sursaDate,
     generatAi: narrative.generatAi,
   };
-
-  // Scorul anterior, citit înainte de upsert — baza alertelor de scor de mai jos.
-  const anterior = await prisma.radarScore.findUnique({
-    where: { simbol },
-    select: { scorCompozit: true, verdict: true },
-  });
 
   const saved = await prisma.radarScore.upsert({
     where: { simbol },
