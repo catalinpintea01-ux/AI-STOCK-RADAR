@@ -91,6 +91,19 @@ export default function Landing() {
       .catch(() => {});
   }, []);
 
+  // Simulatorul scorului: 4 slidere → compozitul live, cu ponderile reale de
+  // azi (sau 30/30/20/20 până sosesc). Riscul intră inversat, ca în radar.js.
+  const [sim, setSim] = useState({ momentum: 62, analist: 58, fundamental: 55, risc: 40 });
+  const ponderiSim = acuratete?.ponderi || { momentum: 30, analist: 30, fundamental: 20, risc: 20 };
+  const scorSim = Math.round(
+    (ponderiSim.momentum * sim.momentum +
+      ponderiSim.analist * sim.analist +
+      ponderiSim.fundamental * sim.fundamental +
+      ponderiSim.risc * (100 - sim.risc)) /
+      (ponderiSim.momentum + ponderiSim.analist + ponderiSim.fundamental + ponderiSim.risc)
+  );
+  const verdictSim = scorSim >= 60 ? "verdictOptimist" : scorSim <= 40 ? "verdictRezervat" : "verdictNeutru";
+
   // Pe touch (mobil), banda CSS animată se bate cap în cap cu degetul: CSS-ul
   // o transformă în scroll orizontal nativ (swipe cu inerție), iar aici o
   // împingem CONTINUU și lent (~22px/s, ca pe desktop). Setul e dublat, deci
@@ -610,41 +623,24 @@ export default function Landing() {
         </div>
       </section>
 
-      <section className="landing-section">
-        <div className="landing-radar-band">
-          <img src="/mascota/mascota-hero.png" alt="Mascota StockRadar AI" className="mascota mascota-band" loading="lazy" />
-          <div className="landing-radar-text">
-            <h2 className="landing-section-title landing-radar-title">{t("landing.radarTitlu")}</h2>
-            <ul className="landing-radar-facts">
-              {t("landing.facts").map((text, i) => {
-                const Icon = FACT_ICONS[i] || Radar;
-                return (
-                  <li key={text}>
-                    <span className="landing-fact-icon"><Icon size={16} /></span>
-                    {text}
-                  </li>
-                );
-              })}
-            </ul>
-
-            <h3 className="landing-piloni-titlu">{t("landing.piloniTitlu")}</h3>
-            <div className="landing-piloni">
-              {t("landing.piloni").map((p, i) => {
-                const chei = ["momentum", "analist", "fundamental", "risc"];
-                const pondere = acuratete?.ponderi?.[chei[i]];
-                return (
-                  <div key={p.titlu} className="landing-pilon">
-                    <div className="landing-pilon-head">
-                      <span className="landing-pilon-nume">{p.titlu}</span>
-                      <span className="landing-pilon-pondere">{pondere ?? [30, 30, 20, 20][i]}%</span>
-                    </div>
-                    <p>{p.text}</p>
-                  </div>
-                );
-              })}
+      <section className="landing-section landing-radar-wrap">
+        <div className="landing-radar-band landing-radar-full">
+          <div className="landing-radar-top">
+            <img src="/mascota/mascota-hero.png" alt="Mascota StockRadar AI" className="mascota mascota-band" loading="lazy" />
+            <div className="landing-radar-text">
+              <h2 className="landing-section-title landing-radar-title">{t("landing.radarTitlu")}</h2>
+              <ul className="landing-radar-facts">
+                {t("landing.facts").map((text, i) => {
+                  const Icon = FACT_ICONS[i] || Radar;
+                  return (
+                    <li key={text}>
+                      <span className="landing-fact-icon"><Icon size={16} /></span>
+                      {text}
+                    </li>
+                  );
+                })}
+              </ul>
             </div>
-            <p className="landing-piloni-nota">{t("landing.ponderiNota")}</p>
-
             <div className="landing-invata">
               <h3>{t("landing.invataTitlu")}</h3>
               <p>{t("landing.invataText")}</p>
@@ -658,6 +654,101 @@ export default function Landing() {
                 <p className="landing-invata-stat landing-invata-colectare">{t("landing.invataColectare")}</p>
               )}
               <p className="landing-invata-disclaimer">{t("landing.invataDisclaimer")}</p>
+            </div>
+          </div>
+
+          <h3 className="landing-piloni-titlu">{t("landing.piloniTitlu")}</h3>
+          <div className="landing-piloni">
+            {t("landing.piloni").map((p, i) => {
+              const chei = ["momentum", "analist", "fundamental", "risc"];
+              const pondere = acuratete?.ponderi?.[chei[i]];
+              return (
+                <div key={p.titlu} className="landing-pilon">
+                  <div className="landing-pilon-head">
+                    <span className="landing-pilon-nume">{p.titlu}</span>
+                    <span className="landing-pilon-pondere">{pondere ?? [30, 30, 20, 20][i]}%</span>
+                  </div>
+                  <p>{p.text}</p>
+                </div>
+              );
+            })}
+          </div>
+          <p className="landing-piloni-nota">{t("landing.ponderiNota")}</p>
+
+          <h3 className="landing-piloni-titlu landing-apps-titlu">{t("landing.appsTitlu")}</h3>
+          <div className="landing-radar-apps">
+            {/* App 1: simulatorul scorului — slidere → compozit live */}
+            <div className="radar-app">
+              <h4>{t("landing.simTitlu")}</h4>
+              <p className="radar-app-sub">{t("landing.simText")}</p>
+              {t("landing.piloni").map((p, i) => {
+                const chei = ["momentum", "analist", "fundamental", "risc"];
+                const cheie = chei[i];
+                return (
+                  <label key={cheie} className="sim-rand">
+                    <span className="sim-nume">{p.titlu}</span>
+                    <input
+                      type="range"
+                      min="0"
+                      max="100"
+                      value={sim[cheie]}
+                      onChange={(e) => setSim({ ...sim, [cheie]: Number(e.target.value) })}
+                    />
+                    <span className="sim-val">{sim[cheie]}</span>
+                  </label>
+                );
+              })}
+              <div className="sim-rezultat">
+                <span>{t("landing.simScorLabel")}</span>
+                <strong>{scorSim}</strong>
+                <em className={`sim-verdict sim-${verdictSim}`}>{t("landing." + verdictSim)}</em>
+              </div>
+            </div>
+
+            {/* App 2: auto-evaluările pe zile — bare cu rata de potrivire */}
+            <div className="radar-app">
+              <h4>{t("landing.zileTitlu")}</h4>
+              {acuratete?.zile?.length > 0 ? (
+                <div className="zile-grafic">
+                  {[...acuratete.zile].reverse().map((z) => (
+                    <div
+                      key={z.zi}
+                      className="zile-bara-wrap"
+                      title={`${z.zi}: ${z.potriviri} ${t("landing.accDin")} ${z.total}`}
+                    >
+                      <div
+                        className="zile-bara"
+                        style={{ height: `${Math.max(8, Math.round((z.potriviri / Math.max(z.total, 1)) * 100))}%` }}
+                      />
+                      <span className="zile-eticheta">{z.zi.slice(8)}</span>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <p className="radar-app-sub">{t("landing.zileGol")}</p>
+              )}
+            </div>
+
+            {/* App 3: acuratețea pe tip de verdict — bare de umplere */}
+            <div className="radar-app">
+              <h4>{t("landing.accTitlu")}</h4>
+              {["optimist", "neutru", "rezervat"].map((v) => {
+                const d = acuratete?.perVerdict?.[v];
+                const cheieVerdict = v === "optimist" ? "verdictOptimist" : v === "neutru" ? "verdictNeutru" : "verdictRezervat";
+                const procent = d && d.total > 0 ? Math.round((d.potriviri / d.total) * 100) : null;
+                return (
+                  <div key={v} className="acc-rand">
+                    <span className="acc-nume">{t("landing." + cheieVerdict)}</span>
+                    <div className="acc-bara-fundal">
+                      <div className="acc-bara" style={{ width: `${procent ?? 0}%` }} />
+                    </div>
+                    <span className="acc-val">
+                      {procent !== null ? `${d.potriviri} ${t("landing.accDin")} ${d.total}` : "—"}
+                    </span>
+                  </div>
+                );
+              })}
+              <p className="radar-app-nota">{t("landing.invataDisclaimer")}</p>
             </div>
           </div>
         </div>
