@@ -73,6 +73,7 @@ export default function RadarCenter({ vix, statsWatch, raportari }) {
     regulaTitlu: "Cum numărăm o potrivire",
     regulaText: "optimist: +0,5% sau mai mult în 5 zile · rezervat: −0,5% sau mai puțin · neutru: în banda de ±2,5%",
     disclaimer: "Statistici descriptive ale istoricului — nu garanții și nu sfaturi de investiții.",
+    cumCalculam: "Cum calculăm scorul →",
   });
 
   const [acuratete, setAcuratete] = useState(null);
@@ -116,7 +117,7 @@ export default function RadarCenter({ vix, statsWatch, raportari }) {
   return (
     <div className="radar-center">
       <div className="radar-center-head">
-        <img src="/mascota/mascota-hero.png" alt="Mascota StockRadar AI" className="radar-center-mascota" loading="lazy" />
+        <img src="/mascota/radar.png" alt="Mascota StockRadar AI" className="radar-center-mascota" loading="lazy" />
         <div>
           <h2>{tt("titlu")}</h2>
           <p>{tt("sub")}</p>
@@ -127,6 +128,7 @@ export default function RadarCenter({ vix, statsWatch, raportari }) {
           ) : (
             <p className="radar-center-stat radar-center-colectare">{tt("statColectare")}</p>
           )}
+          <Link to="/metodologie" className="radar-vix-link">{tt("cumCalculam")}</Link>
         </div>
       </div>
 

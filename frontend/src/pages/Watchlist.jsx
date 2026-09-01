@@ -157,6 +157,12 @@ export default function Watchlist() {
   const [selectedDaily, setSelectedDaily] = useState(null); // simbolul coloanei selectate din grafic
   const [vix, setVix] = useState(null);
   const [brief, setBrief] = useState(null); // { zi, text, simboluri }
+  // Doar pentru cartonașul mic din hero (procentul live); panoul mare
+  // RadarCenter de sub grilă își încarcă singur datele.
+  const [acurateteHero, setAcurateteHero] = useState(null);
+  useEffect(() => {
+    api.getRadarAcuratete().then(setAcurateteHero).catch(() => {});
+  }, []);
   const [universSugestii, setUniversSugestii] = useState([]);
   const [interese, setInterese] = useState([]);
   const [onboarding, setOnboarding] = useState(false);
@@ -537,22 +543,23 @@ export default function Watchlist() {
             {t("dash.sub")} <Link to="/metodologie" className="methodology-link">{t("dash.cumCalculam")}</Link>
           </p>
 
-          <RadarCenter
-            vix={typeof vix?.valoare === "number" ? vix.valoare : typeof vix === "number" ? vix : null}
-            raportari={raporteazaCurandCount}
-            statsWatch={{
-              analizate: analizateCount,
-              optimiste: optimisteCount,
-              neutre: neutruCount,
-              rezervate: rezervateCount,
-              scorMediu:
-                analizateCount > 0
-                  ? Math.round(
-                      items.filter((i) => i.radar).reduce((s, i) => s + i.radar.scorCompozit, 0) / analizateCount
-                    )
-                  : 0,
-            }}
-          />
+          <div className="hero-invata">
+            <img src="/mascota/mascota-hero.png" alt="Mascota StockRadar AI" className="hero-invata-mascota" loading="lazy" />
+            <div>
+              <strong>{t("landing.invataTitlu")}</strong>
+              {acurateteHero?.procent != null && acurateteHero.total >= 20 ? (
+                <p>
+                  <span className="hero-invata-procent">
+                    {t("landing.invataStat")
+                      .replace("{procent}", String(acurateteHero.procent))
+                      .replace("{n}", String(acurateteHero.total))}
+                  </span>
+                </p>
+              ) : (
+                <p>{t("landing.invataText")}</p>
+              )}
+            </div>
+          </div>
 
         {items.length > 0 && analizateCount > 0 && (
           <div className="dash-stats">
@@ -1109,18 +1116,30 @@ export default function Watchlist() {
             );
           })()}
 
-          <section className="panel mascota-panel">
-            <img src="/mascota/radar.png" alt="" className="mascota mascota-sidebar" loading="lazy" />
-            <div>
-              <p className="mascota-panel-title">{t("dash.mascotaTitlu")}</p>
-              <p className="muted mascota-panel-text">{t("dash.mascotaText")}</p>
-              <Link to="/metodologie" className="methodology-link">
-                {t("dash.cumCalculam")}
-              </Link>
-            </div>
-          </section>
         </aside>
       </div>
+
+      {/* Fosta casetă "Radarul lucrează pentru tine" (sidebar) — acum panou
+          de sine stătător pe toată lățimea, cu cele 12 funcții live. Fundal
+          închis fix în ambele teme, în tonul benzii de pe landing. */}
+      <section className="panel radar-center-panel">
+        <RadarCenter
+          vix={typeof vix?.valoare === "number" ? vix.valoare : null}
+          raportari={raporteazaCurandCount}
+          statsWatch={{
+            analizate: analizateCount,
+            optimiste: optimisteCount,
+            neutre: neutruCount,
+            rezervate: rezervateCount,
+            scorMediu:
+              analizateCount > 0
+                ? Math.round(
+                    items.filter((i) => i.radar).reduce((s, i) => s + i.radar.scorCompozit, 0) / analizateCount
+                  )
+                : 0,
+          }}
+        />
+      </section>
 
       <HartaPietei />
 

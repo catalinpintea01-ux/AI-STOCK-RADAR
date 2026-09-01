@@ -7607,3 +7607,19 @@ html[data-theme="dark"] .plan-badge {
   .radar-center-head { flex-direction: column; text-align: center; }
   .radar-center { text-align: left; }
 }
+
+/* Panoul Radar Center de sine stătător (fosta casetă "radarul lucrează
+   pentru tine" din sidebar, acum pe toată lățimea, înainte de hartă).
+   Fundal închis FIX în ambele teme — conținutul componentei folosește
+   culori deschise fixe, în tonul benzii de pe landing. */
+.radar-center-panel {
+  background: linear-gradient(160deg, #121110 0%, #1b1915 60%, #232019 100%);
+  border: none;
+  margin-bottom: 1.1rem;
+}
+.radar-center-panel .radar-center {
+  margin-top: 0;
+  border: none;
+  background: transparent;
+  padding: 0;
+}
