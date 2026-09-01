@@ -135,6 +135,14 @@ export default function Watchlist() {
     mentionate: "În radar azi:",
     personalTitlu: "Watchlist-ul tău, pe scurt",
     personalPremium: "Cu Premium, acest brief e scris zilnic de AI, personalizat pe lista ta →",
+    // Contextul de investitor din calendarul de raportări:
+    earnBatut: "a depășit estimările",
+    earnDin: "din",
+    earnTrimestre: "trimestre",
+    earnSurpriza: "surpriză medie",
+    earnEps: "EPS estimat",
+    earnScor: "Scor AI",
+    earnRisc: "risc",
   });
 
   const [items, setItems] = useState(null);
@@ -1186,15 +1194,37 @@ export default function Watchlist() {
         ) : (
           <ul className="stock-list earnings-grid">
             {earnings.slice(0, 6).map((e) => (
-              <li key={`${e.simbol}-${e.data}`} className="stock-row">
+              <li key={`${e.simbol}-${e.data}`} className="stock-row earnings-row-rich">
                 <Link to={`/stock/${e.simbol}`} className="watch-row-link">
                   <StockLogo simbol={e.simbol} />
-                  <div>
+                  <div className="earnings-row-main">
                     <strong>{e.simbol}</strong>
                     <div className="muted">
                       {t("dash.raporteaza")} {formatZileRamase(e.data, t)}
                       {e.moment && momentLabel[e.moment] ? ` · ${momentLabel[e.moment]}` : ""}
+                      {typeof e.epsEstimat === "number" ? ` · ${ttBrief("earnEps")} $${e.epsEstimat.toFixed(2)}` : ""}
                     </div>
+                    {(e.trimestre > 0 || typeof e.scorAi === "number") && (
+                      <div className="earnings-context">
+                        {e.trimestre > 0 && (
+                          <span
+                            className={`earnings-chip ${e.batute >= Math.ceil(e.trimestre * 0.75) ? "earnings-chip-bun" : ""}`}
+                          >
+                            {ttBrief("earnBatut")} {e.batute} {ttBrief("earnDin")} {e.trimestre}{" "}
+                            {ttBrief("earnTrimestre")}
+                            {typeof e.surprizaMedie === "number"
+                              ? ` · ${ttBrief("earnSurpriza")} ${e.surprizaMedie >= 0 ? "+" : ""}${e.surprizaMedie}%`
+                              : ""}
+                          </span>
+                        )}
+                        {typeof e.scorAi === "number" && (
+                          <span className="earnings-chip">
+                            {ttBrief("earnScor")} {e.scorAi}
+                            {typeof e.scorRisc === "number" ? ` · ${ttBrief("earnRisc")} ${e.scorRisc}` : ""}
+                          </span>
+                        )}
+                      </div>
+                    )}
                   </div>
                   <span className="row-chevron">›</span>
                 </Link>

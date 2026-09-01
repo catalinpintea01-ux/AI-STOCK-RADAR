@@ -7666,3 +7666,29 @@ html[data-theme="dark"] .plan-badge {
   text-decoration: none;
   border-bottom: 1px dashed color-mix(in srgb, var(--blue) 55%, transparent);
 }
+
+/* Calendarul de raportări — contextul de investitor pe fiecare rând:
+   istoricul surprizelor EPS + scorul/riscul AI la zi. */
+.earnings-row-rich .watch-row-link { align-items: flex-start; }
+.earnings-row-main { min-width: 0; }
+.earnings-context {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-top: 5px;
+}
+.earnings-chip {
+  display: inline-block;
+  padding: 0.16rem 0.5rem;
+  border-radius: 999px;
+  font-size: 0.68rem;
+  font-weight: 600;
+  background: var(--surface-2);
+  color: var(--muted);
+  border: 1px solid var(--border);
+}
+.earnings-chip-bun {
+  background: color-mix(in srgb, var(--blue) 12%, var(--surface-2));
+  color: var(--blue);
+  border-color: color-mix(in srgb, var(--blue) 35%, transparent);
+}

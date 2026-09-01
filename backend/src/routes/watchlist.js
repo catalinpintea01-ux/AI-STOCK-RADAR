@@ -95,6 +95,37 @@ router.get("/earnings", requireAuth, async (req, res) => {
 
   const urmatoarele = calendar.filter((e) => simboluri.has(e.symbol)).sort(dupaData).map(laForma);
 
+  // Context de investitor experimentat, din datele deja stocate (zero apeluri
+  // externe): istoricul surprizelor EPS din ultimele 4 trimestre (de câte ori
+  // a depășit estimările + surpriza medie) și scorul/riscul AI la zi al
+  // companiei care raportează.
+  if (urmatoarele.length > 0) {
+    const scoruri = await prisma.radarScore.findMany({
+      where: { simbol: { in: urmatoarele.map((e) => e.simbol) } },
+      select: { simbol: true, scorCompozit: true, scorRisc: true, sursaDate: true },
+    });
+    const perSimbol = new Map(scoruri.map((s) => [s.simbol, s]));
+    for (const e of urmatoarele) {
+      const s = perSimbol.get(e.simbol);
+      if (!s) continue;
+      e.scorAi = s.scorCompozit;
+      e.scorRisc = s.scorRisc;
+      try {
+        const istoric = (JSON.parse(s.sursaDate)?.earningsRecent || []).filter(
+          (t) => typeof t.surprisePercent === "number"
+        );
+        if (istoric.length > 0) {
+          e.trimestre = istoric.length;
+          e.batute = istoric.filter((t) => t.surprisePercent > 0).length;
+          e.surprizaMedie =
+            Math.round((istoric.reduce((sum, t) => sum + t.surprisePercent, 0) / istoric.length) * 10) / 10;
+        }
+      } catch {
+        // sursaDate coruptă — rândul rămâne fără istoric, nu blocăm calendarul
+      }
+    }
+  }
+
   // Când lista userului nu are nicio raportare apropiată (sau e goală),
   // propunem raportările iminente din universul curat — un motiv concret
   // să adauge ceva în watchlist, în loc de un panou pur și simplu gol.
