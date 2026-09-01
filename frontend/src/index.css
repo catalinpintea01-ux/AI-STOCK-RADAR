@@ -6704,16 +6704,78 @@ html {
   border-color: var(--blue);
   color: #fff;
 }
+/* Pulsul pieței: sinteza zilei + extremele, calculate din datele hărții. */
+.harta-puls {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.4rem 0.9rem;
+  margin-top: 0.55rem;
+  font-size: 0.82rem;
+  color: var(--muted);
+}
+.harta-puls-item { display: inline-flex; align-items: center; gap: 0.3rem; }
+.harta-puls-item strong { color: var(--text); }
+.harta-puls-up { color: var(--price-up); }
+.harta-puls-down { color: var(--price-down); }
+.harta-puls-vup { color: var(--price-up); }
+.harta-puls-vdown { color: var(--price-down); }
+.harta-puls-sep { width: 1px; height: 16px; background: var(--border); }
+.harta-puls-chip {
+  padding: 0.14rem 0.55rem;
+  border-radius: 999px;
+  font-size: 0.76rem;
+  font-weight: 700;
+  text-decoration: none;
+}
+.harta-puls-best { background: rgba(46, 125, 91, 0.16); color: var(--price-up); }
+.harta-puls-worst { background: rgba(191, 68, 56, 0.14); color: var(--price-down); }
+
+/* Filtrul pe sectoare: un chip per sector, cu media zilei — click = izolează. */
+.harta-filtru-sectoare {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+  margin-top: 0.55rem;
+}
+.harta-sector-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.32rem;
+  padding: 0.22rem 0.6rem;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--card-bg);
+  color: var(--muted);
+  font-size: 0.72rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: border-color 0.15s ease, color 0.15s ease, transform 0.12s ease;
+}
+.harta-sector-chip:hover { transform: translateY(-1px); border-color: var(--blue-light); }
+.harta-sector-chip.active { border-color: var(--blue); color: var(--text); }
+.harta-sector-chip em { font-style: normal; font-weight: 700; color: var(--text); opacity: 0.75; }
+.harta-sector-punct { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
+
 .harta-sectoare {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.9rem 1.2rem;
-  margin-top: 0.5rem;
+  gap: 0.7rem 1rem;
+  margin-top: 0.7rem;
 }
 .harta-sector {
-  flex: 1 1 260px;
+  flex: 1 1 200px;
   min-width: 0;
 }
+/* Mozaicul intră cu un fade scurt la schimbarea modului/filtrului (containerul
+   se remontează prin key), ca schimbarea să se simtă vie, nu doar revopsită. */
+@keyframes harta-pop {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: none; }
+}
+.harta-sectoare { animation: harta-pop 0.28s ease; }
+.harta-mod-ic { vertical-align: -1px; }
+.harta-tile-stins { opacity: 0.55; }
 .harta-sector-titlu {
   display: block;
   font-size: 0.72rem;
@@ -6759,12 +6821,18 @@ html {
   font-size: 0.68rem;
   opacity: 0.9;
 }
-.harta-n1 { width: 128px; height: 84px; }
-.harta-n2 { width: 100px; height: 68px; }
-.harta-n3 { width: 82px;  height: 54px; }
-.harta-n4 { width: 66px;  height: 44px; }
-.harta-n4 strong { font-size: 0.7rem; }
-.harta-n4 span { font-size: 0.6rem; }
+/* Plăci compacte: pe desktop încap 3-4 coloane de sectoare, fără golurile
+   uriașe de la vechile dimensiuni (128px lățime la mega-capuri). */
+.harta-n1 { width: 92px; height: 58px; }
+.harta-n2 { width: 76px; height: 48px; }
+.harta-n3 { width: 62px; height: 40px; }
+.harta-n4 { width: 52px; height: 34px; }
+.harta-n1 strong { font-size: 0.78rem; }
+.harta-n2 strong { font-size: 0.74rem; }
+.harta-n3 strong { font-size: 0.68rem; }
+.harta-n3 span { font-size: 0.6rem; }
+.harta-n4 strong { font-size: 0.62rem; }
+.harta-n4 span { font-size: 0.55rem; }
 
 .harta-legenda {
   display: flex;
@@ -6792,10 +6860,10 @@ html {
   background: linear-gradient(90deg, rgba(138,109,78,0.12), rgba(138,109,78,0.87));
 }
 @media (max-width: 640px) {
-  .harta-n1 { width: 104px; height: 68px; }
-  .harta-n2 { width: 84px;  height: 56px; }
-  .harta-n3 { width: 70px;  height: 46px; }
-  .harta-n4 { width: 58px;  height: 40px; }
+  .harta-n1 { width: 84px; height: 54px; }
+  .harta-n2 { width: 70px; height: 46px; }
+  .harta-n3 { width: 60px; height: 40px; }
+  .harta-n4 { width: 52px; height: 36px; }
 }
 
 /* ═══════════════════════════════════════════════════════════════════════
