@@ -164,8 +164,8 @@ export default {
   },
   landing: {
     badge: "Oktatási tőzsdeelemzési platform",
-    heroA: "Bármelyik amerikai részvény, ",
-    heroAccent: "0-tól 100-ig pontozva",
+    heroA: "Ne vegyél olyan részvényt, ",
+    heroAccent: "amit nem értesz",
     heroB: ".",
     taglines: [
       "MI-pontszám minden részvényhez",

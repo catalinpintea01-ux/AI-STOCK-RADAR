@@ -164,8 +164,8 @@ export default {
   },
   landing: {
     badge: "Platformă educațională de analiză bursieră",
-    heroA: "Orice acțiune americană, ",
-    heroAccent: "cu scor de la 0 la 100",
+    heroA: "Nu cumpăra o acțiune ",
+    heroAccent: "pe care nu o înțelegi",
     heroB: ".",
     taglines: [
       "scor AI pentru fiecare acțiune",

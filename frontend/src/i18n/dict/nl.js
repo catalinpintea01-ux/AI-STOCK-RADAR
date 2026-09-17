@@ -164,8 +164,8 @@ export default {
   },
   landing: {
     badge: "Educatief platform voor aandelenanalyse",
-    heroA: "Elk Amerikaans aandeel, ",
-    heroAccent: "met een score van 0 tot 100",
+    heroA: "Koop geen aandeel ",
+    heroAccent: "dat je niet begrijpt",
     heroB: ".",
     taglines: [
       "een AI-score voor elk aandeel",

@@ -164,8 +164,8 @@ export default {
   },
   landing: {
     badge: "Plateforme éducative d'analyse boursière",
-    heroA: "N'importe quelle action américaine, ",
-    heroAccent: "notée de 0 à 100",
+    heroA: "N'achetez pas une action ",
+    heroAccent: "que vous ne comprenez pas",
     heroB: ".",
     taglines: [
       "un score IA pour chaque action",

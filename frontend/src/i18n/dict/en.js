@@ -164,8 +164,8 @@ export default {
   },
   landing: {
     badge: "Educational stock-analysis platform",
-    heroA: "Any US stock, ",
-    heroAccent: "scored 0 to 100",
+    heroA: "Don't buy a stock ",
+    heroAccent: "you don't understand",
     heroB: ".",
     taglines: [
       "an AI score for every stock",

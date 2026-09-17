@@ -164,8 +164,8 @@ export default {
   },
   landing: {
     badge: "Plataforma educativa de análise bolsista",
-    heroA: "Qualquer ação dos EUA, ",
-    heroAccent: "pontuada de 0 a 100",
+    heroA: "Não compres uma ação ",
+    heroAccent: "que não entendes",
     heroB: ".",
     taglines: [
       "uma pontuação IA para cada ação",

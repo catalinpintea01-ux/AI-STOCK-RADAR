@@ -164,8 +164,8 @@ export default {
   },
   landing: {
     badge: "Piattaforma educativa di analisi azionaria",
-    heroA: "Qualsiasi azione USA, ",
-    heroAccent: "con punteggio da 0 a 100",
+    heroA: "Non comprare un'azione ",
+    heroAccent: "che non capisci",
     heroB: ".",
     taglines: [
       "un punteggio IA per ogni azione",

@@ -164,8 +164,8 @@ export default {
   },
   landing: {
     badge: "Edukacyjna platforma analizy giełdowej",
-    heroA: "Każda amerykańska akcja, ",
-    heroAccent: "z wynikiem od 0 do 100",
+    heroA: "Nie kupuj akcji, ",
+    heroAccent: "których nie rozumiesz",
     heroB: ".",
     taglines: [
       "ocena AI dla każdej akcji",

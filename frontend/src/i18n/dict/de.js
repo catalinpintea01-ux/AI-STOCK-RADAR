@@ -164,8 +164,8 @@ export default {
   },
   landing: {
     badge: "Bildungsplattform für Aktienanalyse",
-    heroA: "Jede US-Aktie, ",
-    heroAccent: "bewertet von 0 bis 100",
+    heroA: "Kaufe keine Aktie, ",
+    heroAccent: "die du nicht verstehst",
     heroB: ".",
     taglines: [
       "ein KI-Score für jede Aktie",
