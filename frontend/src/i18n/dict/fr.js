@@ -126,6 +126,7 @@ export default {
     footer: "Contenu éducatif généré automatiquement, pas un conseil en investissement. Les scores et textes de l'application décrivent un contexte public, pas des recommandations d'achat ou de vente.",
   },
   auth: {
+    sau: "ou par e-mail",
     panelRegister: "Votre première analyse est prête : {simbol}",
     panelRegisterSub: "Créez le compte et suivez-la dès aujourd'hui — le score se met à jour tout seul.",
     panelLogin: "Bon retour.",

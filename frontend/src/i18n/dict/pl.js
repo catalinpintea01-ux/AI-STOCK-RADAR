@@ -126,6 +126,7 @@ export default {
     footer: "Treści edukacyjne generowane automatycznie, nie stanowią doradztwa inwestycyjnego. Oceny i teksty w aplikacji opisują publiczny kontekst, a nie rekomendacje kupna lub sprzedaży.",
   },
   auth: {
+    sau: "lub przez e-mail",
     panelRegister: "Twoja pierwsza analiza jest gotowa: {simbol}",
     panelRegisterSub: "Załóż konto i obserwuj ją od dziś — wynik aktualizuje się sam.",
     panelLogin: "Witaj ponownie.",

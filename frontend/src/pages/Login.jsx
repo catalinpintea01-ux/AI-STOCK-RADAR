@@ -3,6 +3,7 @@ import { Eye, EyeOff } from "lucide-react";
 import { useNavigate, Link } from "react-router-dom";
 import { api } from "../api";
 import AuthLayout from "../components/AuthLayout.jsx";
+import GoogleButton from "../components/GoogleButton.jsx";
 import { useLang } from "../i18n/index.jsx";
 
 export default function Login() {
@@ -39,6 +40,7 @@ export default function Login() {
         <p className="auth-mobile-brand">AI Stock Radar</p>
         <h1>{t("auth.loginTitlu")}</h1>
         {error && <div className="error">{error}</div>}
+        <GoogleButton mod="login" onError={setError} />
         <input
           type="email"
           placeholder="Email"

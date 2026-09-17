@@ -7903,3 +7903,16 @@ html[data-theme="dark"] .plan-badge {
   font-weight: 700;
   color: var(--blue);
 }
+
+/* ═══ "Continuă cu Google" pe paginile de cont ═══ */
+.google-auth { display: flex; flex-direction: column; align-items: center; gap: 0.7rem; }
+.google-auth-buton { min-height: 44px; display: flex; justify-content: center; }
+.auth-sau {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  font-size: 0.74rem;
+  color: var(--muted);
+}
+.auth-sau::before, .auth-sau::after { content: ""; flex: 1; height: 1px; background: var(--border); }

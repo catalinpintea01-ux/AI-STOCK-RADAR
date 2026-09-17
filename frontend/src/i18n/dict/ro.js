@@ -126,6 +126,7 @@ export default {
     footer: "Conținut educativ generat automat, nu este consultanță de investiții. Scorurile și textele din aplicație descriu context public, nu recomandări de cumpărare sau vânzare.",
   },
   auth: {
+    sau: "sau cu email",
     panelRegister: "Prima ta analiză e gata: {simbol}",
     panelRegisterSub: "Creează contul și o urmărești de azi — scorul se recalculează automat.",
     panelLogin: "Bine ai revenit.",

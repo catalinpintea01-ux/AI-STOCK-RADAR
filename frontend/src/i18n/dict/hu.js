@@ -126,6 +126,7 @@ export default {
     footer: "Automatikusan generált oktatási tartalom, nem befektetési tanácsadás. Az alkalmazás pontszámai és szövegei nyilvános kontextust írnak le, nem vételi vagy eladási ajánlásokat.",
   },
   auth: {
+    sau: "vagy e-maillel",
     panelRegister: "Az első elemzésed kész: {simbol}",
     panelRegisterSub: "Hozd létre a fiókot és kövesd mától — a pontszám magától frissül.",
     panelLogin: "Üdv újra.",

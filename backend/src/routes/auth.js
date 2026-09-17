@@ -74,6 +74,61 @@ router.post("/register", async (req, res) => {
   });
 });
 
+// Autentificare cu Google (Google Identity Services, fluxul cu ID token):
+// frontend-ul primește de la Google un JWT semnat, îl trimite aici, noi îl
+// verificăm criptografic contra GOOGLE_CLIENT_ID și creăm/găsim contul după
+// email. Un cont existent cu parolă se leagă automat — emailul e verificat
+// de Google. Fără GOOGLE_CLIENT_ID pe server, ruta răspunde 503 (butonul e
+// oricum ascuns în frontend fără VITE_GOOGLE_CLIENT_ID).
+router.post("/google", async (req, res) => {
+  const clientId = process.env.GOOGLE_CLIENT_ID;
+  if (!clientId) {
+    return res.status(503).json({ error: "Autentificarea cu Google nu este configurată încă." });
+  }
+  const credential = typeof req.body?.credential === "string" ? req.body.credential : "";
+  if (!credential) return res.status(400).json({ error: "Lipsește tokenul Google." });
+
+  let payload;
+  try {
+    const { OAuth2Client } = require("google-auth-library");
+    const client = new OAuth2Client(clientId);
+    const ticket = await client.verifyIdToken({ idToken: credential, audience: clientId });
+    payload = ticket.getPayload();
+  } catch (err) {
+    console.error(`[auth/google] token invalid: ${err.message}`);
+    return res.status(401).json({ error: "Tokenul Google nu a putut fi verificat." });
+  }
+
+  const email = (payload?.email || "").toLowerCase();
+  if (!email || !payload.email_verified) {
+    return res.status(401).json({ error: "Contul Google nu are un email verificat." });
+  }
+
+  let user = await prisma.user.findUnique({ where: { email } });
+  let nou = false;
+  if (!user) {
+    // Parolă imposibil de ghicit, ca formularul clasic să nu poată intra pe
+    // acest cont — userul poate oricând seta una prin "Ai uitat parola?".
+    const passwordHash = await bcrypt.hash(crypto.randomBytes(32).toString("hex"), 10);
+    user = await prisma.user.create({
+      data: {
+        email,
+        passwordHash,
+        portfolios: { create: { tip: "simulat", cashBalance: 10000 } },
+        subscriptions: { create: { plan: "free", status: "active" } },
+      },
+    });
+    nou = true;
+  }
+
+  const token = signToken(user.id);
+  res.status(nou ? 201 : 200).json({
+    token,
+    nou,
+    user: { id: user.id, email: user.email, nivel: user.nivel, xp: user.xp },
+  });
+});
+
 router.post("/login", async (req, res) => {
   const { email, password } = req.body;
 

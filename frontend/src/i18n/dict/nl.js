@@ -126,6 +126,7 @@ export default {
     footer: "Automatisch gegenereerde educatieve inhoud, geen beleggingsadvies. De scores en teksten in de app beschrijven publieke context, geen koop- of verkoopaanbevelingen.",
   },
   auth: {
+    sau: "of met e-mail",
     panelRegister: "Je eerste analyse staat klaar: {simbol}",
     panelRegisterSub: "Maak het account en volg het vanaf vandaag — de score werkt zichzelf bij.",
     panelLogin: "Welkom terug.",

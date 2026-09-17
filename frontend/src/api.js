@@ -53,6 +53,8 @@ export const api = {
     request("/auth/register", { method: "POST", body: JSON.stringify({ email, password }) }),
   login: (email, password) =>
     request("/auth/login", { method: "POST", body: JSON.stringify({ email, password }) }),
+  loginGoogle: (credential) =>
+    request("/auth/google", { method: "POST", body: JSON.stringify({ credential }) }),
   getPortfolio: () => request("/portfolio"),
   explainPortfolio: () => request("/portfolio/explain"),
   getStocks: () => request("/stocks"),

@@ -4,6 +4,7 @@ import { Eye, EyeOff } from "lucide-react";
 import { useNavigate, useSearchParams, Link } from "react-router-dom";
 import { api } from "../api";
 import AuthLayout from "../components/AuthLayout.jsx";
+import GoogleButton from "../components/GoogleButton.jsx";
 import { useLang } from "../i18n/index.jsx";
 
 // Pagina de cont = punctul de conversie. Regulile ei:
@@ -60,6 +61,7 @@ export default function Register() {
         <p className="auth-mobile-brand">AI Stock Radar</p>
         <h1>{titlu}</h1>
         {error && <div className="error">{error}</div>}
+        <GoogleButton simbol={simbol} mod="register" onError={setError} />
         <input
           type="email"
           placeholder="Email"

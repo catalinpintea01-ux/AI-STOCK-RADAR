@@ -126,6 +126,7 @@ export default {
     footer: "Conteúdo educativo gerado automaticamente, não é aconselhamento de investimento. As pontuações e textos da aplicação descrevem contexto público, não recomendações de compra ou venda.",
   },
   auth: {
+    sau: "ou com email",
     panelRegister: "A tua primeira análise está pronta: {simbol}",
     panelRegisterSub: "Cria a conta e segue-a a partir de hoje — a pontuação atualiza-se sozinha.",
     panelLogin: "Bem-vindo de volta.",

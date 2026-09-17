@@ -126,6 +126,7 @@ export default {
     footer: "Automatically generated educational content, not investment advice. The scores and texts in the app describe public context, not buy or sell recommendations.",
   },
   auth: {
+    sau: "or with email",
     panelRegister: "Your first analysis is ready: {simbol}",
     panelRegisterSub: "Create the account and track it from today — the score updates automatically.",
     panelLogin: "Welcome back.",
