@@ -55,6 +55,7 @@ app.use("/api/narative", require("./routes/narative"));
 app.use("/api/brief", require("./routes/brief"));
 app.use("/api/admin", require("./routes/admin").router);
 app.use("/api/radar", require("./routes/radar"));
+app.use("/api/evenimente", require("./routes/evenimente"));
 
 const port = process.env.PORT || 4000;
 app.listen(port, () => console.log(`Backend rulează pe portul ${port}`));

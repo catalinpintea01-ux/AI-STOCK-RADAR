@@ -55,6 +55,46 @@ export default function Admin() {
         </div>
       </div>
 
+      {date.palnie && (
+        <section className="panel">
+          <div className="panel-head">
+            <div>
+              <p className="eyebrow">Ultimele 14 zile · măsurat de noi, nu de Meta</p>
+              <h2><TrendingUp size={16} className="h2-ic" /> Pâlnia de conversie</h2>
+            </div>
+          </div>
+          <div className="admin-palnie">
+            {(() => {
+              const etichete = {
+                landing: "Au deschis pagina de marketing",
+                demo_ticker: "Au apăsat pe o acțiune în demo",
+                demo_cta: "Au apăsat butonul de cont",
+                register_view: "Au ajuns pe pagina de cont",
+                register_done: "Au creat contul",
+              };
+              const primul = date.palnie[0]?.numar || 0;
+              return date.palnie.map((p, i) => {
+                const anterior = i > 0 ? date.palnie[i - 1].numar : null;
+                const procent = anterior ? Math.round((p.numar / anterior) * 100) : null;
+                return (
+                  <div key={p.tip} className="admin-palnie-pas">
+                    <strong>{p.numar}</strong>
+                    <span>{etichete[p.tip] || p.tip}</span>
+                    {procent !== null && anterior > 0 && <em>{procent}% din pasul anterior</em>}
+                    {i === date.palnie.length - 1 && primul > 0 && (
+                      <em>{Math.round((p.numar / primul) * 1000) / 10}% din total</em>
+                    )}
+                  </div>
+                );
+              });
+            })()}
+          </div>
+          <p className="cash" style={{ marginTop: "0.6rem" }}>
+            Pagina de login deschisă de {date.loginViews14z} ori. Evenimentele sunt anonime (fără IP, fără cookie).
+          </p>
+        </section>
+      )}
+
       <section className="panel">
         <div className="panel-head">
           <div>

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
 import { useNavigate, Link } from "react-router-dom";
 import { api } from "../api";
@@ -13,6 +13,10 @@ export default function Login() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    api.eveniment("login_view");
+  }, []);
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -30,11 +34,10 @@ export default function Login() {
   }
 
   return (
-    <AuthLayout>
+    <AuthLayout mod="login">
       <form className="auth-card" onSubmit={handleSubmit}>
         <p className="auth-mobile-brand">AI Stock Radar</p>
         <h1>{t("auth.loginTitlu")}</h1>
-        <p className="subtitle">{t("auth.loginSub")}</p>
         {error && <div className="error">{error}</div>}
         <input
           type="email"
@@ -69,7 +72,6 @@ export default function Login() {
         <p className="switch">
           {t("auth.nuAiCont")} <Link to="/register">{t("auth.creeazaUnul")}</Link>
         </p>
-        <p className="auth-form-footer">{t("auth.footer")}</p>
       </form>
     </AuthLayout>
   );

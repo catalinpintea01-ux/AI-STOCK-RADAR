@@ -32,6 +32,20 @@ export const api = {
   getToolInsideri: () => request("/tools/insideri"),
   getRadarAcuratete: () => request("/radar/acuratete"),
   getBriefPersonal: () => request("/brief/personal"),
+  // Pâlnia de conversie: "trage și uită" — nicio eroare de aici nu are voie
+  // să ajungă în UI. Răspunsul e 204, deci nu trecem prin request()/res.json().
+  eveniment: (tip, simbol) => {
+    try {
+      fetch(`${BASE_URL}/evenimente`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ tip, simbol: simbol || undefined }),
+        keepalive: true,
+      }).catch(() => {});
+    } catch {
+      // ignorat intenționat
+    }
+  },
   getNarativa: (simbol) => request(`/narative/${encodeURIComponent(simbol)}`),
   saveNarativa: (simbol, teza) =>
     request(`/narative/${encodeURIComponent(simbol)}`, { method: "PUT", body: JSON.stringify({ teza }) }),

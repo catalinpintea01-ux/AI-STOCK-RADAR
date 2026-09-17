@@ -245,6 +245,19 @@ model PonderiRadar {
   actualizatLa     DateTime @default(now())
 }
 
+// Pâlnia de conversie, măsurată de noi (independent de Vercel Analytics, ale
+// cărui evenimente custom nu sunt disponibile pe planul gratuit): un rând per
+// eveniment anonim — landing → demo → CTA → pagina de cont → cont creat.
+// Fără date personale; simbolul e doar acțiunea aleasă în demo.
+model Eveniment {
+  id        String   @id @default(uuid())
+  tip       String
+  simbol    String?
+  createdAt DateTime @default(now())
+
+  @@index([tip, createdAt])
+}
+
 // Brieful personal al watchlist-ului: un rând per (utilizator, zi). Premium
 // primește text generat de Claude (max 1 apel/user/zi — acest cache e frâna
 // de cost); planul gratuit primește sinteza deterministă (generatAi=false).

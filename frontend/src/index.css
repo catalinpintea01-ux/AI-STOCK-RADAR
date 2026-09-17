@@ -7820,3 +7820,78 @@ html[data-theme="dark"] .plan-badge {
   .demo-live-scor { margin-left: auto; }
   .demo-bara-rand { grid-template-columns: 76px 1fr 26px; }
 }
+
+/* ═══ Paginile de cont: produsul în stânga, formular curat în dreapta ═══ */
+.auth-brand-title {
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #e2b866;
+  margin: 0 0 0.9rem;
+}
+.auth-brand-heading {
+  font-family: "Fraunces", serif;
+  font-size: 1.7rem;
+  font-weight: 600;
+  line-height: 1.15;
+  color: #f5f1e8;
+  margin: 0 0 0.5rem;
+}
+.auth-brand-panel .auth-brand-tagline { margin-bottom: 1.2rem; }
+.auth-brand-content { max-width: 440px; width: 100%; }
+
+/* Cardul demo în mod compact (fără butoane/CTA), pe fundalul închis al panoului */
+.demo-live-compact { margin: 0; max-width: none; }
+.demo-live-compact .demo-live-card { min-height: 0; }
+
+/* Rândul de încredere de sub butonul de înregistrare — trei fapte, nu termeni */
+.auth-trust {
+  list-style: none;
+  padding: 0;
+  margin: 0.15rem 0 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.35rem 0.9rem;
+  font-size: 0.74rem;
+  color: var(--muted);
+}
+.auth-trust li { display: inline-flex; align-items: center; gap: 0.35rem; }
+.auth-trust li::before {
+  content: "";
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--blue);
+  opacity: 0.7;
+}
+
+/* Pâlnia din /admin */
+.admin-palnie {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 0.6rem;
+  margin-top: 0.5rem;
+}
+.admin-palnie-pas {
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 0.75rem 0.9rem;
+}
+.admin-palnie-pas strong {
+  display: block;
+  font-family: "Fraunces", serif;
+  font-size: 1.5rem;
+  line-height: 1.1;
+}
+.admin-palnie-pas span { font-size: 0.74rem; color: var(--muted); }
+.admin-palnie-pas em {
+  display: block;
+  margin-top: 0.3rem;
+  font-style: normal;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--blue);
+}
