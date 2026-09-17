@@ -7867,6 +7867,14 @@ html[data-theme="dark"] .plan-badge {
   opacity: 0.7;
 }
 
+/* Formularul și subsolul legal se așază unul SUB altul — panoul era flex pe
+   rând, deci linkurile legale apăreau ca o coloană lângă card. */
+.auth-form-panel {
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.auth-form-panel .footer-legal { width: 100%; max-width: 380px; }
+
 /* Pâlnia din /admin */
 .admin-palnie {
   display: grid;
