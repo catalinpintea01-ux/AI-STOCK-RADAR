@@ -4,7 +4,7 @@ import { api } from "../api";
 import StockLogo from "./StockLogo.jsx";
 import ScoreRing from "./ScoreRing.jsx";
 import VerdictTag from "./VerdictTag.jsx";
-import { useTraduse } from "../i18n/useTraduse.js";
+import { useLang } from "../i18n/index.jsx";
 
 // Demo public în hero: vizitatorul vede un scor REAL pe o acțiune reală
 // înainte să i se ceară ceva. Rutele /stocks/:simbol și /stocks/:simbol/radar
@@ -17,20 +17,11 @@ import { useTraduse } from "../i18n/useTraduse.js";
 const TICKERE = ["AAPL", "NVDA", "TSLA", "MSFT", "AMZN", "GOOGL"];
 
 export default function DemoLive() {
-  const tt = useTraduse({
-    eyebrow: "Încearcă acum, fără cont",
-    alege: "Alege o acțiune:",
-    scor: "Scor AI",
-    analisti: "Analiști",
-    momentum: "Momentum",
-    fundamente: "Fundamente",
-    risc: "Risc",
-    cta: "Urmărește-ți acțiunile — cont gratuit",
-    ctaNota: "Fără card. 3 acțiuni urmărite gratuit.",
-    seIncarca: "Se calculează…",
-    eroare: "Scorul nu se poate încărca acum. Încearcă altă acțiune.",
-    educational: "Instrument educațional. Nu sunt recomandări de investiții.",
-  });
+  // Dicționar, NU useTraduse: /api/i18n/translate cere autentificare, deci
+  // pentru un vizitator anonim traducerea la cerere eșuează în tăcere și
+  // americanul din reclamă ar vedea etichete românești exact aici.
+  const { t } = useLang();
+  const tt = (cheie) => t(`demo.${cheie}`);
 
   const [simbol, setSimbol] = useState("AAPL");
   const [date, setDate] = useState(null);

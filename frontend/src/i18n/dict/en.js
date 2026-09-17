@@ -1,4 +1,16 @@
 export default {
+  demo: {
+    eyebrow: "Try it now — no account",
+    alege: "Pick a stock:",
+    analisti: "Analysts",
+    momentum: "Momentum",
+    fundamente: "Fundamentals",
+    risc: "Risk",
+    cta: "Track your stocks — free account",
+    ctaNota: "No card. 3 tracked stocks free.",
+    eroare: "Can't load the score right now. Try another stock.",
+    educational: "Educational tool. Not investment advice.",
+  },
   disclaimerRisc: "Investing involves risk, including the possible loss of capital.",
   whyUs1: "Most platforms give you data.",
   whyUs2: "AI Stock Radar tells you where it's worth looking.",

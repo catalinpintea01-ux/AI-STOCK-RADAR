@@ -1,4 +1,16 @@
 export default {
+  demo: {
+    eyebrow: "Probeer het nu — zonder account",
+    alege: "Kies een aandeel:",
+    analisti: "Analisten",
+    momentum: "Momentum",
+    fundamente: "Fundamentals",
+    risc: "Risico",
+    cta: "Volg je aandelen — gratis account",
+    ctaNota: "Geen kaart. 3 gevolgde aandelen gratis.",
+    eroare: "Score kan nu niet geladen worden. Probeer een ander aandeel.",
+    educational: "Educatief hulpmiddel. Geen beleggingsadvies.",
+  },
   disclaimerRisc: "Beleggen brengt risico's met zich mee, waaronder mogelijk kapitaalverlies.",
   whyUs1: "De meeste platforms geven je data.",
   whyUs2: "AI Stock Radar vertelt je waar het de moeite waard is om te kijken.",

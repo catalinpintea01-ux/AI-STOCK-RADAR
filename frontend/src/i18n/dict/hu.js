@@ -1,4 +1,16 @@
 export default {
+  demo: {
+    eyebrow: "Próbáld ki most — fiók nélkül",
+    alege: "Válassz egy részvényt:",
+    analisti: "Elemzők",
+    momentum: "Momentum",
+    fundamente: "Fundamentumok",
+    risc: "Kockázat",
+    cta: "Kövesd a részvényeidet — ingyenes fiók",
+    ctaNota: "Kártya nélkül. 3 követett részvény ingyen.",
+    eroare: "A pontszám most nem tölthető be. Próbálj másik részvényt.",
+    educational: "Oktatási eszköz. Nem befektetési tanács.",
+  },
   disclaimerRisc: "A befektetés kockázattal jár, beleértve a tőke esetleges elvesztését.",
   whyUs1: "A legtöbb platform adatokat ad.",
   whyUs2: "Az AI Stock Radar megmondja, hova érdemes nézni.",

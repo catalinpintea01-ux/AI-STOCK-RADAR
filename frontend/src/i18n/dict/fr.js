@@ -1,4 +1,16 @@
 export default {
+  demo: {
+    eyebrow: "Essayez maintenant, sans compte",
+    alege: "Choisissez une action :",
+    analisti: "Analystes",
+    momentum: "Momentum",
+    fundamente: "Fondamentaux",
+    risc: "Risque",
+    cta: "Suivez vos actions — compte gratuit",
+    ctaNota: "Sans carte. 3 actions suivies gratuitement.",
+    eroare: "Impossible de charger le score maintenant. Essayez une autre action.",
+    educational: "Outil éducatif. Pas un conseil en investissement.",
+  },
   disclaimerRisc: "Investir comporte des risques, y compris la perte possible du capital.",
   whyUs1: "La plupart des plateformes vous donnent des données.",
   whyUs2: "AI Stock Radar vous dit où il vaut la peine de regarder.",

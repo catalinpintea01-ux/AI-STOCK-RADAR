@@ -1,4 +1,16 @@
 export default {
+  demo: {
+    eyebrow: "Încearcă acum, fără cont",
+    alege: "Alege o acțiune:",
+    analisti: "Analiști",
+    momentum: "Momentum",
+    fundamente: "Fundamente",
+    risc: "Risc",
+    cta: "Urmărește-ți acțiunile — cont gratuit",
+    ctaNota: "Fără card. 3 acțiuni urmărite gratuit.",
+    eroare: "Scorul nu se poate încărca acum. Încearcă altă acțiune.",
+    educational: "Instrument educațional. Nu sunt recomandări de investiții.",
+  },
   disclaimerRisc: "Investițiile implică riscuri, inclusiv pierderea capitalului.",
   whyUs1: "Cele mai multe platforme îți dau date.",
   whyUs2: "AI Stock Radar îți spune unde merită să te uiți.",
